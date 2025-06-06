@@ -1,0 +1,69 @@
+# Generates an informational message about a test
+test_message <- function(name, reject, p_value, alpha, msg_fail, msg_reject) {
+
+	s1 <- ifelse(reject, "reject", "fail to reject")
+	s2 <- ifelse(reject, msg_reject, msg_fail) 
+
+	l1 <- sprintf("The %s test had a p-value of %f.", name, round(p_value, 3))
+	l2 <- sprintf("At a significance level of %f, we %s the null hypothesis.", alpha, s1)
+	l3 <- sprintf("Therefore, there is %s.", s2)
+
+	# Combine the messages and add bullet points
+	paste0("\n - ", c(l1, l2, l3), collapse = "")
+
+}
+
+
+# Adds sensible axis scales to a plot
+add_scales <- function(p) {
+	p + 
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	scale_y_continuous(breaks = scales::pretty_breaks(n = 10))
+}
+
+
+# Adds sensible styling to a plot
+add_theme <- function(p) {
+	p +
+	theme_minimal() +
+	theme(
+		plot.background = element_rect(fill = "white", color = NA),
+		plot.title = element_text(size = 20, hjust = 0.5),
+		plot.margin = margin(5, 15, 5, 15),
+		axis.title = element_text(size = 16),
+		axis.text = element_text(size = 12),
+		panel.grid.minor = element_blank(),
+		legend.title = element_text(hjust = 0.5),
+		legend.background = element_rect(fill = "white", color = "black"),
+		legend.box.background = element_rect(color = "black"),
+		legend.direction = "vertical"
+	)
+}
+
+
+# Adds a nicely formatted annotation to the top right corner of a plot
+add_annotation <- function(p, label) {
+
+	grob <- textGrob(label)
+	width <- convertWidth(grobWidth(grob), "npc", valueOnly = TRUE)
+
+	p + annotation_custom(
+		grob = grobTree(
+			rectGrob(
+				x = 0.98 - (width / 2), y = 0.95,
+				hjust = 0.5, vjust = 0.5,
+				width = grobWidth(grob) + unit(6, "pt"),
+				height = grobHeight(grob) + unit(6, "pt"),
+				gp = gpar(fill = "white", col = "black")
+			),
+			textGrob(
+				label,
+				x = 0.98 - (width / 2), y = 0.95,
+				hjust = 0.5, vjust = 0.5 ,
+				gp = gpar(col = "black", fontsize = 10)
+			)
+		),
+		xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf
+	)
+
+}

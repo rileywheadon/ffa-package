@@ -1,0 +1,8 @@
+^.Rproj$
+^.RData$
+^.Rhistory$
+^..Rcheck$
+
+^notes.md$
+^coverage.html$
+^ffaframework_0.1.0.pdf$

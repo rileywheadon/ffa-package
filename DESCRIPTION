@@ -15,14 +15,10 @@ License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Imports:
-    lmom,
-    parallel,
     stats,
-    graphics,
-    utils,
-    ggplot2,
+	randtests,
     aTSA,
-    randtests
+	patchwork
 Suggests:
     testthat,
 	covr

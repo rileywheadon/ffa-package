@@ -20,6 +20,7 @@ A named list with the following components:
 \item{s.variance}{The variance of the test statistic under the null hypothesis.}
 \item{p.value}{The p-value associated with the two-sided hypothesis test.}
 \item{reject}{Logical. TRUE if the null hypothesis of no trend is rejected at \code{alpha}.}
+\item{msg}{A character string summarizing the result (printed if \code{quiet = FALSE}).}
 }
 }
 \description{
@@ -36,5 +37,5 @@ The test statistic \(Z\) is then computed based on the sign and magnitude of \(S
 p-value is derived from the standard normal distribution.
 }
 \seealso{
-\code{\link{bbmk_test}} for a bootstrap-based variant of this test.
+\code{\link{bbmk.test}} for a bootstrap-based variant of this test.
 }

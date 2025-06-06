@@ -14,6 +14,7 @@
 #'   \item{s.variance}{The variance of the test statistic under the null hypothesis.}
 #'   \item{p.value}{The p-value associated with the two-sided hypothesis test.}
 #'   \item{reject}{Logical. TRUE if the null hypothesis of no trend is rejected at \code{alpha}.}
+#'   \item{msg}{A character string summarizing the result (printed if \code{quiet = FALSE}).}
 #' }
 #'
 #' @details
@@ -24,7 +25,9 @@
 #' The test statistic \(Z\) is then computed based on the sign and magnitude of \(S\), and the
 #' p-value is derived from the standard normal distribution.
 #'
-#' @seealso \code{\link{bbmk_test}} for a bootstrap-based variant of this test.
+#' @seealso \code{\link{bbmk.test}} for a bootstrap-based variant of this test.
+#'
+#' @importFrom stats pnorm
 #' @export
 
 mk.test <- function(data, alpha = 0.05, quiet = TRUE) {
@@ -64,6 +67,18 @@ mk.test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	# Determine whether we reject or fail to reject based on p_value and alpha
 	reject <- (p_value <= alpha)
+
+	# Print the results of the test
+	msg <- test_message(
+		"KPSS",
+		reject,
+		p_value,
+		alpha,
+		"evidence of a unit root.",
+		"NO evidence of a unit root."
+	)
+
+	if (!quiet) message(msg)
 
 	# Return the results of the test as a list
 	list(s.statistic = s, s.variance = s_variance, p.value = p_value, reject = reject)
