@@ -1,0 +1,30 @@
+Package: ffaframework
+Title: Flood Frequency Analysis Framework
+Version: 0.1.0
+Authors@R: 
+    person(given = "Riley", 
+           family = "Wheadon", 
+           email = "rileywheadon@gmail.com", 
+           role = c("aut", "cre"))
+Author: Riley Wheadon [aut, cre]
+Maintainer: Riley Wheadon <rileywheadon@gmail.com>
+Description: Tools for exploratory data analysis and flood frequency analysis using 
+    L-moments, statistical tests, and model assessment. Implements several methods 
+    for distribution selection, trend detection, and uncertainty quantification.
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+Imports:
+    lmom,
+    parallel,
+    stats,
+    graphics,
+    utils,
+    ggplot2,
+    aTSA,
+    randtests
+Suggests:
+    testthat,
+	covr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
