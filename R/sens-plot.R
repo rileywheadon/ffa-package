@@ -37,7 +37,8 @@ sens.plot <- function(df, results, name, show_trend = TRUE) {
 		) 
 
 	# Add equation annotation, scales, and theme
-	add_theme(add_scales(add_annotation(p1, eq_label)))
+	p1 <- add_annotation(p1, eq_label)
+	add_theme(add_scales(p1))
 
 }
 

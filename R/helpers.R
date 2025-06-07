@@ -44,21 +44,22 @@ add_theme <- function(p) {
 # Adds a nicely formatted annotation to the top right corner of a plot
 add_annotation <- function(p, label) {
 
-	grob <- textGrob(label)
-	width <- convertWidth(grobWidth(grob), "npc", valueOnly = TRUE)
+	grob <- invisible(textGrob(label))
+	rect_w <- 0.22
+	rect_h <- 0.04
 
 	p + annotation_custom(
 		grob = grobTree(
 			rectGrob(
-				x = 0.98 - (width / 2), y = 0.95,
+				x = 0.95 - (rect_w / 2), y = 0.95,
 				hjust = 0.5, vjust = 0.5,
-				width = grobWidth(grob) + unit(6, "pt"),
-				height = grobHeight(grob) + unit(6, "pt"),
+				width = rect_w,
+				height = rect_h,
 				gp = gpar(fill = "white", col = "black")
 			),
 			textGrob(
 				label,
-				x = 0.98 - (width / 2), y = 0.95,
+				x = 0.95 - (rect_w / 2), y = 0.95,
 				hjust = 0.5, vjust = 0.5 ,
 				gp = gpar(col = "black", fontsize = 10)
 			)

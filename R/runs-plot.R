@@ -18,7 +18,7 @@ runs.plot <- function(df, results, name, show_trend = TRUE) {
 	p1 <- ggplot(df_residuals, aes(x = x, y = y)) +
 		geom_point(color = "black", size = 2.25) + 
 	    geom_hline(yintercept = 0, color = "red", linetype = "dashed", linewidth = 1.2) +
-		labs(title = "Residual Plot", x = "Year", y = "Residual Value") 
+		labs(title = "Residual Plot", x = "Year", y = "Residual Value")
 
 	# Add p-value annotation
 	runs_label <- sprintf("Runs p-value: %.3f", results$p.value)
