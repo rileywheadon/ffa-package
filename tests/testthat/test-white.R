@@ -5,9 +5,9 @@ test_that("Test white-test.R on data set #1", {
 	test <- white.test(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$r.squared, 0.0110, tolerance = 1e-4)
-	expect_equal(test$statistic, 1.1197, tolerance = 1e-4)
-	expect_equal(test$p.value, 0.5713, tolerance = 1e-4)
+	expect_equal(test$r.squared, 0.0110, tol = 1e-4)
+	expect_equal(test$statistic, 1.1197, tol = 1e-4)
+	expect_equal(test$p.value, 0.5713, tol = 1e-4)
 
 })
 
@@ -18,9 +18,9 @@ test_that("Test white-test.R on data set #2", {
 	test <- white.test(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$r.squared, 0.1019, tolerance = 1e-4)
-	expect_equal(test$statistic, 9.2726, tolerance = 1e-4)
-	expect_equal(test$p.value, 0.0097, tolerance = 1e-4)
+	expect_equal(test$r.squared, 0.1019, tol = 1e-4)
+	expect_equal(test$statistic, 9.2726, tol = 1e-4)
+	expect_equal(test$p.value, 0.0097, tol = 1e-4)
 
 })
 
@@ -31,9 +31,9 @@ test_that("Test white-test.R on data set #3.1", {
 	test <- white.test(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$r.squared, 0.0447, tolerance = 1e-4)
-	expect_equal(test$statistic, 4.8747, tolerance = 1e-4)
-	expect_equal(test$p.value, 0.0874, tolerance = 1e-4)
+	expect_equal(test$r.squared, 0.0447, tol = 1e-4)
+	expect_equal(test$statistic, 4.8747, tol = 1e-4)
+	expect_equal(test$p.value, 0.0874, tol = 1e-4)
 
 })
 
@@ -44,9 +44,9 @@ test_that("Test white-test.R on data set #3.2", {
 	test <- white.test(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$r.squared, 0.0481, tolerance = 1e-4)
-	expect_equal(test$statistic, 4.2810, tolerance = 1e-4)
-	expect_equal(test$p.value, 0.1176, tolerance = 1e-4)
+	expect_equal(test$r.squared, 0.0481, tol = 1e-4)
+	expect_equal(test$statistic, 4.2810, tol = 1e-4)
+	expect_equal(test$p.value, 0.1176, tol = 1e-4)
 
 })
 
@@ -57,8 +57,8 @@ test_that("Test white-test.R on data set #3.3", {
 	test <- white.test(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$r.squared, 0.0415, tolerance = 1e-4)
-	expect_equal(test$statistic, 4.0246, tolerance = 1e-4)
-	expect_equal(test$p.value, 0.1337, tolerance = 1e-4)
+	expect_equal(test$r.squared, 0.0415, tol = 1e-4)
+	expect_equal(test$statistic, 4.0246, tol = 1e-4)
+	expect_equal(test$p.value, 0.1337, tol = 1e-4)
 
 })

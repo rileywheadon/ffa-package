@@ -33,7 +33,6 @@
 #' @importFrom stats quantile
 #' @export
 
-
 bbmk.test <- function(ams, alpha = 0.05, n_sim = 10000, quiet = TRUE) {
 
 	# Assign a variable to the number of data points for convenience
@@ -53,18 +52,12 @@ bbmk.test <- function(ams, alpha = 0.05, n_sim = 10000, quiet = TRUE) {
 
 		# Sample blocks for this iteration
 		sampled_blocks <- sample(blocks, n_blocks, replace = FALSE)
-		resampled_series <- unlist(sampled_blocks, use.names = FALSE)
-		ams_resampled <- resampled_series[!is.na(resampled_series)]
+		sampled_data <- unlist(sampled_blocks, use.names = FALSE)
 
 		# Compute the Mann-Kendall statistic for this iteration
-		s <- 0
-		for (i in 1:(n-1)) {
-			for (j in (i+1):n) {
-				s = s + sign(ams_resampled[j] - ams_resampled[i])
-			}
-		}
-
-		return(s)
+		m <- outer(sampled_data, sampled_data, `-`)                   
+  		s <- sum(sign(m[lower.tri(m)]), na.rm = TRUE)
+		return (s)
 
 	})
 

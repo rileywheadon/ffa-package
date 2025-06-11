@@ -44,7 +44,7 @@ add_theme <- function(p) {
 # Adds a nicely formatted annotation to the top right corner of a plot
 add_annotation <- function(p, label) {
 
-	grob <- invisible(textGrob(label))
+	grob <- textGrob(label)
 	rect_w <- 0.22
 	rect_h <- 0.04
 

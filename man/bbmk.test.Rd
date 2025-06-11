@@ -18,6 +18,7 @@ bbmk.test(ams, alpha = 0.05, n_sim = 10000, quiet = TRUE)
 \value{
 A named list containing:
 \describe{
+\item{s.bootstrap}{Vector of bootstrapped test statistics used for plotting.}
 \item{s.statistic}{The Mann-Kendall test statistic computed on the original series.}
 \item{p.value}{Empirical two-sided p-value computed from the bootstrap distribution.}
 \item{bounds}{Confidence interval bounds for the null distribution of the statistic.}

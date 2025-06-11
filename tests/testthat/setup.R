@@ -1,3 +1,6 @@
+# Set the seed
+set.seed(1)
+
 # Helper function to load a data file
 load_data <- function(file_name, clean = TRUE) {
 

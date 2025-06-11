@@ -2,16 +2,14 @@
 % Please edit documentation in R/sens-trend.R
 \name{sens.trend}
 \alias{sens.trend}
-\title{Sen's Slope Estimator with Residual Randomness Test}
+\title{Sen's Slope Estimator}
 \usage{
-sens.trend(data, year, alpha = 0.05, quiet = TRUE)
+sens.trend(data, year, quiet = TRUE)
 }
 \arguments{
 \item{data}{Numeric vector of AMS values or variances with no missing values.}
 
 \item{year}{Numeric vector of years corresponding to \code{data}, with no missing values.}
-
-\item{alpha}{Numeric significance level for the runs test (default is 0.05).}
 
 \item{quiet}{Logical. If FALSE, prints a summary message describing results (default is TRUE).}
 }
@@ -21,31 +19,21 @@ A named list containing:
 \item{sens.slope}{Median slope of all pairwise data-year combinations (Sen's slope).}
 \item{sens.intercept}{Median intercept estimate of the fitted line.}
 \item{residuals}{Vector of residuals between observed and fitted values.}
-\item{p.value}{P-value from the Wald–Wolfowitz runs test applied to residuals.}
-\item{reject}{Logical. TRUE if null hypothesis of random residuals is rejected.}
-\item{msg}{Character string summarizing the estimator and test result.}
+\item{msg}{Character string summarizing the estimator.}
 }
 }
 \description{
-Computes Sen's slope estimator and intercept for a univariate time series and evaluates the
-randomness of the residuals using the Wald–Wolfowitz runs test. This method provides a
-non-parametric linear trend estimate and a post hoc check on model adequacy.
+Computes Sen's slope estimator and intercept for a univariate time series
 }
 \details{
 Sen's slope estimator is a robust, non-parametric trend estimator computed from the median
 of all pairwise slopes between data points. The corresponding intercept is taken as the
-median of residual-corrected values. To assess the assumption of independence in residuals,
-the Wald–Wolfowitz runs test is applied to the residual sequence.
-
-Rejection of the null hypothesis in the runs test indicates non-randomness in residuals,
-which may suggest model misfit or autocorrelation.
+median of residual-corrected values.
 }
 \references{
 Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau.
 \emph{Journal of the American Statistical Association}, 63(324), 1379–1389. \cr
-Wald, A., & Wolfowitz, J. (1940). On a test whether two samples are from the same population.
-\emph{Annals of Mathematical Statistics}, 11(2), 147–162.
 }
 \seealso{
-\code{\link[randtests]{runs.test}}, \code{\link{mk.test}}
+\code{\link{runs.test}}, \code{\link{mk.test}}
 }

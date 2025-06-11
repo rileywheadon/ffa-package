@@ -1,6 +1,3 @@
-# Set seed for reproducibility
-set.seed(1)
-
 # NOTE: Tolerance is high due to randomness in the bootstrap
 test_that("Test bbmk-test.R on data set #2", {
 
@@ -12,8 +9,8 @@ test_that("Test bbmk-test.R on data set #2", {
 	# print(end - start)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$p.value, 0.2105, tolerance = 5e-2)
-	expect_equal(unname(test$bounds), c(-1862, 1698), tolerance = 5e-2)
+	expect_equal(test$p.value, 0.2105, tol = 5e-2)
+	expect_equal(unname(test$bounds), c(-1862, 1698), tol = 5e-2)
 	
 })
 
@@ -25,7 +22,7 @@ test_that("Test bbmk-test.R on data set #3.3", {
 	test <- bbmk.test(df$max)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$p.value, 8e-6, tolerance = 5e-2)
-	expect_equal(unname(test$bounds), c(-902, 894), tolerance = 5e-2)
+	expect_equal(test$p.value, 8e-6, tol = 5e-2)
+	expect_equal(unname(test$bounds), c(-902, 894), tol = 5e-2)
 	
 })

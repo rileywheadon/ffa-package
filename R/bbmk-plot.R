@@ -1,4 +1,31 @@
-#' Plot Results from the BB-MK Test
+#' Plot Block‐Bootstrap Mann–Kendall Test Results
+#'
+#' @description
+#' Generates a histogram of block‐bootstrap Mann–Kendall S‐statistics with vertical
+#' lines indicating the empirical S‐statistic and confidence bounds.
+#'
+#' @param results A list containing the BB‐MK test output. See \code{\link{bbmk.test}}.
+#'
+#' @return A \code{ggplot} object showing:
+#'   \itemize{
+#'     \item A gray histogram of the distribution of bootstrapped S‐statistics.
+#'     \item A red vertical line at each confidence bound.
+#'     \item A black vertical line at the observed S‐statistic.
+#'   }
+#'
+#' @details
+#' The histogram uses 30 bins by default, with bootstrapped values in light gray.
+#' The legend is custom‐mapped to distinguish “Bootstrapped Statistics” (gray),
+#' “S-Statistic” (black), and “Confidence Bounds” (red). The plot title and axis
+#' labels are set for clarity.
+#'
+#' @seealso
+#' \code{\link[ggplot2]{geom_histogram}},
+#' \code{\link[ggplot2]{geom_vline}}, 
+#' \code{\link[ggplot2]{scale_color_manual}}
+#'
+#' @import ggplot2
+#' @export
 
 bbmk.plot <- function(results) {
 

@@ -18,7 +18,12 @@ Imports:
     stats,
 	randtests,
     aTSA,
-	patchwork
+	patchwork,
+	lmom,
+	ggplot2,
+	scales,
+	parallel,
+	grid
 Suggests:
     testthat,
 	vdiffr,

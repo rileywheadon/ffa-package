@@ -6,8 +6,8 @@ test_that("Test sens-estimator.R on variances of data set #1", {
 	test <- sens.trend(df_variance$std, df_variance$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, 0.8474, tolerance = 1e-4)
-	expect_equal(test$sens.intercept, -794.4911, tolerance = 1e-4)
+  	expect_equal(test$sens.slope, 0.8474, tol = 1e-4)
+	expect_equal(test$sens.intercept, -794.4911, tol = 1e-4)
 
 })
 
@@ -19,8 +19,8 @@ test_that("Test sens-estimator.R on variances of data set #2", {
 	test <- sens.trend(df_variance$std, df_variance$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, -3.4902, tolerance = 1e-4)
-	expect_equal(test$sens.intercept, 7.3114e3, tolerance = 1e-4)
+  	expect_equal(test$sens.slope, -3.4902, tol = 1e-4)
+	expect_equal(test$sens.intercept, 7.3114e3, tol = 1e-4)
 
 })
 
@@ -32,8 +32,8 @@ test_that("Test sens-estimator.R on variances of data set #3.1", {
 	test <- sens.trend(df_variance$std, df_variance$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, -0.0094, tolerance = 1e-4)
-	expect_equal(test$sens.intercept, 71.6560, tolerance = 1e-4)
+  	expect_equal(test$sens.slope, -0.0094, tol = 1e-4)
+	expect_equal(test$sens.intercept, 71.6560, tol = 1e-4)
 
 })
 
@@ -45,8 +45,8 @@ test_that("Test sens-estimator.R on variances of data set #3.2", {
 	test <- sens.trend(df_variance$std, df_variance$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, 0.2260, tolerance = 1e-4)
-	expect_equal(test$sens.intercept, -424.3596, tolerance = 1e-4)
+  	expect_equal(test$sens.slope, 0.2260, tol = 1e-4)
+	expect_equal(test$sens.intercept, -424.3596, tol = 1e-4)
 
 })
 
@@ -58,7 +58,7 @@ test_that("Test sens-estimator.R on variances of data set #3.3", {
 	test <- sens.trend(df_variance$std, df_variance$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, 0.1346, tolerance = 1e-4)
-	expect_equal(test$sens.intercept, -249.9469, tolerance = 1e-4)
+  	expect_equal(test$sens.slope, 0.1346, tol = 1e-4)
+	expect_equal(test$sens.intercept, -249.9469, tol = 1e-4)
 
 })

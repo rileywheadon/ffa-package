@@ -42,11 +42,11 @@ sens.trend <- function(data, year, quiet = TRUE) {
 	}
 
 	# Get the estimate for the slope
-	sens_slope <- median(slopes)
+	sens_slope <- median(slopes, na.rm = TRUE)
 
 	# Get the estimate for the intercept
 	intercepts <- data - (sens_slope * year)
-	sens_intercept <- median(intercepts)
+	sens_intercept <- median(intercepts, na.rm =  TRUE)
 
 	# Compute the predicted AMS values and the residuals
 	predicted_data <- sens_intercept + (sens_slope * year)

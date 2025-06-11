@@ -53,7 +53,7 @@ test_that("Test mw-variance.R on data set #1", {
 
 	# Check the years and stds
 	expect_equal(result$year, years)
-	expect_equal(result$std, stds, tolerance = 1e-4)
+	expect_equal(result$std, stds, tol = 1e-4)
 
 })
 
