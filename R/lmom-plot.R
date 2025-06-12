@@ -72,7 +72,7 @@ lmom.plot <- function(ams, metric, results) {
 
 			# Return the t3 and t4 values as a dataframe
 			df = data.frame(x = sapply(lmr, `[`, 3), y = sapply(lmr, `[`, 4)) 
-			df <- df[(df$x >= -1 & df$x <= 1), ]
+			df <- df[(!is.na(df$x) & !is.na(df$y)), ]
 			dlm[[distribution$name]] <- df
 
 		}
@@ -80,9 +80,9 @@ lmom.plot <- function(ams, metric, results) {
 	}
 
 	# Initilaize the legend information
-	labels <- c("Sample", "Log-Sample", "GEV/GUM", "GLO", "GNO/NOR/LNO", "PE3/LP3", "WEI", "GPA")
-	colors <- c("#000000", "#000000", "#e69f00", "#56b4e9", "#009e73", "#0072b2", "#d55e00", "#cc79a7")
-	shapes <- c(24, 15, 16, NA, 16, NA, NA, NA)
+	labels <- c("Sample", "Log-Sample", "GEV/GUM", "GLO", "GNO/NOR/LNO", "PE3/LP3", "WEI")
+	colors <- c("#000000", "#000000", "#e69f00", "#56b4e9", "#009e73", "#0072b2", "#d55e00")
+	shapes <- c(24, 15, 16, NA, 16, NA, NA)
 
 	# Define labels for the plot
 	x_label <- expression("L-skewness (" * tau[3] * ")")
@@ -95,7 +95,6 @@ lmom.plot <- function(ams, metric, results) {
 		geom_line(data = dlm$GNO, aes(color = "5"), linewidth = 1) +
 		geom_line(data = dlm$PE3, aes(color = "6"), linewidth = 1) +
 		geom_line(data = dlm$WEI, aes(color = "7"), linewidth = 1) +
-		geom_line(data = dlm$GPA, aes(color = "8"), linewidth = 1) +
 		geom_point(data = dlm$GUM, aes(color = "3"), shape = 16, size = 4) +
 		geom_point(data = dlm$NOR, aes(color = "5"), shape = 16, size = 4) +
 		geom_point(data = reg_lm, aes(color = "1"), shape = 24, size = 5, fill = "black") +

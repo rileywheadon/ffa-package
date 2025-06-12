@@ -7,7 +7,7 @@ test_that("Test lmom-estimation.R on data set #1", {
 	GEV <- lmom.estimation(df$max, "GEV")
 	expect_equal(GEV[1], 1600.2199, tol = 1e-3)
 	expect_equal(GEV[2],  616.6660, tol = 1e-3)
-	expect_equal(GEV[3],   -0.1207, tol = 1e-3)
+	expect_equal(GEV[3],    0.1207, tol = 1e-3)
 
 	# Gumbel (GUM) Distribution
 	GUM <- lmom.estimation(df$max, "GUM")
@@ -21,9 +21,8 @@ test_that("Test lmom-estimation.R on data set #1", {
 
 	# Log-Normal (LNO) Distribution
 	LNO <- lmom.estimation(df$max, "LNO")
-	expect_equal(LNO[1],      0)
-	expect_equal(LNO[2], 7.5290, tol = 1e-3)
-	expect_equal(LNO[3], 0.4272, tol = 1e-3)
+	expect_equal(LNO[1], 7.5290, tol = 1e-3)
+	expect_equal(LNO[2], 0.4272, tol = 1e-3)
 
 	# Generalized Logistic (GLO) Distribution
 	GLO <- lmom.estimation(df$max, "GLO")
@@ -54,12 +53,6 @@ test_that("Test lmom-estimation.R on data set #1", {
 	expect_equal(WEI[2], 1246.1981, tol = 5e-2)
 	expect_equal(WEI[3],    1.2763, tol = 5e-2)
 
-	# Generalized Pareto (GPA) Distribution
-	GPA <- lmom.estimation(df$max, "GPA")
-	expect_equal(GPA[1],  973.4415, tol = 1e-3)
-	expect_equal(GPA[2], 1280.2075, tol = 1e-3)
-	expect_equal(GPA[3],    0.2012, tol = 1e-3)
-
 })
 
 
@@ -72,7 +65,7 @@ test_that("Test lmom-estimation.R on data set #2", {
 	GEV <- lmom.estimation(df$max, "GEV")
 	expect_equal(GEV[1], 1368.3942, tol = 1e-3)
 	expect_equal(GEV[2],  615.9079, tol = 1e-3)
-	expect_equal(GEV[3],    0.0864, tol = 1e-3)
+	expect_equal(GEV[3],   -0.0864, tol = 1e-3)
 
 	# Gumbel (GUM) Distribution
 	GUM <- lmom.estimation(df$max, "GUM")
@@ -86,9 +79,8 @@ test_that("Test lmom-estimation.R on data set #2", {
 
 	# Log-Normal (LNO) Distribution
 	LNO <- lmom.estimation(df$max, "LNO")
-	expect_equal(LNO[1],      0)
-	expect_equal(LNO[2], 7.3329, tol = 1e-3)
-	expect_equal(LNO[3], 0.4260, tol = 1e-3)
+	expect_equal(LNO[1], 7.3329, tol = 1e-3)
+	expect_equal(LNO[2], 0.4260, tol = 1e-3)
 
 	# Generalized Logistic (GLO) Distribution
 	GLO <- lmom.estimation(df$max, "GLO")
@@ -120,12 +112,6 @@ test_that("Test lmom-estimation.R on data set #2", {
 	expect_equal(WEI[2], 1520.2381, tol = 5e-2)
 	expect_equal(WEI[3],    1.9885, tol = 5e-2)
 
-	# Generalized Pareto (GPA) Distribution
-	GPA <- lmom.estimation(df$max, "GPA")
-	expect_equal(GPA[1],  650.1250, tol = 1e-3)
-	expect_equal(GPA[2], 1624.2269, tol = 1e-3)
-	expect_equal(GPA[3],    0.5847, tol = 1e-3)
-
 })
 
 test_that("Test lmom-estimation.R on data set #3.1", {
@@ -137,7 +123,7 @@ test_that("Test lmom-estimation.R on data set #3.1", {
 	GEV <- lmom.estimation(df$max, "GEV")
 	expect_equal(GEV[1],  184.1039, tol = 1e-3)
 	expect_equal(GEV[2],   49.4535, tol = 1e-3)
-	expect_equal(GEV[3],    0.0119, tol = 1e-3)
+	expect_equal(GEV[3],   -0.0119, tol = 1e-3)
 
 	# Gumbel (GUM) Distribution
 	GUM <- lmom.estimation(df$max, "GUM")
@@ -151,9 +137,8 @@ test_that("Test lmom-estimation.R on data set #3.1", {
 
 	# Log-Normal (LNO) Distribution
 	LNO <- lmom.estimation(df$max, "LNO")
-	expect_equal(LNO[1],      0)
-	expect_equal(LNO[2], 5.3162, tol = 1e-3)
-	expect_equal(LNO[3], 0.2853, tol = 1e-3)
+	expect_equal(LNO[1], 5.3162, tol = 1e-3)
+	expect_equal(LNO[2], 0.2853, tol = 1e-3)
 
 	# Generalized Logistic (GLO) Distribution
 	GLO <- lmom.estimation(df$max, "GLO")
@@ -185,12 +170,6 @@ test_that("Test lmom-estimation.R on data set #3.1", {
 	expect_equal(WEI[2], 112.0731, tol = 5e-2)
 	expect_equal(WEI[3],   1.6758, tol = 5e-2)
 
-	# Generalized Pareto (GPA) Distribution
-	GPA <- lmom.estimation(df$max, "GPA")
-	expect_equal(GPA[1], 129.2931, tol = 1e-3)
-	expect_equal(GPA[2], 119.3143, tol = 1e-3)
-	expect_equal(GPA[3],   0.4413, tol = 1e-3)
-
 })
 
 
@@ -203,7 +182,7 @@ test_that("Test lmom-estimation.R on data set #3.2", {
 	GEV <- lmom.estimation(df$max, "GEV")
 	expect_equal(GEV[1], 62.5092, tol = 1e-3)
 	expect_equal(GEV[2], 16.9703, tol = 1e-3)
-	expect_equal(GEV[3], -0.0209, tol = 1e-3)
+	expect_equal(GEV[3],  0.0209, tol = 1e-3)
 
 	# Gumbel (GUM) Distribution
 	GUM <- lmom.estimation(df$max, "GUM")
@@ -217,9 +196,8 @@ test_that("Test lmom-estimation.R on data set #3.2", {
 
 	# Log-Normal (LNO) Distribution
 	LNO <- lmom.estimation(df$max, "LNO")
-	expect_equal(LNO[1],      0)
-	expect_equal(LNO[2], 4.2424, tol = 1e-3)
-	expect_equal(LNO[3], 0.2948, tol = 1e-3)
+	expect_equal(LNO[1], 4.2424, tol = 1e-3)
+	expect_equal(LNO[2], 0.2948, tol = 1e-3)
 
 	# Generalized Logistic (GLO) Distribution
 	GLO <- lmom.estimation(df$max, "GLO")
@@ -251,12 +229,6 @@ test_that("Test lmom-estimation.R on data set #3.2", {
 	expect_equal(WEI[2], 37.2367, tol = 5e-2)
 	expect_equal(WEI[3],  1.5614, tol = 5e-2)
 
-	# Generalized Pareto (GPA) Distribution
-	GPA <- lmom.estimation(df$max, "GPA")
-	expect_equal(GPA[1], 44.1080, tol = 1e-3)
-	expect_equal(GPA[2], 39.4106, tol = 1e-3)
-	expect_equal(GPA[3],  0.3802, tol = 1e-3)
-
 })
 
 
@@ -269,7 +241,7 @@ test_that("Test lmom-estimation.R on data set #3.3", {
 	GEV <- lmom.estimation(df$max, "GEV")
 	expect_equal(GEV[1], 29.9956, tol = 1e-3)
 	expect_equal(GEV[2], 16.5362, tol = 1e-3)
-	expect_equal(GEV[3],  0.0878, tol = 1e-3)
+	expect_equal(GEV[3], -0.0878, tol = 1e-3)
 
 	# Gumbel (GUM) Distribution
 	GUM <- lmom.estimation(df$max, "GUM")
@@ -283,9 +255,8 @@ test_that("Test lmom-estimation.R on data set #3.3", {
 
 	# Log-Normal (LNO) Distribution
 	LNO <- lmom.estimation(df$max, "LNO")
-	expect_equal(LNO[1],      0)
-	expect_equal(LNO[2], 3.5162, tol = 1e-3)
-	expect_equal(LNO[3], 0.5038, tol = 1e-3)
+	expect_equal(LNO[1], 3.5162, tol = 1e-3)
+	expect_equal(LNO[2], 0.5038, tol = 1e-3)
 
 	# Generalized Logistic (GLO) Distribution
 	GLO <- lmom.estimation(df$max, "GLO")
@@ -316,11 +287,5 @@ test_that("Test lmom-estimation.R on data set #3.3", {
 	expect_equal(WEI[1],  1.9676, tol = 5e-2)
 	expect_equal(WEI[2], 40.8929, tol = 5e-2)
 	expect_equal(WEI[3],  1.9956, tol = 5e-2)
-
-	# Generalized Pareto (GPA) Distribution
-	GPA <- lmom.estimation(df$max, "GPA")
-	expect_equal(GPA[1], 10.6915, tol = 1e-3)
-	expect_equal(GPA[2], 43.6862, tol = 1e-3)
-	expect_equal(GPA[3],  0.5875, tol = 1e-3)
 
 })

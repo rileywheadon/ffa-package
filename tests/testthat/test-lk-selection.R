@@ -14,7 +14,6 @@ test_that("Test l-kurtosis.R on data set #1", {
 	expect_equal(results$metrics$LP3, 0.0470, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0253, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0642, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0902, tol = 1e-4) 
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "GEV") 
@@ -38,10 +37,9 @@ test_that("Test l-kurtosis.R on data set #2", {
 	expect_equal(results$metrics$LP3, 0.0783, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0903, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0627, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0070, tol = 1e-4) 
 
 	# Check the recommendation
-	expect_equal(results$recommendation, "GPA") 
+	expect_equal(results$recommendation, "WEI") 
 
 })
 
@@ -62,7 +60,6 @@ test_that("Test l-kurtosis.R on data set #3.1", {
 	expect_equal(results$metrics$LP3, 0.0247, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0204, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0115, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0660, tol = 1e-4) 
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "NOR") 
@@ -86,7 +83,6 @@ test_that("Test l-kurtosis.R on data set #3.2", {
 	expect_equal(results$metrics$LP3, 0.0027, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0009, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0347, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0822, tol = 1e-4) 
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "GUM") 
@@ -110,9 +106,8 @@ test_that("Test l-kurtosis.R on data set #3.3", {
 	expect_equal(results$metrics$LP3, 0.0693, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.1088, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0813, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0112, tol = 1e-4)
 
 	# Check the recommendation
-	expect_equal(results$recommendation, "GPA") 
+	expect_equal(results$recommendation, "LNO") 
 
 })

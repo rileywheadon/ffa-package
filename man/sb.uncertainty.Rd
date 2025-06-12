@@ -4,7 +4,14 @@
 \alias{sb.uncertainty}
 \title{Sample Bootstrap Confidence Intervals for Flood Quantile Estimates}
 \usage{
-sb.uncertainty(ams, distribution, method, n_sim = 1e+05, alpha = 0.05)
+sb.uncertainty(
+  ams,
+  distribution,
+  method,
+  n_sim = 10000,
+  alpha = 0.05,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{ams}{Numeric vector of annual maximum streamflow values (no missing values).}
@@ -12,11 +19,13 @@ sb.uncertainty(ams, distribution, method, n_sim = 1e+05, alpha = 0.05)
 \item{distribution}{Name of the selected distribution}
 
 \item{method}{Character string specifying the estimation method.
-Currently supports only \code{"L-moments"}.}
+Currently supports \code{"L-moments"}, \code{"MLE"}, and \code{"GMLE"}.}
 
 \item{n_sim}{Integer number of bootstrap simulations (default is 100000).}
 
 \item{alpha}{Numeric significance level for the confidence intervals (default is 0.05).}
+
+\item{parallel}{Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).}
 }
 \value{
 A named list containing:
@@ -38,9 +47,9 @@ sampling using the estimated parameters. For each resample, L-moment parameters 
 and used to compute quantiles. Confidence intervals are obtained by applying empirical quantiles
 to the resulting distribution of estimates.
 
-The function currently only supports the L-moments estimation method and assumes that the
-\code{distribution} object provides a valid quantile function and is compatible with the
-\code{l_moments()} estimator defined externally.
+Using \code{parallel = TRUE} can reduce computation time by approximately 50\%.
+However, using this option will nullify any calls to \code{set.seed()},
+so your results may not be reproducible.
 }
 \seealso{
 \code{\link[lmom]{samlmu}}, \code{\link[stats]{quantile}}

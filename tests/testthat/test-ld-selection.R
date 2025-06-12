@@ -14,7 +14,6 @@ test_that("Test l-distance.R on data set #1", {
 	expect_equal(results$metrics$LP3, 0.0470, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0235, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0607, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0746, tol = 1e-4) 
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "GEV") 
@@ -37,10 +36,9 @@ test_that("Test l-distance.R on data set #2", {
 	expect_equal(results$metrics$LP3, 0.0783, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0891, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0625, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0065, tol = 1e-4) 
 
 	# Check the recommendation
-	expect_equal(results$recommendation, "GPA") 
+	expect_equal(results$recommendation, "WEI") 
 
 })
 
@@ -60,7 +58,6 @@ test_that("Test l-distance.R on data set #3.1", {
 	expect_equal(results$metrics$LP3, 0.0247, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0198, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0114, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0585, tol = 1e-4) 
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "PE3") 
@@ -83,7 +80,6 @@ test_that("Test l-distance.R on data set #3.2", {
 	expect_equal(results$metrics$LP3, 0.0027, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.0009, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0339, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0716, tol = 1e-4) 
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "GNO") 
@@ -106,9 +102,8 @@ test_that("Test l-distance.R on data set #3.3", {
 	expect_equal(results$metrics$LP3, 0.0692, tol = 1e-4) 
 	expect_equal(results$metrics$GNO, 0.1073, tol = 1e-4) 
 	expect_equal(results$metrics$WEI, 0.0810, tol = 1e-4) 
-	expect_equal(results$metrics$GPA, 0.0104, tol = 1e-4) 
 
 	# Check the recommendation
-	expect_equal(results$recommendation, "GPA") 
+	expect_equal(results$recommendation, "LP3") 
 
 })

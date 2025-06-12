@@ -1,5 +1,6 @@
 # NOTE: Tolerance is higher in some tests because of randomness in the bootstrap
 test_that("Test z-statistic.R on data set #1", {
+	set.seed(1)
 
 	# Run Z-statistic selection with optional profiling
 	start <- Sys.time()
@@ -27,7 +28,6 @@ test_that("Test z-statistic.R on data set #1", {
 	expect_equal(results$metrics$LP3, NULL)
 	expect_equal(results$metrics$GNO, -0.5443, tol = 1e-2)
 	expect_equal(results$metrics$WEI, -1.3005, tol = 1e-2)
-	expect_equal(results$metrics$GPA, -1.8072, tol = 1e-2)
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "GEV") 
@@ -36,6 +36,7 @@ test_that("Test z-statistic.R on data set #1", {
 
 
 test_that("Test z-statistic.R on data set #2", {
+	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
 	df <- load_data("Application_2.csv")
@@ -60,15 +61,14 @@ test_that("Test z-statistic.R on data set #2", {
 	expect_equal(results$metrics$LP3,  2.8678, tol = 1e-2)
 	expect_equal(results$metrics$GNO,  3.1922, tol = 1e-2)
 	expect_equal(results$metrics$WEI,  2.2269, tol = 1e-2)
-	expect_equal(results$metrics$GPA, -0.2103, tol = 1e-2)
 
 	# Check the recommendation
-	expect_equal(results$recommendation, "GPA") 
+	expect_equal(results$recommendation, "WEI") 
 
 })
 
-
 test_that("Test z-statistic.R on data set #3.1", {
+	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
 	df <- load_data("Application_3.1.csv")
@@ -93,15 +93,14 @@ test_that("Test z-statistic.R on data set #3.1", {
 	expect_equal(results$metrics$LP3,  0.9258, tol = 1e-2)
 	expect_equal(results$metrics$GNO,  0.6342, tol = 1e-2)
 	expect_equal(results$metrics$WEI, -0.3527, tol = 1e-2)
-	expect_equal(results$metrics$GPA, -2.0352, tol = 1e-2)
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "PE3") 
 
 })
 
-
 test_that("Test z-statistic.R on data set #3.2", {
+	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
 	df <- load_data("Application_3.2.csv")
@@ -126,15 +125,14 @@ test_that("Test z-statistic.R on data set #3.2", {
 	expect_equal(results$metrics$LP3, -0.0713, tol = 1e-2)
 	expect_equal(results$metrics$GNO, -0.0379, tol = 1e-2)
 	expect_equal(results$metrics$WEI, -0.8623, tol = 1e-2)
-	expect_equal(results$metrics$GPA, -2.0231, tol = 1e-2)
 
 	# Check the recommendation
 	expect_equal(results$recommendation, "GNO") 
 
 })
 
-
 test_that("Test z-statistic.R on data set #3.3", {
+	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
 	df <- load_data("Application_3.3.csv")
@@ -159,9 +157,8 @@ test_that("Test z-statistic.R on data set #3.3", {
 	expect_equal(results$metrics$LP3, 2.5453, tol = 1e-2)
 	expect_equal(results$metrics$GNO, 4.0305, tol = 1e-2)
 	expect_equal(results$metrics$WEI, 3.0198, tol = 1e-2)
-	expect_equal(results$metrics$GPA, 0.4492, tol = 1e-2)
 
 	# Check the recommendation
-	expect_equal(results$recommendation, "GPA") 
+	expect_equal(results$recommendation, "LP3") 
 
 })

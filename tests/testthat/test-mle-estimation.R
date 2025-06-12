@@ -115,9 +115,6 @@ test_that("Test mle-estimation.R on data set #1", {
 		mll = -825.4486
 	))
 
-	# Generalized Pareto (GPA) Distribution
-	# TBD
-
 	# Pearson Type III (PE3) Distribution
 	validate_results(df$max, "PE3", list(
 		 params = c(2039.1863, 865.5583, 0.8802), 
@@ -270,9 +267,6 @@ test_that("Test mle-estimation.R on data set #2", {
 		mll = -716.0404
 	))
 
-	# Generalized Pareto (GPA) Distribution
-	# TBD
-		
 	# Pearson Type III (PE3) Distribution
 	validate_results(df$max, "PE3", list(
 		 params = c(1675.0989, 723.9569, 1.0536), 
@@ -425,9 +419,6 @@ test_that("Test mle-estimation.R on data set #3.1", {
 		mll = -590.9198
 	))
 
-	# Generalized Pareto (GPA) Distribution
-	# TBD
-	
 	# Pearson Type III (PE3) Distribution
 	validate_results(df$max, "PE3", list(
 		 params = c(212.0734, 61.6681, 1.0272), 
@@ -579,9 +570,6 @@ test_that("Test mle-estimation.R on data set #3.2", {
 		mll = -390.1560
 	))
 
-	# Generalized Pareto (GPA) Distribution
-	# TBD
-	
 	# Pearson Type III (PE3) Distribution
 	validate_results(df$max, "PE3", list(
 		 params = c(72.6629, 21.6678, 0.9502), 
@@ -733,9 +721,6 @@ test_that("Test mle-estimation.R on data set #3.3", {
 		mll = -397.5878
 	))
 
-	# Generalized Pareto (GPA) Distribution
-	# TBD
-	
 	# Pearson Type III (PE3) Distribution
 	validate_results(df$max, "PE3", list(
 		 params = c(38.2095, 19.7334, 1.1388), 

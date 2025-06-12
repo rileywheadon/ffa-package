@@ -49,7 +49,7 @@ and coverage-based metrics using bootstrapped confidence intervals.
 }
 \details{
 Empirical return periods are calculated using the specified plotting position formula.
-Quantile estimates are generated from the fitted model. Standard residual metrics (R²,
+Quantile estimates are generated from the fitted model. Standard residual metrics (\eqn{R^2},
 RMSE, Bias) are computed. The confidence interval width (AW), empirical coverage (POC),
 and CWI are used to assess uncertainty calibration.
 }

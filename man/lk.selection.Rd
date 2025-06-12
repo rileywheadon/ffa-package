@@ -28,7 +28,7 @@ and theoretical L-moment ratio diagrams at fixed \eqn{\tau_3} (L-skewness). The 
 \eqn{\tau_4} and \eqn{\kappa} values are derived using \code{\link[stats]{approx}}.
 
 Only 3-parameter distributions are considered in this method. Specifically, it evaluates
-GEV, GLO, PE3, LP3, GNO, WEI, and GPA. For more information, see the FFA framework website.
+GEV, GLO, PE3, LP3, GNO, and WEI. For more information, see the FFA framework website.
 }
 \seealso{
 \code{\link{ld.selection}}, \code{\link{z.selection}}

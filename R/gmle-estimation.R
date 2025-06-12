@@ -1,52 +1,39 @@
-# Helper function for computing the generalized log-likelihood for GEV distribution
-generalized.log.likelihood <- function(data, model, theta, prior) {
-
-	# The prior is Beta(p, q)
-	p <- prior[1]
-	q <- prior[2]
-
-	# Compute the covariate
-	n <- length(data)
-	covariate <- ((1:n) - 1) / (n - 1)
-	covariate <- covariate[!is.nan(data)]
-
-	# Clean the data
-	data <- data[!is.nan(data)]
-
-	# NOTE: Abbreviated Variable Names
-	# - u: mu
-	# - s: sigma
-	# - k: kappa
-
-	# Unpack the parameters based on the GEV model
-	if (model == "GEV") {
-		u <- theta[1]
-		s <- theta[2]
-		k <- theta[3]
-	} else if (model == "GEV100") {
-		u <- theta[1] + (covariate * theta[2])
-		s <- theta[3]
-		k <- theta[4]
-	} else if (model == "GEV110") {
-		u <- theta[1] + (covariate * theta[2])
-		s <- theta[3] + (covariate * theta[4])
-		k <- theta[5]
-	} 
-
-	# Compute t. Fail if any values in t are negative
-	t <- 1 + k * ((data - u) / s)
-	if (any(t <= 0)) return (-Inf)
-
-	# Compute vector of likelihoods for each data point
-	ll <- -log(s) - (1 + (1 / k)) * log(t) - t^(-1 / k)
-
-	# Compute prior likelihood
-	pll <- (p - 1) * log(0.5 - k) + (q - 1) * log(k + 0.5) - lbeta(p, q)
-
-	# Return the sum of (ll + pll) over all data points
-	sum(ll + pll)
-
-}
+#' Perform Generalized MLE for GEV Models with Trend and Prior
+#'
+#' @description
+#' Fits a Generalized Extreme Value (GEV) model—stationary or with linear trends
+#' in location and/or scale—by maximizing the posterior log‐likelihood (MLE with
+#' Beta prior on the shape). Uses L‐moment estimates for initialization and
+#' nlminb for constrained optimization.
+#'
+#' @param data Numeric vector of observations (e.g. annual maxima). Any ’NaN’
+#'   values are removed before fitting.
+#'
+#' @param model Character string specifying the GEV model form:
+#'   ’GEV’   = stationary,  
+#'   ’GEV100’ = trend in location only,  
+#'   ’GEV110’ = trends in location and scale.  
+#'
+#' @param prior Numeric vector of length 2 giving the Beta prior parameters
+#'   (p, q) on the shape parameter kappa.
+#'
+#' @return
+#' A list with components:
+#' - params: Numeric vector of the estimated GEV parameters in the same order as
+#'   used by generalized.likelihood().  
+#' - mll   : The maximized log‐posterior (i.e. log‐likelihood plus log‐prior).
+#'
+#' @details
+#' 1. Calls lmom.estimation() on the cleaned data (removes NaN) to obtain initial
+#'    estimates of (mu, sigma, kappa).  
+#' 2. Sets initial trend parameters to 0 for non‐stationary models.  
+#' 3. Defines lower and upper bounds to enforce sigma > 0 and |kappa| < 0.5.  
+#' 4. Constructs an objective function that returns the negative of
+#'    generalized.likelihood().  
+#' 5. Runs nlminb() with box constraints to find the posterior mode.  
+#'
+#' @importFrom stats nlminb
+#' @export
 
 gmle.estimation <- function(data, model, prior) {
 
@@ -69,7 +56,7 @@ gmle.estimation <- function(data, model, prior) {
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - generalized.log.likelihood(data, model, theta, prior)
+		0 - generalized.likelihood(data, model, theta, prior)
 	} 
 
 	# Run parameter optimization

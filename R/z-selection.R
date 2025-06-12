@@ -6,6 +6,7 @@
 #'
 #' @param ams Numeric vector of annual maximum streamflow values (no missing values).
 #' @param n_sim Number of bootstrap samples to generate (default = 100000).
+#' @param parallel Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).
 #'
 #' @return A list containing:
 #' \describe{
@@ -18,9 +19,13 @@
 #'
 #' @details
 #' The method evaluates both raw and log-transformed data. Raw-data distributions include GEV,
-#' GLO, PE3, GNO, WEI, and GPA. Log-data distributions include LP3. A Kappa distribution is
+#' GLO, PE3, GNO, and WEI. Log-data distributions include LP3. A Kappa distribution is
 #' fitted to each and used to simulate bootstrapped L-moments. The observed \eqn{\tau_4} is then
 #' compared to each theoretical distribution using the Z-statistic framework.
+#'
+#' Using \code{parallel = TRUE} can reduce computation time by approximately 50%.
+#' However, using this option will nullify any calls to \code{set.seed()}, 
+#' so your results may not be reproducible.
 #'
 #' @seealso \code{\link{ld.selection}}, \code{\link{lk.selection}}, 
 #'   \code{\link[lmom]{pelkap}}, \code{\link[lmom]{quakap}}
@@ -30,7 +35,7 @@
 #' @importFrom parallel mclapply
 #' @export
 
-z.selection <- function(ams, n_sim = 100000) {
+z.selection <- function(ams, n_sim = 100000, parallel = FALSE) {
 
 	# Helper function that attempts to fit a Kappa distribution and draw a bootstrap
 	get_bootstrap <- function(data) {
@@ -42,8 +47,11 @@ z.selection <- function(ams, n_sim = 100000) {
 		# Attempt to fit the Kappa distribution
 		params <- unname(pelkap(samlmu(data)))
 
+		# Define the apply() function based on 'parallel' parameter 
+		afunc <- if(parallel) { parallel::mclapply } else { lapply }
+
 		# Generate a bootstrap from this Kappa distribution
-		t4_list <- mclapply(1:n_sim, function(i) {
+		t4_list <- afunc(1:n_sim, function(i) {
 			u <- runif(length(ams))	
 			unname(samlmu(quakap(u, params)))[4]
 		})

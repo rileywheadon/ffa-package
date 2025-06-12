@@ -4,12 +4,14 @@
 \alias{z.selection}
 \title{Z-Statistic Method for Distribution Selection}
 \usage{
-z.selection(ams, n_sim = 1e+05)
+z.selection(ams, n_sim = 1e+05, parallel = FALSE)
 }
 \arguments{
 \item{ams}{Numeric vector of annual maximum streamflow values (no missing values).}
 
 \item{n_sim}{Number of bootstrap samples to generate (default = 100000).}
+
+\item{parallel}{Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).}
 }
 \value{
 A list containing:
@@ -28,9 +30,13 @@ distributions. The distribution with the smallest absolute Z-score is selected.
 }
 \details{
 The method evaluates both raw and log-transformed data. Raw-data distributions include GEV,
-GLO, PE3, GNO, WEI, and GPA. Log-data distributions include LP3. A Kappa distribution is
+GLO, PE3, GNO, and WEI. Log-data distributions include LP3. A Kappa distribution is
 fitted to each and used to simulate bootstrapped L-moments. The observed \eqn{\tau_4} is then
 compared to each theoretical distribution using the Z-statistic framework.
+
+Using \code{parallel = TRUE} can reduce computation time by approximately 50\%.
+However, using this option will nullify any calls to \code{set.seed()},
+so your results may not be reproducible.
 }
 \seealso{
 \code{\link{ld.selection}}, \code{\link{lk.selection}},

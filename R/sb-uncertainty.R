@@ -7,9 +7,10 @@
 #' @param ams Numeric vector of annual maximum streamflow values (no missing values).
 #' @param distribution Name of the selected distribution
 #' @param method Character string specifying the estimation method. 
-#'   Currently supports only \code{"L-moments"}.
+#'   Currently supports \code{"L-moments"}, \code{"MLE"}, and \code{"GMLE"}.
 #' @param n_sim Integer number of bootstrap simulations (default is 100000).
 #' @param alpha Numeric significance level for the confidence intervals (default is 0.05).
+#' @param parallel Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).
 #'
 #' @return A named list containing:
 #' \describe{
@@ -25,9 +26,9 @@
 #' and used to compute quantiles. Confidence intervals are obtained by applying empirical quantiles
 #' to the resulting distribution of estimates.
 #'
-#' The function currently only supports the L-moments estimation method and assumes that the
-#' \code{distribution} object provides a valid quantile function and is compatible with the
-#' \code{l_moments()} estimator defined externally.
+#' Using \code{parallel = TRUE} can reduce computation time by approximately 50%.
+#' However, using this option will nullify any calls to \code{set.seed()}, 
+#' so your results may not be reproducible.
 #'
 #' @seealso \code{\link[lmom]{samlmu}}, \code{\link[stats]{quantile}}
 #'
@@ -35,11 +36,20 @@
 #' @importFrom stats runif
 #' @export
 
-sb.uncertainty <- function(ams, distribution, method, n_sim = 100000, alpha = 0.05) {
+sb.uncertainty <- function(ams, distribution, method, n_sim = 10000, alpha = 0.05, parallel = FALSE) {
 
 	# Check if the method is invalid
-	if (method != "L-moments") {
+	if (!(method %in% c("L-moments", "MLE"))) {
 		stop("Unsupported method: ", method)
+	}
+
+	# Get the estimation function
+	if (method == "L-moments") {
+		efunc <- function(ams, distribution) lmom.estimation(ams, distribution)
+	} else if (method == "MLE") {
+		efunc <- function(ams, distribution) mle.estimation(ams, distribution)$params
+	} else if (method == "GMLE") {
+		efunc <- function(ams, distribution) gmle.estimation(ams, distribution)$params
 	}
 
 	# Set return periods and their quantiles
@@ -52,14 +62,17 @@ sb.uncertainty <- function(ams, distribution, method, n_sim = 100000, alpha = 0.
 
     # Get the quantile function and parameter estimates
 	qfunc <- distribution_list[[distribution]]$quantile
-    params <- lmom.estimation(ams, distribution)
+    params <- efunc(ams, distribution)
     estimates <- qfunc(returns, params)
 
+	# Define the apply() function based on 'parallel' parameter 
+	afunc <- if(parallel) { parallel::mclapply } else { lapply }
+
 	# Vectorized, parallel bootstrap function 
-	bootstrap_list <- mclapply(1:n_sim, function(i) {
+	bootstrap_list <- afunc(1:n_sim, function(i) {
 		X <- runif(n)
 		SQ <- qfunc(X, params)
-		SQ_params <- lmom.estimation(SQ, distribution)
+		SQ_params <- efunc(SQ, distribution)
 		as.numeric(qfunc(returns, SQ_params))
 	})
 

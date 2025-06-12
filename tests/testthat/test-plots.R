@@ -1,4 +1,5 @@
 test_that("Test bbmk-plot.R on data set #2", {
+	set.seed(1)
 
 	# Run the BB-MK test
 	df <- load_data("Application_2.csv")
@@ -7,6 +8,9 @@ test_that("Test bbmk-plot.R on data set #2", {
 
 	# Basic tests
 	expect_s3_class(p, "ggplot")
+
+	# Regression test with vdiffr
+  	vdiffr::expect_doppelganger("bbmk-default", p) 
 
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -24,7 +28,7 @@ test_that("Test mks-plot.R on data set #2", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("mks-default", p) 
+  	vdiffr::expect_doppelganger("mks-default", p) 
 
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -42,7 +46,7 @@ test_that("Test pettitt-plot.R on data set #2", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("pettitt-default", p) 
+  	vdiffr::expect_doppelganger("pettitt-default", p) 
 
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -61,7 +65,7 @@ test_that("Test runs-plot.R on data set #3.1", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("runs-default", p) 
+  	vdiffr::expect_doppelganger("runs-default", p) 
 	
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -79,7 +83,7 @@ test_that("Test sens-plot.R on data set #3.1", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("sens-default", p) 
+  	vdiffr::expect_doppelganger("sens-default", p) 
 
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -97,7 +101,7 @@ test_that("Test spearman-plot.R on data set #1", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("spearman-default", p) 
+  	vdiffr::expect_doppelganger("spearman-default", p) 
 	
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -115,7 +119,7 @@ test_that("Test lmom-plot.R on data set #1 with L-distance", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("lmom-l-distance", p) 
+  	vdiffr::expect_doppelganger("lmom-l-distance", p) 
 	
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -134,7 +138,25 @@ test_that("Test lmom-plot.R on data set #1 with L-kurtosis", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("lmom-l-kurtosis", p) 
+  	vdiffr::expect_doppelganger("lmom-l-kurtosis", p) 
+	
+	# Display results
+	# dev.new(width = 10, height = 8)
+	# print(p)
+
+})
+
+test_that("Test lmom-plot.R on data set #1 with Z-statistic", {
+
+	df <- load_data("Application_1.csv")
+	results <- z.selection(df$max)
+	p <- lmom.plot(df$max, "Z-statistic", results)
+
+	# Basic tests
+	expect_s3_class(p, "ggplot")
+
+	# Regression test with vdiffr
+  	vdiffr::expect_doppelganger("lmom-z-statistic", p) 
 	
 	# Display results
 	# dev.new(width = 10, height = 8)
@@ -169,7 +191,7 @@ test_that("Test assessment-plot.R on data set #1", {
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	# expect_doppelganger("assessment-default", p) 
+  	vdiffr::expect_doppelganger("assessment-default", p) 
 	
 	# Display results
 	# dev.new(width = 10, height = 8)

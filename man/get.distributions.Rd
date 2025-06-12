@@ -9,15 +9,15 @@ get.distributions()
 \value{
 A named \code{list} of distribution specifications. Valid names:
 \code{GEV}, \code{GUM}, \code{NOR}, \code{LNO}, \code{GLO}, \code{PE3}, \code{LP3},
-\code{GNO}, \code{WEI}, \code{GPA}.  Each element is a list as described above.
+\code{GNO}, \code{WEI}.  Each element is a list as described above.
 }
 \description{
 Returns a named list of distribution specifications used for flood-frequency analysis.
 Each element is itself a list describing one distribution’s:
 \itemize{
 \item \code{name}: three-letter acronym.
-\item \code{quantile}: function(ams, params) → quantiles.
-\item \code{estimate}: function(ams) → parameter estimates.
+\item \code{quantile}: takes (periods, params) and returns quantiles.
+\item \code{estimate}: takes (ams) and returns parameter estimates.
 \item \code{n_params}: integer number of distribution parameters.
 \item \code{log}: logical; \code{TRUE} if fit on \code{log(ams)}, \code{FALSE} otherwise.
 }

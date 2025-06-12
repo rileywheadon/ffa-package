@@ -28,7 +28,7 @@
 #'
 #' @details
 #' Empirical return periods are calculated using the specified plotting position formula.
-#' Quantile estimates are generated from the fitted model. Standard residual metrics (R²,
+#' Quantile estimates are generated from the fitted model. Standard residual metrics (\eqn{R^2},
 #' RMSE, Bias) are computed. The confidence interval width (AW), empirical coverage (POC),
 #' and CWI are used to assess uncertainty calibration.
 #'
@@ -51,7 +51,7 @@ model.assessment <- function(
 ) {
 
 	n <- length(ams)                          
-	x <- ams[order(ams, decreasing = TRUE)]  
+	ams_sorted <- ams[order(ams, decreasing = TRUE)]  
 
 	# Determine empirical exceedance probabilities using the plotting position
 	p_empirical <- switch(
@@ -72,13 +72,18 @@ model.assessment <- function(
 
 	# Compute the R2, RMSE, and Bias
 	estimates <- qfunc(1 - p_empirical, params)
-	R2 <- summary(lm(estimates ~ x))$r.squared
-	RMSE <- sqrt(mean((estimates - x)^2))
-	bias <- mean(estimates - x)
+	R2 <- summary(lm(estimates ~ ams_sorted))$r.squared
+	RMSE <- sqrt(mean((estimates - ams_sorted)^2))
+	bias <- mean(estimates - ams_sorted)
 
 	# Compute the AIC and BIC
 	AIC <- n * log(RMSE) + (2 * n_params)
 	BIC <- n * log(RMSE) + (log(n) * n_params)
+
+	# Filter t_return and x to indices where t_return is between min(t) and max(t)
+	idx <- (t_return > min(uncertainty$t) & t_return < max(uncertainty$t))
+	t_return <- t_return[idx]
+	ams_sorted <- ams_sorted[idx]
 
 	# Interpolate confidence intervals at empirical return periods
 	ci_lower <- approx(log(uncertainty$t), uncertainty$ci_lower, log(t_return))
@@ -86,8 +91,8 @@ model.assessment <- function(
 	w <- ci_upper$y - ci_lower$y
 
 	# Compute the AW, POC, and CWI
-	AW <- mean(w, na.rm = TRUE)
-	POC <- 100 * sum(x < ci_upper$y & x > ci_lower$y, na.rm = TRUE) / sum(!is.na(w))
+	AW <- mean(w)
+	POC <- 100 * sum(ams_sorted < ci_upper$y & ams_sorted > ci_lower$y) / length(w)
 	CWI <- AW * exp((1 - alpha) - (POC / 100))^2
 
 	# Return assessment results in a list
