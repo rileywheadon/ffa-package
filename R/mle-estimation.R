@@ -35,14 +35,13 @@
 #' @importFrom stats nlminb rnorm
 #' @export
 
-mle.estimation <- function(df, model) {
+mle.estimation <- function(data, model, years) {
 
 	# Get the name and signature for the model 
 	name <- substr(model, 1, 3)
 	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 	
 	# Determine the initial parameters using L-moments estimation
-	data <- df$max[!is.nan(df$max)]
 	p <- lmom.estimation(data, name)
 
 	# Initialize the non-stationary parameters to 0 (if necessary)
@@ -74,7 +73,7 @@ mle.estimation <- function(df, model) {
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - likelihood(df, model, theta)
+		0 - llvxxx(model, data, theta, years)
 	} 
 
 	# Helper function for running parameter optimization

@@ -5,20 +5,23 @@
 
 # Helper function to check validate results
 validate_results <- function(df, model, expected) {
+
 	prior <- c(6, 9) 
-	observed <- gmle.estimation(df, model, prior)
+	observed <- gmle.estimation(df$max, model, prior, df$year)
+
 	if (observed$mll > expected$mll + 0.001) {
 		print(sprintf("Skip %s: %.3f > %.3f.", model, observed$mll, expected$mll))
 	} else {
 		expect_equal(observed$params, expected$params, tol = 1e-4)
 		expect_equal(observed$mll   , expected$mll   , tol = 1e-4)
 	} 
+
 }
 
 test_that("Test gmle-estimation.R on data set #1", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_1.csv", clean = FALSE)
+	df <- load_data("Application_1.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	validate_results(df, "GEV", list(
@@ -42,7 +45,7 @@ test_that("Test gmle-estimation.R on data set #1", {
 test_that("Test gmle-estimation.R on data set #2", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_2.csv", clean = FALSE)
+	df <- load_data("Application_2.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	validate_results(df, "GEV", list(
@@ -65,7 +68,7 @@ test_that("Test gmle-estimation.R on data set #2", {
 test_that("Test gmle-estimation.R on data set #3.1", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.1.csv", clean = FALSE)
+	df <- load_data("Application_3.1.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	validate_results(df, "GEV", list(
@@ -88,7 +91,7 @@ test_that("Test gmle-estimation.R on data set #3.1", {
 test_that("Test gmle-estimation.R on data set #3.2", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.2.csv", clean = FALSE)
+	df <- load_data("Application_3.2.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	validate_results(df, "GEV", list(
@@ -111,7 +114,7 @@ test_that("Test gmle-estimation.R on data set #3.2", {
 test_that("Test gmle-estimation.R on data set #3.3", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.3.csv", clean = FALSE)
+	df <- load_data("Application_3.3.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	validate_results(df, "GEV", list(

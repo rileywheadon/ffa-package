@@ -36,10 +36,9 @@
 #' @importFrom stats nlminb
 #' @export
 
-gmle.estimation <- function(df, model, prior) {
+gmle.estimation <- function(data, model, prior, years) {
 
-	# Get the AMS data from df without NaN values
-	data <- df$max[!is.nan(df$max)]
+	# Set the initial parameters
 	p <- lmom.estimation(data, "GEV")
 
 	# Initialize the non-stationary parameters to 0 (if necessary)
@@ -59,7 +58,7 @@ gmle.estimation <- function(df, model, prior) {
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - generalized.likelihood(df, model, theta, prior)
+		0 - gllxxx(model, data, theta, prior, years)
 	} 
 
 	# Run parameter optimization

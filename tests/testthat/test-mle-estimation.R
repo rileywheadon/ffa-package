@@ -4,8 +4,8 @@
 #  2. Produce the same as the MLL as the MATLAB implementation and yield the same parameters.
 
 # Helper function to check validate results
-validate_results <- function(data, model, expected) {
-	observed <- mle.estimation(data, model)
+validate_results <- function(df, model, expected) {
+	observed <- mle.estimation(df$max, model, df$year)
 	if (observed$mll > expected$mll + 0.001) {
 		print(sprintf("Skip %s: %.3f > %.3f.", model, observed$mll, expected$mll))
 	} else {
@@ -17,7 +17,7 @@ validate_results <- function(data, model, expected) {
 test_that("Test mle-estimation.R on data set #1", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_1.csv", clean = FALSE)
+	df <- load_data("Application_1.csv")
 
 	# Gumbel (GUM) Distribution
 	validate_results(df, "GUM", list(
@@ -169,7 +169,7 @@ test_that("Test mle-estimation.R on data set #1", {
 test_that("Test mle-estimation.R on data set #2", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_2.csv", clean = FALSE)
+	df <- load_data("Application_2.csv")
 
 	# Gumbel (GUM) Distribution
 	validate_results(df, "GUM", list(
@@ -321,7 +321,7 @@ test_that("Test mle-estimation.R on data set #2", {
 test_that("Test mle-estimation.R on data set #3.1", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.1.csv", clean = FALSE)
+	df <- load_data("Application_3.1.csv")
 
 	# Gumbel (GUM) Distribution
 	validate_results(df, "GUM", list(
@@ -472,7 +472,7 @@ test_that("Test mle-estimation.R on data set #3.1", {
 test_that("Test mle-estimation.R on data set #3.2", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.2.csv", clean = FALSE)
+	df <- load_data("Application_3.2.csv")
 
 	# Gumbel (GUM) Distribution
 	validate_results(df, "GUM", list(
@@ -623,7 +623,7 @@ test_that("Test mle-estimation.R on data set #3.2", {
 test_that("Test mle-estimation.R on data set #3.3", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.3.csv", clean = FALSE)
+	df <- load_data("Application_3.3.csv")
 
 	# Gumbel (GUM) Distribution
 	validate_results(df, "GUM", list(
