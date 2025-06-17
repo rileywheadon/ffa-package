@@ -8,8 +8,9 @@
 #' - `'GEV100'`: linear trend in location only  
 #' - `'GEV110'`: linear trends in location and scale  
 #'
-#' @param data Numeric vector of observations (e.g., annual maxima).  
-#'   Any `NaN` values are removed prior to likelihood computation.  
+#' @param df Dataframe with columns "max", a vector of annual maxima observations,
+#'   and "year", a vector of years corresponding to the observations in "max". Any
+#'   `NaN` values are removed prior to likelihood computation.  
 #'
 #' @param model Character string specifying the model form.  
 #'   One of `'GEV'`, `'GEV100'`, or `'GEV110'`.  
@@ -40,19 +41,18 @@
 #'
 #' @export
 
-generalized.likelihood <- function(data, model, theta, prior) {
+generalized.likelihood <- function(df, model, theta, prior) {
 
 	# The prior is Beta(p, q)
 	p <- prior[1]
 	q <- prior[2]
 
 	# Compute the covariate
-	n <- length(data)
-	covariate <- ((1:n) - 1) / (n - 1)
-	covariate <- covariate[!is.nan(data)]
+	covariate <- get.covariates(df, df$year)
 
-	# Clean the data
-	data <- data[!is.nan(data)]
+	# Remove NaN values from the data and the covariate
+	data <- df$max[!is.nan(df$max)]
+	covariate <- covariate[!is.nan(df$max)]
 
 	# NOTE: Abbreviated Variable Names
 	# - u: mu

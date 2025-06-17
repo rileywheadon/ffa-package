@@ -59,7 +59,7 @@ test_that("Test runs-plot.R on data set #3.1", {
 	df <- load_data("Application_3.1.csv")
 	residuals <- sens.trend(df$max, df$year)$residuals
 	test <- runs.test(residuals)
-	p <- runs.plot(df, test, "sens-mean")
+	p <- runs.plot(df, residuals, test, "sens-mean")
 
 	# Basic tests
 	expect_s3_class(p, "ggplot")

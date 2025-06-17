@@ -17,8 +17,8 @@ test_message <- function(name, reject, p_value, alpha, msg_fail, msg_reject) {
 # Adds sensible axis scales to a plot
 add_scales <- function(p) {
 	p + 
-	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
-	scale_y_continuous(breaks = scales::pretty_breaks(n = 10))
+	scale_x_continuous(breaks = function(limits) pretty(limits, n = 10)) +
+	scale_y_continuous(breaks = function(limits) pretty(limits, n = 10))
 }
 
 
@@ -68,3 +68,5 @@ add_annotation <- function(p, label) {
 	)
 
 }
+
+# S

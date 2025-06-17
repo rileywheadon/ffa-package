@@ -6,8 +6,9 @@
 #' Beta prior on the shape). Uses L‐moment estimates for initialization and
 #' nlminb for constrained optimization.
 #'
-#' @param data Numeric vector of observations (e.g. annual maxima). Any ’NaN’
-#'   values are removed before fitting.
+#' @param df Dataframe with columns "max", a vector of annual maxima observations,
+#'   and "year", a vector of years corresponding to the observations in "max". Any
+#'   `NaN` values are removed prior to likelihood computation.  
 #'
 #' @param model Character string specifying the GEV model form:
 #'   ’GEV’   = stationary,  
@@ -35,9 +36,11 @@
 #' @importFrom stats nlminb
 #' @export
 
-gmle.estimation <- function(data, model, prior) {
+gmle.estimation <- function(df, model, prior) {
 
-	p <- lmom.estimation(data[!is.nan(data)], "GEV")
+	# Get the AMS data from df without NaN values
+	data <- df$max[!is.nan(df$max)]
+	p <- lmom.estimation(data, "GEV")
 
 	# Initialize the non-stationary parameters to 0 (if necessary)
 	if (model == "GEV") {
@@ -56,7 +59,7 @@ gmle.estimation <- function(data, model, prior) {
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - generalized.likelihood(data, model, theta, prior)
+		0 - generalized.likelihood(df, model, theta, prior)
 	} 
 
 	# Run parameter optimization

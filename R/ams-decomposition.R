@@ -37,17 +37,13 @@
 
 ams.decomposition <- function(df, scenario) {
 
-	# Compute the covariate
-	n <- nrow(df)
-	covariate <- ((1:n) - 1) / (n - 1)
-
 	# Replace the 'year' column in df with the covariate
-	df$year <- covariate
+	df$year <- get.covariates(df, df$year)
 
 	# Scenario 1: Trend in the AMS means. 
 	if (scenario == 1) {
 		model <- sens.trend(df$max, df$year)
-		decomposed <- df$max - (covariate * model$sens.slope)
+		decomposed <- df$max - (df$year * model$sens.slope)
 	}
 
 	# Scenario 2: Trend in the AMS variance.
@@ -60,7 +56,7 @@ ams.decomposition <- function(df, scenario) {
         model <- sens.trend(df_variance$std, df_variance$year)
 		c0 <- model$sens.intercept
 		c1 <- model$sens.slope
-        gt <- ((c1 * covariate) + c0) / c0
+        gt <- ((c1 * df$year) + c0) / c0
 		mu <- mean(df$max, na.rm = TRUE)
         decomposed <- mu + ((df$max - mu) / gt)
 		
@@ -71,17 +67,17 @@ ams.decomposition <- function(df, scenario) {
 
 		# Run Sen's trend estimator and remove the trend in the means
 		model_means <- sens.trend(df$max, df$year)
-		decomposed <- df$max - (covariate * model_means$sens.slope)
+		decomposed <- df$max - (df$year * model_means$sens.slope)
 
 		# Get the moving window SD estimates
-		df_decomposed <- data.frame(max = decomposed, year = covariate)
+		df_decomposed <- data.frame(max = decomposed, year = df$year)
 		df_variance <- mw.variance(df_decomposed)
 
 		# Run Sen's trend estimator and decompose the data
         model_variance <- sens.trend(df_variance$std, df_variance$year)
 		c0 <- model_variance$sens.intercept
 		c1 <- model_variance$sens.slope
-        gt <- ((c1 * covariate) + c0) / c0
+        gt <- ((c1 * df$year) + c0) / c0
 		mu <- mean(decomposed, na.rm = TRUE)
         decomposed <- mu + ((decomposed - mu) / gt)
 

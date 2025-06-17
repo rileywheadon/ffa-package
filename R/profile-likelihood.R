@@ -5,7 +5,7 @@
 #' parameter (yp) and exceedance probability (pe) fixed. Uses nlminb with repeated
 #' perturbations to ensure convergence.
 #'
-#' @param data Numeric vector of observations. NaN values are handled internally.
+#' @param df Dataframe of observations with columns "year" and "max".
 #'
 #' @param model Character string specifying the distribution code (e.g. 'GEV',
 #'   'GLO', 'GNO', 'PE3', 'LP3', 'WEI') with optional signature '10'/'100'
@@ -32,7 +32,7 @@
 #' @importFrom stats nlminb rnorm
 #' @export
 
-fixed.likelihood <- function(data, model, yp, pe, params) {
+fixed.likelihood <- function(df, model, yp, pe, params, ti = 0) {
 
 	# Get the name and signature for the model 
 	name <- substr(model, 1, 3)
@@ -58,7 +58,7 @@ fixed.likelihood <- function(data, model, yp, pe, params) {
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - reparameterized.likelihood(data, model, yp, pe, theta)
+		0 - reparameterized.likelihood(df, model, yp, pe, theta, ti = ti)
 	} 
 
 	# Helper function for running parameter optimization

@@ -12,6 +12,16 @@
 #'    'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of '10'/'100' indicates
 #'    a trend in location. '11'/'110' indicates trends in both location and scale.
 #'
+#' @param years Character string or numeric vector specifying the years at which
+#'   to compute the estimates and confidence intervals. Defaults to "last".
+#'   \itemize{
+#'     \item{`"all"` returns estimates for all years in the dataset.}
+#'     \item{`"first"` returns estimates for first year in the dataset.}
+#'     \item{`"last"` returns estimates for last year in the dataset.}
+#'     \item{Passing a numeric vector to `years` allows for custom values.}
+#'   }
+#'   If the chosen model is stationary, the results will be the same for all years
+#'
 #' @param alpha Numeric significance level for confidence intervals (default 0.05).
 #'
 #' @param eps Numeric tolerance for the Regula Falsi convergence criterion (default 1e-2).
@@ -33,72 +43,96 @@
 #' @importFrom stats qchisq
 #' @export
 
-rfpl.uncertainty <- function(data, model, alpha = 0.05, eps = 1e-2) {
-
-	# Get the quantile function
-	distribution_list <- get.distributions()
-	name <- substr(model, 1, 3)
-	qfunc <- distribution_list[[name]]$quantile
+rfpl.uncertainty <- function(
+  df,
+  model,
+  years = "last",
+  alpha = 0.05,
+  eps = 1e-2
+) {
 
 	# Define the non-exceedance probabilities for the target return periods
 	t <- c(2, 5, 10, 20, 50, 100)
 	returns <- 1 - (1 / t)
 
+	# Determine the years based on the "years" argument
+	if (is.character(years)) {
+		years <- switch(
+			years,
+			"all" = df$year,
+			"first" = min(df$year),
+			"last" = max(df$year)
+		)
+	}
+
+	# Define the covariates 
+	covariates <- get.covariates(df$year, years)
+
 	# Get the results of maximum likelihood estimation
-	mle <- mle.estimation(data, model)
+	mle <- mle.estimation(df, model)
 	lp_hat <- mle$mll
-	yp_hat <- qfunc(returns, mle$params)
+	yp_hat <- get.quantiles(returns, model, mle$params, covariates)
 
 	# We want to find the roots of the function f defined below:
-	f <- function(yp, pe) {
-		lp_theta <- fixed.likelihood(data, model, yp, pe, mle$params[-1])
-		lp_theta - (lp_hat - (qchisq(1 - alpha, df = 1) /2))
+	f <- function(yp, pe, ti) {
+		lp_theta <- fixed.likelihood(df, model, yp, pe, mle$params[-1], ti)
+		lp_theta - (lp_hat - (qchisq(1 - alpha, 1) /2))
 	}
 
 	# Define a helper function for regula-falsi iteration
-	regula.falsi <- function(a, b, pe) { 
+	regula.falsi <- function(a, b, pe, ti) { 
 
 		# Compute c from a and b
-		c <- ((a * f(b, pe)) - (b * f(a, pe))) / (f(b, pe) - f(a, pe))
+		c <- ((a * f(b, pe, ti)) - (b * f(a, pe, ti))) / (f(b, pe, ti) - f(a, pe, ti))
 		
 		# If f(c) is small, we are done
-		if (abs(f(c, pe)) < eps) { return (c) }
+		if (abs(f(c, pe, ti)) < eps) { return (c) }
 
 		# Otherwise, update a, b and then call regula.falsi again
-		if (f(c, pe) < 0) { a <- c } else { b <- c }
-		regula.falsi(a, b, pe)
+		if (f(c, pe, ti) < 0) { a <- c } else { b <- c }
+		regula.falsi(a, b, pe, ti)
 
 	}
 
-	ci_lower <- numeric(length(yp_hat))
-	ci_upper <- numeric(length(yp_hat))
+	# Define a helper function for uncertainty quantification
+	compute.uncertainty <- function(yp_hat, ti) {
+	 
+		ci_lower <- numeric(length(yp_hat))
+		ci_upper <- numeric(length(yp_hat))
 
-	# Iterate through the return periods 
-	for (i in 1:length(yp_hat)) {
+		# Iterate through the return periods 
+		for (i in 1:length(yp_hat)) {
 
-		# Find initial lower bound for mu
-		yp_minus <- yp_hat[i] * 0.95
-		while (f(yp_minus, returns[i]) > 0) yp_minus <- yp_minus * 0.95
+			# Find initial lower bound for mu
+			yp_minus <- yp_hat[i] * 0.95
+			while (f(yp_minus, returns[i], ti) > 0) yp_minus <- yp_minus * 0.95
 
-		# Run the iteration algorithm to find the lower confidence interval
-		a <- yp_minus
-		b <- yp_hat[i]
-		yp_lower <- regula.falsi(a, b, returns[i])
-		ci_lower[i] <- yp_lower
+			# Run the iteration algorithm to find the lower confidence interval
+			a <- yp_minus
+			b <- yp_hat[i]
+			yp_lower <- regula.falsi(a, b, returns[i], ti)
+			ci_lower[i] <- yp_lower
 
-		# Find initial upper bound for mu
-		yp_plus  <- yp_hat[i] * 1.05
-		while (f(yp_plus, returns[i]) > 0) yp_plus <- yp_plus * 1.05
+			# Find initial upper bound for mu
+			yp_plus <- yp_hat[i] * 1.05
+			while (f(yp_plus, returns[i], ti) > 0) yp_plus <- yp_plus * 1.05
 
-		# Run the iteration algorithm to find the upper confidence interval
-		a <- yp_hat[i]
-		b <- yp_plus
-		yp_upper <- regula.falsi(a, b, returns[i])
-		ci_upper[i] <- yp_upper
+			# Run the iteration algorithm to find the upper confidence interval
+			a <- yp_hat[i]
+			b <- yp_plus
+			yp_upper <- regula.falsi(a, b, returns[i], ti)
+			ci_upper[i] <- yp_upper
+
+		}
+
+		# Return the results as a list
+		list(ci_lower = ci_lower, estimates = yp_hat, ci_upper = ci_upper)
 
 	}
 
-	# Return the results as a list
-	list(ci_lower = ci_lower, estimates = yp_hat, ci_upper = ci_upper)
+	# Run uncertainty quantification at each year in years
+	lapply(1:length(years), function (i) {
+		compute.uncertainty(yp_hat[, i], years[i])
+	})
 
 }

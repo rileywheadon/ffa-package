@@ -5,7 +5,7 @@
 #' with a fixed reference quantile yp at exceedance probability pe. Supports
 #' optional linear covariate trends in location and/or scale via model signatures.
 #'
-#' @param data Numeric vector of observations. NaN values are removed internally.
+#' @param df Numeric vector of observations. NaN values are removed internally.
 #'
 #' @param model Character string specifying the distribution code. The first three
 #'    letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO',
@@ -35,25 +35,22 @@
 #'
 #' @export
 
-
-reparameterized.likelihood <- function(data, model, yp, pe, theta) {
+reparameterized.likelihood <- function(df, model, yp, pe, theta, ti = 0) {
 
 	# Get the name and signature for the model 
 	name <- substr(model, 1, 3)
 	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 	
-	# Define the covariate
-	n <- length(data)
-	covariate <- ((1:n) - 1) / (n - 1)
-	covariate <- covariate[!is.nan(data)]
+	# Define the covariate and rescale ti
+	covariate <- get.covariates(df$year, df$year)
+	ti <- get.covariates(df$year, ti)
 
-	# Clean the data
-	data <- data[!is.nan(data)]
+	# Remove NaN values from the data and the covariates
+	data <- df$max[!is.nan(df$max)]
+	covariate <- covariate[!is.nan(df$max)]
 
 	# Get the quantile at exceedance probability pe
-	distribution_list <- get.distributions() 
-	qfunc <- distribution_list[[name]]$quantile
-	qpe <- qfunc(pe, c(0, theta))
+	qpe <- get.quantiles(pe, model, c(0, theta), ti)[1, 1]
 
 	# Log-transform yp, qpe, and the data if necessary
 	if (name %in% c("LNO", "LP3")) {
@@ -67,11 +64,11 @@ reparameterized.likelihood <- function(data, model, yp, pe, theta) {
 		u <- yp - qpe
 		s <- theta[1]
 	} else if (signature == "10") {
-		u <- yp - qpe + (covariate * theta[1])
+		u <- yp - qpe + (theta[1] * covariate)
 		s <- theta[2]
 	} else if (signature == "11") {
-		u <- yp - qpe + (covariate * theta[1])
-		s <- theta[2] + (covariate * theta[3])
+		u <- yp - qpe + (theta[1] * covariate)
+		s <- theta[2] + (theta[3] * covariate)
 	} 
 
 	# Add the Kappa parameter if the distribution has three parameters

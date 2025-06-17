@@ -37,11 +37,29 @@
 
 runs.test <- function(residuals, alpha = 0.05, quiet = TRUE) {
 
-	# Check for randomness of the residuals using the Wald-Wolfowitz runs test
-	results <- randtests::runs.test(residuals)
+	# Remove values from the residuals that are equal to the median
+	residuals <- residuals[residuals != median(residuals)]
+
+	# Transform the residuals into a boolean vector (TRUE if >median, FALSE if <median)	
+	boolean_residuals <- (residuals > median(residuals))
+
+	# Count the number of data points in each category
+	n <- length(boolean_residuals)
+	n_plus <- sum(boolean_residuals == TRUE)
+	n_minus <- sum(boolean_residuals == FALSE)
+
+	# Determine the number of "runs" (contiguous blocks of + or -) in the data
+	runs <- length(rle(boolean_residuals)$values)
+	
+	# Compute the distribution parameters under the null hypothesis
+	mu <- (2 * n_plus * n_minus / n) + 1
+	sigma <- sqrt((2 * n_plus * n_minus * (2 * n_plus * n_minus - n)) / ((n^2) * (n - 1)))
+	
+	# Compute the p-value of the two-sided runs test
+	z <- (runs - mu) / sigma
+	p_value <- 2 * (1 - pnorm(abs(z)))
 
 	# Determine whether we reject or fail to reject based on p_value and alpha
-	p_value <- results$p.value
 	reject <- (p_value <= alpha)
 
 	# Print the results of the test
@@ -58,6 +76,11 @@ runs.test <- function(residuals, alpha = 0.05, quiet = TRUE) {
 
 	# Return the results as a list
 	list(
+		n = n,
+		n.plus = n_plus,
+		n.minus = n_minus,
+		runs = runs,
+		statistic = z,
 		p.value = p_value,
 		residuals = residuals,
 		reject = reject,

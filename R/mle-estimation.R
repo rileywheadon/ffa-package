@@ -7,8 +7,9 @@
 #' Initial values are obtained from L‐moment estimation, and optimization is
 #' performed via nlminb with repeated perturbations if needed.
 #'
-#' @param data Numeric vector of observations. 
-#'   Any NaN values are removed prior to fitting.
+#' @param df Dataframe with columns "max", a vector of annual maxima observations,
+#'   and "year", a vector of years corresponding to the observations in "max". Any
+#'   `NaN` values are removed prior to likelihood computation.  
 #'
 #' @param model Character string specifying the distribution code. The first
 #'   three letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV',
@@ -34,14 +35,15 @@
 #' @importFrom stats nlminb rnorm
 #' @export
 
-mle.estimation <- function(data, model) {
+mle.estimation <- function(df, model) {
 
 	# Get the name and signature for the model 
 	name <- substr(model, 1, 3)
 	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 	
 	# Determine the initial parameters using L-moments estimation
-	p <- lmom.estimation(data[!is.nan(data)], name)
+	data <- df$max[!is.nan(df$max)]
+	p <- lmom.estimation(data, name)
 
 	# Initialize the non-stationary parameters to 0 (if necessary)
 	if (is.null(signature)) {
@@ -66,13 +68,13 @@ mle.estimation <- function(data, model) {
 	}
 
 	# NOTE: The parameters for the Weibull distribution produced by lmom.estimation
-	# often do not have support for smaller data points. This isn't a problem for FFA but
-	# it is a problem for MLE. Therefore, we need to adjust the location parameter manually.
+	# often do not have support for smaller data points. Therefore, we need to start
+	# the MLE optimization process with mu = 0 to guarantee the data has support.	
 	if (name == "WEI") initial_params[1] <- 0
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - likelihood(data, model, theta)
+		0 - likelihood(df, model, theta)
 	} 
 
 	# Helper function for running parameter optimization
