@@ -5,8 +5,8 @@
 #' progressive and regressive Mann–Kendall statistics and identifies statistically
 #' significant crossing points, indicating potential change points in the trend.
 #'
-#' @param ams Numeric vector of annual maximum streamflow values with no missing values.
-#' @param year Numeric vector of years corresponding to \code{ams}, with no missing values.
+#' @param data Numeric vector of annual maximum streamflow values with no missing values.
+#' @param years Numeric vector of years corresponding to \code{data}, with no missing values.
 #' @param alpha Numeric significance level for the test (default 0.05).
 #' @param quiet Logical flag to suppress or print a summary message (default TRUE).
 #'
@@ -38,13 +38,13 @@
 #' @importFrom stats pnorm qnorm lm coef
 #' @export
 
-mks.test <- function(ams, year, alpha = 0.05, quiet = TRUE) {
+mks.test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
-	# Compute number of elements such that ams[i] > ams[j] for all j < i < t for all t.
-	s_statistic <- function(vt, ams) {
+	# Compute number of elements such that data[i] > data[j] for all j < i < t for all t.
+	s_statistic <- function(vt, data) {
 
-		# Computes the number of elements such that ams[i] > ams[j] for j < i (given i).
-		sum_i <- function(i) sum(ams[i] > ams[1:i-1])
+		# Computes the number of elements such that data[i] > data[j] for j < i (given i).
+		sum_i <- function(i) sum(data[i] > data[1:i-1])
 
 		# Applies the sum_i function to a vector values.
 		n_i <- sapply(vt, sum_i)
@@ -54,9 +54,9 @@ mks.test <- function(ams, year, alpha = 0.05, quiet = TRUE) {
 	}
 
 	# Compute the forward and backwards s-statistics
-	idx <- 1:length(ams)
-	s_prog_non_normal <- s_statistic(idx, ams)
-	s_regr_non_normal <- s_statistic(idx, rev(ams))
+	idx <- 1:length(data)
+	s_prog_non_normal <- s_statistic(idx, data)
+	s_regr_non_normal <- s_statistic(idx, rev(data))
 
 	# Get the variance and expectation of the S-statistics
 	s_expectation = idx * (idx - 1) / 4
@@ -81,8 +81,8 @@ mks.test <- function(ams, year, alpha = 0.05, quiet = TRUE) {
 	get_crossings <- function(i) {
 
 		# Fit linear models 
-		fit_prog <- lm(s_prog[(i - 1):i] ~ year[(i - 1):i])
-		fit_regr <- lm(s_regr[(i - 1):i] ~ year[(i - 1):i])
+		fit_prog <- lm(s_prog[(i - 1):i] ~ years[(i - 1):i])
+		fit_regr <- lm(s_regr[(i - 1):i] ~ years[(i - 1):i])
 
 		# Get the slope and y-intercept of each line
 		b_prog <- coef(fit_prog)[1]
@@ -103,9 +103,9 @@ mks.test <- function(ams, year, alpha = 0.05, quiet = TRUE) {
 	# Create a dataframe of all crossings
 	crossing_df <- data.frame(
 		cross = cross,
-		year = year[cross],
+		years = years[cross],
 		statistic = locations,
-		max = ams[cross]
+		max = data[cross]
 	)
 
 	# Compute the p-value of the test and the statistically significant crossings
@@ -126,7 +126,7 @@ mks.test <- function(ams, year, alpha = 0.05, quiet = TRUE) {
 		reject,
 		p_value,
 		alpha,
-		sprintf("evidence of change point(s) at %s.", toString(change_df$year)),
+		sprintf("evidence of change point(s) at %s.", toString(change_df$years)),
 		"NO evidence of change point(s)."
 	)
 

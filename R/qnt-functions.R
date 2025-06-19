@@ -1,17 +1,47 @@
-qntxxx <- function(model, pe, params, years = NULL, slices = NULL) {
+qntxxx <- function(model, p, params, years = NULL) {
 
-	# Get the covariates if years, slices are not NULL
-	if (!is.null(years) & !is.null(slices)) {
-		covariates <- get.covariates(years, slices)
-		n <- length(covariates)
-	} else {
-		covariates <- NULL
-		n <- 1
+	# Validate the parameters
+	info <- models.info(model)
+	if (length(params) != info$n.params) {
+		str <- "Error: 'params' for model '%s' must have length %d."
+		stop(sprintf(str, model, info$n.params))
+	}
+
+	# Check that params is a numeric vector
+	if (!is.numeric(params) | !is.vector(params)) {
+		stop("Error: 'params' is not a numeric vector.")
+	}
+
+	# Check that all parameters are defined
+	if (any(is.nan(params)) | any(is.na(params))) {
+		stop("Error: 'params' contains NaN or NA values.")
+	}
+
+	# Check that 0 <= p <= 1 for all entries in p.
+	if (any(p < 0) | any(p > 1)) {
+		stop("Error: 'p' must be between 0 and 1 inclusive.")
 	}
 
 	# Split the model into name and signature
 	name <- substr(model, 1, 3)
 	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
+
+	# Check that years is not NULL if the model is non-stationary
+	if (!is.null(signature) & (is.null(years) | any(is.nan(years)) | any(is.na(years)))) {
+		stop("Error: 'years' must not be NULL or contain NaN/NA values.")
+	}
+
+	# Get the covariates if years is not NULL
+	if (!is.null(years)) {
+		covariates <- get.covariates(years)
+		n <- length(covariates)
+	} 
+
+	# Otherwise set covariates to a dummy varwiable
+	else {
+		covariates <- 0
+		n <- 1
+	}
 
 	# Compute location/scale parameter at the covariates
 	if (is.null(signature)) {
@@ -30,102 +60,138 @@ qntxxx <- function(model, pe, params, years = NULL, slices = NULL) {
 		k <- rep(params[length(params)], n)
 	}
 
-	# Helper function for GUM quantiles
-	xfgum <- function(p, u, s) {
-		u - s * log(-log(p))
+	# Add two shape parameters for the Kappa distribution
+	if (name == "KAP") {
+		k <- rep(params[3], n)
+		h <- rep(params[4], n)
 	}
+
+	# Helper function for GUM quantiles
+	xfgum <- function(p, u, s) u - s * log(-log(p))
+
+	# Helper function for NOR quantiles
+	xfnor <- function(p, u, s) qnorm(p, u, s)
+
+	# Helper function for LNO quantiles
+	xflno <- function(p, u, s) qlnorm(p, u, s)
 
 	# Helper function for GEV quantiles
 	xfgev <- function(p, u, s, k) {
-		if (k != 0) {
-			u + s * (1 - (-log(p))^k) / k
-		} else {
+		ifelse(
+			k != 0,
+			u - s * (1 - (-log(p))^(-k)) / k,
 			u - s * log(-log(p))
-		}
+		) 
 	}
 
 	# Helper function for GLO quantiles
 	xfglo <- function(p, u, s, k) {
-		if (k != 0) {
-			u + s * (1 - ((1 - p) / p)^k) / k
-		} else {
+		ifelse(
+			k != 0,
+			u + s * (1 - ((1 - p) / p)^k) / k,
 			u - s * log((1 - p) / p)
-		}
+		)
 	}
 
 	# Helper function for GNO quantiles
 	xfgno <- function(p, u, s, k) {
-		if (k != 0) {
-			u + s * (1 - exp(-k * qnorm(p))) / k
-		} else {
+		ifelse(
+			k != 0,
+			u + s * (1 - exp(-k * qnorm(p))) / k,
 			qnorm(p, u, s)
-		}
+		)
 	}
 
 	# Helper function for PE3 quantiles
 	xfpe3 <- function(p, u, s, k) {
-		a <- 4 / k^2
-		b <- abs(s * k / 2)
 
-		if (k > 0) { 
-			u - (a * b) + qgamma(p, a, b) 
-		} else {
-			u + (a * b) - qgamma(p, a, b)
-		}
+		# Reparameterize in terms of a, b	
+		a <- 4 / (k^2)
+		b <- abs((s * k) / 2)
+
+		# Vectorize three cases (k = 0, k > 0, k < 0)
+		ifelse(
+			k == 0,
+			qnorm(p, u, s), 
+			ifelse(
+				k > 0,
+				u - (a * b) + qgamma(p, shape = a, scale = b),
+				u + (a * b) - qgamma(1 - p, shape = a, scale = b)
+			)
+		)
 	}
+
+	# Helper function for LP3 quantiles
+	xflp3 <- function(p, u, s, k) exp(xfpe3(p, u, s, k))
 
 	# Helper function for WEI quantiles
-	xfwei <- function(p, u, s, k) {
-		u + s * (-log(1 - p))^(1 / k)
+	xfwei <- function(p, u, s, k) u + s * (-log(1 - p))^(1 / k)
+
+	# Helper function for KAP quantiles
+	xfkap <- function(p, u, s, k, h) {
+		u + (s / k) * (1 - ((1 - p^h) / h)^k)
 	}
 
-	switch(
-		name,
-		"GUM" = xfgum(1 - pe, u, s)
-		"NOR" = qnorm(1 - pe, u, s),
-		"LNO" = qlnorm(1 - pe, u, s),
-		"GEV" = xfgev(1 - pe, u, s, k),
-		"GLO" = xfglo(1 - pe, u, s, k), 
-		"GNO" = xfglo(1 - pe, u, s, k),
-		"PE3" = xfpe3(1 - pe, u, s, k),
-		"LP3" = exp(xfpe3(1 - pe, u, s, k)),
-		"WEI" = xfwei(1 - pe, u, s, k)
-	)
+	# Compute the result using an outer product on the quantile functions
+	result <- outer(1:length(covariates), p, function(i, p) {
+		switch(
+			name,
+			"GUM" = xfgum(p, u[i], s[i]),
+			"NOR" = xfnor(p, u[i], s[i]),
+			"LNO" = xflno(p, u[i], s[i]),
+			"GEV" = xfgev(p, u[i], s[i], k[i]),
+			"GLO" = xfglo(p, u[i], s[i], k[i]), 
+			"GNO" = xfgno(p, u[i], s[i], k[i]),
+			"PE3" = xfpe3(p, u[i], s[i], k[i]),
+			"LP3" = xflp3(p, u[i], s[i], k[i]),
+			"WEI" = xfwei(p, u[i], s[i], k[i]),
+			"KAP" = xfkap(p, u[i], s[i], k[i], h[i])
+		)
+	})
+
+	# Collapse the result to a vector if possible
+	if (length(p) == 1 | length(covariates) == 1) {
+		return (as.vector(result))
+	}
+
+	return (result)
 
 }
 
-qntgum    <- function(pe, params, years = NULL, slices = NULL) qntxxx("GUM", pe, params)
-qntgum10  <- function(pe, params, years, slices) qntxxx("GUM10", pe, params, years, slices)
-qntgum11  <- function(pe, params, years, slices) qntxxx("GUM11", pe, params, years, slices)
+qntgum    <- function(pe, params, years = NULL) qntxxx("GUM", pe, params)
+qntgum10  <- function(pe, params, years) qntxxx("GUM10", pe, params, years)
+qntgum11  <- function(pe, params, years) qntxxx("GUM11", pe, params, years)
 
-qntnor    <- function(pe, params, years = NULL, slices = NULL) qntxxx("NOR", pe, params)
-qntnor10  <- function(pe, params, years, slices) qntxxx("NOR10", pe, params, years, slices)
-qntnor11  <- function(pe, params, years, slices) qntxxx("NOR11", pe, params, years, slices)
+qntnor    <- function(pe, params, years = NULL) qntxxx("NOR", pe, params)
+qntnor10  <- function(pe, params, years) qntxxx("NOR10", pe, params, years)
+qntnor11  <- function(pe, params, years) qntxxx("NOR11", pe, params, years)
 
-qntlno    <- function(pe, params, years = NULL, slices = NULL) qntxxx("LNO", pe, params)
-qntlno10  <- function(pe, params, years, slices) qntxxx("LNO10", pe, params, years, slices)
-qntlno11  <- function(pe, params, years, slices) qntxxx("LNO11", pe, params, years, slices)
+qntlno    <- function(pe, params, years = NULL) qntxxx("LNO", pe, params)
+qntlno10  <- function(pe, params, years) qntxxx("LNO10", pe, params, years)
+qntlno11  <- function(pe, params, years) qntxxx("LNO11", pe, params, years)
 
-qntgev    <- function(pe, params, years = NULL, slices = NULL) qntxxx("GEV", pe, params)
-qntgev100 <- function(pe, params, years, slices) qntxxx("GEV100", pe, params, years, slices)
-qntgev110 <- function(pe, params, years, slices) qntxxx("GEV110", pe, params, years, slices)
+qntgev    <- function(pe, params, years = NULL) qntxxx("GEV", pe, params)
+qntgev100 <- function(pe, params, years) qntxxx("GEV100", pe, params, years)
+qntgev110 <- function(pe, params, years) qntxxx("GEV110", pe, params, years)
 
-qntglo    <- function(pe, params, years = NULL, slices = NULL) qntxxx("GLO", pe, params)
-qntglo100 <- function(pe, params, years, slices) qntxxx("GLO100", pe, params, years, slices)
-qntglo110 <- function(pe, params, years, slices) qntxxx("GLO110", pe, params, years, slices)
+qntglo    <- function(pe, params, years = NULL) qntxxx("GLO", pe, params)
+qntglo100 <- function(pe, params, years) qntxxx("GLO100", pe, params, years)
+qntglo110 <- function(pe, params, years) qntxxx("GLO110", pe, params, years)
 
-qntgno    <- function(pe, params, years = NULL, slices = NULL) qntxxx("GNO", pe, params)
-qntgno100 <- function(pe, params, years, slices) qntxxx("GNO100", pe, params, years, slices)
-qntgno110 <- function(pe, params, years, slices) qntxxx("GNO110", pe, params, years, slices)
+qntgno    <- function(pe, params, years = NULL) qntxxx("GNO", pe, params)
+qntgno100 <- function(pe, params, years) qntxxx("GNO100", pe, params, years)
+qntgno110 <- function(pe, params, years) qntxxx("GNO110", pe, params, years)
 
-qntpe3    <- function(pe, params, years = NULL, slices = NULL) qntxxx("PE3", pe, params)
-qntpe3100 <- function(pe, params, years, slices) qntxxx("PE3100", pe, params, years, slices)
-qntpe3110 <- function(pe, params, years, slices) qntxxx("PE3110", pe, params, years, slices)
+qntpe3    <- function(pe, params, years = NULL) qntxxx("PE3", pe, params)
+qntpe3100 <- function(pe, params, years) qntxxx("PE3100", pe, params, years)
+qntpe3110 <- function(pe, params, years) qntxxx("PE3110", pe, params, years)
 
-qntlp3    <- function(pe, params, years = NULL, slices = NULL) qntxxx("LP3", pe, params)
-qntlp3100 <- function(pe, params, years, slices) qntxxx("LP3100", pe, params, years, slices)
-qntlp3110 <- function(pe, params, years, slices) qntxxx("LP3110", pe, params, years, slices)
+qntlp3    <- function(pe, params, years = NULL) qntxxx("LP3", pe, params)
+qntlp3100 <- function(pe, params, years) qntxxx("LP3100", pe, params, years)
+qntlp3110 <- function(pe, params, years) qntxxx("LP3110", pe, params, years)
 
-qntwei    <- function(pe, params, years = NULL, slices = NULL) qntxxx("WEI", pe, params)
-qntwei100 <- function(pe, params, years, slices) qntxxx("WEI100", pe, params, years, slices)
-qntwei110 <- function(pe, params, years, slices) qntxxx("WEI110", pe, params, years, slices)
+qntwei    <- function(pe, params, years = NULL) qntxxx("WEI", pe, params)
+qntwei100 <- function(pe, params, years) qntxxx("WEI100", pe, params, years)
+qntwei110 <- function(pe, params, years) qntxxx("WEI110", pe, params, years)
+
+qntkap    <- function(pe, params, years = NULL) qntxxx("KAP", pe, params)

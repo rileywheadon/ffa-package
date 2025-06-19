@@ -44,10 +44,15 @@
 #' @import patchwork
 #' @export
 
-pettitt.plot <- function(df, results, show_trend = TRUE) {
+pettitt.plot <- function(data, years, results, show_trend = TRUE) {
 
 	# Add ut to df and create change point df (if change point is significant)
-	df$ut = results$ut
+	df <- data.frame(
+		max = data,
+		year = years,
+		ut = results$ut
+	)
+
 	change_df <- df[results$change.index, ]
 
 	# Get the segment endpoints depending on whether there is a change point

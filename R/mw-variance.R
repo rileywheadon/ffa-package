@@ -30,10 +30,10 @@
 #' @export
 
 
-mw.variance <- function(df, window_length = 10, window_step = 5) { 
+mw.variance <- function(data, years, window_length = 10, window_step = 5) { 
 
 	# Check that the dataframe has enough rows 
-	n <- nrow(df)
+	n <- length(data)
   	if (n < window_length) {
     	stop(sprintf("Data frame has too few rows (%d < %d).", n, window_length))
   	}
@@ -41,22 +41,22 @@ mw.variance <- function(df, window_length = 10, window_step = 5) {
 	# Create df_variance, which contains the variances of the AMS data
 	std_series <- c()
 	year_series <- c()
-	n <- nrow(df)
+	n <- length(data)
 	i <- 1
 
 	# Iterate through all the windows
 	while ((i + window_length - 1) <= n) {
 
 		# Get the window from the data frame, increment i
-		window <- df[i:(i + window_length - 1), ]
+		window <- i:(i + window_length - 1)
 		i <- i + window_step
 
 		# Compute the standard deviation within the window, add it to std_series
-		std <- sd(window$max, na.rm = TRUE)
+		std <- sd(data[window], na.rm = TRUE)
 		std_series <- c(std_series, std)
 
 		# Compute the mean within the window, add it to year_series
-		year <- mean(window$year, na.rm = TRUE)
+		year <- mean(years[window], na.rm = TRUE)
 		year_series <- c(year_series, year)
 	}
 

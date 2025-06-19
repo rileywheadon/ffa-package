@@ -6,7 +6,7 @@ gllxxx <- function(model, data, params, prior, years = NULL) {
 
 	# Compute the contribution of the prior to the likelihood
 	k <- params[length(params)]
-	pll <- (p - 1) * log(0.5 - k) + (q - 1) * log(k + 0.5) - lbeta(p, q)
+	pll <- (p - 1) * log(0.5 - k) + (q - 1) * log(0.5 + k) - lbeta(p, q)
 
 	# Compute the likelihood
 	llv <- llvxxx(model, data, params, years)

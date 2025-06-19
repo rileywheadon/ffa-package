@@ -9,28 +9,30 @@ kpss.test(ams, alpha = 0.05, quiet = TRUE)
 \arguments{
 \item{ams}{A numeric vector of annual maximum streamflow data. Must not contain NA values.}
 
-\item{alpha}{A numeric value indicating the significance level. Must be 0.01, 0.05, or 0.10.}
+\item{alpha}{A numeric value indicating the significance level. Must be at least 0.01 (default is 0.05).}
 
 \item{quiet}{Logical. If FALSE, prints a summary message to the console (default is TRUE).}
 }
 \value{
 A named list with the following components:
 \describe{
+\item{statistic}{The KPSS test statistic.}
 \item{p.value}{The reported p-value from the test. See notes regarding discrete thresholds.}
 \item{reject}{Logical. TRUE if the null hypothesis of stationarity is rejected at \code{alpha}.}
 \item{msg}{Character string summarizing the test outcome, printed if \code{quiet = FALSE}.}
 }
 }
 \description{
-Performs the KPSS test for stationarity in annual maximum streamflow (AMS) data using the
-\pkg{aTSA} package. The null hypothesis is that the time series is stationary.
+Performs the KPSS test for stationarity in annual maximum streamflow (AMS) data
+using an implementation based on the \pkg{aTSA} package. The null hypothesis is that
+the time series is trend-stationary with a linear trend. The alternative hypothesis
+is that the time series has a unit root (non-stationarity).
 }
 \details{
-The KPSS test implementation in \pkg{aTSA} uses interpolation from the Hobjin et al. (2004)
-significance table, which only includes thresholds for 0.01, 0.05, and 0.10. As such, the
-returned p-values are discretized. Specifically, \eqn{p = 0.01} implies \eqn{p \leq 0.01},
-and \eqn{p = 0.10} implies \eqn{p \geq 0.10}. We use the Type III KPSS test, which accounts
-for drift and a nonstationary trend in the data by fitting an auxillary model.
+The implementation of the KPSS test is based on the \pkg{aTSA} package, which interpolates
+a significance table from Hobjin et al. (2004). Therefore, a result of \eqn{p = 0.01}
+implies that \eqn{p \leq 0.01} and a result of \eqn{p = 0.10} implies that \eqn{p \geq 0.10}.
+This implementation uses the Type III KPSS test, which accounts for a linear trend in the data.
 }
 \seealso{
 \code{\link[aTSA]{kpss.test}}, \code{\link{pp.test}}

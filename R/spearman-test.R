@@ -4,7 +4,7 @@
 #' assess the presence of serial correlation at various lags. Reports the first lag where
 #' autocorrelation is no longer statistically significant at the specified level.
 #'
-#' @param ams Numeric vector of annual maximum streamflow data with no missing values.
+#' @param data Numeric vector of annual maximum streamflow data with no missing values.
 #' @param alpha Numeric significance level for the test (default is 0.05).
 #' @param quiet Logical. If FALSE, prints a summary message describing the result (default is TRUE).
 #'
@@ -30,16 +30,16 @@
 #' @importFrom stats cor.test
 #' @export
 
-spearman.test <- function(ams, alpha = 0.05, quiet = TRUE) {
+spearman.test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	# Assign a variable to the number of data points for convenience
-	n <- length(ams)
+	n <- length(data)
 
 	# Compute the spearman rho-autocorrelation for a given lag
-	rho_autocorrelation <- function(lag, ams) {
-		ams_original <- ams[(lag + 1):length(ams)]
-		ams_lagged <- ams[1:(length(ams) - lag)]
-		cor.test(ams_original, ams_lagged, method="spearman", exact=FALSE)
+	rho_autocorrelation <- function(lag, data) {
+		data_original <- data[(lag + 1):length(data)]
+		data_lagged <- data[1:(length(data) - lag)]
+		cor.test(data_original, data_lagged, method="spearman", exact=FALSE)
 	}
 
 	# Find the lowest non-significant serial correlation lag
@@ -47,7 +47,7 @@ spearman.test <- function(ams, alpha = 0.05, quiet = TRUE) {
 	p_values <- numeric(n - 3)
 
 	for (i in 1:(n - 3)) {
-		result <- rho_autocorrelation(i, ams)
+		result <- rho_autocorrelation(i, data)
 		rho[i] = result$estimate
 		p_values[i] = result$p.value
 	}

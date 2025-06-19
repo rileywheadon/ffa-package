@@ -1,4 +1,4 @@
-# Returns the Log-likelihood for the following distributions and their non-stationary variants:
+# Returns the Log-likelihood for the following distributions (and non-stationary variants):
 # - Gumbel (GUM)
 # - Normal (NOR)
 # - Log-Normal (LNO)
@@ -12,38 +12,6 @@
 # If an error occurs, llvxxx will return -Inf to avoid breaking optimizers.
 #
 # Using quiet = FALSE will print the error message.
-
-
-# List of models with the number of parameters
-models.info <- list(
-	"GUM"    = 2,
-	"GUM10"  = 3,
-	"GUM11"  = 4,
-	"NOR"    = 2,
-	"NOR10"  = 3,
-	"NOR11"  = 4,
-	"LNO"    = 2,
-	"LNO10"  = 3,
-	"LNO11"  = 4,
-	"GEV"    = 3,
-	"GEV100" = 4,
-	"GEV110" = 5,
-	"GLO"    = 3,
-	"GLO100" = 4,
-	"GLO110" = 5,
-	"GNO"    = 3,
-	"GNO100" = 4,
-	"GNO110" = 5,
-	"PE3"    = 3,
-	"PE3100" = 4,
-	"PE3110" = 5,
-	"LP3"    = 3,
-	"LP3100" = 4,
-	"LP3110" = 5,
-	"WEI"    = 3,
-	"WEI100" = 4,
-	"WEI110" = 5
-)
 
 llvxxx <- function(model, data, params, years = NULL) {
 
@@ -65,16 +33,17 @@ llvxxx <- function(model, data, params, years = NULL) {
 		return (-Inf)
 	}
 
-	# Check that params is a numeric vector
-	if (!is.numeric(params) | !is.vector(data)) {
-		warning("Warning: 'params' is not a numeric vector.")
+	# Validate the parameters
+	info <- models.info(model)
+	if (length(params) != info$n.params) {
+		str <- "Warning: 'params' for model '%s' must have length %d."
+		warning(sprintf(str, model, info$n.params))
 		return (-Inf)
 	}
 
-	# Check that params has the correct number of entries
-	if (length(params) != models.info[[model]]) {
-		str <- "Warning: 'params' for model '%s' must have length %d."
-		warning(sprintf(str, model, models.info[[model]]))
+	# Check that params is a numeric vector
+	if (!is.numeric(params) | !is.vector(params)) {
+		warning("Warning: 'params' is not a numeric vector.")
 		return (-Inf)
 	}
 
@@ -104,7 +73,7 @@ llvxxx <- function(model, data, params, years = NULL) {
 		}
 
 		# Compute the covariate
-		covariate <- get.covariates(years, years)
+		covariate <- get.covariates(years)
 
 	}
 

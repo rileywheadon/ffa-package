@@ -4,7 +4,7 @@
 #' a fitted flood frequency distribution. This includes residual statistics, information criteria,
 #' and coverage-based metrics using bootstrapped confidence intervals.
 #'
-#' @param ams Numeric vector of annual maximum streamflow values (no missing values).
+#' @param data Numeric vector of annual maximum streamflow values (no missing values).
 #' @param distribution The three letter code for a probability distribution.
 #' @param params Numeric vector of fitted distribution parameters.
 #' @param uncertainty A list containing bootstrap confidence interval estimates, typically the output
@@ -42,7 +42,7 @@
 #' @export
 
 model.assessment <- function(
-  ams,
+  data,
   distribution,
   params,
   uncertainty,
@@ -50,8 +50,8 @@ model.assessment <- function(
   alpha = 0.05
 ) {
 
-	n <- length(ams)                          
-	ams_sorted <- ams[order(ams, decreasing = TRUE)]  
+	n <- length(data)                          
+	data_sorted <- data[order(data, decreasing = TRUE)]  
 
 	# Determine empirical exceedance probabilities using the plotting position
 	p_empirical <- switch(
@@ -66,24 +66,22 @@ model.assessment <- function(
 	t_return <- 1 / p_empirical               
 
 	# Load information about the distribution
-	distribution_list <- get.distributions()
-	qfunc <- distribution_list[[distribution]]$quantile
-	n_params <- distribution_list[[distribution]]$n_params
+	info <- models.info(distribution)
 
 	# Compute the R2, RMSE, and Bias
-	estimates <- qfunc(1 - p_empirical, params)
-	R2 <- summary(lm(estimates ~ ams_sorted))$r.squared
-	RMSE <- sqrt(mean((estimates - ams_sorted)^2))
-	bias <- mean(estimates - ams_sorted)
+	estimates <- qntxxx(distribution, 1 - p_empirical, params)
+	R2 <- summary(lm(estimates ~ data_sorted))$r.squared
+	RMSE <- sqrt(mean((estimates - data_sorted)^2))
+	bias <- mean(estimates - data_sorted)
 
 	# Compute the AIC and BIC
-	AIC <- n * log(RMSE) + (2 * n_params)
-	BIC <- n * log(RMSE) + (log(n) * n_params)
+	AIC <- n * log(RMSE) + (2 * info$n.params)
+	BIC <- n * log(RMSE) + (log(n) * info$n.params)
 
 	# Filter t_return and x to indices where t_return is between min(t) and max(t)
 	idx <- (t_return > min(uncertainty$t) & t_return < max(uncertainty$t))
 	t_return <- t_return[idx]
-	ams_sorted <- ams_sorted[idx]
+	data_sorted <- data_sorted[idx]
 
 	# Interpolate confidence intervals at empirical return periods
 	ci_lower <- approx(log(uncertainty$t), uncertainty$ci_lower, log(t_return))
@@ -92,7 +90,7 @@ model.assessment <- function(
 
 	# Compute the AW, POC, and CWI
 	AW <- mean(w)
-	POC <- 100 * sum(ams_sorted < ci_upper$y & ams_sorted > ci_lower$y) / length(w)
+	POC <- 100 * sum(data_sorted < ci_upper$y & data_sorted > ci_lower$y) / length(w)
 	CWI <- AW * exp((1 - alpha) - (POC / 100))^2
 
 	# Return assessment results in a list

@@ -4,12 +4,9 @@
 \alias{gmle.estimation}
 \title{Perform Generalized MLE for GEV Models with Trend and Prior}
 \usage{
-gmle.estimation(data, model, prior)
+gmle.estimation(data, model, prior, years)
 }
 \arguments{
-\item{data}{Numeric vector of observations (e.g. annual maxima). Any ’NaN’
-values are removed before fitting.}
-
 \item{model}{Character string specifying the GEV model form:
 ’GEV’   = stationary,
 ’GEV100’ = trend in location only,
@@ -17,6 +14,10 @@ values are removed before fitting.}
 
 \item{prior}{Numeric vector of length 2 giving the Beta prior parameters
 (p, q) on the shape parameter kappa.}
+
+\item{df}{Dataframe with columns "max", a vector of annual maxima observations,
+and "year", a vector of years corresponding to the observations in "max". Any
+\code{NaN} values are removed prior to likelihood computation.}
 }
 \value{
 A list with components:

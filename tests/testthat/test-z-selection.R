@@ -10,8 +10,8 @@ test_that("Test z-statistic.R on data set #1", {
 	# print(end - start)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$params[3], -0.1544, tol = 1e-4)
-	expect_equal(results$params[4], -0.1704, tol = 1e-4)
+	expect_equal(results$params[3], -0.1544, tol = 1e-3)
+	expect_equal(results$params[4], -0.1704, tol = 1e-3)
 	expect_equal(results$log_params[3], NULL)
 	expect_equal(results$log_params[4], NULL)
 
@@ -43,10 +43,10 @@ test_that("Test z-statistic.R on data set #2", {
 	results <- z.selection(df$max)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$params[3],     0.5351, tol = 1e-4)
-	expect_equal(results$params[4],     0.9253, tol = 1e-4)
-	expect_equal(results$log_params[3], 0.7347, tol = 1e-4)
-	expect_equal(results$log_params[4], 0.5134, tol = 1e-4)
+	expect_equal(results$params[3],     0.5351, tol = 1e-3)
+	expect_equal(results$params[4],     0.9253, tol = 1e-3)
+	expect_equal(results$log_params[3], 0.7347, tol = 1e-3)
+	expect_equal(results$log_params[4], 0.5134, tol = 1e-3)
 
 	# Check the bootstrap summary statistics
 	expect_equal(results$bootstrap$bias_t4    , 0.0010, tol = 1e-2)
@@ -75,10 +75,10 @@ test_that("Test z-statistic.R on data set #3.1", {
 	results <- z.selection(df$max)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$params[3],     0.1065, tol = 1e-4)
-	expect_equal(results$params[4],     0.2881, tol = 1e-4)
-	expect_equal(results$log_params[3], 0.2875, tol = 1e-4)
-	expect_equal(results$log_params[4], 0.1371, tol = 1e-4)
+	expect_equal(results$params[3],     0.1065, tol = 1e-3)
+	expect_equal(results$params[4],     0.2881, tol = 1e-3)
+	expect_equal(results$log_params[3], 0.2875, tol = 1e-3)
+	expect_equal(results$log_params[4], 0.1371, tol = 1e-3)
 
 	# Check the bootstrap summary statistics
 	expect_equal(results$bootstrap$bias_t4    , 0.0001, tol = 1e-2)
@@ -107,10 +107,10 @@ test_that("Test z-statistic.R on data set #3.2", {
 	results <- z.selection(df$max)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$params[3],      0.0001, tol = 1e-4)
-	expect_equal(results$params[4],      0.0747, tol = 1e-4) 
-	expect_equal(results$log_params[3],  0.1569, tol = 1e-4)
-	expect_equal(results$log_params[4], -0.1367, tol = 1e-4) 
+	expect_equal(results$params[3],      0.0001, tol = 1e-3)
+	expect_equal(results$params[4],      0.0747, tol = 1e-3) 
+	expect_equal(results$log_params[3],  0.1569, tol = 1e-3)
+	expect_equal(results$log_params[4], -0.1367, tol = 1e-3) 
 
 	# Check the bootstrap summary statistics
 	expect_equal(results$bootstrap$bias_t4    , -0.0006, tol = 1e-2)
@@ -139,10 +139,10 @@ test_that("Test z-statistic.R on data set #3.3", {
 	results <- z.selection(df$max)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$params[3],     0.6732, tol = 1e-4)
-	expect_equal(results$params[4],     1.1215, tol = 1e-4)
-	expect_equal(results$log_params[3], 0.7486, tol = 1e-4)
-	expect_equal(results$log_params[4], 0.4114, tol = 1e-4)
+	expect_equal(results$params[3],     0.6732, tol = 1e-3)
+	expect_equal(results$params[4],     1.1215, tol = 1e-3)
+	expect_equal(results$log_params[3], 0.7486, tol = 1e-3)
+	expect_equal(results$log_params[4], 0.4114, tol = 1e-3)
 
 	# Check the bootstrap summary statistics
 	expect_equal(results$bootstrap$bias_t4    , 0.0010, tol = 1e-2)

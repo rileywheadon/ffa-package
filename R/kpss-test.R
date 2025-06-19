@@ -5,7 +5,7 @@
 #' the time series is trend-stationary with a linear trend. The alternative hypothesis
 #' is that the time series has a unit root (non-stationarity).
 #'
-#' @param ams A numeric vector of annual maximum streamflow data. Must not contain NA values.
+#' @param data A numeric vector of annual maximum streamflow data. Must not contain NA values.
 #' @param alpha A numeric value indicating the significance level. Must be at least 0.01 (default is 0.05).
 #' @param quiet Logical. If FALSE, prints a summary message to the console (default is TRUE).
 #'
@@ -26,10 +26,10 @@
 #' @seealso \code{\link[aTSA]{kpss.test}}, \code{\link{pp.test}}
 #' @export
 
-kpss.test <- function(ams, alpha = 0.05, quiet = TRUE) {
+kpss.test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	# Construct time series yt and shifted time series yt1 for fitting the autoregressive model 
-	z <- embed(ams, 2)
+	z <- embed(data, 2)
 	yt <- z[,1]
 	yt1 <- z[,2]
 

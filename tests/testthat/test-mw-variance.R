@@ -1,7 +1,7 @@
 test_that("Test mw-variance.R on data set #1", {
 
 	df <- load_data("Application_1.csv", clean = FALSE)
-	result <- mw.variance(df)
+	result <- mw.variance(df$max, df$year)
 
 	# Year results from MATLAB
 	years <- c(

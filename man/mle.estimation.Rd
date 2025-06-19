@@ -4,17 +4,18 @@
 \alias{mle.estimation}
 \title{Fit Extreme‐Value Model using Maximum Likelihood}
 \usage{
-mle.estimation(data, model)
+mle.estimation(data, model, years)
 }
 \arguments{
-\item{data}{Numeric vector of observations.
-Any NaN values are removed prior to fitting.}
-
 \item{model}{Character string specifying the distribution code. The first
 three letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV',
 'GLO', 'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of
 '10' or '100' indicates a linear trend in location; '11' or '110'
 indicates linear trends in both location and scale.}
+
+\item{df}{Dataframe with columns "max", a vector of annual maxima observations,
+and "year", a vector of years corresponding to the observations in "max". Any
+\code{NaN} values are removed prior to likelihood computation.}
 }
 \value{
 A list with components:

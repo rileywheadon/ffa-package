@@ -3,8 +3,8 @@
 #' Performs the White test for heteroskedasticity by regressing the squared residuals of a linear
 #' model on the original regressors and their squared terms. The null hypothesis is homoskedasticity.
 #'
-#' @param ams Numeric vector of annual maximum streamflow values with no missing values.
-#' @param year Numeric vector of years corresponding to \code{ams}, with no missing values.
+#' @param data Numeric vector of annual maximum streamflow values with no missing values.
+#' @param years Numeric vector of years corresponding to \code{data}, with no missing values.
 #' @param alpha Numeric significance level for the test (default is 0.05).
 #' @param quiet Logical. If FALSE, prints a summary message to the console (default is TRUE).
 #'
@@ -18,7 +18,7 @@
 #' }
 #'
 #' @details
-#' The White test regresses the squared residuals from a primary linear model \code{lm(ams ~ year)}
+#' The White test regresses the squared residuals from a primary linear model \code{lm(data ~ years)}
 #' against both the original regressor and its square. The test statistic is calculated as
 #' \code{n * R^2}, where \code{R^2} is from the auxiliary regression. Under the null hypothesis,
 #' this statistic follows a \eqn{\chi^2} distribution with 2 degrees of freedom.
@@ -33,18 +33,18 @@
 #' @importFrom stats lm pchisq resid
 #' @export
 
-white.test <- function(ams, year, alpha = 0.05, quiet = TRUE) {
+white.test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
-	# Do a linear regression of ams against year, get the squared residuals
-	primary_model <- lm(ams ~ year)
+	# Do a linear regression of data against years, get the squared residuals
+	primary_model <- lm(data ~ years)
 	squared_residuals <- resid(primary_model)^2
 
 	# Fit an auxillary model to the squared residuals, get the R^2 statistic
-	auxillary_model <- lm(squared_residuals ~ year + I(year^2))
+	auxillary_model <- lm(squared_residuals ~ years + I(years^2))
 	r_squared <- summary(auxillary_model)$r.squared
 
 	# Compute the test statistic and p-value
-	statistic <- length(ams) * r_squared
+	statistic <- length(data) * r_squared
 	p_value <- 1 - pchisq(statistic, df = 2)
 
 	# Determine whether we reject or fail to reject based on p_value and alpha

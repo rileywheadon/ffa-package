@@ -5,7 +5,7 @@
 #' (i.e., is non-stationary). This implementation of the PP test assumes the time series 
 #' has a stationary drift term and linear trend term.
 #'
-#' @param ams Numeric vector of annual maximum streamflow data with no missing values.
+#' @param data Numeric vector of annual maximum streamflow data with no missing values.
 #' @param alpha Numeric significance level. Must be greater than 0.01 (default is 0.05).
 #' @param quiet Logical. If FALSE, prints a summary message to the console (default is TRUE).
 #'
@@ -31,10 +31,10 @@
 #' @seealso \code{\link[aTSA]{pp.test}}, \code{\link{kpss.test}}
 #' @export
 
-pp.test <- function(ams, alpha = 0.05, quiet = TRUE) {
+pp.test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	# Construct time series yt and shifted time series yt1 for fitting the autoregressive model 
-	z <- embed(ams ,2)
+	z <- embed(data ,2)
     yt <- z[,1]
     yt1 <- z[,2]
 

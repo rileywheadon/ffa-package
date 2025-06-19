@@ -30,19 +30,17 @@
 #' @importFrom grid textGrob grobTree rectGrob gpar
 #' @export
 
-runs.plot <- function(df, residuals, results, name, show_trend = TRUE) {
+runs.plot <- function(years, residuals, results, name, show_trend = TRUE) {
 
 	# Set labels and data based on the name
 	if (name == "sens-variance") {
-		data <- df$std
 		title <- "Sen's Estimator Residuals (AMS Variance)"
 	} else {
-		data <- df$max
 		title <- "Sen's Estimator Residuals (AMS Mean)"
 	}
 
 	# Generate dataframes for the trend estimate, data, and residuals
-	df_residuals <- data.frame(x = df$year, y = residuals)
+	df_residuals <- data.frame(x = years, y = residuals)
 
 	# First subplot: Plot of residuals
 	p1 <- ggplot(df_residuals, aes(x = .data$x, y = .data$y)) +

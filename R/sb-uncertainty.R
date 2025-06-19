@@ -56,13 +56,15 @@
 #' @export
 
 sb.uncertainty <- function(
-  df,
+  data,
+  years,
   model,
   method,
-  years = "last",
+  slices = "last",
   n_sim = 10000,
   alpha = 0.05,
-  parallel = FALSE
+  parallel = FALSE,
+  prior = NULL
 ) {
 
 	# Check if the method is invalid
@@ -77,70 +79,63 @@ sb.uncertainty <- function(
 	# Set return periods and their quantiles
     t <- c(2, 5, 10, 20, 50, 100)
     returns <- 1 - (1 / t)
-    n <- length(df$max)
+    n <- length(data)
 
-	# Determine the years based on the "years" argument
-	if (is.character(years)) {
-		years <- switch(
-			years,
-			"all" = df$year,
-			"first" = min(df$year),
-			"last" = max(df$year)
+	# Determine the slices based on the "years" argument
+	if (is.character(slices)) {
+		slices <- switch(
+			slices,
+			"all" = years,
+			"first" = min(years),
+			"last" = max(years)
 		)
 	}
 
-	# Get the quantile function
-	distribution_list <- get.distributions()
-	qfunc <- distribution_list[[name]]$quantile
-
 	# Get the estimation function
 	if (method == "L-moments") {
-		efunc <- function(df, model) lmom.estimation(df$max, name)
+		efunc <- function(data, years) pelxxx(name, data)
 	} else if (method == "MLE") {
-		efunc <- function(df, model) mle.estimation(df, model)$params
+		efunc <- function(data, years) mle.estimation(data, model, years)$params
 	} else if (method == "GMLE") {
-		efunc <- function(df, model) gmle.estimation(df, model)$params
+		efunc <- function(data, years) mle.estimation(data, model, years, prior)$params
 	}	
 
 	# Get the estimated quantiles
-	params <- efunc(df, model)
-	covariates <- get.covariates(df$year, years)
-	estimates <- get.quantiles(returns, model, params, covariates)
+	params <- efunc(data, years)
+	estimates <- qntxxx(model, returns, params, slices)
 
 	# Define the apply() function based on 'parallel' parameter 
 	afunc <- if(parallel) { parallel::mclapply } else { lapply }
 
-	# Generate the bootstrapped quantiles in parallel, one year at a time
+	# Generate the bootstrapped quantiles in parallel, one slice at a time
 	quantiles <- sapply(1:n, function(i) {
 		x <- runif(n_sim)
-		covariate <- get.covariates(df$year, df$year[i])
-		get.quantiles(x, model, params, covariate)
+		qntxxx(model, x, params, years)
 	})
+
+	# Some distributions generate negative values. Adjust these to epsilon.
+	quantiles[quantiles < 0] = 1e-8
 
 	# Vectorized, parallel bootstrap function 
 	bootstrap_list <- afunc(1:n_sim, function(i) {
-		quantiles_df <- data.frame(max = quantiles[i, ], year = df$year)
-		bootstrap_params <- efunc(quantiles_df, model)
-		get.quantiles(returns, model, bootstrap_params, covariates)
+		bootstrap_params <- efunc(quantiles[i, ], years)
+		qntxxx(model, returns, bootstrap_params, slices)
 	})
 
-	# Create a 3D array with dimensions (1: periods), (2: years), (3: simulations)
-	bootstrap_array <- array(unlist(bootstrap_list), dim = c(6, length(years), n_sim))
+	# Create a 3D array with dimensions (1: slices), (2: periods), (3: simulations)
+	bootstrap_array <- array(unlist(bootstrap_list), dim = c(length(slices), 6, n_sim))
 
 	# Compute confidence intervals
 	probs <- c(alpha / 2, 1 - (alpha / 2))
-	ci <- apply(bootstrap_array, c(1, 2), quantile, probs = probs)
+	ci <- apply(bootstrap_array, c(2, 1), quantile, probs = probs)
 
 	# Generate the results as a list
-	results <- lapply(1:length(years), function(k) {
-		list(
-			ci_lower = ci[1, , k], 
-			estimates = estimates[, k],
-			ci_upper = ci[2, , k]
-		)
+	results <- lapply(1:length(slices), function(k) {
+		ye <- if (length(slices) == 1) estimates else estimates[k, ]
+		list(t = t, ci_lower = ci[1, , k], estimates = ye, ci_upper = ci[2, , k])
 	})
 
-	names(results) <- years
+	names(results) <- slices
 	return(results)
 
 }

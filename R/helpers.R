@@ -69,4 +69,93 @@ add_annotation <- function(p, label) {
 
 }
 
-# S
+# Helper function for getting information about models
+models.info <- function(model) {
+
+	switch(
+		model,	
+		"GUM" = list(n.params = 2, log = FALSE),
+		"NOR" = list(n.params = 2, log = FALSE),
+		"LNO" = list(n.params = 2, log =  TRUE),
+		"GEV" = list(n.params = 3, log = FALSE, k.bounds = c(-9, 9)),
+		"GLO" = list(n.params = 3, log = FALSE, k.bounds = c(-0.999, 0.999)),
+		"PE3" = list(n.params = 3, log = FALSE, k.bounds = c(-10, 10)),
+		"LP3" = list(n.params = 3, log =  TRUE, k.bounds = c(-10, 10)),
+		"GNO" = list(n.params = 3, log = FALSE, k.bounds = c(-4, 4)),
+		"WEI" = list(n.params = 3, log = FALSE, k.bounds = c(-9, 9)),
+		"GUM10" = list(n.params = 3),
+		"GUM11" = list(n.params = 4),
+		"NOR10" = list(n.params = 3),
+		"NOR11" = list(n.params = 4),
+		"LNO10" = list(n.params = 3),
+		"LNO11" = list(n.params = 4),
+		"GEV100" = list(n.params = 4),
+		"GEV110" = list(n.params = 5),
+		"GLO100" = list(n.params = 4),
+		"GLO110" = list(n.params = 5),
+		"GNO100" = list(n.params = 4),
+		"GNO110" = list(n.params = 5),
+		"PE3100" = list(n.params = 4),
+		"PE3110" = list(n.params = 5),
+		"LP3100" = list(n.params = 4),
+		"LP3110" = list(n.params = 5),
+		"WEI100" = list(n.params = 4),
+		"WEI110" = list(n.params = 5)
+	)
+
+}
+
+# Helper function for computing covariates. A covariate is a normalized version of 
+# the year where 0 corresponds to the first year and 1 is the last year. Covariates
+# are used to fit parameters for non-stationary distributions.
+get.covariates <- function(years) (years - 1900) / 100
+
+# # Helper function for validaitng parameters passed to a model
+# check.parameters <- function(model, params) {
+
+# 	# List of models with the number of parameters
+# 	models.info <- list(
+# 		"GUM"    = 2,
+# 		"GUM10"  = 3,
+# 		"GUM11"  = 4,
+# 		"NOR"    = 2,
+# 		"NOR10"  = 3,
+# 		"NOR11"  = 4,
+# 		"LNO"    = 2,
+# 		"LNO10"  = 3,
+# 		"LNO11"  = 4,
+# 		"GEV"    = 3,
+# 		"GEV100" = 4,
+# 		"GEV110" = 5,
+# 		"GLO"    = 3,
+# 		"GLO100" = 4,
+# 		"GLO110" = 5,
+# 		"GNO"    = 3,
+# 		"GNO100" = 4,
+# 		"GNO110" = 5,
+# 		"PE3"    = 3,
+# 		"PE3100" = 4,
+# 		"PE3110" = 5,
+# 		"LP3"    = 3,
+# 		"LP3100" = 4,
+# 		"LP3110" = 5,
+# 		"WEI"    = 3,
+# 		"WEI100" = 4,
+# 		"WEI110" = 5
+# 	)
+
+# 	# Check that params has the correct number of entries
+# 	if (length(params) != models.info[[model]]) {
+# 		str <- "'params' for model '%s' must have length %d."
+# 		result <- list(
+# 			success = FALSE,
+# 			msg = sprintf(str, model, models.info[[model]])
+# 		)
+# 	} else {
+# 		result <- list(success = TRUE)
+# 	}
+
+# 	return (result)
+
+
+# }

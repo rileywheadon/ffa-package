@@ -3,7 +3,7 @@
 #' Computes Sen's slope estimator and intercept for a univariate time series
 #'
 #' @param data Numeric vector of AMS values or variances with no missing values.
-#' @param year Numeric vector of years corresponding to \code{data}, with no missing values.
+#' @param years Numeric vector of years corresponding to \code{data}, with no missing values.
 #' @param quiet Logical. If FALSE, prints a summary message describing results (default is TRUE).
 #'
 #' @return A named list containing:
@@ -28,16 +28,20 @@
 #' @importFrom stats median
 #' @export
 
-sens.trend <- function(data, year, quiet = TRUE) {
+sens.trend <- function(data, years, quiet = TRUE) {
 
 	# Get the length of data for convenience
 	n <- length(data)
+
+	# Convert the years into covariates
+	covariate <- get.covariates(years)
 
 	# Compute all pairwise slopes
 	slopes <- c()
 	for (i in 1:(n-1)) {
 		for (j in (i+1):n) {
-			slopes <- c(slopes, (data[j] - data[i]) / (year[j] - year[i]))
+			m <- (data[j] - data[i]) / (covariate[j] - covariate[i])
+			slopes <- c(slopes, m)
 		}
 	}
 
@@ -45,11 +49,11 @@ sens.trend <- function(data, year, quiet = TRUE) {
 	sens_slope <- median(slopes, na.rm = TRUE)
 
 	# Get the estimate for the intercept
-	intercepts <- data - (sens_slope * year)
+	intercepts <- data - (sens_slope * covariate)
 	sens_intercept <- median(intercepts, na.rm =  TRUE)
 
 	# Compute the predicted AMS values and the residuals
-	predicted_data <- sens_intercept + (sens_slope * year)
+	predicted_data <- sens_intercept + (sens_slope * covariate)
 	residuals <- data - predicted_data
 
 	# Print the results of Sen's trend estimator

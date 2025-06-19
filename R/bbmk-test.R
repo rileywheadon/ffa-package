@@ -6,7 +6,7 @@
 #' parallelized bootstrap procedure to obtain the empirical p-value and confidence 
 #' bounds for the Mann-Kendall statistic.
 #'
-#' @param ams A numeric vector of annual maximum streamflow data without  NA values.
+#' @param data A numeric vector of annual maximum streamflow data without  NA values.
 #' @param alpha A numeric value indicating the significance level (default is 0.05).
 #' @param n_sim An integer number of bootstrap simulations (default is 10000).
 #' @param quiet Logical. If FALSE, prints a summary of results (default is TRUE).
@@ -39,7 +39,7 @@
 #' @export
 
 bbmk.test <- function(
-  ams,
+  data,
   alpha = 0.05,
   n_sim = 10000,
   parallel = FALSE,
@@ -47,16 +47,16 @@ bbmk.test <- function(
 ) {
 
 	# Assign a variable to the number of data points for convenience
-	n <- length(ams)
+	n <- length(data)
 
 	# Compute least_lag and s_statistic from the Spearman and MK tests
-	least_lag <- spearman.test(ams, alpha)$least.lag
-	s_statistic  <- mk.test(ams, alpha)$s.statistic
+	least_lag <- spearman.test(data, alpha)$least.lag
+	s_statistic  <- mk.test(data, alpha)$s.statistic
 
 	# Create blocks
 	block_size <- least_lag + 1
 	n_blocks <- ceiling(n / block_size)
-	blocks <- split(ams[1:(n_blocks * block_size)], rep(1:n_blocks, each = block_size))
+	blocks <- split(data[1:(n_blocks * block_size)], rep(1:n_blocks, each = block_size))
 
 	# Define the apply() function based on 'parallel' parameter 
 	afunc <- if(parallel) { parallel::mclapply } else { lapply }

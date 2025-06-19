@@ -35,14 +35,18 @@
 #' @import patchwork
 #' @export
 
-mks.plot <- function(df, result, show_trend = TRUE) {
+mks.plot <- function(data, years, result, show_trend = TRUE) {
 
 	# Create a dataframe for the bounds
 	bound_df <- data.frame(y = c(-result$bound, result$bound))
 
-	# Add the test statistics to df
-	df$s.progressive = result$s.progressive
-	df$s.regressive = result$s.regressive
+	# Create the plotting dataframe
+	df <- data.frame(
+		max = data,
+		year = years,
+		s.progressive = result$s.progressive,
+		s.regressive = result$s.regressive
+	)
 
 	# Define labels for the plot 
 	ut_label <- "Normalized Trend Statistic"
@@ -61,7 +65,7 @@ mks.plot <- function(df, result, show_trend = TRUE) {
 		) +
 		geom_point(
 			data = result$change.df,
-			aes(y = .data$statistic, color = "blue"), 
+			aes(x =.data$years, y = .data$statistic, color = "blue"), 
 			size = 4
 		) +
 		labs(
@@ -77,10 +81,14 @@ mks.plot <- function(df, result, show_trend = TRUE) {
 		)
 
 	# Plot the change points on the original dataset
-	p2 <- ggplot(df, aes(x = .data$year, y = max)) +
+	p2 <- ggplot(df, aes(x = .data$year, y = .data$max)) +
 		geom_point(aes(color = "black"), size = 2.25) +
 		(if (show_trend) geom_line(color = "black", linewidth = 1.1) else NULL) +
-		geom_point(data = result$change.df, aes(y = max, color = "blue"), size = 4) +
+		geom_point(
+			data = result$change.df,
+			aes(x = .data$years, y = .data$max, color = "blue"), 
+			size = 4
+		) +
 		labs(x = "Year", y = flow_label, color = "Legend") +
 		scale_color_manual(
 			values = c("black" = "black", "blue" = "blue"),

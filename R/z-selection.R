@@ -4,7 +4,7 @@
 #' \eqn{\tau_4} (L-kurtosis) against theoretical L-moment surfaces for a set of candidate
 #' distributions. The distribution with the smallest absolute Z-score is selected.
 #'
-#' @param ams Numeric vector of annual maximum streamflow values (no missing values).
+#' @param data Numeric vector of annual maximum streamflow values (no missing values).
 #' @param n_sim Number of bootstrap samples to generate (default = 100000).
 #' @param parallel Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).
 #'
@@ -35,25 +35,33 @@
 #' @importFrom parallel mclapply
 #' @export
 
-z.selection <- function(ams, n_sim = 100000, parallel = FALSE) {
+z.selection <- function(data, n_sim = 100000, parallel = FALSE) {
 
 	# Helper function that attempts to fit a Kappa distribution and draw a bootstrap
 	get_bootstrap <- function(data) {
 
 		# Get the sample L-moments for the data
-		sample_t3 <- unname(samlmu(data))[3]
-		sample_t4 <- unname(samlmu(data))[4]
+		moments <- lmom.sample(data)
+		sample_l1 <- moments[1]
+		sample_l2 <- moments[2]
+		sample_t3 <- moments[3]
+		sample_t4 <- moments[4]
+
+		# Check that the smaple L-moments are viable
+		if (sample_t4 > (1 + 5 * sample_t3^2) / 6) {
+			return (NULL)
+		}
 
 		# Attempt to fit the Kappa distribution
-		params <- unname(pelkap(samlmu(data)))
+		params <- pelkap(sample_l1, sample_l2, sample_t3, sample_t4)
 
 		# Define the apply() function based on 'parallel' parameter 
 		afunc <- if(parallel) { parallel::mclapply } else { lapply }
 
 		# Generate a bootstrap from this Kappa distribution
 		t4_list <- afunc(1:n_sim, function(i) {
-			u <- runif(length(ams))	
-			unname(samlmu(quakap(u, params)))[4]
+			u <- runif(length(data))	
+			lmom.sample(qntkap(u, params))[4]
 		})
 
 		t4 <- as.numeric(t4_list)
@@ -75,69 +83,54 @@ z.selection <- function(ams, n_sim = 100000, parallel = FALSE) {
 	}
 
 	# Attempt to fit kappa distribution to the data
-	reg_bootstrap <- tryCatch(
-		get_bootstrap(ams),
-		error = function(e) { 
-			message("A Kappa distribution could not be fit to the data.")
-			NULL
-		}
-	)
+	reg_bootstrap <- get_bootstrap(data)
 
 	# Attempt to fit kappa distribution to log(data)
-	log_bootstrap <- tryCatch(
-		get_bootstrap(log(ams)),
-		error = function(e) { 
-			message("A Kappa distribution could not be fit to log(data).")
-			NULL
-		}
-	)
+	log_bootstrap <- get_bootstrap(log(data))
 
 	# Initialize list of metrics
 	metrics <- list()
 
-	# Iterate through the list of distributions
-	distribution_list <- get.distributions()
-	for (distribution in distribution_list) {
+	# Iterate through the list of three parameter distributions
+	for (model in c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
 
-		# Get the correct parameters, L-moments, and bootstrap
-		if (distribution$log & !is.null(log_bootstrap)) {
-			b <- log_bootstrap
-		} else if (!distribution$log & !is.null(reg_bootstrap)) {
-			b <- reg_bootstrap
+		# Get distribution information
+		info <- models.info(model)
+
+		# Get the correct bootstrap
+		if (info$log & !is.null(log_bootstrap)) {
+			bootstrap <- log_bootstrap
+		} else if (!info$log & !is.null(reg_bootstrap)) {
+			bootstrap <- reg_bootstrap
 		} else {
-			next
-		}
-
-		# The z-statistic metric does not exist for two-parameter distributions 
-		if (distribution$n_params == 2) {
 			next
 		}
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {
-			distribution_t3 <- distribution$lmr_function(c(0, 1, i))[3]
-			abs(distribution_t3 - b$sample_t3)
+			distribution_t3 <- lmrxxx(model, c(0, 1, i))[3]
+			abs(distribution_t3 - bootstrap$sample_t3)
 		}
 
 		# Run optimization for three parameter distributions
 		result <- optim(
-			par = (distribution$kappa_lower + distribution$kappa_upper) / 2,
+			par = (info$k.bounds[1] + info$k.bounds[2]) / 2,
 			fn = objective,
 			method = "Brent",
-			lower = distribution$kappa_lower,
-			upper = distribution$kappa_upper
+			lower = info$k.bounds[1],
+			upper = info$k.bounds[2]
 		)
 
 		# Get the parameters of the fitted distribution and compute the z-score
-		distribution_t4 <- distribution$lmr_function(c(0, 1, result$par))[4]
-		z <- (distribution_t4 - b$sample_t4 + b$bias_t4) / b$sd_t4
-		metrics[[distribution$name]] <- z
+		distribution_t4 <- lmrxxx(model, c(0, 1, result$par))[4]
+		z <- (distribution_t4 - bootstrap$sample_t4 + bootstrap$bias_t4) / bootstrap$sd_t4
+		metrics[[model]] <- z
 
 	}
 
 	# Determine the recommendation (distribution with lowest L-distance)
 	index <- which.min(abs(unlist(metrics)))
-	recommendation <- names(metrics)[[ index ]]
+	recommendation <- names(metrics)[index]
 
 	# Return the results as a list
 	list(

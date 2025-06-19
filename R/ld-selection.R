@@ -5,7 +5,7 @@
 #' quantifies goodness-of-fit in the L-moment ratio space and returns the closest matching
 #' distribution.
 #'
-#' @param ams A numeric vector containing the AMS data without NaN values
+#' @param data A numeric vector containing the AMS data without NaN values
 #'
 #' @return A named list containing:
 #' \describe{
@@ -29,11 +29,11 @@
 #' @importFrom stats optim
 #' @export
 
-ld.selection <- function(ams) {
+ld.selection <- function(data) {
 
-	# Get the sample L-moments for ams and log(ams)
-	reg_sample_t3_t4 <- unname(samlmu(ams))[3:4]
-	log_sample_t3_t4 <- unname(samlmu(log(ams)))[3:4]
+	# Get the sample L-moments for data and log(data)
+	reg_sample_t3_t4 <- lmom.sample(data)[3:4]
+	log_sample_t3_t4 <- lmom.sample(log(data))[3:4]
 
 	# Helper function to get distance between two points
 	distance <- function(p1, p2) sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2)
@@ -42,43 +42,46 @@ ld.selection <- function(ams) {
 	metrics <- list()
 
 	# Iterate through the list of distributions
-	distribution_list <- get.distributions()
-	for (distribution in distribution_list) {
+	for (model in c("GUM", "NOR", "LNO", "GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
+
+		# Get distribution information
+		info <- models.info(model)
 
 		# Determine the sample L-moments (regular or log)
-		sample_t3_t4 <- if (distribution$log) {
+		sample_t3_t4 <- if (info$log) {
 			log_sample_t3_t4 
 		} else {
 			reg_sample_t3_t4
 		}
 
 		# Compute the L-distance metric directly for two-parameter distributions
-		if (distribution$n_params == 2) {
-			metrics[[distribution$name]] <- distance(distribution$t3_t4, sample_t3_t4)
+		if (info$n.params == 2) {
+			distribution_t3_t4 <- lmrxxx(model, c(0, 1))[3:4]
+			metrics[[model]] <- distance(distribution_t3_t4, sample_t3_t4)
 			next
 		}
 
 		# Define objective function for three parameter distributions
 		objective <- function(i) {
-			distribution_t3_t4 <- distribution$lmr_function(c(0, 1, i))[3:4]
+			distribution_t3_t4 <- lmrxxx(model, c(0, 1, i))[3:4]
 			distance(distribution_t3_t4, sample_t3_t4)
 		}
 
 		# Run optimization for three parameter distributions
 		result <- optim(
-			par = (distribution$kappa_lower + distribution$kappa_upper) / 2,
+			par = (info$k.bounds[1] + info$k.bounds[2]) / 2,
 			fn = objective,
 			method = "Brent",
-			lower = distribution$kappa_lower,
-			upper = distribution$kappa_upper
+			lower = info$k.bounds[1],
+			upper = info$k.bounds[2]
 		)
 
-		metrics[[distribution$name]] <- result$value
+		metrics[[model]] <- result$value
 
 	}
 
 	# Determine the recommendation (distribution with lowest L-distance)
-	recommendation <- distribution_list[[which.min(metrics)]]$name
+	recommendation <- names(metrics)[which.min(metrics)]
 
 	# Return the results as a list
 	list(metrics = metrics, recommendation = recommendation)	

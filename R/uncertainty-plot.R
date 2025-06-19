@@ -20,15 +20,14 @@
 #' @import ggplot2
 #' @export
 
-
 uncertainty.plot <- function(results) {
 
 	# Create a dataframe for the results
 	df <- data.frame(
-		t = results$t,
-		ci_lower = results$ci_lower,
-		ci_upper = results$ci_upper,
-		estimates = results$estimates
+		t = results[[1]]$t,
+		ci_lower = results[[1]]$ci_lower,
+		ci_upper = results[[1]]$ci_upper,
+		estimates = results[[1]]$estimates
 	)
 
 	# Define labels for the plot 

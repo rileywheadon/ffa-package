@@ -35,14 +35,14 @@
 #' @importFrom stats nlminb rnorm
 #' @export
 
-mle.estimation <- function(data, model, years) {
+mle.estimation <- function(data, model, years, prior = NULL) {
 
 	# Get the name and signature for the model 
 	name <- substr(model, 1, 3)
 	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 	
 	# Determine the initial parameters using L-moments estimation
-	p <- lmom.estimation(data, name)
+	p <- pelxxx(name, data)
 
 	# Initialize the non-stationary parameters to 0 (if necessary)
 	if (is.null(signature)) {
@@ -62,8 +62,15 @@ mle.estimation <- function(data, model, years) {
 	# Add the kappa parameter (if necessary)
 	if (name %in% c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
 		initial_params <- c(initial_params, p[3])
-		lower <- c(lower, -Inf)
-		upper <- c(upper,  Inf)
+
+		# Shape parameter must between -0.5 and 0.5 if we are doing GMLE 
+		if (!is.null(prior)) {
+			lower <- c(lower, -0.5 + 1e-8)
+			upper <- c(upper,  0.5 - 1e-8)
+		} else {
+			lower <- c(lower, -Inf)
+			upper <- c(upper,  Inf)
+		} 
 	}
 
 	# NOTE: The parameters for the Weibull distribution produced by lmom.estimation
@@ -73,7 +80,11 @@ mle.estimation <- function(data, model, years) {
 
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
-		0 - llvxxx(model, data, theta, years)
+		if (!is.null(prior)) {
+			0 - gllxxx(model, data, theta, prior, years)
+		} else {
+			0 - llvxxx(model, data, theta, years)
+		}
 	} 
 
 	# Helper function for running parameter optimization

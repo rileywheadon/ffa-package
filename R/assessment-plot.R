@@ -5,7 +5,7 @@
 #' to model‐derived quantile estimates. The 1:1 line is drawn in black, and the
 #' model estimates are overplotted as semi‐transparent red points.
 #'
-#' @param ams Numeric vector of observed annual maximum series.
+#' @param data Numeric vector of observed annual maximum series.
 #' @param assessment List containing assessment results. See \code{\link{model.assessment}}.
 #'
 #' @return A \code{ggplot} object showing:
@@ -15,7 +15,7 @@
 #'   }
 #'
 #' @details
-#' The function orders \code{ams} in decreasing order to define the observed quantiles,
+#' The function orders \code{data} in decreasing order to define the observed quantiles,
 #' then binds the corresponding \code{assessment$estimates} into a data frame. Axis labels
 #' are rendered with expression notation (cubic meters per second). 
 #'
@@ -25,10 +25,10 @@
 #' @import ggplot2
 #' @export
 
-assessment.plot <- function(ams, assessment) {
+assessment.plot <- function(data, assessment) {
 
 	# Create a dataframe for the plot
-	x <- ams[order(ams, decreasing = TRUE)]   
+	x <- data[order(data, decreasing = TRUE)]   
 	df <- data.frame(x = x, y = x, estimates = assessment$estimates) 
 
 	# Get labels for the plot

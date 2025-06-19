@@ -9,13 +9,14 @@ pp.test(ams, alpha = 0.05, quiet = TRUE)
 \arguments{
 \item{ams}{Numeric vector of annual maximum streamflow data with no missing values.}
 
-\item{alpha}{Numeric significance level. Must be one of 0.01, 0.05, or 0.10.}
+\item{alpha}{Numeric significance level. Must be greater than 0.01 (default is 0.05).}
 
 \item{quiet}{Logical. If FALSE, prints a summary message to the console (default is TRUE).}
 }
 \value{
 A named list containing:
 \describe{
+\item{statistic}{The Z-statistic used to perform the test.}
 \item{p.value}{Reported p-value from the test. See notes on interpolation thresholds.}
 \item{reject}{Logical. TRUE if the null hypothesis of a unit root is rejected at \code{alpha}.}
 \item{msg}{Character string summarizing the test result (printed if \code{quiet = FALSE}).}
@@ -24,20 +25,18 @@ A named list containing:
 \description{
 Applies the Phillips–Perron (PP) test to assess the presence of a unit root in annual
 maximum streamflow (AMS) data. The null hypothesis is that the series contains a unit root
-(i.e., is non-stationary).
+(i.e., is non-stationary). This implementation of the PP test assumes the time series
+has a stationary drift term and linear trend term.
 }
 \details{
-The test is implemented using the \pkg{aTSA} package, which interpolates p-values from the
-critical values in Banerjee et al. (1993). The critical values are only available for
-\code{alpha = 0.01}, \code{0.05}, and \code{0.10}. A reported p-value of 0.01 indicates
-\eqn{p \leq 0.01}, and 0.10 indicates \eqn{p \geq 0.10}.
+The implementation of this test is based on the \pkg{aTSA} package, which interpolates p-values
+\code{alpha > 0.01}. Note that a reported p-value of 0.01 indicates \eqn{p \leq 0.01}.
 
 The null hypothesis is that the time series contains a unit root (non-stationary). Rejection
-of the null suggests that the series is stationary.
+of the null suggests that the series is trend-stationary.
 }
 \references{
-Banerjee, A., Dolado, J., Galbraith, J.W., & Hendry, D.F. (1993). \emph{Cointegration,
-Error Correction, and the Econometric Analysis of Non-Stationary Data}. Oxford University Press.
+Fuller, W. A. (1996). Introduction to statistical time series, second ed., Wiley, New York.
 }
 \seealso{
 \code{\link[aTSA]{pp.test}}, \code{\link{kpss.test}}

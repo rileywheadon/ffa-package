@@ -1,15 +1,15 @@
-validate_results <- function(
-  data,
+validate_rfpl <- function(
+  df,
   model,
   ci_lower,
   estimates,
   ci_upper,
-  years = "last",
+  slices = "last",
   profile = FALSE
 ) {
 
 	start <- Sys.time()
-	results <- rfpl.uncertainty(data, model, years = years)[[1]]
+	results <- rfpl.uncertainty(df$max, df$year, model, slices = slices)[[1]]
 	end <- Sys.time()
 	if (profile) print(end - start)
 
@@ -19,47 +19,47 @@ validate_results <- function(
 
 }
 
-test_that("Test rfpl.uncertainty.R on data set #1", {
+test_that("Test RFPL uncertainty on data set #1", {
 
 	# Load dataset and run RFPL uncertainty quantification
-	df <- load_data("Application_1.csv", clean = FALSE)
+	df <- load_data("Application_1.csv")
 
 	# Mean-Trend Gumbel (GUM10) Distribution
-	validate_results(
+	validate_rfpl(
 		df, "GUM10", 
 		c(1522.3984, 2230.8239, 2687.2499, 3117.1193, 3665.8628, 4073.3393),
 		c(1786.9985, 2536.4715, 3032.6878, 3508.6704, 4124.7811, 4586.4694),
 		c(2059.8899, 2878.7089, 3436.0561, 3977.4988, 4684.6410, 5217.6126),
-		years = "first"
+		slices = "first"
 	)
 
-	validate_results(
+	validate_rfpl(
 		df, "GUM10",
 		c(1726.5051, 2440.6013, 2892.3421, 3320.9486, 3868.1696, 4274.6928),
 		c(1978.4872, 2727.9602, 3224.1765, 3700.1592, 4316.2698, 4777.9581),
 		c(2233.9381, 3053.6494, 3612.1645, 4154.6522, 4862.9392, 5396.6203),
-		years = "last"
+		slices = "last"
 	)
 
 	# Mean + Variance Gumbel (GUM11) Distribution
-	validate_results(
+	validate_rfpl(
 		df, "GUM11",
 		c(1487.1335, 2108.2817, 2493.1834, 2869.1881, 3327.9479, 3671.6414),
 		c(1865.8820, 2664.2553, 3192.8478, 3699.8865, 4356.1960, 4848.0077),
 		c(2138.3204, 3108.6654, 3773.7758, 4418.3952, 5250.5948, 5863.6975),
-		years = "first"
+		slices = "first"
 	)
 
-	validate_results(
+	validate_rfpl(
 		df, "GUM11",
 		c(1686.0641, 2283.9914, 2653.9173, 3003.7117, 3457.5044, 3809.0401),
 		c(1908.3342, 2612.8210, 3079.2526, 3526.6649, 4105.7944, 4539.7704),
 		c(2293.5600, 3248.7259, 3887.1865, 4525.8726, 5354.7381, 5976.2188),
-		years = "last"
+		slices = "last"
 	)
 
 	# Gumbel (GUM) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"GUM",
 		c(1741.2485, 2426.5020, 2867.1961, 3286.3350, 3826.2831, 4229.8251),
@@ -68,7 +68,7 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Normal (NOR) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"NOR",
 		c(1860.2251, 2613.6934, 2988.8282, 3292.8548, 3631.0182, 3854.8348),
@@ -77,7 +77,7 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Log-Normal (LNO) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"LNO",
 		c(1709.2364, 2441.4758, 2915.7406, 3366.9094, 3951.2060, 4392.6614),
@@ -86,7 +86,7 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Generalized Extreme Value (GEV) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"GEV",
 		c(1718.8134, 2426.0784, 2884.1104, 3318.2255, 3850.3142, 4236.9194),
@@ -95,7 +95,7 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Generalized Logistic (GLO) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"GLO",
 		c(1708.2399, 2346.9592, 2786.4139, 3239.1327, 3885.4426, 4422.7280),
@@ -104,7 +104,7 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Generalized Normal (GNO) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"GNO",
 		c(1729.1479, 2448.4230, 2893.6878, 3299.6882, 3800.9875, 4163.0932),
@@ -113,7 +113,7 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Pearson Type III (PE3) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"PE3",
 		c(1754.3914, 2486.4995, 2917.4085, 3299.0242, 3757.7884, 4081.5189),
@@ -122,42 +122,42 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 	)
 
 	# Mean-Trend Pearson Type III (PE3100) Distribution
-	validate_results(
+	validate_rfpl(
 		df, "PE3100", 
 		c(1442.4692, 2211.3244, 2679.8338, 3093.2880, 3585.4198, 3929.8215),
 		c(1727.4635, 2523.9812, 3026.7669, 3490.3593, 4067.3897, 4486.0666),
 		c(2034.6779, 2879.3335, 3441.6215, 3982.4646, 4700.2479, 5229.5854),
-		years = "first"
+		slices = "first"
 	)
 
-	validate_results(
+	validate_rfpl(
 		df, "PE3100",
 		c(1803.0525, 2553.0046, 2999.6536, 3394.4067, 3867.7855, 4201.9633),
 		c(2064.6345, 2861.1522, 3363.9379, 3827.5302, 4404.5607, 4823.2376),
 		c(2312.6469, 3205.8802, 3809.6343, 4397.3172, 5144.7349, 5701.3670),
-		years = "last"
+		slices = "last"
 	)
 
 	# Mean + Variance Pearson Type III (PE3110) Distribution
-	validate_results(
+	validate_rfpl(
 		df, "PE3110",
 		c(1447.8079, 2173.9898, 2593.4718, 2965.0315, 3414.7963, 3741.4092),
 		c(1781.2818, 2655.4764, 3211.6196, 3726.5904, 4369.9306, 4838.0941),
 		c(2154.2783, 3277.9496, 4067.1122, 4811.2966, 5772.8855, 6489.3704),
-		years = "first"
+		slices = "first"
 	)
 
-	validate_results(
+	validate_rfpl(
 		df, "PE3110",
 		c(1718.2682, 2311.9220, 2674.6010, 3019.0793, 3425.9003, 3719.6816),  
 		c(2001.6687, 2739.1120, 3208.2572, 3642.6706, 4185.3724, 4580.3006),  
 		c(2324.7155, 3271.9784, 3873.1472, 4466.8554, 5204.2687, 5750.7678),
-		years = "last"
+		slices = "last"
 	)
 
 
 	# Log-Pearson Type III (LP3) Distribution
-	validate_results(
+	validate_rfpl(
 		df,
 		"LP3",
 		c(1718.8998, 2450.5955, 2911.0602, 3330.1357, 3838.6974, 4195.3573),
@@ -167,12 +167,103 @@ test_that("Test rfpl.uncertainty.R on data set #1", {
 
 	# Weibull (WEI) Distribution
 	# NOTE: Weibull distribution was not implemented in the MATLAB version
-	validate_results(
+	validate_rfpl(
 		df,
 		"WEI",
 		c(1755, 2570, 3013, 3381, 3792, 4065),
 		c(1940, 2795, 3281, 3696, 4176, 4502),
 		c(2132, 3059, 3620, 4118, 4710, 5124)
+	)
+
+})
+
+validate_rfgpl <- function(
+  df,
+  model,
+  ci_lower,
+  estimates,
+  ci_upper,
+  slices = "last",
+  parallel = FALSE,
+  profile = FALSE
+) {
+
+	start <- Sys.time()
+
+	results <- rfpl.uncertainty(
+		df$max,
+		df$year,
+		model,
+		slices = slices,
+		prior = c(6, 9), 
+		parallel = parallel
+	)[[1]]
+
+	end <- Sys.time()
+	if (profile) print(end - start)
+
+	# NOTE: We check the estimates in test-mle-estimation.R
+	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
+	expect_equal(results$ci_upper, ci_upper, tol = 1e-2)
+
+}
+
+test_that("Test RFGPL uncertainty on data set #1", {
+
+	# Load dataset and run RFPL uncertainty quantification
+	df <- load_data("Application_1.csv")
+
+	# Generalized Extreme Value (GEV) Distribution
+	validate_rfgpl(
+		df, "GEV",
+		c(1702.9263, 2442.3196, 2969.9533, 3518.5173, 4290.0510, 4908.4944),
+		c(1852.7564, 2679.6241, 3288.2573, 3922.5641, 4823.9808, 5564.3972),
+		c(2019.0482, 2963.9259, 3668.3303, 4419.4717, 5497.4190, 6391.6196),
+	)
+
+	# Mean-Trend Generalized Extreme Value (GEV100) Distribution
+	# NOTE: This test is very slow. Do not run unless necessary.
+	# validate_rfgpl(
+	# 	df, "GEV100", 
+	# 	c(1474.8399, 2230.1006, 2766.5121, 3314.3495, 4078.8225, 4696.9330),
+	# 	c(1729.5074, 2544.4615, 3144.6884, 3770.5317, 4660.3977, 5391.7103),
+	# 	c(1994.6171, 2904.0166, 3592.7090, 4322.1180, 5358.6528, 6236.7929),
+	# 	slices = "all",
+	# 	parallel = TRUE,
+	# 	profile = TRUE
+	# )
+
+	validate_rfgpl(
+		df, "GEV100", 
+		c(1474.8399, 2230.1006, 2766.5121, 3314.3495, 4078.8225, 4696.9330),
+		c(1729.5074, 2544.4615, 3144.6884, 3770.5317, 4660.3977, 5391.7103),
+		c(1994.6171, 2904.0166, 3592.7090, 4322.1180, 5358.6528, 6236.7929),
+		slices = "first",
+	)
+
+	validate_rfgpl(
+		df, "GEV100",
+		c(1727.0595, 2489.0774, 3022.5734, 3577.3108, 4339.2693, 4954.5987),
+		c(1959.8133, 2774.7674, 3374.9943, 4000.8376, 4890.7037, 5622.0162),
+		c(2199.2593, 3107.0631, 3796.5272, 4527.1532, 5581.6741, 6439.1248),
+		slices = "last"
+	)
+
+	# Mean + Variance Generalized Extreme Value (GEV110) Distribution
+	validate_rfgpl(
+		df, "GEV110",
+		c(1472.2997, 2165.6533, 2653.1161, 3154.0474, 3859.5708, 4439.9176),
+		c(1760.2623, 2611.9013, 3239.3026, 3893.6073, 4824.1462, 5589.0489),
+		c(2134.9612, 3236.3356, 4085.1330, 4979.3474, 6261.8499, 7324.1361),
+		slices = "first"
+	)
+
+	validate_rfgpl(
+		df, "GEV110",
+		c(1630.1067, 2212.7119, 2615.7992, 3039.7553, 3642.2869, 4121.0152),
+		c(1927.2545, 2700.8260, 3270.7150, 3865.0414, 4710.2802, 5405.0664),
+		c(2230.9144, 3236.0134, 3971.3349, 4773.2613, 5921.5257, 6871.0598),
+		slices = "last"
 	)
 
 })

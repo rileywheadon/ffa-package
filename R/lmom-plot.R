@@ -6,7 +6,7 @@
 #' Optionally highlights a small inset around the recommended distribution based on
 #' either the L-distance or L-kurtosis metric.
 #'
-#' @param ams Numeric vector of observed annual maximum series (AMS) values.
+#' @param data Numeric vector of observed annual maximum series (AMS) values.
 #' @param metric Character string specifying the selection metric.  
 #'   Must be one of:
 #'   \itemize{
@@ -39,41 +39,42 @@
 #' @importFrom grDevices pdf
 #' @export
 
-lmom.plot <- function(ams, metric, results) {
+lmom.plot <- function(data, metric, results) {
 
 	# Create dataframes for the sample L-moments
-	reg_sample_t3 = unname(samlmu(ams))[3]
-	reg_sample_t4 = unname(samlmu(ams))[4]
-	log_sample_t3 = unname(samlmu(log(ams)))[3]
-	log_sample_t4 = unname(samlmu(log(ams)))[4]
+	reg_sample_t3 = unname(samlmu(data))[3]
+	reg_sample_t4 = unname(samlmu(data))[4]
+	log_sample_t3 = unname(samlmu(log(data)))[3]
+	log_sample_t4 = unname(samlmu(log(data)))[4]
 
 	reg_lm <- data.frame(x = reg_sample_t3, y = reg_sample_t4)
 	log_lm <- data.frame(x = log_sample_t4, y = log_sample_t4)
 
 	# Generate a dataframe with the moments for each distribution
 	dlm <- list()
-	for (distribution in get.distributions()) {
 
-		if (distribution$n_params == 2) {
-			dlm[[distribution$name]] = data.frame(
-				x = distribution$t3_t4[1],
-				y = distribution$t3_t4[2]
-			)
+	for (model in c("GUM", "NOR", "LNO", "GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
+
+		info <- models.info(model)
+
+		if (info$n.params == 2) {
+			dm <- lmrxxx(model, c(0, 1))
+			dlm[[model]] = data.frame(x = dm[3], y = dm[4])
 		}
 
 		else {
 
 			# Generate a sequence of parameter sets to pass to a 3-parameter distribution
-			kappa_seq <- seq(distribution$kappa_lower, distribution$kappa_upper, 0.001)
-			params <- lapply(kappa_seq, function(i) c(0, 1, i))
+			k_seq <- seq(info$k.bounds[1], info$k.bounds[2], 0.001)
+			params <- lapply(k_seq, function(i) c(0, 1, i))
 
-			# Get a vector of likelihood moment ratios for each parameterss set in params
-			lmr <- lapply(params, function(p) suppressWarnings(distribution$lmr_function(p)))
+			# Get a matrix of likelihood moment ratios for each parameter set in params
+			lmr <- lapply(params, function(p) suppressWarnings(lmrxxx(model, p)))
+			lmr <- do.call(rbind, lmr)
 
 			# Return the t3 and t4 values as a dataframe
-			df = data.frame(x = sapply(lmr, `[`, 3), y = sapply(lmr, `[`, 4)) 
-			df <- df[(!is.na(df$x) & !is.na(df$y)), ]
-			dlm[[distribution$name]] <- df
+			df = data.frame(x = lmr[, 3], y = lmr[, 4]) 
+			dlm[[model]] <- df[(!is.na(df$x) & !is.na(df$y)), ]
 
 		}
 

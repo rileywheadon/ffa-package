@@ -4,7 +4,7 @@
 \alias{runs.plot}
 \title{Plot Residuals and Runs Test p-Value for Sen’s Estimator}
 \usage{
-runs.plot(df, results, name, show_trend = TRUE)
+runs.plot(df, residuals, results, name, show_trend = TRUE)
 }
 \arguments{
 \item{df}{A \code{data.frame} containing at least:

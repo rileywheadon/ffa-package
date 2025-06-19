@@ -4,10 +4,10 @@
 \alias{fixed.likelihood}
 \title{Compute Profile Log-Likelihood with Fixed Quantile Parameter}
 \usage{
-fixed.likelihood(data, model, yp, pe, params)
+fixed.likelihood(df, model, yp, pe, params, ti = 0)
 }
 \arguments{
-\item{data}{Numeric vector of observations. NaN values are handled internally.}
+\item{df}{Dataframe of observations with columns "year" and "max".}
 
 \item{model}{Character string specifying the distribution code (e.g. 'GEV',
 'GLO', 'GNO', 'PE3', 'LP3', 'WEI') with optional signature '10'/'100'

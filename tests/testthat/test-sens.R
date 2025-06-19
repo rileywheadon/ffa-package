@@ -5,8 +5,8 @@ test_that("Test sens-estimator.R on means of data set #1", {
 	test <- sens.trend(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, 1.1628, tol = 1e-4)
-	expect_equal(test$sens.intercept, -477.5581, tol = 1e-4)
+  	expect_equal(test$sens.slope, 116.279, tol = 1e-4)
+	expect_equal(test$sens.intercept, 1731.7442, tol = 1e-4)
 
 })
 
@@ -17,8 +17,8 @@ test_that("Test sens-estimator.R on means of data set #2", {
 	test <- sens.trend(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, -13.8571, tol = 1e-4)
-	expect_equal(test$sens.intercept, 2.9026e4, tol = 1e-4)
+  	expect_equal(test$sens.slope, -1385.7143, tol = 1e-4)
+	expect_equal(test$sens.intercept, 2697.7143, tol = 1e-4)
 
 })
 
@@ -29,8 +29,8 @@ test_that("Test sens-estimator.R on means of data set #3.1", {
 	test <- sens.trend(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, -0.4882, tol = 1e-4)
-	expect_equal(test$sens.intercept, 1.1597e3, tol = 1e-4)
+  	expect_equal(test$sens.slope, -48.8234, tol = 1e-4)
+	expect_equal(test$sens.intercept, 232.0352, tol = 1e-4)
 
 })
 
@@ -41,8 +41,8 @@ test_that("Test sens-estimator.R on means of data set #3.2", {
 	test <- sens.trend(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, 0.1370, tol = 1e-4)
-	expect_equal(test$sens.intercept, -200.4634, tol = 1e-4)
+  	expect_equal(test$sens.slope, 13.7026, tol = 1e-4)
+	expect_equal(test$sens.intercept, 59.8854, tol = 1e-4)
 
 })
 
@@ -53,7 +53,7 @@ test_that("Test sens-estimator.R on means of data set #3.3", {
 	test <- sens.trend(df$max, df$year)
 
 	# Ensure the test results are the same as MATLAB
-  	expect_equal(test$sens.slope, 0.4039, tol = 1e-4)
-	expect_equal(test$sens.intercept, -756.2370, tol = 1e-4)
+  	expect_equal(test$sens.slope, 40.3939, tol = 1e-4)
+	expect_equal(test$sens.intercept, 11.2479, tol = 1e-4)
 
 })
