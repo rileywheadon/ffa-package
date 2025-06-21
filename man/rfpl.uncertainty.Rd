@@ -4,13 +4,19 @@
 \alias{rfpl.uncertainty}
 \title{Compute Uncertainty via Regula Falsi Profile Likelihood}
 \usage{
-rfpl.uncertainty(df, model, years = "last", alpha = 0.05, eps = 0.01)
+rfpl.uncertainty(
+  data,
+  years,
+  model,
+  slices = "last",
+  alpha = 0.05,
+  eps = 0.01,
+  prior = NULL,
+  parallel = FALSE
+)
 }
 \arguments{
-\item{model}{Character string specifying the distribution code. The first three
-letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO',
-'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of '10'/'100' indicates
-a trend in location. '11'/'110' indicates trends in both location and scale.}
+\item{data}{Numeric vector of observations. NaN values are removed internally.}
 
 \item{years}{Character string or numeric vector specifying the years at which
 to compute the estimates and confidence intervals. Defaults to "last".
@@ -22,11 +28,14 @@ to compute the estimates and confidence intervals. Defaults to "last".
 }
 If the chosen model is stationary, the results will be the same for all years}
 
+\item{model}{Character string specifying the distribution code. The first three
+letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO',
+'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of '10'/'100' indicates
+a trend in location. '11'/'110' indicates trends in both location and scale.}
+
 \item{alpha}{Numeric significance level for confidence intervals (default 0.05).}
 
 \item{eps}{Numeric tolerance for the Regula Falsi convergence criterion (default 1e-2).}
-
-\item{data}{Numeric vector of observations. NaN values are removed internally.}
 }
 \value{
 A list with components:

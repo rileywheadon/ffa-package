@@ -4,10 +4,10 @@
 \alias{ld.selection}
 \title{L-Distance Method for Distribution Selection Using L-Moment Ratios}
 \usage{
-ld.selection(ams)
+ld.selection(data)
 }
 \arguments{
-\item{ams}{A numeric vector containing the AMS data without NaN values}
+\item{data}{A numeric vector containing the AMS data without NaN values}
 }
 \value{
 A named list containing:

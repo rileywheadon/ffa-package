@@ -4,10 +4,10 @@
 \alias{lk.selection}
 \title{L-Kurtosis Method for Distribution Selection Using L-Moment Ratios}
 \usage{
-lk.selection(ams)
+lk.selection(data)
 }
 \arguments{
-\item{ams}{A numeric vector containing the AMS data without NaN values}
+\item{data}{A numeric vector containing the AMS data without NaN values}
 }
 \value{
 A named list containing:

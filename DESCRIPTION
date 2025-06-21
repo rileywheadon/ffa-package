@@ -18,7 +18,10 @@ Depends:
 	R (>= 4.5.0)
 Imports:
 	ggplot2,
-	patchwork
+	patchwork,
+    Rcpp
+LinkingTo:
+    Rcpp
 Suggests:
     testthat,
 	parallel,

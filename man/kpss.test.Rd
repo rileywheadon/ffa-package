@@ -4,10 +4,10 @@
 \alias{kpss.test}
 \title{Kwiatkowski–Phillips–Schmidt–Shin (KPSS) Unit Root Test}
 \usage{
-kpss.test(ams, alpha = 0.05, quiet = TRUE)
+kpss.test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{ams}{A numeric vector of annual maximum streamflow data. Must not contain NA values.}
+\item{data}{A numeric vector of annual maximum streamflow data. Must not contain NA values.}
 
 \item{alpha}{A numeric value indicating the significance level. Must be at least 0.01 (default is 0.05).}
 

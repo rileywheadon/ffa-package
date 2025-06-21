@@ -4,10 +4,10 @@
 \alias{z.selection}
 \title{Z-Statistic Method for Distribution Selection}
 \usage{
-z.selection(ams, n_sim = 1e+05, parallel = FALSE)
+z.selection(data, n_sim = 1e+05, parallel = FALSE)
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow values (no missing values).}
+\item{data}{Numeric vector of annual maximum streamflow values (no missing values).}
 
 \item{n_sim}{Number of bootstrap samples to generate (default = 100000).}
 

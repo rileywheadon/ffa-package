@@ -4,12 +4,12 @@
 \alias{white.test}
 \title{White Test for Heteroskedasticity in Annual Maximum Streamflow}
 \usage{
-white.test(ams, year, alpha = 0.05, quiet = TRUE)
+white.test(data, years, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow values with no missing values.}
+\item{data}{Numeric vector of annual maximum streamflow values with no missing values.}
 
-\item{year}{Numeric vector of years corresponding to \code{ams}, with no missing values.}
+\item{years}{Numeric vector of years corresponding to \code{data}, with no missing values.}
 
 \item{alpha}{Numeric significance level for the test (default is 0.05).}
 
@@ -30,7 +30,7 @@ Performs the White test for heteroskedasticity by regressing the squared residua
 model on the original regressors and their squared terms. The null hypothesis is homoskedasticity.
 }
 \details{
-The White test regresses the squared residuals from a primary linear model \code{lm(ams ~ year)}
+The White test regresses the squared residuals from a primary linear model \code{lm(data ~ years)}
 against both the original regressor and its square. The test statistic is calculated as
 \code{n * R^2}, where \code{R^2} is from the auxiliary regression. Under the null hypothesis,
 this statistic follows a \eqn{\chi^2} distribution with 2 degrees of freedom.

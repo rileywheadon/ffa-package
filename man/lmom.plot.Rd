@@ -4,10 +4,10 @@
 \alias{lmom.plot}
 \title{Plot L-Moment Ratio Diagram with Sample and Candidate Distributions}
 \usage{
-lmom.plot(ams, metric, results)
+lmom.plot(data, metric, results)
 }
 \arguments{
-\item{ams}{Numeric vector of observed annual maximum series (AMS) values.}
+\item{data}{Numeric vector of observed annual maximum series (AMS) values.}
 
 \item{metric}{Character string specifying the selection metric.
 Must be one of:

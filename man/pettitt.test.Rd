@@ -4,12 +4,12 @@
 \alias{pettitt.test}
 \title{Pettitt Test for Abrupt Changes in the Mean of a Time Series}
 \usage{
-pettitt.test(ams, year, alpha = 0.05, quiet = TRUE)
+pettitt.test(data, years, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow values, no missing data.}
+\item{data}{Numeric vector of annual maximum streamflow values, no missing data.}
 
-\item{year}{Numeric vector of years corresponding to \code{ams}, no missing data.}
+\item{years}{Numeric vector of years corresponding to \code{data}, no missing data.}
 
 \item{alpha}{Numeric significance level for hypothesis testing (default 0.05).}
 

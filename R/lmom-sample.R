@@ -11,17 +11,20 @@
 lmom.sample <- function(data) {
 
 	# Sort the data in increasing order
-	x <- sort(data)
+	x <- sort_cpp(data)
 	n <- length(x)
+	i <- 1:n
 
-	# Helper function for the probability weighted moments
-	pwm <- function(r) mean(x * choose(0:(n-1), r) / choose(n - 1, r))
+	# Recursively compute the probability weighted moments
+	vb0 <- x / n
+	vb1 <- vb0 * (i - 1) / (n - 1)
+	vb2 <- vb1 * (i - 2) / (n - 2)
+	vb3 <- vb2 * (i - 3) / (n - 3)
 
-	# Compute the probability weighted moments
-	b0 <- pwm(0)
-	b1 <- pwm(1)
-	b2 <- pwm(2)
-	b3 <- pwm(3)
+	b0 <- sum(vb0)
+	b1 <- sum(vb1)
+	b2 <- sum(vb2)
+	b3 <- sum(vb3)
 
 	# Compute the first four sample L-moments
 	l1 <- b0

@@ -5,27 +5,18 @@
 \title{Sample Bootstrap Confidence Intervals for Flood Quantile Estimates}
 \usage{
 sb.uncertainty(
-  df,
+  data,
+  years,
   model,
   method,
-  years = "last",
+  slices = "last",
   n_sim = 10000,
   alpha = 0.05,
-  parallel = FALSE
+  parallel = FALSE,
+  prior = NULL
 )
 }
 \arguments{
-\item{df}{Dataframe with columns "max", a vector of annual maxima observations,
-and "year", a vector of years corresponding to the observations in "max".}
-
-\item{model}{Character string specifying the distribution code. The first three letters
-denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO', 'GNO', 'PE3', 'LP3', or 'WEI'.
-A trailing signature of '10' or '100' indicates a linear trend in location; '11' or
-'110' indicates linear trends in both location and scale.}
-
-\item{method}{Character string specifying the estimation method.
-Currently supports \code{"L-moments"}, \code{"MLE"}, and \code{"GMLE"}.}
-
 \item{years}{Character string or numeric vector specifying the years at which
 to compute the estimates and confidence intervals. Defaults to "last".
 \itemize{
@@ -36,11 +27,22 @@ to compute the estimates and confidence intervals. Defaults to "last".
 }
 If the chosen model is stationary, the results will be the same for all years}
 
+\item{model}{Character string specifying the distribution code. The first three letters
+denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO', 'GNO', 'PE3', 'LP3', or 'WEI'.
+A trailing signature of '10' or '100' indicates a linear trend in location; '11' or
+'110' indicates linear trends in both location and scale.}
+
+\item{method}{Character string specifying the estimation method.
+Currently supports \code{"L-moments"}, \code{"MLE"}, and \code{"GMLE"}.}
+
 \item{n_sim}{Integer number of bootstrap simulations (default is 100000).}
 
 \item{alpha}{Numeric significance level for the confidence intervals (default is 0.05).}
 
 \item{parallel}{Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).}
+
+\item{df}{Dataframe with columns "max", a vector of annual maxima observations,
+and "year", a vector of years corresponding to the observations in "max".}
 }
 \value{
 A named list containing a list of years. Each year maps to a sublist:

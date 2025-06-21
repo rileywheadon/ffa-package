@@ -4,10 +4,10 @@
 \alias{pp.test}
 \title{Phillips–Perron Unit Root Test}
 \usage{
-pp.test(ams, alpha = 0.05, quiet = TRUE)
+pp.test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow data with no missing values.}
+\item{data}{Numeric vector of annual maximum streamflow data with no missing values.}
 
 \item{alpha}{Numeric significance level. Must be greater than 0.01 (default is 0.05).}
 

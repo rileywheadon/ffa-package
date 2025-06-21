@@ -4,7 +4,7 @@
 \alias{mle.estimation}
 \title{Fit Extreme‐Value Model using Maximum Likelihood}
 \usage{
-mle.estimation(data, model, years)
+mle.estimation(data, model, years, prior = NULL)
 }
 \arguments{
 \item{model}{Character string specifying the distribution code. The first

@@ -4,12 +4,12 @@
 \alias{sens.trend}
 \title{Sen's Slope Estimator}
 \usage{
-sens.trend(data, year, quiet = TRUE)
+sens.trend(data, years, quiet = TRUE)
 }
 \arguments{
 \item{data}{Numeric vector of AMS values or variances with no missing values.}
 
-\item{year}{Numeric vector of years corresponding to \code{data}, with no missing values.}
+\item{years}{Numeric vector of years corresponding to \code{data}, with no missing values.}
 
 \item{quiet}{Logical. If FALSE, prints a summary message describing results (default is TRUE).}
 }

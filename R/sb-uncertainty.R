@@ -74,7 +74,7 @@ sb.uncertainty <- function(
 
 	# Split the model into name and signature
 	name <- substr(model, 1, 3)
-	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
+	signature <- if (nchar(model) == 3) NULL else substr(model, 4, 5)
 
 	# Set return periods and their quantiles
     t <- c(2, 5, 10, 20, 50, 100)
@@ -104,20 +104,20 @@ sb.uncertainty <- function(
 	params <- efunc(data, years)
 	estimates <- qntxxx(model, returns, params, slices)
 
-	# Define the apply() function based on 'parallel' parameter 
-	afunc <- if(parallel) { parallel::mclapply } else { lapply }
-
-	# Generate the bootstrapped quantiles in parallel, one slice at a time
+	# Generate the bootstrapped quantiles in parallel, one year at a time
 	quantiles <- sapply(1:n, function(i) {
-		x <- runif(n_sim)
-		qntxxx(model, x, params, years)
+		u <- runif(n_sim)
+		qntxxx(model, u, params, years[i])
 	})
 
 	# Some distributions generate negative values. Adjust these to epsilon.
 	quantiles[quantiles < 0] = 1e-8
 
+	# Define the apply() function based on 'parallel' parameter 
+	# afunc <- if (parallel) { parallel::mclapply } else { lapply }
+
 	# Vectorized, parallel bootstrap function 
-	bootstrap_list <- afunc(1:n_sim, function(i) {
+	bootstrap_list <- lapply(1:n_sim, function(i) {
 		bootstrap_params <- efunc(quantiles[i, ], years)
 		qntxxx(model, returns, bootstrap_params, slices)
 	})

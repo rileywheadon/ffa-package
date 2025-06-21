@@ -4,10 +4,10 @@
 \alias{bbmk.test}
 \title{Block-Bootstrap Mann-Kendall Test for Trend Detection}
 \usage{
-bbmk.test(ams, alpha = 0.05, n_sim = 10000, parallel = FALSE, quiet = TRUE)
+bbmk.test(data, alpha = 0.05, n_sim = 10000, parallel = FALSE, quiet = TRUE)
 }
 \arguments{
-\item{ams}{A numeric vector of annual maximum streamflow data without  NA values.}
+\item{data}{A numeric vector of annual maximum streamflow data without  NA values.}
 
 \item{alpha}{A numeric value indicating the significance level (default is 0.05).}
 

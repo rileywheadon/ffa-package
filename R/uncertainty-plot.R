@@ -20,18 +20,27 @@
 #' @import ggplot2
 #' @export
 
-uncertainty.plot <- function(results) {
+uncertainty.plot <- function(model, results, slice = 1) {
+
+	# Get the name and signature for the model 
+	name <- substr(model, 1, 3)
+	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 
 	# Create a dataframe for the results
 	df <- data.frame(
-		t = results[[1]]$t,
-		ci_lower = results[[1]]$ci_lower,
-		ci_upper = results[[1]]$ci_upper,
-		estimates = results[[1]]$estimates
+		t = results[[slice]]$t,
+		ci_lower = results[[slice]]$ci_lower,
+		ci_upper = results[[slice]]$ci_upper,
+		estimates = results[[slice]]$estimates
 	)
 
 	# Define labels for the plot 
-	x_label <- "Time (Years)"
+	x_label <- if(is.null(signature)) {
+		"Return Period (Years)" 
+	} else { 
+		sprintf("Effective Return Period in %s", slice)
+	}
+
 	y_label <- expression("AMS (" * m^3/s * ")")
 
 	# Define properties for the legend

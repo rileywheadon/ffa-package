@@ -50,12 +50,11 @@ rfpl.uncertainty <- function(
   slices = "last",
   alpha = 0.05,
   eps = 1e-2,
-  prior = NULL,
-  parallel = FALSE
+  prior = NULL
 ) {
 
 	# Helper function for computing the profile likelihood
-	profile.likelihood <- function(yp, p, params, ti, prior = NULL) {
+	profile.likelihood <- function(yp, p, params, slice, prior = NULL) {
 
 		# Get the name and signature for the model 
 		name <- substr(model, 1, 3)
@@ -66,9 +65,11 @@ rfpl.uncertainty <- function(
 			lower <- c(1e-8)
 			upper <- c( Inf)
 		} else if (signature == "10") {
+			covariate <- get.covariates(years)
 			lower <- c(-Inf, 1e-8)
 			upper <- c( Inf,  Inf)
 		} else if  (signature == "11") {
+			covariate <- get.covariates(years)
 			lower <- c(-Inf, 1e-8, -Inf)
 			upper <- c( Inf,  Inf,  Inf)
 		} 
@@ -78,6 +79,9 @@ rfpl.uncertainty <- function(
 			if (is.null(prior)) {
 				lower <- c(lower, -Inf)
 				upper <- c(upper,  Inf)
+			} else if (name == "WEI") {
+				lower <- c(lower, 1e-8)
+				upper <- c(upper, Inf)
 			} else {
 				lower <- c(lower, -0.49)
 				upper <- c(upper, 0.49)
@@ -88,7 +92,7 @@ rfpl.uncertainty <- function(
 		objective <- function(theta) {
 
 			# Get the quantile at probability p with location 0
-			qp <- qntxxx(model, p, c(0, theta), ti)
+			qp <- qntxxx(model, p, c(0, theta), slice)
 
 			# Log-transform yp, qp if necessary
 			name <- substr(model, 1, 3)
@@ -101,9 +105,9 @@ rfpl.uncertainty <- function(
 			theta <- c(yp - qp, theta)
 
 			if (!is.null(prior)) {
-				0 - gllxxx(model, data, theta, prior, years)
+				0 - gllfast(name, signature, data, theta, prior, covariate)
 			} else {
-				0 - llvxxx(model, data, theta, years)
+				0 - llvfast(name, signature, data, theta, covariate)
 			}
 
 		} 
@@ -139,8 +143,6 @@ rfpl.uncertainty <- function(
 		0 - result$objective
 
 	} 
-
-
 
 	# Define the non-exceedance probabilities for the target return periods
 	t <- c(2, 5, 10, 20, 50, 100)
@@ -219,11 +221,8 @@ rfpl.uncertainty <- function(
 
 	}
 
-	# Define apply function
-	afunc <- if (parallel) parallel::mclapply else lapply
-
 	# Run uncertainty quantification at each year in slices
-	afunc(1:length(slices), function (i) {
+	lapply(1:length(slices), function (i) {
 		if (length(slices) == 1) {
 			compute.uncertainty(yp_hat, slices[i])
 		} else {

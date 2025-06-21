@@ -1,47 +1,39 @@
 qntxxx <- function(model, p, params, years = NULL) {
 
 	# Validate the parameters
-	info <- models.info(model)
-	if (length(params) != info$n.params) {
-		str <- "Error: 'params' for model '%s' must have length %d."
-		stop(sprintf(str, model, info$n.params))
-	}
+	# info <- models.info(model)
+	# if (length(params) != info$n.params) {
+	# 	str <- "Error: 'params' for model '%s' must have length %d."
+	# 	stop(sprintf(str, model, info$n.params))
+	# }
 
 	# Check that params is a numeric vector
-	if (!is.numeric(params) | !is.vector(params)) {
-		stop("Error: 'params' is not a numeric vector.")
-	}
+	# if (!is.numeric(params) | !is.vector(params)) {
+	# 	stop("Error: 'params' is not a numeric vector.")
+	# }
 
 	# Check that all parameters are defined
-	if (any(is.nan(params)) | any(is.na(params))) {
-		stop("Error: 'params' contains NaN or NA values.")
-	}
+	# if (any(is.nan(params)) | any(is.na(params))) {
+	# 	stop("Error: 'params' contains NaN or NA values.")
+	# }
 
 	# Check that 0 <= p <= 1 for all entries in p.
-	if (any(p < 0) | any(p > 1)) {
-		stop("Error: 'p' must be between 0 and 1 inclusive.")
-	}
+	# if (any(p < 0) | any(p > 1)) {
+	# 	stop("Error: 'p' must be between 0 and 1 inclusive.")
+	# }
 
 	# Split the model into name and signature
 	name <- substr(model, 1, 3)
 	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 
 	# Check that years is not NULL if the model is non-stationary
-	if (!is.null(signature) & (is.null(years) | any(is.nan(years)) | any(is.na(years)))) {
-		stop("Error: 'years' must not be NULL or contain NaN/NA values.")
-	}
+	# if (!is.null(signature) & (is.null(years) | any(is.nan(years)) | any(is.na(years)))) {
+	# 	stop("Error: 'years' must not be NULL or contain NaN/NA values.")
+	# }
 
 	# Get the covariates if years is not NULL
-	if (!is.null(years)) {
-		covariates <- get.covariates(years)
-		n <- length(covariates)
-	} 
-
-	# Otherwise set covariates to a dummy varwiable
-	else {
-		covariates <- 0
-		n <- 1
-	}
+	covariates <- if (!is.null(signature)) get.covariates(years) else 0
+	n <- length(covariates)
 
 	# Compute location/scale parameter at the covariates
 	if (is.null(signature)) {
@@ -67,39 +59,45 @@ qntxxx <- function(model, p, params, years = NULL) {
 	}
 
 	# Helper function for GUM quantiles
-	xfgum <- function(p, u, s) u - s * log(-log(p))
+	xfgum <- function(p, u, s) {
+		u - s * log(-log(p))
+	}
 
 	# Helper function for NOR quantiles
-	xfnor <- function(p, u, s) qnorm(p, u, s)
+	xfnor <- function(p, u, s) {
+		qnorm(p, u, s)
+	}
 
 	# Helper function for LNO quantiles
-	xflno <- function(p, u, s) qlnorm(p, u, s)
+	xflno <- function(p, u, s) {
+		qlnorm(p, u, s)
+	}
 
 	# Helper function for GEV quantiles
 	xfgev <- function(p, u, s, k) {
-		ifelse(
-			k != 0,
-			u - s * (1 - (-log(p))^(-k)) / k,
+		if (k != 0) {
+			u - s * (1 - (-log(p))^-k) / k
+		} else {
 			u - s * log(-log(p))
-		) 
+		}
 	}
 
 	# Helper function for GLO quantiles
 	xfglo <- function(p, u, s, k) {
-		ifelse(
-			k != 0,
-			u + s * (1 - ((1 - p) / p)^k) / k,
+		if (k != 0) {
+			u + s * (1 - ((1 - p) / p)^k) / k
+		} else {
 			u - s * log((1 - p) / p)
-		)
+		}
 	}
 
 	# Helper function for GNO quantiles
 	xfgno <- function(p, u, s, k) {
-		ifelse(
-			k != 0,
-			u + s * (1 - exp(-k * qnorm(p))) / k,
+		if (k != 0) {
+			u + s * (1 - exp(-k * qnorm(p))) / k
+		} else {
 			qnorm(p, u, s)
-		)
+		}
 	}
 
 	# Helper function for PE3 quantiles
@@ -110,51 +108,54 @@ qntxxx <- function(model, p, params, years = NULL) {
 		b <- abs((s * k) / 2)
 
 		# Vectorize three cases (k = 0, k > 0, k < 0)
-		ifelse(
-			k == 0,
-			qnorm(p, u, s), 
-			ifelse(
-				k > 0,
-				u - (a * b) + qgamma(p, shape = a, scale = b),
-				u + (a * b) - qgamma(1 - p, shape = a, scale = b)
-			)
-		)
+		if (k == 0) {
+			qnorm(p, u, s)
+		} else if (k > 0) {
+			u - (a * b) + qgamma(p, shape = a, scale = b)
+		} else if (k < 0) {
+			u + (a * b) - qgamma(1 - p, shape = a, scale = b)
+		}
 	}
 
 	# Helper function for LP3 quantiles
-	xflp3 <- function(p, u, s, k) exp(xfpe3(p, u, s, k))
+	xflp3 <- function(p, u, s, k) {
+		exp(xfpe3(p, u, s, k))
+	}
 
 	# Helper function for WEI quantiles
-	xfwei <- function(p, u, s, k) u + s * (-log(1 - p))^(1 / k)
+	xfwei <- function(p, u, s, k) {
+		u + s * ((-log(1 - p))^(1/ k))
+	}
 
 	# Helper function for KAP quantiles
 	xfkap <- function(p, u, s, k, h) {
 		u + (s / k) * (1 - ((1 - p^h) / h)^k)
 	}
 
-	# Compute the result using an outer product on the quantile functions
-	result <- outer(1:length(covariates), p, function(i, p) {
-		switch(
-			name,
-			"GUM" = xfgum(p, u[i], s[i]),
-			"NOR" = xfnor(p, u[i], s[i]),
-			"LNO" = xflno(p, u[i], s[i]),
-			"GEV" = xfgev(p, u[i], s[i], k[i]),
-			"GLO" = xfglo(p, u[i], s[i], k[i]), 
-			"GNO" = xfgno(p, u[i], s[i], k[i]),
-			"PE3" = xfpe3(p, u[i], s[i], k[i]),
-			"LP3" = xflp3(p, u[i], s[i], k[i]),
-			"WEI" = xfwei(p, u[i], s[i], k[i]),
-			"KAP" = xfkap(p, u[i], s[i], k[i], h[i])
-		)
-	})
+	# General helper function for all quantiles
+	xfxxx <- switch(
+		name,
+		GUM = function(p, i) xfgum(p, u[i], s[i]),
+		NOR = function(p, i) xfnor(p, u[i], s[i]),
+		LNO = function(p, i) xflno(p, u[i], s[i]),
+		GEV = function(p, i) xfgev(p, u[i], s[i], k[i]),
+		GLO = function(p, i) xfglo(p, u[i], s[i], k[i]), 
+		GNO = function(p, i) xfgno(p, u[i], s[i], k[i]),
+		PE3 = function(p, i) xfpe3(p, u[i], s[i], k[i]),
+		LP3 = function(p, i) xflp3(p, u[i], s[i], k[i]),
+		WEI = function(p, i) xfwei(p, u[i], s[i], k[i]),
+		KAP = function(p, i) xfkap(p, u[i], s[i], k[i], h[i])
+	)
+
+	# Compute the result using apply across rows 
+	result <- vapply(1:n, function(i) xfxxx(p, i), numeric(length(p)))
 
 	# Collapse the result to a vector if possible
 	if (length(p) == 1 | length(covariates) == 1) {
 		return (as.vector(result))
+	} else {
+		return (t(result))
 	}
-
-	return (result)
 
 }
 

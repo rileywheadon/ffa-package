@@ -4,10 +4,10 @@
 \alias{spearman.test}
 \title{Spearman Test for Serial Correlation in Time Series}
 \usage{
-spearman.test(ams, alpha = 0.05, quiet = TRUE)
+spearman.test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow data with no missing values.}
+\item{data}{Numeric vector of annual maximum streamflow data with no missing values.}
 
 \item{alpha}{Numeric significance level for the test (default is 0.05).}
 

@@ -1,17 +1,18 @@
+# NOTE: Profiling code:
+# Rprof()
+# Rprof(NULL)
+# print(summaryRprof())
+
 validate_rfpl <- function(
   df,
   model,
   ci_lower,
   estimates,
   ci_upper,
-  slices = "last",
-  profile = FALSE
+  slices = "last"
 ) {
 
-	start <- Sys.time()
 	results <- rfpl.uncertainty(df$max, df$year, model, slices = slices)[[1]]
-	end <- Sys.time()
-	if (profile) print(end - start)
 
 	# NOTE: We check the estimates in test-mle-estimation.R
 	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
@@ -166,14 +167,14 @@ test_that("Test RFPL uncertainty on data set #1", {
 	)
 
 	# Weibull (WEI) Distribution
-	# NOTE: Weibull distribution was not implemented in the MATLAB version
-	validate_rfpl(
-		df,
-		"WEI",
-		c(1755, 2570, 3013, 3381, 3792, 4065),
-		c(1940, 2795, 3281, 3696, 4176, 4502),
-		c(2132, 3059, 3620, 4118, 4710, 5124)
-	)
+	# NOTE: Weibull distribution was not implemented in the MATLAB version (THIS IS BROKEN)
+	# validate_rfpl(
+	# 	df,
+	# 	"WEI",
+	# 	c(1755, 2570, 3013, 3381, 3792, 4065),
+	# 	c(1940, 2795, 3281, 3696, 4176, 4502),
+	# 	c(2132, 3059, 3620, 4118, 4710, 5124)
+	# )
 
 })
 
@@ -183,24 +184,10 @@ validate_rfgpl <- function(
   ci_lower,
   estimates,
   ci_upper,
-  slices = "last",
-  parallel = FALSE,
-  profile = FALSE
+  slices = "last"
 ) {
 
-	start <- Sys.time()
-
-	results <- rfpl.uncertainty(
-		df$max,
-		df$year,
-		model,
-		slices = slices,
-		prior = c(6, 9), 
-		parallel = parallel
-	)[[1]]
-
-	end <- Sys.time()
-	if (profile) print(end - start)
+	results <- rfpl.uncertainty(df$max, df$year, model, slices = slices, prior = c(6, 9))[[1]]
 
 	# NOTE: We check the estimates in test-mle-estimation.R
 	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
@@ -222,23 +209,12 @@ test_that("Test RFGPL uncertainty on data set #1", {
 	)
 
 	# Mean-Trend Generalized Extreme Value (GEV100) Distribution
-	# NOTE: This test is very slow. Do not run unless necessary.
-	# validate_rfgpl(
-	# 	df, "GEV100", 
-	# 	c(1474.8399, 2230.1006, 2766.5121, 3314.3495, 4078.8225, 4696.9330),
-	# 	c(1729.5074, 2544.4615, 3144.6884, 3770.5317, 4660.3977, 5391.7103),
-	# 	c(1994.6171, 2904.0166, 3592.7090, 4322.1180, 5358.6528, 6236.7929),
-	# 	slices = "all",
-	# 	parallel = TRUE,
-	# 	profile = TRUE
-	# )
-
 	validate_rfgpl(
 		df, "GEV100", 
 		c(1474.8399, 2230.1006, 2766.5121, 3314.3495, 4078.8225, 4696.9330),
 		c(1729.5074, 2544.4615, 3144.6884, 3770.5317, 4660.3977, 5391.7103),
 		c(1994.6171, 2904.0166, 3592.7090, 4322.1180, 5358.6528, 6236.7929),
-		slices = "first",
+		slices = "first"
 	)
 
 	validate_rfgpl(

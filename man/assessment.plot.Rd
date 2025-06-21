@@ -4,10 +4,10 @@
 \alias{assessment.plot}
 \title{Plot Model vs. Observed Quantiles for Assessment Results}
 \usage{
-assessment.plot(ams, assessment)
+assessment.plot(data, assessment)
 }
 \arguments{
-\item{ams}{Numeric vector of observed annual maximum series.}
+\item{data}{Numeric vector of observed annual maximum series.}
 
 \item{assessment}{List containing assessment results. See \code{\link{model.assessment}}.}
 }
@@ -24,7 +24,7 @@ to model‐derived quantile estimates. The 1:1 line is drawn in black, and the
 model estimates are overplotted as semi‐transparent red points.
 }
 \details{
-The function orders \code{ams} in decreasing order to define the observed quantiles,
+The function orders \code{data} in decreasing order to define the observed quantiles,
 then binds the corresponding \code{assessment$estimates} into a data frame. Axis labels
 are rendered with expression notation (cubic meters per second).
 }

@@ -46,14 +46,17 @@ mle.estimation <- function(data, model, years, prior = NULL) {
 
 	# Initialize the non-stationary parameters to 0 (if necessary)
 	if (is.null(signature)) {
+		covariate <- NULL
 		initial_params <- c(p[1], p[2])
 		lower <- c(-Inf, 1e-8)
 		upper <- c( Inf,  Inf)
 	} else if (signature == "10") {
+		covariate <- get.covariates(years)
 		initial_params <- c(p[1], 0, p[2])	
 		lower <- c(-Inf, -Inf, 1e-8)
 		upper <- c( Inf,  Inf,  Inf)
 	} else if  (signature == "11") {
+		covariate <- get.covariates(years)
 		initial_params <- c(p[1], 0, p[2], 0)
 		lower <- c(-Inf, -Inf, 1e-8, -Inf)
 		upper <- c( Inf,  Inf,  Inf,  Inf)
@@ -81,9 +84,9 @@ mle.estimation <- function(data, model, years, prior = NULL) {
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
 		if (!is.null(prior)) {
-			0 - gllxxx(model, data, theta, prior, years)
+			0 - gllfast(name, signature, data, theta, prior, covariate)
 		} else {
-			0 - llvxxx(model, data, theta, years)
+			0 - llvfast(name, signature, data, theta, covariate) 
 		}
 	} 
 

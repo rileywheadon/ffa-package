@@ -200,6 +200,7 @@ llvxxx <- function(model, data, params, years = NULL) {
 
 }
 
+
 llvgum    <- function(data, params, years = NULL) llvxxx("GUM", data, params)
 llvgum10  <- function(data, params, years) llvxxx("GUM10", data, params, years)
 llvgum11  <- function(data, params, years) llvxxx("GUM11", data, params, years)
@@ -235,3 +236,132 @@ llvlp3110 <- function(data, params, years) llvxxx("LP3110", data, params, years)
 llvwei    <- function(data, params, years = NULL) llvxxx("WEI", data, params)
 llvwei100 <- function(data, params, years) llvxxx("WEI100", data, params, years)
 llvwei110 <- function(data, params, years) llvxxx("WEI110", data, params, years)
+
+
+# Faster version of the llv function without as much error handling used for MLE
+llvfast <- function(name, signature, data, params, covariate) {
+
+	# Do as little error handling as possible
+	if (any(is.nan(params))) return (-Inf)
+	if (any(is.nan(data))) return (-Inf)
+
+	# Parse the stationary/non-stationary signature
+	# - u: mu (location parameter)
+	# - s: sigma (scale parameter)
+	# - k: kappa (shape parameter)
+
+	if (is.null(signature)) {
+		u <- params[1]
+		s <- params[2]
+	} else if (signature == "10") {
+		u <- params[1] + (covariate * params[2])
+		s <- params[3]
+	} else if (signature == "11") {
+		u <- params[1] + (covariate * params[2])
+		s <- params[3] + (covariate * params[4])
+	}
+
+	# Distribution functions
+	if (name == "GUM") {
+		
+		# Normalize the data
+		z <- ((data - u) / s)
+		
+		# Compute the log-likelihood
+		ll <- -log(s) - z - exp(-z)
+
+	} else if (name == "NOR") {
+
+		# Normalize the data
+		z <- ((data - u) / s)
+
+		# Compute the log-likelihood
+		ll <- -log(s * sqrt(2 * pi)) - (z^2 / 2)
+
+	} else if (name == "LNO") {
+
+		# Normalize log(data)
+		log_z <- ((log(data) - u) / s)
+
+		# Subtract log(data) from ll because of the chain rule.
+		ll <- -log(s * sqrt(2 * pi)) - (log_z^2 / 2) - log(data)
+
+	} else if (name == "GEV") {
+
+		# Get the shape-normalized data
+		k <- params[length(params)]
+		t <- 1 + k * ((data - u) / s)
+
+		# Check for support and then compute the log-likelihood
+		if (any(t <= 0)) return (-Inf)
+		ll <- -log(s) - (1 + (1 / k)) * log(t) - t^(-1 / k)
+
+	} else if (name == "GLO") {
+
+		# Get the shape-normalized data
+		k <- params[length(params)]
+		t <- 1 - k * ((data - u) / s)
+
+		# Check for support and then compute the log-likelihood
+		if (any(t <= 0)) return (-Inf)
+		ll <- -log(s) + ((1 / k) - 1) * log(t) - 2 * log(1 + t^(1 / k))
+	} 
+
+	else if (name == "GNO") {
+
+		# Get the shape-normalized data
+		k <- params[length(params)]
+		t <- 1 - k * ((data - u) / s)
+
+		# Check for support and then compute the log-likelihood
+		if (any(t <= 0)) return (-Inf)
+		ll <- -log(s * sqrt(2 * pi)) - log(t) - (log(t)^2 / (2 * k^2))
+
+	} else if (name == "PE3") {
+
+		k <- params[length(params)]
+
+		# Reparameterize
+		a <- 4 / (k^2)
+		b <- s * abs(k) / 2
+		x <- u - (2 * s) / k
+
+		# Check for support 
+		if ((k > 0 & any(data <= x)) | (k < 0 & any(data >= x))) return (-Inf)
+
+		# Compute the log-likelihood
+		t <- abs(data - x)
+		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a)
+
+	} else if (name == "LP3") {
+
+		k <- params[length(params)]
+
+		# Reparameterize
+		a <- 4 / (k^2)
+		b <- s * abs(k) / 2
+		x <- u - (2 * s) / k
+
+		# Check for support
+		if ((k > 0 & any(log(data) <= x)) | (k < 0 & any(log(data) >= x))) return (-Inf)
+
+		# Compute the log-likelihood
+		t <- abs(log(data) - x)
+		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a) - log(data)
+
+	} else if (name == "WEI") {
+
+		# Check for support
+		k <- params[length(params)]
+		if (k <= 0 | any(data <= u)) return (-Inf) 
+		
+		# Compute the log-likelihood
+		t <- data - u
+		ll <- log(k) - k * log(s) + (k - 1) * log(t) - (t / s)^k
+
+	}
+
+	# The sum of the log-likelihood over all data points is the total log-likelihood
+	sum(ll)
+
+}

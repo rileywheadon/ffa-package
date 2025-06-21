@@ -4,12 +4,12 @@
 \alias{mks.test}
 \title{Mann–Kendall–Sneyers Test for Detecting Change Points in Trends}
 \usage{
-mks.test(ams, year, alpha = 0.05, quiet = TRUE)
+mks.test(data, years, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow values with no missing values.}
+\item{data}{Numeric vector of annual maximum streamflow values with no missing values.}
 
-\item{year}{Numeric vector of years corresponding to \code{ams}, with no missing values.}
+\item{years}{Numeric vector of years corresponding to \code{data}, with no missing values.}
 
 \item{alpha}{Numeric significance level for the test (default 0.05).}
 

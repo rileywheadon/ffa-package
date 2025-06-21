@@ -4,22 +4,22 @@
 \alias{mw.variance}
 \title{Compute moving‐window standard deviations for an AMS data frame}
 \usage{
-mw.variance(df, window_length = 10, window_step = 5)
+mw.variance(data, years, window_length = 10, window_step = 5)
 }
 \arguments{
-\item{df}{A data.frame (or tibble) containing at least two numeric columns:
-\describe{
-\item{year}{Numeric or integer vector of years.}
-\item{max}{Numeric vector of annual maximum values.}
-}
-If either column is missing or not numeric, the function will throw an error.}
-
 \item{window_length}{Integer(1). The number of consecutive rows in each moving
 window. Must be a positive integer less than or equal to \code{nrow(df)}.
 Defaults to \code{10}. If \code{nrow(df) < window_length}, an error is raised.}
 
 \item{window_step}{Integer(1). The offset (in rows) between the start of
 successive windows. Must be a positive integer. Defaults to \code{5}.}
+
+\item{df}{A data.frame (or tibble) containing at least two numeric columns:
+\describe{
+\item{year}{Numeric or integer vector of years.}
+\item{max}{Numeric vector of annual maximum values.}
+}
+If either column is missing or not numeric, the function will throw an error.}
 }
 \value{
 A data.frame with two columns:

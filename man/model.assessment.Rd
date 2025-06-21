@@ -5,8 +5,9 @@
 \title{Evaluate Goodness-of-Fit and Uncertainty Coverage for Fitted Flood Models}
 \usage{
 model.assessment(
-  ams,
-  distribution,
+  data,
+  years,
+  model,
   params,
   uncertainty,
   plotting_position = "Weibull",
@@ -14,11 +15,11 @@ model.assessment(
 )
 }
 \arguments{
-\item{ams}{Numeric vector of annual maximum streamflow values (no missing values).}
+\item{data}{Numeric vector of annual maximum streamflow values (no missing values).}
 
-\item{distribution}{The three letter code for a probability distribution.}
+\item{model}{The 3, 5, or 6 letter code for a probability model}
 
-\item{params}{Numeric vector of fitted distribution parameters.}
+\item{params}{Numeric vector of fitted model parameters.}
 
 \item{uncertainty}{A list containing bootstrap confidence interval estimates, typically the output
 from \code{\link{sb.uncertainty}}. Must include \code{t}, \code{ci_lower}, and \code{ci_upper}.}
@@ -44,7 +45,7 @@ A named list of model assessment metrics:
 }
 \description{
 Computes multiple performance metrics and diagnostic indicators to assess the quality of
-a fitted flood frequency distribution. This includes residual statistics, information criteria,
+a fitted flood frequency model This includes residual statistics, information criteria,
 and coverage-based metrics using bootstrapped confidence intervals.
 }
 \details{
