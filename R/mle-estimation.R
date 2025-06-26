@@ -1,41 +1,46 @@
-#' Fit Extreme‐Value Model using Maximum Likelihood
+#' Maximum Likelihood Parameter Estimation
 #'
 #' @description
-#' Estimates parameters of an extreme‐value distribution (GUM, NOR, LNO, GEV, 
-#' GLO, GNO, PE3, LP3, or WEI) with optional linear covariate trends in 
-#' location and/or scale by maximizing the log‐likelihood.
-#' Initial values are obtained from L‐moment estimation, and optimization is
-#' performed via nlminb with repeated perturbations if needed.
+#' Estimates parameters of a probability distribution (`GUM`, `NOR`, `LNO`, `GEV`, `GLO`, 
+#' `GNO`, `PE3`, `LP3`, or `WEI`) or non-stationary variant by maximizing the log‐likelihood.
+#' Initial values are obtained through L‐moment parameter estimation, and optimization is
+#' performed via \link[stats]{nlminb} with repeated perturbations if needed.
 #'
-#' @param df Dataframe with columns "max", a vector of annual maxima observations,
-#'   and "year", a vector of years corresponding to the observations in "max". Any
-#'   `NaN` values are removed prior to likelihood computation.  
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @param model Character string specifying the distribution code. The first
-#'   three letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV',
-#'   'GLO', 'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of
-#'   '10' or '100' indicates a linear trend in location; '11' or '110' 
-#'   indicates linear trends in both location and scale.
+#' @param years Numeric; a vector of years with the same length as `data`.
 #'
-#' @return
-#' A list with components:
-#' - params: Numeric vector of estimated parameters.
-#' - mll   : Maximized log‐likelihood value.
+#' @param model Character (1); string specifying the probability model. The first three 
+#'   letters denote the family: `GUM`, `NOR`, `LNO`, `GEV`, `GLO`, `GNO`, `PE3`, 
+#'   `LP3`, or `WEI`. A trailing signature of `10` or `100` indicates a linear trend 
+#'   in location; `11` or `110` indicates linear trends in both location and scale.
+#'
+#' @param prior Numeric (2); optional vector of parameters \eqn{(p, q)} that specifies 
+#'  the parameters of a Beta prior on \eqn{\kappa}. Only works with models `GEV`, 
+#'  `GEV100`, and `GEV110`.
+#'
+#' @return List; results of parameter estimation:
+#' - `params`: Numeric vector of estimated parameters.
+#' - `mll`: Maximum log‐likelihood value.
 #'
 #' @details
-#' 1. Removes NaN values from data.  
-#' 2. Calls lmom.estimation() on cleaned data to obtain initial estimates of
-#'    location, scale, and shape (if applicable).  
-#' 3. Initializes trend parameters to zero if there is a trailing signature.  
-#' 4. For Weibull models, forces the location estimate to zero to ensure support.  
-#' 5. Defines an objective function as the negative of likelihood().  
-#' 6. Runs nlminb() with box constraints on scale (>0) and repeats up to 100
-#'    times with random perturbations if convergence returns Inf.  
+#' 1. Calls \link{pelxxx} on `data` to obtain initial parameter estimates.
+#' 2. Initializes trend parameters to zero if there is a trailing signature.  
+#' 3. For `WEI` models, sets the location parameter to zero to ensure support.  
+#' 4. Defines an objective function as the negative of the \link{llvxxx} function.  
+#' 5. Runs \link[stats]{nlminb} with box constraints. Attempts optimization
+#'    up to 100 times.  
 #'
+#' @seealso \link{llvxxx}, \link{gllxxx}, \link{pelxxx}, \link[stats]{nlminb}
+#'
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' mle.estimation(data, years, "GNO100")
+#' 
 #' @importFrom stats nlminb rnorm
 #' @export
-
-mle.estimation <- function(data, model, years, prior = NULL) {
+mle.estimation <- function(data, years, model, prior = NULL) {
 
 	# Get the name and signature for the model 
 	name <- substr(model, 1, 3)
@@ -84,9 +89,9 @@ mle.estimation <- function(data, model, years, prior = NULL) {
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
 		if (!is.null(prior)) {
-			0 - gllfast(name, signature, data, theta, prior, covariate)
+			0 - gllxxx(name, signature, data, theta, prior, covariate)
 		} else {
-			0 - llvfast(name, signature, data, theta, covariate) 
+			0 - llvxxx(name, signature, data, theta, covariate) 
 		}
 	} 
 

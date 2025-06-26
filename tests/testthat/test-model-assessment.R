@@ -112,22 +112,21 @@ test_that("Test model-assessment on data set #3.3 with LP3/L-moments/S-bootstrap
 
 })
 
-test_that("Test model-assessment on data set #1 with GEV110/MLE/S-bootstrap.", {
+test_that("Test model-assessment on data set #1 with GEV100/MLE/S-bootstrap.", {
 	set.seed(1)
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
 	df <- load_data("Application_1.csv")
-	params <- mle.estimation(df$max, "GEV110", df$year)$params
+	params <- mle.estimation(df$max, df$year, "GEV100")$params
 	uncertainty <- sb.uncertainty(df$max, df$year, "GEV100", "MLE", "all", 1000)
 	assessment <- model.assessment(df$max, df$year, "GEV100", params, uncertainty)
-	print(assessment)
 
-	# Test results against MATLAB (TBD)
-	expect_equal(assessment$R2  ,   0.9891, tol = 1e-4)
-	expect_equal(assessment$RMSE,  97.0161, tol = 1e-4)
-	expect_equal(assessment$bias,   5.5685, tol = 1e-4)
-	expect_equal(assessment$AIC , 474.6374, tol = 1e-4)
-	expect_equal(assessment$BIC , 485.1373, tol = 1e-4)
+	# Test results against MATLAB 
+	expect_equal(assessment$R2  ,   0.9873, tol = 1e-4)
+	expect_equal(assessment$RMSE, 122.7218, tol = 1e-4)
+	expect_equal(assessment$bias, -16.8442, tol = 1e-4)
+	expect_equal(assessment$AIC , 498.6110, tol = 1e-4)
+	expect_equal(assessment$BIC , 509.1118, tol = 1e-4)
 	expect_equal(assessment$AIC_MLL, 1657.8901, tol = 1e-4)
 	expect_equal(assessment$BIC_MLL, 1668.3900, tol = 1e-4)
 	expect_equal(assessment$AW  , 748.5596, tol = 1e-2)

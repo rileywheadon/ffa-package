@@ -2,7 +2,7 @@
 % Please edit documentation in R/rfpl-uncertainty.R
 \name{rfpl.uncertainty}
 \alias{rfpl.uncertainty}
-\title{Compute Uncertainty via Regula Falsi Profile Likelihood}
+\title{Regula-Falsi Confidence Intervals for Flood Quantile Estimates}
 \usage{
 rfpl.uncertainty(
   data,
@@ -11,52 +11,67 @@ rfpl.uncertainty(
   slices = "last",
   alpha = 0.05,
   eps = 0.01,
-  prior = NULL,
-  parallel = FALSE
+  prior = NULL
 )
 }
 \arguments{
-\item{data}{Numeric vector of observations. NaN values are removed internally.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{years}{Character string or numeric vector specifying the years at which
-to compute the estimates and confidence intervals. Defaults to "last".
+\item{years}{Numeric; a vector of years with the same length as \code{data}.}
+
+\item{model}{Character (1); string specifying the probability model. The first three
+letters denote the family: \code{GUM}, \code{NOR}, \code{LNO}, \code{GEV}, \code{GLO}, \code{GNO}, \code{PE3},
+\code{LP3}, or \code{WEI}. A trailing signature of \code{10} or \code{100} indicates a linear trend
+in location; \code{11} or \code{110} indicates linear trends in both location and scale.}
+
+\item{slices}{Character (1) or Numeric; specifies the years at which
+to compute the estimates and confidence intervals (default is "last").
 \itemize{
-\item{\code{"all"} returns estimates for all years in the dataset.}
-\item{\code{"first"} returns estimates for first year in the dataset.}
-\item{\code{"last"} returns estimates for last year in the dataset.}
-\item{Passing a numeric vector to \code{years} allows for custom values.}
+\item \code{"all"}: returns estimates for all values in \code{years}.
+\item \code{"first"}: returns estimates for first year in the dataset.
+\item \code{"last"}: returns estimates for last year in the dataset.
+\item Passing a numeric vector to \code{slices} allows for custom values.
 }
-If the chosen model is stationary, the results will be the same for all years}
 
-\item{model}{Character string specifying the distribution code. The first three
-letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO',
-'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of '10'/'100' indicates
-a trend in location. '11'/'110' indicates trends in both location and scale.}
+If the chosen model is stationary, the results will be the same for all slices.}
 
-\item{alpha}{Numeric significance level for confidence intervals (default 0.05).}
+\item{alpha}{Numeric (1); the significance level (default is 0.05).}
 
-\item{eps}{Numeric tolerance for the Regula Falsi convergence criterion (default 1e-2).}
+\item{eps}{Numeric (1); tolerance for the Regula-Falsi convergence (default is 0.01).}
+
+\item{prior}{Numeric (2); optional vector of parameters \eqn{(p, q)} that specifies
+the parameters of a Beta prior on \eqn{\kappa}. Only works with models \code{GEV},
+\code{GEV100}, and \code{GEV110}.}
 }
 \value{
-A list with components:
+List; quantiles and confidence intervals. Each year maps to a sub-list:
 \itemize{
-\item ci_lower : Numeric vector of lower confidence bounds for each return period.
-\item estimates: Numeric vector of profile‐likelihood point estimates (return levels).
-\item ci_upper : Numeric vector of upper confidence bounds for each return period.
+\item \code{estimates}: Estimated quantiles for each return period.
+\item \code{ci_lower}: Lower bound of the confidence interval for each return period.
+\item \code{ci_upper}: Upper bound of the confidence interval for each return period.
+\item \code{t}: Vector of return periods; \code{c(2, 5, 10, 20, 50, 100)}.
 }
 }
 \description{
-Calculates point estimates and confidence intervals for return levels at
-standard return periods (2, 5, 10, 20, 50, 100 years) using profile
-likelihood and the Regula Falsi root‐finding method.
+Calculates estimates and confidence intervals for return levels at standard
+return periods (2, 5, 10, 20, 50, and 100 years) using the profile likelihood
+and Regula-Falsi root‐finding method.
 }
 \details{
 \enumerate{
-\item Retrieves the quantile function for the specified model via get.distributions().
-\item Fits the model by ordinary MLE to obtain parameter estimates and log‐likelihood.
-\item Defines an objective function f(yp, pe) based on the chi-squared distribution.
+\item Fits the model using \link{mle.estimation} to obtain parameter estimates and log‐likelihood.
+\item Defines an objective function \eqn{f(y_p, p)} based on the chi-squared distribution.
 \item Iteratively brackets the root by scaling initial guesses by 0.05 until f changes sign.
-\item Uses the Regula Falsi method to solve f(yp, pe) = 0 for each return-period probability.
-\item Returns lower and upper confidence bounds at level alpha and the point estimates.
+\item Uses the Regula Falsi method to solve \eqn{f(y_p, p) = 0} for each return-period probability.
+\item Returns lower and upper confidence bounds at level alpha and the quantile estimates.
 }
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+rfpl.uncertainty(data, years, "GLO110")
+
+}
+\seealso{
+\link{qntxxx}, \link{sb.uncertainty}, \link[stats]{nlminb}
 }

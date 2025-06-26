@@ -2,34 +2,37 @@
 % Please edit documentation in R/lk-selection.R
 \name{lk.selection}
 \alias{lk.selection}
-\title{L-Kurtosis Method for Distribution Selection Using L-Moment Ratios}
+\title{L-Kurtosis Method for Distribution Selection}
 \usage{
 lk.selection(data)
 }
 \arguments{
-\item{data}{A numeric vector containing the AMS data without NaN values}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 }
 \value{
-A named list containing:
-\describe{
-\item{distance}{A list of interpolated L-moment matches and kurtosis-based metrics for each distribution.}
-\item{recommendation}{Name of the distribution with the smallest L-kurtosis deviation.}
+List; results of distribution selection:
+\itemize{
+\item \code{method}: \code{"L-kurtosis"}
+\item \code{metrics}: A list of L-kurtosis metrics for each distribution.
+\item \code{recommendation}: Name of the distribution with the smallest L-kurtosis metric
 }
 }
 \description{
-Selects a best-fit probability distribution by minimizing the absolute vertical
-distance (in \eqn{\tau_4}) between the sample L-moment ratios and the theoretical
-L-moment curves. For 3-parameter distributions, we use the shape parameter that best
-replicates the L-skewness of the data.
+Selects a probability distribution by minimizing the absolute distance
+between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis
+(\eqn{t_4}). For 3-parameter distributions, we use the shape parameter that
+best replicates the sample L-skewness (\eqn{t_3}) of the data.
 }
 \details{
-This method computes the vertical distance in \eqn{\tau_4} (L-kurtosis) between the sample
-and theoretical L-moment ratio diagrams at fixed \eqn{\tau_3} (L-skewness). The interpolated
-\eqn{\tau_4} and \eqn{\kappa} values are derived using \code{\link[stats]{approx}}.
+This method computes the distance between the sample and theoretical L-kurtosis values at
+a fixed L-skewness. For three parameter distributions, the shape parameter that best
+replicates the sample L-skewness is derived using \link[stats]{optim}.
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+lk.selection(data)
 
-Only 3-parameter distributions are considered in this method. Specifically, it evaluates
-GEV, GLO, PE3, LP3, GNO, and WEI. For more information, see the FFA framework website.
 }
 \seealso{
-\code{\link{ld.selection}}, \code{\link{z.selection}}
+\link{lmom.sample}, \link{ld.selection}, \link{z.selection}, \link[stats]{optim}
 }

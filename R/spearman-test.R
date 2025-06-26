@@ -1,31 +1,33 @@
-#' Spearman Test for Serial Correlation in Time Series
+#' Spearman Test for Autocorrelation
 #'
+#' @description
 #' Performs the Spearman rank autocorrelation test on annual maximum streamflow (AMS) data to
-#' assess the presence of serial correlation at various lags. Reports the first lag where
-#' autocorrelation is no longer statistically significant at the specified level.
+#' check for autocorrelation at various lags. Reports the first lag where the autocorrelation 
+#' is no longer statistically significant at the given significance level.
 #'
-#' @param data Numeric vector of annual maximum streamflow data with no missing values.
-#' @param alpha Numeric significance level for the test (default is 0.05).
-#' @param quiet Logical. If FALSE, prints a summary message describing the result (default is TRUE).
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list containing:
-#' \describe{
-#'   \item{rho}{Vector of Spearman autocorrelation estimates for lags \code{1} to \code{n - 3}.}
-#'   \item{sig}{Logical vector indicating which lags exhibit significant autocorrelation.}
-#'   \item{least.lag}{The smallest lag at which autocorrelation is not statistically significant.}
-#'   \item{reject}{Logical. TRUE if we reject the null hypothesis of no serial correlation.}
-#'   \item{msg}{Character string summarizing the test result (printed if \code{quiet = FALSE}).}
-#' }
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#'
+#' @return List; test results, including:
+#' - `rho`: Vector of Spearman autocorrelation estimates for lags \eqn{1} to \eqn{n - 3}.
+#' - `sig`: Logical vector indicating which lags exhibit significant autocorrelation.
+#' - `least.lag`: The smallest lag at which the autocorrelation is not statistically significant.
+#' - `reject`: Logical. TRUE if `least.lag > 0`.
+#' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
 #'
 #' @details
-#' For each lag from 1 to \code{n - 3}, the function computes the Spearman rank correlation
-#' between the AMS series and its lagged version. The first lag with a non-significant
-#' autocorrelation (p-value > \code{alpha}) is returned as \code{least.lag}.
+#' For each lag from \eqn{1} to \eqn{n - 3}, the function computes the Spearman correlation 
+#' coefficient between the AMS series and its lagged version. The first lag with an 
+#' insignificant autocorrelation coefficient returned as `least.lag`.
 #'
-#' This test is useful for identifying the minimum temporal separation required to ensure
-#' approximate independence, especially when constructing block-bootstrap resampling schemes.
+#' @seealso \link[stats]{cor.test}, \link{bbmk.test}
 #'
-#' @seealso \code{\link[stats]{cor.test}}, \code{\link{bbmk.test}}
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' spearman.test(data)
 #'
 #' @importFrom stats cor.test
 #' @export

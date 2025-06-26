@@ -1,18 +1,18 @@
-#' Sen's Slope Estimator
+#' Sen's Trend Estimator
 #'
-#' Computes Sen's slope estimator and intercept for a univariate time series
+#' Computes Sen's trend estimator for a univariate time series.
 #'
-#' @param data Numeric vector of AMS values or variances with no missing values.
-#' @param years Numeric vector of years corresponding to \code{data}, with no missing values.
-#' @param quiet Logical. If FALSE, prints a summary message describing results (default is TRUE).
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list containing:
-#' \describe{
-#'   \item{sens.slope}{Median slope of all pairwise data-year combinations (Sen's slope).}
-#'   \item{sens.intercept}{Median intercept estimate of the fitted line.}
-#'   \item{residuals}{Vector of residuals between observed and fitted values.}
-#'   \item{msg}{Character string summarizing the estimator.}
-#' }
+#' @param years Numeric; a vector of years with the same length as `data`.
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#'
+#' @return List; the estimated trend:
+#' - `sens.slope`: Median slope of all pairwise data-year combinations.
+#' - `sens.intercept`: Median intercept estimate of the fitted line.
+#' - `residuals`: Vector of residuals between observed and fitted values.
+#' - `msg`: Character string summarizing the results.
 #'
 #' @details
 #' Sen's slope estimator is a robust, non-parametric trend estimator computed from the median
@@ -21,9 +21,14 @@
 #'
 #' @references
 #' Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau.
-#' \emph{Journal of the American Statistical Association}, 63(324), 1379–1389. \cr
+#' \emph{Journal of the American Statistical Association}, 63(324), 1379–1389. 
 #'
-#' @seealso \code{\link{runs.test}}, \code{\link{mk.test}}
+#' @seealso \link{runs.test}
+#'
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' sens.trend(data, years)
 #'
 #' @importFrom stats median
 #' @export

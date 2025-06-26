@@ -4,41 +4,44 @@
 \alias{z.selection}
 \title{Z-Statistic Method for Distribution Selection}
 \usage{
-z.selection(data, n_sim = 1e+05, parallel = FALSE)
+z.selection(data, n_sim = 20000)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow values (no missing values).}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{n_sim}{Number of bootstrap samples to generate (default = 100000).}
-
-\item{parallel}{Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).}
+\item{n_sim}{Integer (1); the number of bootstrap simulations (default is 20000).}
 }
 \value{
-A list containing:
-\describe{
-\item{params}{Kappa parameters fitted to the raw AMS data.}
-\item{log_params}{Kappa parameters fitted to the log-transformed AMS data.}
-\item{bootstrap}{List of bootstrap estimates of bias and standard deviation for \eqn{\tau_4}.}
-\item{distance}{List of computed Z-statistics for each candidate distribution.}
-\item{recommendation}{Name of the best-fit distribution based on the smallest Z-statistic.}
+List; results of distribution selection:
+\itemize{
+\item \code{method}: \code{"Z-selection"}
+\item \code{params}: Kappa distribution parameters for the raw AMS data.
+\item \code{log_params}: Kappa distribution parameters for the log-transformed AMS data.
+\item \code{bootstrap}: Bias and standard deviation of the estimated L-kurtosis.
+\item \code{distance}: List of computed Z-statistics for each candidate distribution.
+\item \code{recommendation}: Name of the distribution with the smallest Z-statistic.
 }
 }
 \description{
 Selects the best-fit distribution by computing a bias-corrected Z-statistic for the sample
-\eqn{\tau_4} (L-kurtosis) against theoretical L-moment surfaces for a set of candidate
+L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set of candidate
 distributions. The distribution with the smallest absolute Z-score is selected.
 }
 \details{
-The method evaluates both raw and log-transformed data. Raw-data distributions include GEV,
-GLO, PE3, GNO, and WEI. Log-data distributions include LP3. A Kappa distribution is
-fitted to each and used to simulate bootstrapped L-moments. The observed \eqn{\tau_4} is then
-compared to each theoretical distribution using the Z-statistic framework.
+The method performs model selection using both raw and log-transformed data. The
+distributions which use the raw AMS data are GEV, GLO, PE3, GNO, and WEI. The LP3
+distribution uses log-transformed data.
 
-Using \code{parallel = TRUE} can reduce computation time by approximately 50\%.
-However, using this option will nullify any calls to \code{set.seed()},
-so your results may not be reproducible.
+The Z-statistic is determined by fitting a four-parameter Kappa distribution to the
+raw and log-transformed data. Then, bootstrapped samples from this Kappa distribution
+The L-moments of these bootstrapped samples are used to estimate the Z-statistic
+for each distribution.
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+z.selection(data)
+
 }
 \seealso{
-\code{\link{ld.selection}}, \code{\link{lk.selection}},
-\code{\link[lmom]{pelkap}}, \code{\link[lmom]{quakap}}
+\link{ld.selection}, \link{lk.selection}, \link{pelkap}, \link{qntxxx}
 }

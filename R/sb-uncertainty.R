@@ -1,57 +1,59 @@
 #' Sample Bootstrap Confidence Intervals for Flood Quantile Estimates
 #'
-#' Computes confidence intervals for flood quantile estimates using the nonparametric
-#' sample bootstrap method, based on L-moment parameter estimation. This function supports
-#' uncertainty quantification for return period estimates derived from a fitted distribution.
+#' @description
+#' Computes estimates and confidence intervals for return levels at standard return periods
+#' (2, 5, 10, 20, 50, and 100 years) using the sample bootstrap method. This function 
+#' supports a variety of probability models and parameter estimation methods.
 #'
-#' @param df Dataframe with columns "max", a vector of annual maxima observations,
-#'   and "year", a vector of years corresponding to the observations in "max". 
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @param model Character string specifying the distribution code. The first three letters 
-#'   denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO', 'GNO', 'PE3', 'LP3', or 'WEI'. 
-#'   A trailing signature of '10' or '100' indicates a linear trend in location; '11' or 
-#'   '110' indicates linear trends in both location and scale.
+#' @param years Numeric; a vector of years with the same length as `data`.
 #'
-#' @param method Character string specifying the estimation method. 
-#'   Currently supports \code{"L-moments"}, \code{"MLE"}, and \code{"GMLE"}.
+#' @param model Character (1); string specifying the probability model. The first three 
+#'   letters denote the family: `GUM`, `NOR`, `LNO`, `GEV`, `GLO`, `GNO`, `PE3`, 
+#'   `LP3`, or `WEI`. A trailing signature of `10` or `100` indicates a linear trend 
+#'   in location; `11` or `110` indicates linear trends in both location and scale.
+#'
+#' @param method Character (1); string specifying the estimation method. 
+#'   Must be `"L-moments"`, `"MLE"`, or `"GMLE"`.
 #' 
-#' @param years Character string or numeric vector specifying the years at which
-#'   to compute the estimates and confidence intervals. Defaults to "last".
-#'   \itemize{
-#'     \item{`"all"` returns estimates for all years in the dataset.}
-#'     \item{`"first"` returns estimates for first year in the dataset.}
-#'     \item{`"last"` returns estimates for last year in the dataset.}
-#'     \item{Passing a numeric vector to `years` allows for custom values.}
-#'   }
-#'   If the chosen model is stationary, the results will be the same for all years
+#' @param slices Character (1) or Numeric; specifies the years at which
+#'   to compute the estimates and confidence intervals (default is "last").
+#'   - `"all"`: returns estimates for all values in `years`.
+#'   - `"first"`: returns estimates for first year in the dataset.
+#'   - `"last"`: returns estimates for last year in the dataset.
+#'   - Passing a numeric vector to `slices` allows for custom values.
 #'
-#' @param n_sim Integer number of bootstrap simulations (default is 100000).
+#'   If the chosen model is stationary, the results will be the same for all slices.
 #'
-#' @param alpha Numeric significance level for the confidence intervals (default is 0.05).
+#' @param n_sim Integer (1); the number of bootstrap simulations (default is 10000).
 #'
-#' @param parallel Logical. If TRUE, runs the bootstrap in parallel (default is FALSE).
+#' @param alpha Numeric (1); the significance level (default is 0.05).
 #'
-#' @return A named list containing a list of years. Each year maps to a sublist:
-#' \describe{
-#'   \item{estimates}{Vector of estimated quantiles for return periods 2, 5, 10, 20, 50, and 100.}
-#'   \item{ci_lower}{Lower bound of the confidence interval for each return period.}
-#'   \item{ci_upper}{Upper bound of the confidence interval for each return period.}
-#'   \item{t}{Vector of return periods (2, 5, 10, 20, 50, and 100).}
-#' }
+#' @param prior Numeric (2); optional vector of parameters \eqn{(p, q)} that specifies 
+#'  the parameters of a Beta prior on \eqn{\kappa}. Only works with models `GEV`, 
+#'  `GEV100`, and `GEV110`.
+#'
+#' @return List; quantiles and confidence intervals. Each year maps to a sub-list:
+#' - `estimates`: Estimated quantiles for each return period.
+#' - `ci_lower`: Lower bound of the confidence interval for each return period.
+#' - `ci_upper`: Upper bound of the confidence interval for each return period.
+#' - `t`: Vector of return periods; `c(2, 5, 10, 20, 50, 100)`.
 #'
 #' @details
-#' The bootstrap procedure simulates resamples from the fitted distribution via inverse transform
-#' sampling using the estimated parameters. For each resample, L-moment parameters are re-estimated
-#' and used to compute quantiles. Confidence intervals are obtained by applying empirical quantiles
-#' to the resulting distribution of estimates.
+#' The bootstrap procedure samples from the fitted distribution via inverse 
+#' transform sampling. For each bootstrapped sample, the parameters are re-estimated 
+#' using the specified `method`. Then, the bootstrapped parameters are used to compute 
+#' a new set of bootstrapped quantiles. Confidence intervals are obtained from the 
+#' empirical non-exceedance probabilities of the bootstrapped quantiles.
 #'
-#' Using \code{parallel = TRUE} can reduce computation time by approximately 50%.
-#' However, using this option will nullify any calls to \code{set.seed()}, 
-#' so your results may not be reproducible.
+#' @seealso \link{pelxxx}, \link{mle.estimation}, \link{lmom.sample}, \link[stats]{quantile}
 #'
-#' @seealso \code{\link[lmom]{samlmu}}, \code{\link[stats]{quantile}}
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' sb.uncertainty(data, years, "WEI", "L-moments")
 #'
-#' @importFrom parallel mclapply
 #' @importFrom stats runif
 #' @export
 
@@ -63,7 +65,6 @@ sb.uncertainty <- function(
   slices = "last",
   n_sim = 10000,
   alpha = 0.05,
-  parallel = FALSE,
   prior = NULL
 ) {
 
@@ -75,6 +76,7 @@ sb.uncertainty <- function(
 	# Split the model into name and signature
 	name <- substr(model, 1, 3)
 	signature <- if (nchar(model) == 3) NULL else substr(model, 4, 5)
+	year_covariates <- get.covariates(years)
 
 	# Set return periods and their quantiles
     t <- c(2, 5, 10, 20, 50, 100)
@@ -91,35 +93,34 @@ sb.uncertainty <- function(
 		)
 	}
 
+	slice_covariates <- get.covariates(slices)
+
 	# Get the estimation function
 	if (method == "L-moments") {
 		efunc <- function(data, years) pelxxx(name, data)
 	} else if (method == "MLE") {
-		efunc <- function(data, years) mle.estimation(data, model, years)$params
+		efunc <- function(data, years) mle.estimation(data, years, model)$params
 	} else if (method == "GMLE") {
-		efunc <- function(data, years) mle.estimation(data, model, years, prior)$params
+		efunc <- function(data, years) mle.estimation(data, years, model, prior)$params
 	}	
 
 	# Get the estimated quantiles
 	params <- efunc(data, years)
-	estimates <- qntxxx(model, returns, params, slices)
+	estimates <- qntxxx(name, signature, returns, params, slice_covariates)
 
 	# Generate the bootstrapped quantiles in parallel, one year at a time
 	quantiles <- sapply(1:n, function(i) {
 		u <- runif(n_sim)
-		qntxxx(model, u, params, years[i])
+		qntxxx(name, signature, u, params, year_covariates[i])
 	})
 
 	# Some distributions generate negative values. Adjust these to epsilon.
 	quantiles[quantiles < 0] = 1e-8
 
-	# Define the apply() function based on 'parallel' parameter 
-	# afunc <- if (parallel) { parallel::mclapply } else { lapply }
-
 	# Vectorized, parallel bootstrap function 
 	bootstrap_list <- lapply(1:n_sim, function(i) {
 		bootstrap_params <- efunc(quantiles[i, ], years)
-		qntxxx(model, returns, bootstrap_params, slices)
+		qntxxx(name, signature, returns, bootstrap_params, slice_covariates)
 	})
 
 	# Create a 3D array with dimensions (1: slices), (2: periods), (3: simulations)

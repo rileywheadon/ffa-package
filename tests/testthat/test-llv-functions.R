@@ -1,64 +1,35 @@
 # Helper function to check warning messages
-validate_warning <- function(expr, msg) {
-	expect_warning(expr, regexp = msg)
-	expect_equal(expr, -Inf)
+validate_errors <- function(n, llvfunc, ns) {
+	data <- rep(1, 100) 
+	params <- rep(1, n)
+	years <- rep(1, 100)
+
+	# Validate the data vector
+	expect_error(llvfunc(c("A", "B"), params, years), regexp = "'data' .* numeric")
+	expect_error(llvfunc(c(1, NA), params, years), regexp = "'data' .* NaN/NA")
+	expect_error(llvfunc(c(1, -1), params, years), regexp = "'data' .* negative")
+
+	# Validate the parameters vector
+	expect_error(llvfunc(data, c("A", "B"), years), regexp = "'params' .* numeric")
+	expect_error(llvfunc(data, c(1, NaN), years), regexp = "'params' .* NaN/NA")
+	expect_error(llvfunc(data, rep(1, n+1), years), regexp = "'params' .* length")
+
+	# Validate the years vector
+	if (ns) {
+		expect_error(llvfunc(data, params, rep("A", 100)), regexp = "'years' .* numeric")
+		expect_error(llvfunc(data, params, c(1, NaN)), regexp = "'years' .* NaN/NA")
+		expect_error(llvfunc(data, params, rep(1, 99)), regexp = "'years' .* length")
+	}
+
 }
 
 test_that("Test validation for llvxxx helper function.", {
-
-	# Proper handling of non-numeric data
-	validate_warning(
-		llvgum(c("A", "B", "C"), c(0, 1)),
-		"Warning: 'data' is not a numeric vector."
-	)
-
-	# Proper handling of missing values
-	validate_warning(
-		llvgum(c(3, 1, NaN), c(0, 1)),
-		"Warning: 'data' contains NaN or NA values."
-	)
-
-	validate_warning(
-		llvgum(c(5, NA, 2), c(0, 1)),
-		"Warning: 'data' contains NaN or NA values."
-	)
-
-	# Proper handling of negative values
-	validate_warning(
-		llvgum(c(-1, 4, 2), c(0, 1)),
-		"Warning: 'data' contains negative values."
-	)
-
-	# Proper handling of non-numeric parameters
-	validate_warning(
-		llvgum(c(3, 4, 2), c("A", "B")),
-		"Warning: 'params' is not a numeric vector."
-	)
-
-	# Proper handling of parameter vectors of invalid length
-	validate_warning(
-		llvgum(c(3, 4, 2), c(0, 1, 0)),
-		"Warning: 'params' for model 'GUM' must have length 2."
-	)
-
-	# Proper handling of undefined parameters
-	expect_equal(llvgum(c(3, 4, 2), c(0, NaN)), -Inf)
-
-	# Proper handling of undefined years
-	validate_warning(
-		llvgum10(c(3, 4, 2), c(0, 1, 1), c(NaN, 2, 3)),
-		"Warning: 'years' contains NaN or NA values."
-	)
-
-	# Proper handling of years with incorrect length
-	validate_warning(
-		llvgum10(c(3, 4, 2), c(0, 1, 1), c(1, 2, 3, 4)),
-		"Warning: 'years' and 'data' have different lengths."
-	)
-
-	# Proper handling of negative sclae parameter
-	expect_equal(llvgum(c(3, 4, 2), c(0, -1)), -Inf)
-
+	validate_errors(2, llvgum, FALSE)
+	validate_errors(3, llvgum10, TRUE)
+	validate_errors(4, llvgum11, TRUE)
+	validate_errors(3, llvgev, FALSE)
+	validate_errors(4, llvgev100, TRUE)
+	validate_errors(5, llvgev110, TRUE)
 })
 
 # Helper function to validate llv functions

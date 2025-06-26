@@ -1,367 +1,285 @@
-# Returns the Log-likelihood for the following distributions (and non-stationary variants):
-# - Gumbel (GUM)
-# - Normal (NOR)
-# - Log-Normal (LNO)
-# - Generalized Extreme Value (GEV)
-# - Generalized Logistic (GLO)
-# - Generalized Normal (GNO)
-# - Pearson Type III (PE3)
-# - Log-Pearson Type III (LP3)
-# - Weibull (WEI)
-#
-# If an error occurs, llvxxx will return -Inf to avoid breaking optimizers.
-#
-# Using quiet = FALSE will print the error message.
+#' Log-Likelihood Functions for Probability Models
+#'
+#' Compute the log-likelihood value for stationary and non-stationary variants 
+#' of nine different distributions (`GUM`, `NOR`, `LNO`, `GEV`, `GLO`, `GNO`, 
+#' `PE3`, `LP3`, and `WEI`).
+#' 
+#' @details 
+#' The log-likelihood is the logarithm of the probability density function.
+#' For two-parameter distributions (`GUM`, `NOR`, `LNO`), there are three 
+#' different `llv` functions:
+#' 
+#' - `llv...()`: Stationary location and scale, 2 parameters.
+#' - `llv...10()`: Time-varying location, stationary scale, 3 parameters.
+#' - `llv...11()`: Time-varying location and scale, 4 parameters.
+#'
+#' For three-parameter distributions (`GEV`, `GLO`, `GNO`, `PE3`, `LP3`, `WEI`), 
+#' there are also three different `llv` functions:
+#'
+#' - `llv...()`: Stationary location and scale, 3 parameters.
+#' - `llv...100()`: Time-varying location, stationary scale, 4 parameters.
+#' - `llv...110()`: Time-varying location and scale, 5 parameters.
+#'
+#' @note
+#' The `llv...` functions perform extensive parameter validation, which can be slow. 
+#' If you plan to make calls these methods often, it is recommended to use the \link{llvxxx} 
+#' helper function instead.
+#'
+#' @param data Numeric; a vector of annual maximum streamflow data.
+#'
+#' @param params Numeric; a vector of parameters. Must have the correct length for the model.
+#'
+#' @param years Numeric; a vector of years with the same length as `data`.
+#'   Required for non-stationary models, which end in `10`, `11`, `100`, or `110`.
+#'
+#' @return Numeric (1); the log-likelihood value.
+#'
+#' @seealso \link{llvxxx}
+#'
+#' @examples
+#' # Initialize data, years, and params
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' params <- c(0, 1, 1, 0)
+#'
+#' # Compute the log-likelihood
+#' llvgno100(data, params, years)
+#'
+#' @name llv-functions
+NULL
 
-llvxxx <- function(model, data, params, years = NULL) {
+llvvalidate <- function(n, data, params, years = NULL) {
 
-	# Check that data is numeric vector
-	if (!is.numeric(data) | !is.vector(data)) {
-		warning("Warning: 'data' is not a numeric vector.")
-		return (-Inf)
+	# Validate the data vector
+	if (!is.numeric(data) | !is.vector(data)) stop("'data' must be a numeric vector.")
+	if (any(is.nan(data)) | any(is.na(data))) stop("'data' must not contain NaN/NA values.")
+	if (any(data <= 0)) stop("'data' must not contain negative values.")
+
+	# Validate the parameter vector
+	if (!is.numeric(params) | !is.vector(params)) stop("'params' must be a numeric vector.")
+	if (any(is.nan(params)) | any(is.na(params))) stop("'params' must not contain NaN/NA values.")
+	if (length(params) != n) stop(sprintf("'params' must have length %d.", n))
+
+	# Validate the years vector
+	if (!is.null(years)) {
+		if (!is.numeric(years) | !is.vector(years)) stop("'years' must be a numeric vector.")
+		if (any(is.nan(years)) | any(is.na(years))) stop("'years' must not contain NaN/NA values.")
+		if (length(years) != length(data)) stop("'years' must have the same length as 'data'.")
 	}
-
-	# Check that data has no missing values
-	if (any(is.nan(data)) | any(is.na(data))) {
-		warning("Warning: 'data' contains NaN or NA values.")
-		return (-Inf)
-	}
-
-	# Check that data is strictly positive
-	if (any(data <= 0)) {
-		warning("Warning: 'data' contains negative values.")
-		return (-Inf)
-	}
-
-	# Validate the parameters
-	info <- models.info(model)
-	if (length(params) != info$n.params) {
-		str <- "Warning: 'params' for model '%s' must have length %d."
-		warning(sprintf(str, model, info$n.params))
-		return (-Inf)
-	}
-
-	# Check that params is a numeric vector
-	if (!is.numeric(params) | !is.vector(params)) {
-		warning("Warning: 'params' is not a numeric vector.")
-		return (-Inf)
-	}
-
-	# Check that all parameters are defined
-	if (any(is.nan(params)) | any(is.na(params))) {
-		message("Message: 'params' contains NaN or NA values.")
-		return (-Inf)
-	}
-
-	# Get the name and signature for the model
-	name <- substr(model, 1, 3)
-	signature <- if (nchar(model) == 3) NULL else substr(model, 4, 5)
-
-	# Validate the years argument if the model is non-stationary
-	if (!is.null(signature)) {
-
-		# Check that years is not NULL, NaN, or NA
-		if (is.null(years) | any(is.nan(years)) | any(is.na(years))) {
-			warning("Warning: 'years' contains NaN or NA values.")
-			return (-Inf)
-		}
-
-		# Check that years has the same length as data
-		if (length(years) != length(data)) {
-			warning("Warning: 'years' and 'data' have different lengths.")
-			return (-Inf)
-		}
-
-		# Compute the covariate
-		covariate <- get.covariates(years)
-
-	}
-
-	# Parse the stationary/non-stationary signature
-	# - u: mu (location parameter)
-	# - s: sigma (scale parameter)
-	# - k: kappa (shape parameter)
-
-	if (is.null(signature)) {
-		u <- params[1]
-		s <- params[2]
-	} else if (signature == "10") {
-		u <- params[1] + (covariate * params[2])
-		s <- params[3]
-	} else if (signature == "11") {
-		u <- params[1] + (covariate * params[2])
-		s <- params[3] + (covariate * params[4])
-	}
-
-	if (name %in% c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
-		k <- params[length(params)]
-	}
-
-	# Ensure that the scale parameter is positive
-	if (any(s <= 0)) {
-		message("Message: scale parameter has negative values.")
-		return (-Inf)
-	} 
-
-	# Distribution functions
-	if (name == "GUM") {
-		
-		# Normalize the data
-		z <- ((data - u) / s)
-		
-		# Compute the log-likelihood
-		ll <- -log(s) - z - exp(-z)
-
-	} else if (name == "NOR") {
-
-		# Normalize the data
-		z <- ((data - u) / s)
-
-		# Compute the log-likelihood
-		ll <- -log(s * sqrt(2 * pi)) - (z^2 / 2)
-
-	} else if (name == "LNO") {
-
-		# Normalize log(data)
-		log_z <- ((log(data) - u) / s)
-
-		# Subtract log(data) from ll because of the chain rule.
-		ll <- -log(s * sqrt(2 * pi)) - (log_z^2 / 2) - log(data)
-
-	} else if (name == "GEV") {
-
-		# Get the shape-normalized data
-		t <- 1 + k * ((data - u) / s)
-
-		# Check for support and then compute the log-likelihood
-		if (any(t <= 0)) return (-Inf)
-		ll <- -log(s) - (1 + (1 / k)) * log(t) - t^(-1 / k)
-
-	} else if (name == "GLO") {
-
-		# Get the shape-normalized data
-		t <- 1 - k * ((data - u) / s)
-
-		# Check for support and then compute the log-likelihood
-		if (any(t <= 0)) return (-Inf)
-		ll <- -log(s) + ((1 / k) - 1) * log(t) - 2 * log(1 + t^(1 / k))
-	} 
-
-	else if (name == "GNO") {
-
-		# Get the shape-normalized data
-		t <- 1 - k * ((data - u) / s)
-
-		# Check for support and then compute the log-likelihood
-		if (any(t <= 0)) return (-Inf)
-		ll <- -log(s * sqrt(2 * pi)) - log(t) - (log(t)^2 / (2 * k^2))
-
-	} else if (name == "PE3") {
-
-		# Reparameterize
-		a <- 4 / (k^2)
-		b <- s * abs(k) / 2
-		x <- u - (2 * s) / k
-
-		# Check for support 
-		if ((k > 0 & any(data <= x)) | (k < 0 & any(data >= x))) return (-Inf)
-
-		# Compute the log-likelihood
-		t <- abs(data - x)
-		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a)
-
-	} else if (name == "LP3") {
-
-		# Reparameterize
-		a <- 4 / (k^2)
-		b <- s * abs(k) / 2
-		x <- u - (2 * s) / k
-
-		# Check for support
-		if ((k > 0 & any(log(data) <= x)) | (k < 0 & any(log(data) >= x))) return (-Inf)
-
-		# Compute the log-likelihood
-		t <- abs(log(data) - x)
-		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a) - log(data)
-
-	} else if (name == "WEI") {
-
-		# Check for support
-		if (k <= 0 | any(data <= u)) return (-Inf) 
-		
-		# Compute the log-likelihood
-		t <- data - u
-		ll <- log(k) - k * log(s) + (k - 1) * log(t) - (t / s)^k
-
-	}
-
-	# The sum of the log-likelihood over all data points is the total log-likelihood
-	sum(ll)
 
 }
 
+#' @rdname llv-functions
+#' @export
+llvgum    <- function(data, params, years = NULL) {
+	llvvalidate(2, data, params, years)
+	llvxxx("GUM", NULL, data, params, NULL)
+}
 
-llvgum    <- function(data, params, years = NULL) llvxxx("GUM", data, params)
-llvgum10  <- function(data, params, years) llvxxx("GUM10", data, params, years)
-llvgum11  <- function(data, params, years) llvxxx("GUM11", data, params, years)
+#' @rdname llv-functions
+#' @export
+llvgum10  <- function(data, params, years) {
+	llvvalidate(3, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GUM", "10", data, params, covariate)
+}
 
-llvnor    <- function(data, params, years = NULL) llvxxx("NOR", data, params)
-llvnor10  <- function(data, params, years) llvxxx("NOR10", data, params, years)
-llvnor11  <- function(data, params, years) llvxxx("NOR11", data, params, years)
-
-llvlno    <- function(data, params, years = NULL) llvxxx("LNO", data, params)
-llvlno10  <- function(data, params, years) llvxxx("LNO10", data, params, years)
-llvlno11  <- function(data, params, years) llvxxx("LNO11", data, params, years)
-
-llvgev    <- function(data, params, years = NULL) llvxxx("GEV", data, params)
-llvgev100 <- function(data, params, years) llvxxx("GEV100", data, params, years)
-llvgev110 <- function(data, params, years) llvxxx("GEV110", data, params, years)
-
-llvglo    <- function(data, params, years = NULL) llvxxx("GLO", data, params)
-llvglo100 <- function(data, params, years) llvxxx("GLO100", data, params, years)
-llvglo110 <- function(data, params, years) llvxxx("GLO110", data, params, years)
-
-llvgno    <- function(data, params, years = NULL) llvxxx("GNO", data, params)
-llvgno100 <- function(data, params, years) llvxxx("GNO100", data, params, years)
-llvgno110 <- function(data, params, years) llvxxx("GNO110", data, params, years)
-
-llvpe3    <- function(data, params, years = NULL) llvxxx("PE3", data, params)
-llvpe3100 <- function(data, params, years) llvxxx("PE3100", data, params, years)
-llvpe3110 <- function(data, params, years) llvxxx("PE3110", data, params, years)
-
-llvlp3    <- function(data, params, years = NULL) llvxxx("LP3", data, params)
-llvlp3100 <- function(data, params, years) llvxxx("LP3100", data, params, years)
-llvlp3110 <- function(data, params, years) llvxxx("LP3110", data, params, years)
-
-llvwei    <- function(data, params, years = NULL) llvxxx("WEI", data, params)
-llvwei100 <- function(data, params, years) llvxxx("WEI100", data, params, years)
-llvwei110 <- function(data, params, years) llvxxx("WEI110", data, params, years)
+#' @rdname llv-functions
+#' @export
+llvgum11  <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GUM", "11", data, params, covariate)
+}
 
 
-# Faster version of the llv function without as much error handling used for MLE
-llvfast <- function(name, signature, data, params, covariate) {
+#' @rdname llv-functions
+#' @export
+llvnor    <- function(data, params, years = NULL) {
+	llvvalidate(2, data, params, years)
+	llvxxx("NOR", NULL, data, params, NULL)
+}
 
-	# Do as little error handling as possible
-	if (any(is.nan(params))) return (-Inf)
-	if (any(is.nan(data))) return (-Inf)
+#' @rdname llv-functions
+#' @export
+llvnor10  <- function(data, params, years) {
+	llvvalidate(3, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("NOR", "10", data, params, covariate)
+}
 
-	# Parse the stationary/non-stationary signature
-	# - u: mu (location parameter)
-	# - s: sigma (scale parameter)
-	# - k: kappa (shape parameter)
+#' @rdname llv-functions
+#' @export
+llvnor11  <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("NOR", "11", data, params, covariate)
+}
 
-	if (is.null(signature)) {
-		u <- params[1]
-		s <- params[2]
-	} else if (signature == "10") {
-		u <- params[1] + (covariate * params[2])
-		s <- params[3]
-	} else if (signature == "11") {
-		u <- params[1] + (covariate * params[2])
-		s <- params[3] + (covariate * params[4])
-	}
 
-	# Distribution functions
-	if (name == "GUM") {
-		
-		# Normalize the data
-		z <- ((data - u) / s)
-		
-		# Compute the log-likelihood
-		ll <- -log(s) - z - exp(-z)
+#' @rdname llv-functions
+#' @export
+llvlno    <- function(data, params, years = NULL) {
+	llvvalidate(2, data, params, years)
+	llvxxx("LNO", NULL, data, params, NULL)
+}
 
-	} else if (name == "NOR") {
+#' @rdname llv-functions
+#' @export
+llvlno10  <- function(data, params, years) {
+	llvvalidate(3, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("LNO", "10", data, params, covariate)
+}
 
-		# Normalize the data
-		z <- ((data - u) / s)
+#' @rdname llv-functions
+#' @export
+llvlno11  <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("LNO", "11", data, params, covariate)
+}
 
-		# Compute the log-likelihood
-		ll <- -log(s * sqrt(2 * pi)) - (z^2 / 2)
 
-	} else if (name == "LNO") {
+#' @rdname llv-functions
+#' @export
+llvgev    <- function(data, params, years = NULL) {
+	llvvalidate(3, data, params, years)
+	llvxxx("GEV", NULL, data, params, NULL)
+}
 
-		# Normalize log(data)
-		log_z <- ((log(data) - u) / s)
+#' @rdname llv-functions
+#' @export
+llvgev100 <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GEV", "10", data, params, covariate)
+}
 
-		# Subtract log(data) from ll because of the chain rule.
-		ll <- -log(s * sqrt(2 * pi)) - (log_z^2 / 2) - log(data)
+#' @rdname llv-functions
+#' @export
+llvgev110 <- function(data, params, years) {
+	llvvalidate(5, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GEV", "11", data, params, covariate)
+}
 
-	} else if (name == "GEV") {
 
-		# Get the shape-normalized data
-		k <- params[length(params)]
-		t <- 1 + k * ((data - u) / s)
+#' @rdname llv-functions
+#' @export
+llvglo    <- function(data, params, years = NULL) {
+	llvvalidate(3, data, params, years)
+	llvxxx("GLO", NULL, data, params, NULL)
+}
 
-		# Check for support and then compute the log-likelihood
-		if (any(t <= 0)) return (-Inf)
-		ll <- -log(s) - (1 + (1 / k)) * log(t) - t^(-1 / k)
+#' @rdname llv-functions
+#' @export
+llvglo100 <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GLO", "10", data, params, covariate)
+}
 
-	} else if (name == "GLO") {
+#' @rdname llv-functions
+#' @export
+llvglo110 <- function(data, params, years) {
+	llvvalidate(5, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GLO", "11", data, params, covariate)
+}
 
-		# Get the shape-normalized data
-		k <- params[length(params)]
-		t <- 1 - k * ((data - u) / s)
 
-		# Check for support and then compute the log-likelihood
-		if (any(t <= 0)) return (-Inf)
-		ll <- -log(s) + ((1 / k) - 1) * log(t) - 2 * log(1 + t^(1 / k))
-	} 
+#' @rdname llv-functions
+#' @export
+llvgno    <- function(data, params, years = NULL) {
+	llvvalidate(3, data, params, years)
+	llvxxx("GNO", NULL, data, params, NULL)
+}
 
-	else if (name == "GNO") {
+#' @rdname llv-functions
+#' @export
+llvgno100 <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GNO", "10", data, params, covariate)
+}
 
-		# Get the shape-normalized data
-		k <- params[length(params)]
-		t <- 1 - k * ((data - u) / s)
+#' @rdname llv-functions
+#' @export
+llvgno110 <- function(data, params, years) {
+	llvvalidate(5, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("GNO", "11", data, params, covariate)
+}
 
-		# Check for support and then compute the log-likelihood
-		if (any(t <= 0)) return (-Inf)
-		ll <- -log(s * sqrt(2 * pi)) - log(t) - (log(t)^2 / (2 * k^2))
 
-	} else if (name == "PE3") {
+#' @rdname llv-functions
+#' @export
+llvpe3    <- function(data, params, years = NULL) {
+	llvvalidate(3, data, params, years)
+	llvxxx("PE3", NULL, data, params, NULL)
+}
 
-		k <- params[length(params)]
+#' @rdname llv-functions
+#' @export
+llvpe3100 <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("PE3", "10", data, params, covariate)
+}
 
-		# Reparameterize
-		a <- 4 / (k^2)
-		b <- s * abs(k) / 2
-		x <- u - (2 * s) / k
+#' @rdname llv-functions
+#' @export
+llvpe3110 <- function(data, params, years) {
+	llvvalidate(5, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("PE3", "11", data, params, covariate)
+}
 
-		# Check for support 
-		if ((k > 0 & any(data <= x)) | (k < 0 & any(data >= x))) return (-Inf)
 
-		# Compute the log-likelihood
-		t <- abs(data - x)
-		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a)
+#' @rdname llv-functions
+#' @export
+llvlp3    <- function(data, params, years = NULL) {
+	llvvalidate(3, data, params, years)
+	llvxxx("LP3", NULL, data, params, NULL)
+}
 
-	} else if (name == "LP3") {
+#' @rdname llv-functions
+#' @export
+llvlp3100 <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("LP3", "10", data, params, covariate)
+}
 
-		k <- params[length(params)]
+#' @rdname llv-functions
+#' @export
+llvlp3110 <- function(data, params, years) {
+	llvvalidate(5, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("LP3", "11", data, params, covariate)
+}
 
-		# Reparameterize
-		a <- 4 / (k^2)
-		b <- s * abs(k) / 2
-		x <- u - (2 * s) / k
 
-		# Check for support
-		if ((k > 0 & any(log(data) <= x)) | (k < 0 & any(log(data) >= x))) return (-Inf)
+#' @rdname llv-functions
+#' @export
+llvwei    <- function(data, params, years = NULL) {
+	llvvalidate(3, data, params, years)
+	llvxxx("WEI", NULL, data, params, NULL)
+}
 
-		# Compute the log-likelihood
-		t <- abs(log(data) - x)
-		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a) - log(data)
+#' @rdname llv-functions
+#' @export
+llvwei100 <- function(data, params, years) {
+	llvvalidate(4, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("WEI", "10", data, params, covariate)
+}
 
-	} else if (name == "WEI") {
-
-		# Check for support
-		k <- params[length(params)]
-		if (k <= 0 | any(data <= u)) return (-Inf) 
-		
-		# Compute the log-likelihood
-		t <- data - u
-		ll <- log(k) - k * log(s) + (k - 1) * log(t) - (t / s)^k
-
-	}
-
-	# The sum of the log-likelihood over all data points is the total log-likelihood
-	sum(ll)
-
+#' @rdname llv-functions
+#' @export
+llvwei110 <- function(data, params, years) {
+	llvvalidate(5, data, params, years)
+	covariate <- get.covariates(years)
+	llvxxx("WEI", "11", data, params, covariate)
 }

@@ -2,38 +2,38 @@
 % Please edit documentation in R/mw-variance.R
 \name{mw.variance}
 \alias{mw.variance}
-\title{Compute moving‐window standard deviations for an AMS data frame}
+\title{Estimate Variance for Annual Maximum Streamflow Data}
 \usage{
-mw.variance(data, years, window_length = 10, window_step = 5)
+mw.variance(data, years, size = 10, step = 5)
 }
 \arguments{
-\item{window_length}{Integer(1). The number of consecutive rows in each moving
-window. Must be a positive integer less than or equal to \code{nrow(df)}.
-Defaults to \code{10}. If \code{nrow(df) < window_length}, an error is raised.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{window_step}{Integer(1). The offset (in rows) between the start of
-successive windows. Must be a positive integer. Defaults to \code{5}.}
+\item{years}{Numeric; a vector of years with the same length as \code{data}.}
 
-\item{df}{A data.frame (or tibble) containing at least two numeric columns:
-\describe{
-\item{year}{Numeric or integer vector of years.}
-\item{max}{Numeric vector of annual maximum values.}
-}
-If either column is missing or not numeric, the function will throw an error.}
+\item{size}{Integer (1); the number of consecutive indices in each moving
+window. Must be a positive integer less than or equal to \code{length(data)}
+(default is 10). If \code{length(data) < size}, an error is raised.}
+
+\item{step}{Integer (1); the offset (in indices) between successive moving
+windows. Must be a positive integer (default is 5).}
 }
 \value{
-A data.frame with two columns:
-\describe{
-\item{year}{Numeric. The mean of \code{df$year} within each window.}
-\item{std}{Numeric. The standard deviation of \code{df$max} within each window,
-computed with \code{na.rm = TRUE}.}
+A list with two entries:
+\itemize{
+\item \code{years}: Numeric; the mean year within each window.
+\item \code{std}: Numeric; the standard deviation of the data within each window.
 }
-Each row corresponds to one window. The number of rows equals
-\code{floor((nrow(df) - window_length) / window_step) + 1}.
 }
 \description{
-This function calculates the standard deviation of the annual maximum series
-(“max”) in non‐overlapping (or partially overlapping) moving windows, returning
-a data frame that pairs each window’s mean “year” with its computed standard
-deviation. The window parameters control the length and step size.
+This function estimates the standard deviation of a vector of annual maximum
+streamflow (AMS) data using a moving window algorithm, returning a list that
+pairs each window’s mean year with its computed standard deviation. The
+parameters \code{size} and \code{step} parameters control the behaviour of the window.
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+mw.variance(data, years)
+
 }

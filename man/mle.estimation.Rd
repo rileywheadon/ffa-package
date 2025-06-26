@@ -2,44 +2,53 @@
 % Please edit documentation in R/mle-estimation.R
 \name{mle.estimation}
 \alias{mle.estimation}
-\title{Fit Extreme‐Value Model using Maximum Likelihood}
+\title{Maximum Likelihood Parameter Estimation}
 \usage{
-mle.estimation(data, model, years, prior = NULL)
+mle.estimation(data, years, model, prior = NULL)
 }
 \arguments{
-\item{model}{Character string specifying the distribution code. The first
-three letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV',
-'GLO', 'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of
-'10' or '100' indicates a linear trend in location; '11' or '110'
-indicates linear trends in both location and scale.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{df}{Dataframe with columns "max", a vector of annual maxima observations,
-and "year", a vector of years corresponding to the observations in "max". Any
-\code{NaN} values are removed prior to likelihood computation.}
+\item{years}{Numeric; a vector of years with the same length as \code{data}.}
+
+\item{model}{Character (1); string specifying the probability model. The first three
+letters denote the family: \code{GUM}, \code{NOR}, \code{LNO}, \code{GEV}, \code{GLO}, \code{GNO}, \code{PE3},
+\code{LP3}, or \code{WEI}. A trailing signature of \code{10} or \code{100} indicates a linear trend
+in location; \code{11} or \code{110} indicates linear trends in both location and scale.}
+
+\item{prior}{Numeric (2); optional vector of parameters \eqn{(p, q)} that specifies
+the parameters of a Beta prior on \eqn{\kappa}. Only works with models \code{GEV},
+\code{GEV100}, and \code{GEV110}.}
 }
 \value{
-A list with components:
+List; results of parameter estimation:
 \itemize{
-\item params: Numeric vector of estimated parameters.
-\item mll   : Maximized log‐likelihood value.
+\item \code{params}: Numeric vector of estimated parameters.
+\item \code{mll}: Maximum log‐likelihood value.
 }
 }
 \description{
-Estimates parameters of an extreme‐value distribution (GUM, NOR, LNO, GEV,
-GLO, GNO, PE3, LP3, or WEI) with optional linear covariate trends in
-location and/or scale by maximizing the log‐likelihood.
-Initial values are obtained from L‐moment estimation, and optimization is
-performed via nlminb with repeated perturbations if needed.
+Estimates parameters of a probability distribution (\code{GUM}, \code{NOR}, \code{LNO}, \code{GEV}, \code{GLO},
+\code{GNO}, \code{PE3}, \code{LP3}, or \code{WEI}) or non-stationary variant by maximizing the log‐likelihood.
+Initial values are obtained through L‐moment parameter estimation, and optimization is
+performed via \link[stats]{nlminb} with repeated perturbations if needed.
 }
 \details{
 \enumerate{
-\item Removes NaN values from data.
-\item Calls lmom.estimation() on cleaned data to obtain initial estimates of
-location, scale, and shape (if applicable).
+\item Calls \link{pelxxx} on \code{data} to obtain initial parameter estimates.
 \item Initializes trend parameters to zero if there is a trailing signature.
-\item For Weibull models, forces the location estimate to zero to ensure support.
-\item Defines an objective function as the negative of likelihood().
-\item Runs nlminb() with box constraints on scale (>0) and repeats up to 100
-times with random perturbations if convergence returns Inf.
+\item For \code{WEI} models, sets the location parameter to zero to ensure support.
+\item Defines an objective function as the negative of the \link{llvxxx} function.
+\item Runs \link[stats]{nlminb} with box constraints. Attempts optimization
+up to 100 times.
 }
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+mle.estimation(data, years, "GNO100")
+
+}
+\seealso{
+\link{llvxxx}, \link{gllxxx}, \link{pelxxx}, \link[stats]{nlminb}
 }

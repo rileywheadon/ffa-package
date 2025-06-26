@@ -165,46 +165,41 @@ test_that("quantile functions handle invalid inputs.", {
 	# Proper handling of non-numeric parameter vectors.
 	expect_error(
 		qntgum(0.5, c("A", "B")),
-		regexp = "Error: 'params' is not a numeric vector."
+		regexp = "'params' must be a numeric vector."
 	)
 
 	# Proper handling of parameter vectors of invalid length
 	expect_error(
 		qntgum(0.5, c(0, 1, 0)),
-		regexp = "Error: 'params' for model 'GUM' must have length 2."
+		regexp = "'params' must have length 2."
 	)
 
 	# Proper handling of undefined parameters
 	expect_error(
 		qntgum(0.5, c(0, NaN)),
-		regexp = "Error: 'params' contains NaN or NA values."
+		regexp = "'params' must not contain NaN/NA values."
 	)
 
 	# Proper handling of p < 0 or p > 1.
 	expect_error(
 		qntgum(c(-0.1, 1), c(0, 1)),
-		regexp = "Error: 'p' must be between 0 and 1 inclusive."
+		regexp = "'p' must be between 0 and 1 inclusive."
 	)
 
 	expect_error(
 		qntgum(c(0, 1.1), c(0, 1)),
-		regexp = "Error: 'p' must be between 0 and 1 inclusive."
+		regexp = "'p' must be between 0 and 1 inclusive."
 	)
 
-	# Proper handling of years == NULL for non-stationary distributions.
-	expect_error(
-		qntgum10(0.5, c(0, 1, 1), NULL),
-		regexp = "Error: 'years' must not be NULL or contain NaN/NA values."
-	)
-
+	# Proper handling of years for non-stationary distributions.
 	expect_error(
 		qntgum10(0.5, c(0, 1, 1), c(1900, 1950, NaN)),
-		regexp = "Error: 'years' must not be NULL or contain NaN/NA values."
+		regexp = "'years' must not contain NaN/NA values."
 	)
 
 	expect_error(
 		qntgum10(0.5, c(0, 1, 1), c(1900, NA, 2000)),
-		regexp = "Error: 'years' must not be NULL or contain NaN/NA values."
+		regexp = "'years' must not contain NaN/NA values."
 	)
 
 })

@@ -7,25 +7,25 @@
 pettitt.test(data, years, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow values, no missing data.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{years}{Numeric vector of years corresponding to \code{data}, no missing data.}
+\item{years}{Numeric; a vector of years with the same length as \code{data}.}
 
-\item{alpha}{Numeric significance level for hypothesis testing (default 0.05).}
+\item{alpha}{Numeric (1); the significance level (default is 0.05).}
 
-\item{quiet}{Logical; if FALSE, print test summary messages (default TRUE).}
+\item{quiet}{Logical (1); if FALSE, prints a summary of results (default is TRUE).}
 }
 \value{
 A named list containing:
-\describe{
-\item{ut}{Vector of absolute U-statistics for all time indices.}
-\item{k.statistic}{Maximum absolute U-statistic (test statistic).}
-\item{k.critical}{Critical K-statistic value for given \code{alpha}.}
-\item{p.value}{Approximate p-value for the test.}
-\item{change.index}{Index of the detected change point (0 if none).}
-\item{change.year}{Year of the detected change point (0 if none).}
-\item{reject}{Logical indicating if null hypothesis was rejected.}
-\item{msg}{Formatted summary message describing the test result.}
+\itemize{
+\item \code{ut}: Vector of absolute U-statistics for all time indices.
+\item \code{k.statistic}: Maximum absolute U-statistic (test statistic).
+\item \code{k.critical}: Critical K-statistic value for given \code{alpha}.
+\item \code{p.value}: Approximate p-value for the test.
+\item \code{change.index}: Index of the detected change point (0 if none).
+\item \code{change.year}: Year of the detected change point (0 if none).
+\item \code{reject}: Logical. TRUE if the null hypothesis was rejected.
+\item \code{msg}: Formatted summary message describing the test result.
 }
 }
 \description{
@@ -38,7 +38,12 @@ hypothesis of a change point in the median/mean of a time series.
 It computes the maximum of the absolute value of the U-statistic over all
 possible split points. The p-value is approximated using an asymptotic formula.
 }
-\references{
-Pettitt, A.N. (1979) A non-parametric approach to the change-point problem,
-\emph{Applied Statistics}, 28(2), 126-135.
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+pettitt.test(data, years)
+
+}
+\seealso{
+\link{pettitt.plot}
 }

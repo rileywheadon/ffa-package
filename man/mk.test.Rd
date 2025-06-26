@@ -2,40 +2,44 @@
 % Please edit documentation in R/mk-test.R
 \name{mk.test}
 \alias{mk.test}
-\title{Mann–Kendall Test for Monotonic Trends}
+\title{Mann–Kendall Trend Test}
 \usage{
 mk.test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{A numeric vector of AMS values or their variances. Must not contain NA values.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{alpha}{A numeric value specifying the significance level (default is 0.05).}
+\item{alpha}{Numeric (1); the significance level (default is 0.05).}
 
-\item{quiet}{Logical. If FALSE, prints a summary of the test result to the console.}
+\item{quiet}{Logical (1); if FALSE, prints a summary of results (default is TRUE).}
 }
 \value{
-A named list with the following components:
-\describe{
-\item{s.statistic}{The raw Mann–Kendall test statistic \(S\).}
-\item{s.variance}{The variance of the test statistic under the null hypothesis.}
-\item{p.value}{The p-value associated with the two-sided hypothesis test.}
-\item{reject}{Logical. TRUE if the null hypothesis of no trend is rejected at \code{alpha}.}
-\item{msg}{A character string summarizing the result (printed if \code{quiet = FALSE}).}
+List; the test results:
+\itemize{
+\item \code{s.statistic}: The raw Mann–Kendall test statistic \eqn{S}.
+\item \code{s.variance}: The variance of the test statistic under the null hypothesis.
+\item \code{p.value}: The p-value associated with the two-sided hypothesis test.
+\item \code{reject}: Logical. TRUE if the null hypothesis of no trend is rejected at \code{alpha}.
+\item \code{msg}: A character string summarizing the result (printed if \code{quiet = FALSE}).
 }
 }
 \description{
-Performs the Mann–Kendall trend test on a numeric vector to detect the presence of a monotonic
-trend (increasing or decreasing) over time. The test is non-parametric and accounts for tied
-observations in the data.
+Performs the Mann–Kendall trend test on a numeric vector to detect the presence
+of a monotonic trend (increasing or decreasing) over time. The test is non-parametric
+and accounts for tied observations in the data.
 }
 \details{
-The statistic \(S\) is computed as the sum over all pairs \(i < j\) of the sign of the
-difference \(x_j - x_i\). Ties are explicitly accounted for when calculating the variance of
-\(S\), using grouped frequencies of tied observations.
+The statistic \eqn{S} is computed as the sum over all pairs \eqn{i < j} of the sign of the
+difference \eqn{x_j - x_i}. Ties are explicitly accounted for when calculating the variance of
+\eqn{S}, using grouped frequencies of tied observations. The test statistic \eqn{Z} is then
+computed based on the sign and magnitude of \eqn{S}, and the p-value is derived from the
+standard normal distribution.
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+mk.test(data)
 
-The test statistic \(Z\) is then computed based on the sign and magnitude of \(S\), and the
-p-value is derived from the standard normal distribution.
 }
 \seealso{
-\code{\link{bbmk.test}} for a bootstrap-based variant of this test.
+\link{bbmk.test}
 }

@@ -3,22 +3,23 @@
 #' Performs the non-parametric Pettitt test to detect a single change point in the
 #' mean of a time series, often used for abrupt shifts in hydrological data.
 #'
-#' @param data Numeric vector of annual maximum streamflow values, no missing data.
-#' @param years Numeric vector of years corresponding to \code{data}, no missing data.
-#' @param alpha Numeric significance level for hypothesis testing (default 0.05).
-#' @param quiet Logical; if FALSE, print test summary messages (default TRUE).
+#' @param data Numeric; a vector of annual maximum streamflow data.
+#'
+#' @param years Numeric; a vector of years with the same length as `data`.
+#'
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
 #'
 #' @return A named list containing:
-#' \describe{
-#'   \item{ut}{Vector of absolute U-statistics for all time indices.}
-#'   \item{k.statistic}{Maximum absolute U-statistic (test statistic).}
-#'   \item{k.critical}{Critical K-statistic value for given \code{alpha}.}
-#'   \item{p.value}{Approximate p-value for the test.}
-#'   \item{change.index}{Index of the detected change point (0 if none).}
-#'   \item{change.year}{Year of the detected change point (0 if none).}
-#'   \item{reject}{Logical indicating if null hypothesis was rejected.}
-#'   \item{msg}{Formatted summary message describing the test result.}
-#' }
+#' - `ut`: Vector of absolute U-statistics for all time indices.
+#' - `k.statistic`: Maximum absolute U-statistic (test statistic).
+#' - `k.critical`: Critical K-statistic value for given `alpha`.
+#' - `p.value`: Approximate p-value for the test.
+#' - `change.index`: Index of the detected change point (0 if none).
+#' - `change.year`: Year of the detected change point (0 if none).
+#' - `reject`: Logical. TRUE if the null hypothesis was rejected.
+#' - `msg`: Formatted summary message describing the test result.
 #'
 #' @details
 #' The Pettitt test is a rank-based non-parametric test that evaluates the
@@ -26,8 +27,14 @@
 #' It computes the maximum of the absolute value of the U-statistic over all
 #' possible split points. The p-value is approximated using an asymptotic formula.
 #'
-#' @references Pettitt, A.N. (1979) A non-parametric approach to the change-point problem,
-#' \emph{Applied Statistics}, 28(2), 126-135.
+#' @seealso \link{pettitt.plot}
+#'
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' pettitt.test(data, years)
+#'
+#' @export
  
 pettitt.test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 

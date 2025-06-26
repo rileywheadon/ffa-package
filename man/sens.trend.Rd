@@ -2,38 +2,44 @@
 % Please edit documentation in R/sens-trend.R
 \name{sens.trend}
 \alias{sens.trend}
-\title{Sen's Slope Estimator}
+\title{Sen's Trend Estimator}
 \usage{
 sens.trend(data, years, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of AMS values or variances with no missing values.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{years}{Numeric vector of years corresponding to \code{data}, with no missing values.}
+\item{years}{Numeric; a vector of years with the same length as \code{data}.}
 
-\item{quiet}{Logical. If FALSE, prints a summary message describing results (default is TRUE).}
+\item{quiet}{Logical (1); if FALSE, prints a summary of results (default is TRUE).}
 }
 \value{
-A named list containing:
-\describe{
-\item{sens.slope}{Median slope of all pairwise data-year combinations (Sen's slope).}
-\item{sens.intercept}{Median intercept estimate of the fitted line.}
-\item{residuals}{Vector of residuals between observed and fitted values.}
-\item{msg}{Character string summarizing the estimator.}
+List; the estimated trend:
+\itemize{
+\item \code{sens.slope}: Median slope of all pairwise data-year combinations.
+\item \code{sens.intercept}: Median intercept estimate of the fitted line.
+\item \code{residuals}: Vector of residuals between observed and fitted values.
+\item \code{msg}: Character string summarizing the results.
 }
 }
 \description{
-Computes Sen's slope estimator and intercept for a univariate time series
+Computes Sen's trend estimator for a univariate time series.
 }
 \details{
 Sen's slope estimator is a robust, non-parametric trend estimator computed from the median
 of all pairwise slopes between data points. The corresponding intercept is taken as the
 median of residual-corrected values.
 }
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+sens.trend(data, years)
+
+}
 \references{
 Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau.
-\emph{Journal of the American Statistical Association}, 63(324), 1379–1389. \cr
+\emph{Journal of the American Statistical Association}, 63(324), 1379–1389.
 }
 \seealso{
-\code{\link{runs.test}}, \code{\link{mk.test}}
+\link{runs.test}
 }

@@ -1,48 +1,58 @@
-#' Compute Uncertainty via Regula Falsi Profile Likelihood
+#' Regula-Falsi Confidence Intervals for Flood Quantile Estimates
 #'
 #' @description
-#' Calculates point estimates and confidence intervals for return levels at
-#' standard return periods (2, 5, 10, 20, 50, 100 years) using profile
-#' likelihood and the Regula Falsi root‐finding method.
+#' Calculates estimates and confidence intervals for return levels at standard 
+#' return periods (2, 5, 10, 20, 50, and 100 years) using the profile likelihood 
+#' and Regula-Falsi root‐finding method.
 #'
-#' @param data Numeric vector of observations. NaN values are removed internally.
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @param model Character string specifying the distribution code. The first three
-#'    letters denote the family: 'GUM', 'NOR', 'LNO', 'GEV', 'GLO',
-#'    'GNO', 'PE3', 'LP3', or 'WEI'. A trailing signature of '10'/'100' indicates
-#'    a trend in location. '11'/'110' indicates trends in both location and scale.
+#' @param years Numeric; a vector of years with the same length as `data`.
 #'
-#' @param years Character string or numeric vector specifying the years at which
-#'   to compute the estimates and confidence intervals. Defaults to "last".
-#'   \itemize{
-#'     \item{`"all"` returns estimates for all years in the dataset.}
-#'     \item{`"first"` returns estimates for first year in the dataset.}
-#'     \item{`"last"` returns estimates for last year in the dataset.}
-#'     \item{Passing a numeric vector to `years` allows for custom values.}
-#'   }
-#'   If the chosen model is stationary, the results will be the same for all years
+#' @param model Character (1); string specifying the probability model. The first three 
+#'   letters denote the family: `GUM`, `NOR`, `LNO`, `GEV`, `GLO`, `GNO`, `PE3`, 
+#'   `LP3`, or `WEI`. A trailing signature of `10` or `100` indicates a linear trend 
+#'   in location; `11` or `110` indicates linear trends in both location and scale.
 #'
-#' @param alpha Numeric significance level for confidence intervals (default 0.05).
+#' @param slices Character (1) or Numeric; specifies the years at which
+#'   to compute the estimates and confidence intervals (default is "last").
+#'   - `"all"`: returns estimates for all values in `years`.
+#'   - `"first"`: returns estimates for first year in the dataset.
+#'   - `"last"`: returns estimates for last year in the dataset.
+#'   - Passing a numeric vector to `slices` allows for custom values.
 #'
-#' @param eps Numeric tolerance for the Regula Falsi convergence criterion (default 1e-2).
+#'   If the chosen model is stationary, the results will be the same for all slices.
 #'
-#' @return
-#' A list with components:
-#' - ci_lower : Numeric vector of lower confidence bounds for each return period.  
-#' - estimates: Numeric vector of profile‐likelihood point estimates (return levels).  
-#' - ci_upper : Numeric vector of upper confidence bounds for each return period.
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param eps Numeric (1); tolerance for the Regula-Falsi convergence (default is 0.01).
+#'
+#' @param prior Numeric (2); optional vector of parameters \eqn{(p, q)} that specifies 
+#'  the parameters of a Beta prior on \eqn{\kappa}. Only works with models `GEV`, 
+#'  `GEV100`, and `GEV110`.
+#'
+#' @return List; quantiles and confidence intervals. Each year maps to a sub-list:
+#' - `estimates`: Estimated quantiles for each return period.
+#' - `ci_lower`: Lower bound of the confidence interval for each return period.
+#' - `ci_upper`: Upper bound of the confidence interval for each return period.
+#' - `t`: Vector of return periods; `c(2, 5, 10, 20, 50, 100)`.
 #'
 #' @details
-#' 1. Retrieves the quantile function for the specified model via get.distributions().  
-#' 2. Fits the model by ordinary MLE to obtain parameter estimates and log‐likelihood.  
-#' 3. Defines an objective function f(yp, pe) based on the chi-squared distribution.
-#' 4. Iteratively brackets the root by scaling initial guesses by 0.05 until f changes sign.  
-#' 5. Uses the Regula Falsi method to solve f(yp, pe) = 0 for each return-period probability.  
-#' 6. Returns lower and upper confidence bounds at level alpha and the point estimates.
+#' 1. Fits the model using \link{mle.estimation} to obtain parameter estimates and log‐likelihood.  
+#' 2. Defines an objective function \eqn{f(y_p, p)} based on the chi-squared distribution.
+#' 3. Iteratively brackets the root by scaling initial guesses by 0.05 until f changes sign.  
+#' 4. Uses the Regula Falsi method to solve \eqn{f(y_p, p) = 0} for each return-period probability.  
+#' 5. Returns lower and upper confidence bounds at level alpha and the quantile estimates.
+#'
+#' @seealso \link{qntxxx}, \link{sb.uncertainty}, \link[stats]{nlminb}
+#'
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' rfpl.uncertainty(data, years, "GLO110")
 #'
 #' @importFrom stats qchisq
 #' @export
-
 rfpl.uncertainty <- function(
   data,
   years,
@@ -53,23 +63,22 @@ rfpl.uncertainty <- function(
   prior = NULL
 ) {
 
+	# Get the name, signature, and covariates
+	name <- substr(model, 1, 3)
+	signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
+	year_covariates <- get.covariates(years)
+
 	# Helper function for computing the profile likelihood
 	profile.likelihood <- function(yp, p, params, slice, prior = NULL) {
-
-		# Get the name and signature for the model 
-		name <- substr(model, 1, 3)
-		signature <- if(nchar(model) == 3) NULL else substr(model, 4, 5)
 
 		# Initialize the non-stationary parameters to 0 (if necessary)
 		if (is.null(signature)) {
 			lower <- c(1e-8)
 			upper <- c( Inf)
 		} else if (signature == "10") {
-			covariate <- get.covariates(years)
 			lower <- c(-Inf, 1e-8)
 			upper <- c( Inf,  Inf)
 		} else if  (signature == "11") {
-			covariate <- get.covariates(years)
 			lower <- c(-Inf, 1e-8, -Inf)
 			upper <- c( Inf,  Inf,  Inf)
 		} 
@@ -79,9 +88,6 @@ rfpl.uncertainty <- function(
 			if (is.null(prior)) {
 				lower <- c(lower, -Inf)
 				upper <- c(upper,  Inf)
-			} else if (name == "WEI") {
-				lower <- c(lower, 1e-8)
-				upper <- c(upper, Inf)
 			} else {
 				lower <- c(lower, -0.49)
 				upper <- c(upper, 0.49)
@@ -92,7 +98,7 @@ rfpl.uncertainty <- function(
 		objective <- function(theta) {
 
 			# Get the quantile at probability p with location 0
-			qp <- qntxxx(model, p, c(0, theta), slice)
+			qp <- qntxxx(name, signature, p, c(0, theta), slice)
 
 			# Log-transform yp, qp if necessary
 			name <- substr(model, 1, 3)
@@ -105,9 +111,9 @@ rfpl.uncertainty <- function(
 			theta <- c(yp - qp, theta)
 
 			if (!is.null(prior)) {
-				0 - gllfast(name, signature, data, theta, prior, covariate)
+				0 - gllxxx(name, signature, data, theta, prior, year_covariates)
 			} else {
-				0 - llvfast(name, signature, data, theta, covariate)
+				0 - llvxxx(name, signature, data, theta, year_covariates)
 			}
 
 		} 
@@ -158,15 +164,17 @@ rfpl.uncertainty <- function(
 		)
 	}
 
+	slice_covariates <- get.covariates(slices)
+
 	# Get the results of maximum likelihood estimation
 	mle <- if (is.null(prior)) {
-		mle.estimation(data, model, years) 
+		mle.estimation(data, years, model) 
 	} else {
-		mle.estimation(data, model, years, prior) 
+		mle.estimation(data, years, model, prior) 
 	} 
 
 	lp_hat <- mle$mll
-	yp_hat <- qntxxx(model, returns, mle$params, slices)
+	yp_hat <- qntxxx(name, signature, returns, mle$params, slice_covariates)
 
 	# We want to find the roots of the function f defined below:
 	f <- function(yp, p, slice) {
@@ -224,9 +232,9 @@ rfpl.uncertainty <- function(
 	# Run uncertainty quantification at each year in slices
 	lapply(1:length(slices), function (i) {
 		if (length(slices) == 1) {
-			compute.uncertainty(yp_hat, slices[i])
+			compute.uncertainty(yp_hat, slice_covariates[i])
 		} else {
-			compute.uncertainty(yp_hat[i, ], slices[i])
+			compute.uncertainty(yp_hat[i, ], slice_covariates[i])
 		}
 	})
 

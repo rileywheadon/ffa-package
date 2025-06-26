@@ -2,36 +2,40 @@
 % Please edit documentation in R/ld-selection.R
 \name{ld.selection}
 \alias{ld.selection}
-\title{L-Distance Method for Distribution Selection Using L-Moment Ratios}
+\title{L-Distance Method for Distribution Selection}
 \usage{
 ld.selection(data)
 }
 \arguments{
-\item{data}{A numeric vector containing the AMS data without NaN values}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 }
 \value{
-A named list containing:
-\describe{
-\item{distance}{A list of fitted moment points for each candidate distribution with
-associated L-distance metrics.}
-\item{recommendation}{The name of the distribution with the smallest L-distance.}
+List; results of distribution selection:
+\itemize{
+\item \code{method}: \code{"L-distance"}
+\item \code{metrics}: A list of L-distance metrics for each candidate distribution.
+\item \code{recommendation}: The name of the distribution with the smallest L-distance.
 }
 }
 \description{
-Selects the best-fit distribution from a candidate set by minimizing the Euclidean distance
-between theoretical and sample L-moment ratios (\eqn{\tau_3}, \eqn{\tau_4}). This method
-quantifies goodness-of-fit in the L-moment ratio space and returns the closest matching
-distribution.
+Selects a distribution from a set of candidate distributions by minimizing the
+Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)}
+and the sample L-moment ratios \eqn{(t_3, t_4)}.
 }
 \details{
 For each candidate distribution, the method computes the Euclidean distance between
 sample L-moment ratios (\eqn{\tau_3}, \eqn{\tau_4}) and the closest point on the
-theoretical distribution's L-moment surface. The distribution with the minimum distance
-is selected.
+theoretical distribution's L-moment curve. For two-parameter distributions (Gumbel,
+Normal, Log-Normal), the theoretical L-moment ratios are compared directly with
+the sample L-moment ratios. The distribution with the minimum distance is selected.
+If a distribution is fit to log-transformed data (Log-Normal or Log-Pearson Type III),
+the L-moment ratios for the log-transformed sample are used instead.
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+ld.selection(data)
 
-If a distribution is flagged as requiring log-transformed data, the \code{log_lm}
-component is used for matching.
 }
 \seealso{
-\code{\link{z.selection}}, \code{\link{lk.selection}}
+\link{lmom.sample}, \link{lk.selection}, \link{z.selection}, \link[stats]{optim}
 }

@@ -7,26 +7,26 @@
 kpss.test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{A numeric vector of annual maximum streamflow data. Must not contain NA values.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{alpha}{A numeric value indicating the significance level. Must be at least 0.01 (default is 0.05).}
+\item{alpha}{Numeric (1); the significance level (default is 0.05).}
 
-\item{quiet}{Logical. If FALSE, prints a summary message to the console (default is TRUE).}
+\item{quiet}{Logical (1); if FALSE, prints a summary of results (default is TRUE).}
 }
 \value{
-A named list with the following components:
-\describe{
-\item{statistic}{The KPSS test statistic.}
-\item{p.value}{The reported p-value from the test. See notes regarding discrete thresholds.}
-\item{reject}{Logical. TRUE if the null hypothesis of stationarity is rejected at \code{alpha}.}
-\item{msg}{Character string summarizing the test outcome, printed if \code{quiet = FALSE}.}
+List; the test results, consisting of:
+\itemize{
+\item \code{statistic}: The KPSS test statistic.
+\item \code{p.value}: The reported p-value from the test. See notes regarding discrete thresholds.
+\item \code{reject}: Logical. TRUE if the null hypothesis is rejected at \code{alpha}.
+\item \code{msg}: Character string summarizing the test outcome, printed if \code{quiet = FALSE}.
 }
 }
 \description{
-Performs the KPSS test for stationarity in annual maximum streamflow (AMS) data
-using an implementation based on the \pkg{aTSA} package. The null hypothesis is that
-the time series is trend-stationary with a linear trend. The alternative hypothesis
-is that the time series has a unit root (non-stationarity).
+Performs the KPSS unit root test on annual maximum streamflow (AMS) data.
+The null hypothesis is that  the time series is trend-stationary with a linear
+trend and constant drift.  The alternative hypothesis is that the time series
+has a unit root and is non-stationary.
 }
 \details{
 The implementation of the KPSS test is based on the \pkg{aTSA} package, which interpolates
@@ -34,6 +34,15 @@ a significance table from Hobjin et al. (2004). Therefore, a result of \eqn{p = 
 implies that \eqn{p \leq 0.01} and a result of \eqn{p = 0.10} implies that \eqn{p \geq 0.10}.
 This implementation uses the Type III KPSS test, which accounts for a linear trend in the data.
 }
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+kpss.test(data)
+
+}
+\references{
+Hobijn, B., Franses, P.H. and Ooms, M. (2004), Generalizations of the KPSS-test for
+stationarity. Statistica Neerlandica, 58: 483-502.
+}
 \seealso{
-\code{\link[aTSA]{kpss.test}}, \code{\link{pp.test}}
+\link{pp.test}
 }

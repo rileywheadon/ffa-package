@@ -1,34 +1,42 @@
-#' White Test for Heteroskedasticity in Annual Maximum Streamflow
+#' White Test for Heteroskedasticity
 #'
-#' Performs the White test for heteroskedasticity by regressing the squared residuals of a linear
-#' model on the original regressors and their squared terms. The null hypothesis is homoskedasticity.
+#' @description
+#' Performs the White test for heteroskedasticity by regressing the squared residuals of a 
+#' linear model on the original regressors and their squared terms. The null hypothesis 
+#' is homoskedasticity.
 #'
-#' @param data Numeric vector of annual maximum streamflow values with no missing values.
-#' @param years Numeric vector of years corresponding to \code{data}, with no missing values.
-#' @param alpha Numeric significance level for the test (default is 0.05).
-#' @param quiet Logical. If FALSE, prints a summary message to the console (default is TRUE).
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list containing:
-#' \describe{
-#'   \item{r.squared}{Coefficient of determination from the auxiliary regression.}
-#'   \item{statistic}{White test statistic based on sample size and auxiliary \code{R^2}.}
-#'   \item{p.value}{P-value computed from the Chi-squared distribution with 2 degrees of freedom.}
-#'   \item{reject}{Logical. TRUE if the null hypothesis is rejected at \code{alpha}.}
-#'   \item{msg}{Character string summarizing the test result (printed if \code{quiet = FALSE}).}
-#' }
+#' @param years Numeric; a vector of years with the same length as `data`.
+#'
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#'
+#' @return List; results of the White test:
+#' - `r.squared`: Coefficient of determination from the auxiliary regression.
+#' - `statistic`: White test statistic based on sample size and `r.squared`.
+#' - `p.value`: P-value derived from a Chi-squared distribution with 2 degrees of freedom.
+#' - `reject`: Logical. TRUE if the null hypothesis is rejected at significance `alpha`.
+#' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
 #'
 #' @details
-#' The White test regresses the squared residuals from a primary linear model \code{lm(data ~ years)}
-#' against both the original regressor and its square. The test statistic is calculated as
-#' \code{n * R^2}, where \code{R^2} is from the auxiliary regression. Under the null hypothesis,
+#' The White test regresses the squared residuals from a primary linear model 
+#' `lm(data ~ years)` against both the original regressor and its square. 
+#' The test statistic is calculated as \eqn{nR^2}, where \eqn{R^2} is the 
+#' coefficient of determination from the auxiliary regression. Under the null hypothesis,
 #' this statistic follows a \eqn{\chi^2} distribution with 2 degrees of freedom.
+#' Rejection of the null hypothesis suggests heteroskedasticity in the residuals.
 #'
-#' Rejection of the null hypothesis suggests the presence of heteroskedasticity in the residuals.
+#' @references White, H. (1980). A heteroskedasticity-consistent covariance matrix 
+#' estimator and a direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 817–838.
 #'
-#' @references White, H. (1980). A heteroskedasticity-consistent covariance matrix estimator and a
-#' direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 817–838.
+#' @seealso \link[stats]{lm}, \link[stats]{pchisq}
 #'
-#' @seealso \code{\link[stats]{lm}}, \code{\link[stats]{pchisq}}
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#' white.test(data, years)
 #'
 #' @importFrom stats lm pchisq resid
 #' @export

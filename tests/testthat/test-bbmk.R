@@ -2,12 +2,9 @@
 test_that("Test bbmk-test.R on data set #2", {
 	set.seed(1)
 
-	# Load dataset and run BB-MK test with profiling
+	# Load dataset and run BB-MK test 
 	df <- load_data("Application_2.csv")
-	start <- Sys.time()
 	test <- bbmk.test(df$max)
-	end <- Sys.time()
-	# print(end - start)
 
 	# Ensure the test results are the same as MATLAB
 	expect_equal(test$p.value, 0.2105, tol = 5e-2)

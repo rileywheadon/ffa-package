@@ -1,39 +1,40 @@
-#' L-Distance Method for Distribution Selection Using L-Moment Ratios
+#' L-Distance Method for Distribution Selection
 #'
-#' Selects the best-fit distribution from a candidate set by minimizing the Euclidean distance
-#' between theoretical and sample L-moment ratios (\eqn{\tau_3}, \eqn{\tau_4}). This method
-#' quantifies goodness-of-fit in the L-moment ratio space and returns the closest matching
-#' distribution.
+#' @description
+#' Selects a distribution from a set of candidate distributions by minimizing the 
+#' Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)} 
+#' and the sample L-moment ratios \eqn{(t_3, t_4)}.
 #'
-#' @param data A numeric vector containing the AMS data without NaN values
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list containing:
-#' \describe{
-#'   \item{distance}{A list of fitted moment points for each candidate distribution with
-#'     associated L-distance metrics.}
-#'   \item{recommendation}{The name of the distribution with the smallest L-distance.}
-#' }
+#' @return List; results of distribution selection:
+#' - `method`: `"L-distance"`
+#' - `metrics`: A list of L-distance metrics for each candidate distribution.
+#' - `recommendation`: The name of the distribution with the smallest L-distance.
 #'
 #' @details
 #' For each candidate distribution, the method computes the Euclidean distance between
 #' sample L-moment ratios (\eqn{\tau_3}, \eqn{\tau_4}) and the closest point on the
-#' theoretical distribution's L-moment surface. The distribution with the minimum distance
-#' is selected.
+#' theoretical distribution's L-moment curve. For two-parameter distributions (Gumbel,
+#' Normal, Log-Normal), the theoretical L-moment ratios are compared directly with
+#' the sample L-moment ratios. The distribution with the minimum distance is selected.
+#' If a distribution is fit to log-transformed data (Log-Normal or Log-Pearson Type III), 
+#' the L-moment ratios for the log-transformed sample are used instead.
 #'
-#' If a distribution is flagged as requiring log-transformed data, the \code{log_lm}
-#' component is used for matching.
+#' @seealso \link{lmom.sample}, \link{lk.selection}, \link{z.selection}, \link[stats]{optim}
 #'
-#' @seealso \code{\link{z.selection}}, \code{\link{lk.selection}}
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' ld.selection(data)
 #'
-#' @importFrom lmom samlmu
 #' @importFrom stats optim
 #' @export
 
 ld.selection <- function(data) {
 
 	# Get the sample L-moments for data and log(data)
-	reg_sample_t3_t4 <- lmom.sample(data)[3:4]
-	log_sample_t3_t4 <- lmom.sample(log(data))[3:4]
+	reg_t3_t4 <- lmom.sample(data)[3:4]
+	log_t3_t4 <- lmom.sample(log(data))[3:4]
 
 	# Helper function to get distance between two points
 	distance <- function(p1, p2) sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2)
@@ -48,23 +49,19 @@ ld.selection <- function(data) {
 		info <- models.info(model)
 
 		# Determine the sample L-moments (regular or log)
-		sample_t3_t4 <- if (info$log) {
-			log_sample_t3_t4 
-		} else {
-			reg_sample_t3_t4
-		}
+		t3_t4 <- if (info$log) log_t3_t4 else reg_t3_t4
 
 		# Compute the L-distance metric directly for two-parameter distributions
 		if (info$n.params == 2) {
-			distribution_t3_t4 <- lmrxxx(model, c(0, 1))[3:4]
-			metrics[[model]] <- distance(distribution_t3_t4, sample_t3_t4)
+			tau3_tau4 <- lmrxxx(model, c(0, 1))[3:4]
+			metrics[[model]] <- distance(tau3_tau4, t3_t4)
 			next
 		}
 
 		# Define objective function for three parameter distributions
 		objective <- function(i) {
-			distribution_t3_t4 <- lmrxxx(model, c(0, 1, i))[3:4]
-			distance(distribution_t3_t4, sample_t3_t4)
+			tau3_tau4 <- lmrxxx(model, c(0, 1, i))[3:4]
+			distance(tau3_tau4, t3_t4)
 		}
 
 		# Run optimization for three parameter distributions
@@ -84,6 +81,10 @@ ld.selection <- function(data) {
 	recommendation <- names(metrics)[which.min(metrics)]
 
 	# Return the results as a list
-	list(metrics = metrics, recommendation = recommendation)	
+	list(
+		method = "L-distance",
+		metrics = metrics,
+		recommendation = recommendation
+	)	
 
 }

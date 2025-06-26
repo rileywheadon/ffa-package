@@ -103,6 +103,6 @@
 <text x='619.84' y='309.35' style='font-size: 8.80px; font-family: sans;' textLength='62.60px' lengthAdjust='spacingAndGlyphs'>GNO/NOR/LNO</text>
 <text x='619.84' y='326.63' style='font-size: 8.80px; font-family: sans;' textLength='34.74px' lengthAdjust='spacingAndGlyphs'>PE3/LP3</text>
 <text x='619.84' y='343.91' style='font-size: 8.80px; font-family: sans;' textLength='16.62px' lengthAdjust='spacingAndGlyphs'>WEI</text>
-<text x='327.65' y='18.75' text-anchor='middle' style='font-size: 20.00px; font-family: sans;' textLength='138.92px' lengthAdjust='spacingAndGlyphs'>lmom-z-statistic</text>
+<text x='327.65' y='18.75' text-anchor='middle' style='font-size: 20.00px; font-family: sans;' textLength='233.45px' lengthAdjust='spacingAndGlyphs'>Z-statistic Model Selection</text>
 </g>
 </svg>

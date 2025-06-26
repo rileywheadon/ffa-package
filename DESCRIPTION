@@ -8,24 +8,11 @@ Authors@R:
            role = c("aut", "cre"))
 Author: Riley Wheadon [aut, cre]
 Maintainer: Riley Wheadon <rileywheadon@gmail.com>
-Description: Tools for exploratory data analysis and flood frequency analysis using 
-    L-moments, statistical tests, and model assessment. Implements several methods 
-    for distribution selection, trend detection, and uncertainty quantification.
+Description: Tools for exploratory data analysis and flood frequency analysis. Implements statistical tests and methods for distribution selection, parameter estimation, uncertainty quantification, and model assessment.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
-Depends:
-	R (>= 4.5.0)
-Imports:
-	ggplot2,
-	patchwork,
-    Rcpp
-LinkingTo:
-    Rcpp
-Suggests:
-    testthat,
-	parallel,
-	vdiffr,
-	covr
+Depends: R (>= 4.5.0), ggplot2, patchwork
+Suggests: testthat, vdiffr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

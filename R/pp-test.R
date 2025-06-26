@@ -1,34 +1,39 @@
 #' Phillips–Perron Unit Root Test
 #'
-#' Applies the Phillips–Perron (PP) test to assess the presence of a unit root in annual
-#' maximum streamflow (AMS) data. The null hypothesis is that the series contains a unit root
-#' (i.e., is non-stationary). This implementation of the PP test assumes the time series 
-#' has a stationary drift term and linear trend term.
+#' Applies the Phillips–Perron (PP) test to check for a unit root in annual
+#' maximum streamflow (AMS) data. The null hypothesis is that the series contains a 
+#' unit root (and is thus non-stationary). This implementation of the PP test assumes 
+#' the  time series has both stationary drift and a linear trend.
 #'
-#' @param data Numeric vector of annual maximum streamflow data with no missing values.
-#' @param alpha Numeric significance level. Must be greater than 0.01 (default is 0.05).
-#' @param quiet Logical. If FALSE, prints a summary message to the console (default is TRUE).
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list containing:
-#' \describe{
-#'     \item{statistic}{The Z-statistic used to perform the test.}
-#'     \item{p.value}{Reported p-value from the test. See notes on interpolation thresholds.}
-#'     \item{reject}{Logical. TRUE if the null hypothesis of a unit root is rejected at \code{alpha}.}
-#'     \item{msg}{Character string summarizing the test result (printed if \code{quiet = FALSE}).}
-#' }
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#'
+#' @return List; the test results, consisting of:
+#' - `statistic`: The Z-statistic used to perform the test.
+#' - `p.value`: Reported p-value from the test. See notes on interpolation thresholds.
+#' - `reject`: Logical. TRUE if the null hypothesis of a unit root is rejected at `alpha`.
+#' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
 #'
 #' @details
-#' The implementation of this test is based on the \pkg{aTSA} package, which interpolates p-values 
-#  from the critical values in Fuller W. A. (1996). The critical values are only available for
-#' \code{alpha > 0.01}. Note that a reported p-value of 0.01 indicates \eqn{p \leq 0.01}.
-#'
-#' The null hypothesis is that the time series contains a unit root (non-stationary). Rejection
-#' of the null suggests that the series is trend-stationary.
+#' The implementation of this test is based on the \pkg{aTSA} package, which interpolates 
+#' p-values from a table of critical values presented in Fuller W. A. (1996). The 
+#' critical values are only available for \eqn{\alpha \geq 0.01}. Therefore, a reported 
+#'  p-value of 0.01 indicates \eqn{p \leq 0.01}.
 #'
 #' @references
-#' Fuller, W. A. (1996). Introduction to statistical time series, second ed., Wiley, New York.
+#' Fuller, W. A. (1996). Introduction to statistical time series, second ed., Wiley, 
+#' New York.
 #'
-#' @seealso \code{\link[aTSA]{pp.test}}, \code{\link{kpss.test}}
+#' @seealso \link{kpss.test}
+#'
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' pp.test(data)
+#'
+#' @importFrom stats embed
 #' @export
 
 pp.test <- function(data, alpha = 0.05, quiet = TRUE) {

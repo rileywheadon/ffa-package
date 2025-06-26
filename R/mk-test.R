@@ -1,31 +1,34 @@
-#' Mann–Kendall Test for Monotonic Trends
+#' Mann–Kendall Trend Test
 #'
-#' Performs the Mann–Kendall trend test on a numeric vector to detect the presence of a monotonic
-#' trend (increasing or decreasing) over time. The test is non-parametric and accounts for tied
-#' observations in the data.
+#' Performs the Mann–Kendall trend test on a numeric vector to detect the presence 
+#' of a monotonic trend (increasing or decreasing) over time. The test is non-parametric 
+#' and accounts for tied observations in the data.
 #'
-#' @param data A numeric vector of AMS values or their variances. Must not contain NA values.
-#' @param alpha A numeric value specifying the significance level (default is 0.05).
-#' @param quiet Logical. If FALSE, prints a summary of the test result to the console.
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list with the following components:
-#' \describe{
-#'   \item{s.statistic}{The raw Mann–Kendall test statistic \(S\).}
-#'   \item{s.variance}{The variance of the test statistic under the null hypothesis.}
-#'   \item{p.value}{The p-value associated with the two-sided hypothesis test.}
-#'   \item{reject}{Logical. TRUE if the null hypothesis of no trend is rejected at \code{alpha}.}
-#'   \item{msg}{A character string summarizing the result (printed if \code{quiet = FALSE}).}
-#' }
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#'
+#' @return List; the test results:
+#' - `s.statistic`: The raw Mann–Kendall test statistic \eqn{S}.
+#' - `s.variance`: The variance of the test statistic under the null hypothesis.
+#' - `p.value`: The p-value associated with the two-sided hypothesis test.
+#' - `reject`: Logical. TRUE if the null hypothesis of no trend is rejected at `alpha`.
+#' - `msg`: A character string summarizing the result (printed if `quiet = FALSE`).
 #'
 #' @details
-#' The statistic \(S\) is computed as the sum over all pairs \(i < j\) of the sign of the
-#' difference \(x_j - x_i\). Ties are explicitly accounted for when calculating the variance of
-#' \(S\), using grouped frequencies of tied observations.
+#' The statistic \eqn{S} is computed as the sum over all pairs \eqn{i < j} of the sign of the
+#' difference \eqn{x_j - x_i}. Ties are explicitly accounted for when calculating the variance of
+#' \eqn{S}, using grouped frequencies of tied observations. The test statistic \eqn{Z} is then 
+#' computed based on the sign and magnitude of \eqn{S}, and the p-value is derived from the 
+#' standard normal distribution.
 #'
-#' The test statistic \(Z\) is then computed based on the sign and magnitude of \(S\), and the
-#' p-value is derived from the standard normal distribution.
+#' @seealso \link{bbmk.test}
 #'
-#' @seealso \code{\link{bbmk.test}} for a bootstrap-based variant of this test.
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' mk.test(data)
 #'
 #' @importFrom stats pnorm
 #' @export

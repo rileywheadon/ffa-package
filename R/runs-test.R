@@ -1,38 +1,42 @@
-#' Perform a Wald–Wolfowitz runs test on model residuals
+#' Wald–Wolfowitz Runs Test for Randomness
 #'
-#' \code{runs.test} applies the Wald–Wolfowitz runs test to a numeric vector of
-#' residuals in order to assess whether they behave as a random sequence.  The
-#' test statistic’s p-value is compared to the specified significance level
-#' \code{alpha}, and a pass/fail decision is returned along with a human-readable
-#' summary message.
+#' Applies the Wald–Wolfowitz runs test to a numeric vector of residuals in 
+#' order to assess whether they behave as a random sequence. The test statistic’s 
+#' p-value is compared to the significance level `alpha`, and a decision is 
+#' returned along with a human-readable summary message.
 #'
-#' @param residuals Numeric vector of residual values from a fitted linear model.
-#' @param alpha Numeric significance level for the runs test (default is 0.05).
-#' @param quiet Logical. If FALSE, prints a summary message describing results (default is TRUE).
+#' @param residuals Numeric; A vector of residuals produced by \link{sens.trend}.
 #'
-#' @return A named list with components:
-#' \describe{
-#'   \item{p.value}{P-value from the Wald–Wolfowitz runs test applied to residuals.}
-#'   \item{residuals}{Numeric vector of residual values from a fitted linear model.}
-#'   \item{reject}{Logical. TRUE if null hypothesis of random residuals is rejected.}
-#'   \item{msg}{Character string summarizing the test result.}
-#' }
+#' @param alpha Numeric (1); the significance level (default is 0.05).
+#'
+#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#'
+#' @return List; test results, including:
+#' - `p.value`: P-value from the Wald–Wolfowitz runs test applied to residuals.
+#' - `residuals`: Numeric vector of residual values from a fitted linear model.
+#' - `reject`: Logical. TRUE if the null hypothesis of random residuals is rejected.
+#' - `msg`: Character string summarizing the test result.
 #'
 #' @details
-#' The Wald–Wolfowitz runs test examines the sequence of positive and negative
-#' residuals to test for randomness around the median. A small p-value suggests
-#' non-random clustering, which may indicate that a linear model is inappropriate 
-#' for the data.
-#'
-#' Internally, this function calls \code{\link[randtests]{runs.test}}.
+#' The Wald–Wolfowitz runs test examines the sequence of residuals to test for
+#' randomness around the median. A small p-value suggests non-random clustering, 
+#' which may indicate that a linear model is inappropriate for the data.
 #'
 #' @references
-#' Wald, A. and Wolfowitz, J. (1940). On a test whether two samples are from the same population.
-#'   Annals of Mathematical Statistics, 11(2), 147–162.
+#' Wald, A. and Wolfowitz, J. (1940). On a test whether two samples are from the 
+#' same population. Annals of Mathematical Statistics, 11(2), 147–162.
 #'
-#' @seealso \code{\link[randtests]{runs.test}}, \code{\link{sens.trend}}
+#' @seealso \link{runs.plot}, \link{sens.trend}
 #'
-#' @importFrom randtests runs.test
+#' @examples
+#' # Initialize data and years
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' years <- seq(from = 1901, to = 2000)
+#'
+#' # Perform the runs test
+#' residuals <- sens.trend(data, years)$residuals
+#' runs.test(residuals)
+#'
 #' @export
 
 runs.test <- function(residuals, alpha = 0.05, quiet = TRUE) {

@@ -6,7 +6,7 @@
 # Helper function to validate MLE
 validate_mle <- function(df, model, expected_params, expected_mll) {
 
-	observed <- mle.estimation(df$max, model, df$year)
+	observed <- mle.estimation(df$max, df$year, model)
 
 	if (observed$mll > expected_mll + 1e-4) {
 		# print(sprintf("Skip %s: %.4f > %.4f.", model, observed$mll, expected_mll))
@@ -73,7 +73,7 @@ test_that("Test mle-estimation.R on data set #1", {
 validate_gmle <- function(df, model, expected_params, expected_mll) {
 
 	prior <- c(6, 9) 
-	observed <- mle.estimation(df$max, model, df$year, prior = prior)
+	observed <- mle.estimation(df$max, df$year, model, prior = prior)
 
 	if (observed$mll > expected_mll + 0.001) {
 		# print(sprintf("Skip %s: %.3f > %.3f.", model, observed$mll, expected_mll))

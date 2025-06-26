@@ -1,27 +1,27 @@
-#' L-Kurtosis Method for Distribution Selection Using L-Moment Ratios
+#' L-Kurtosis Method for Distribution Selection
 #'
-#' Selects a best-fit probability distribution by minimizing the absolute vertical
-#' distance (in \eqn{\tau_4}) between the sample L-moment ratios and the theoretical
-#' L-moment curves. For 3-parameter distributions, we use the shape parameter that best
-#' replicates the L-skewness of the data.
+#' Selects a probability distribution by minimizing the absolute distance
+#' between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis 
+#' (\eqn{t_4}). For 3-parameter distributions, we use the shape parameter that 
+#' best replicates the sample L-skewness (\eqn{t_3}) of the data.
 #'
-#' @param data A numeric vector containing the AMS data without NaN values
+#' @param data Numeric; a vector of annual maximum streamflow data.
 #'
-#' @return A named list containing:
-#' \describe{
-#'   \item{distance}{A list of interpolated L-moment matches and kurtosis-based metrics for each distribution.}
-#'   \item{recommendation}{Name of the distribution with the smallest L-kurtosis deviation.}
-#' }
+#' @return List; results of distribution selection:
+#' - `method`: `"L-kurtosis"`
+#' - `metrics`: A list of L-kurtosis metrics for each distribution.
+#' - `recommendation`: Name of the distribution with the smallest L-kurtosis metric
 #'
 #' @details
-#' This method computes the vertical distance in \eqn{\tau_4} (L-kurtosis) between the sample
-#' and theoretical L-moment ratio diagrams at fixed \eqn{\tau_3} (L-skewness). The interpolated
-#' \eqn{\tau_4} and \eqn{\kappa} values are derived using \code{\link[stats]{approx}}.
+#' This method computes the distance between the sample and theoretical L-kurtosis values at 
+#' a fixed L-skewness. For three parameter distributions, the shape parameter that best 
+#' replicates the sample L-skewness is derived using \link[stats]{optim}.
 #'
-#' Only 3-parameter distributions are considered in this method. Specifically, it evaluates
-#' GEV, GLO, PE3, LP3, GNO, and WEI. For more information, see the FFA framework website.
+#' @seealso \link{lmom.sample}, \link{ld.selection}, \link{z.selection}, \link[stats]{optim}
 #'
-#' @seealso \code{\link{ld.selection}}, \code{\link{z.selection}}
+#' @examples
+#' data <- rnorm(n = 100, mean = 100, sd = 10)
+#' lk.selection(data)
 #'
 #' @importFrom stats optim
 #' @export
@@ -29,8 +29,8 @@
 lk.selection <- function(data) {
 
 	# Get the sample L-moments for data and log(data)
-	reg_sample_t3_t4 <- lmom.sample(data)[3:4]
-	log_sample_t3_t4 <- lmom.sample(log(data))[3:4]
+	reg_t3_t4 <- lmom.sample(data)[3:4]
+	log_t3_t4 <- lmom.sample(log(data))[3:4]
 
 	# Initialize list of metrics
 	metrics <- list()
@@ -42,23 +42,19 @@ lk.selection <- function(data) {
 		info <- models.info(model)
 
 		# Determine the sample L-moments (regular or log)
-		sample_t3_t4 <- if (info$log) {
-			log_sample_t3_t4 
-		} else {
-			reg_sample_t3_t4
-		}
+		t3_t4 <- if (info$log) log_t3_t4 else reg_t3_t4
 
 		# Compute the L-kurtosis metric directly for two-parameter distributions 
 		if (info$n.params == 2) {
-			distribution_t3_t4 <- lmrxxx(model, c(0, 1))[3:4]
-			metrics[[model]] <- abs(distribution_t3_t4[2] - sample_t3_t4[2])
+			tau3_tau4 <- lmrxxx(model, c(0, 1))[3:4]
+			metrics[[model]] <- abs(tau3_tau4[2] - t3_t4[2])
 			next
 		}
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {
-			distribution_t3_t4 <- lmrxxx(model, c(0, 1, i))[3:4]
-			abs(distribution_t3_t4[1] - sample_t3_t4[1])
+			tau3_tau4 <- lmrxxx(model, c(0, 1, i))[3:4]
+			abs(tau3_tau4[1] - t3_t4[1])
 		}
 
 		# Run optimization for three parameter distributions
@@ -71,8 +67,8 @@ lk.selection <- function(data) {
 		)
 
 		# Get the parameters of the fitted distribution
-		distribution_t3_t4 <- lmrxxx(model, c(0, 1, result$par))[3:4]
-		metrics[[model]] <- abs(distribution_t3_t4[2] - sample_t3_t4[2])
+		tau3_tau4 <- lmrxxx(model, c(0, 1, result$par))[3:4]
+		metrics[[model]] <- abs(tau3_tau4[2] - t3_t4[2])
 
 	}
 
@@ -80,6 +76,10 @@ lk.selection <- function(data) {
 	recommendation <- names(metrics)[which.min(metrics)]
 
 	# Return the results as a list
-	list(metrics = metrics, recommendation = recommendation)	
+	list(
+		method = "L-kurtosis",
+		metrics = metrics, 
+		recommendation = recommendation
+	)	
 
 }

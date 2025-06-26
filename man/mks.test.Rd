@@ -2,49 +2,55 @@
 % Please edit documentation in R/mks-test.R
 \name{mks.test}
 \alias{mks.test}
-\title{Mann–Kendall–Sneyers Test for Detecting Change Points in Trends}
+\title{Mann–Kendall–Sneyers Test for Change Point Detection}
 \usage{
 mks.test(data, years, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow values with no missing values.}
+\item{data}{Numeric; a vector of annual maximum streamflow data.}
 
-\item{years}{Numeric vector of years corresponding to \code{data}, with no missing values.}
+\item{years}{Numeric; a vector of years with the same length as \code{data}.}
 
-\item{alpha}{Numeric significance level for the test (default 0.05).}
+\item{alpha}{Numeric (1); the significance level (default is 0.05).}
 
-\item{quiet}{Logical flag to suppress or print a summary message (default TRUE).}
+\item{quiet}{Logical (1); if FALSE, prints a summary of results (default is TRUE).}
 }
 \value{
-A named list containing:
-\describe{
-\item{s.progressive}{Normalized progressive Mann–Kendall statistics over time.}
-\item{s.regressive}{Normalized regressive Mann–Kendall statistics over time.}
-\item{bound}{Critical confidence bound for significance based on \code{alpha}.}
-\item{crossing.df}{Data frame of crossing points with indices, years, statistics, and AMS values.}
-\item{change.df}{Subset of \code{crossing_df} where crossing statistics exceed confidence bounds.}
-\item{p.value}{Two-sided p-value assessing the significance of maximum crossing statistic.}
-\item{reject}{Logical indicating whether null hypothesis of no change point is rejected.}
-\item{msg}{Character string summarizing the test result (printed if \code{quiet = FALSE}).}
+List; results of the MKS test:
+\itemize{
+\item \code{s.progressive}: Normalized progressive Mann–Kendall statistics.
+\item \code{s.regressive}: Normalized regressive Mann–Kendall statistics.
+\item \code{bound}: Critical confidence bound for significance based on \code{alpha}.
+\item \code{crossing.df}: Data frame of crossing points with indices, years, statistics, and AMS.
+\item \code{change.df}: Subset of \code{crossing.df} with statistically significant crossings.
+\item \code{p.value}: Two-sided p-value assessing the significance of maximum crossing statistic.
+\item \code{reject}: Logical indicating whether null hypothesis of no change point is rejected.
+\item \code{msg}: Character string summarizing the test result (printed if \code{quiet = FALSE}).
 }
 }
 \description{
-Performs the Mann–Kendall–Sneyers (MKS) test to detect the approximate time of onset
-of a monotonic trend in annual maximum streamflow (AMS) data. The test computes
+Performs the Mann–Kendall–Sneyers (MKS) test to detect the beginning of a monotonic
+trend in annual maximum streamflow (AMS) data. The test computes normalized
 progressive and regressive Mann–Kendall statistics and identifies statistically
 significant crossing points, indicating potential change points in the trend.
 }
 \details{
-The function computes progressive and regressive Mann–Kendall statistics \(S_t\),
+The function computes progressive and regressive Mann–Kendall statistics \eqn{S_t},
 normalized by their expected values and variances under the null hypothesis. The crossing
 points where the difference between these normalized statistics changes sign are
 identified using linear interpolation. The significance of detected crossings is
 assessed using normal quantiles and the maximum absolute crossing statistic.
+}
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+mks.test(data, years)
+
 }
 \references{
 Sneyers, R. (1990). On the statistical analysis of series of observations.
 Technical note No. 143, World Meteorological Organization, Geneva.
 }
 \seealso{
-\code{\link{mk.test}} for the classical Mann–Kendall test.
+\link{mks.plot}
 }
