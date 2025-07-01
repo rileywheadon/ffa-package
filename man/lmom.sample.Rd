@@ -37,6 +37,10 @@ first four sample L-moments are:
 Then, the sample L-skewness is \eqn{t_3 = l_3 / l_2} and the sample L-kurtosis
 is \eqn{t_4 = l_4 / l_2}.
 }
+\note{
+This function has no parameter validation because \link{sb.uncertainty} makes many
+calls to it. If you are getting errors, ensure that \code{data} is a positive, numeric vector.
+}
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 lmom.sample(data)

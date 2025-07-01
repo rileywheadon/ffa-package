@@ -4,56 +4,54 @@
 \alias{ams.decomposition}
 \title{Decompose Annual Maximum Streamflow Data}
 \usage{
-ams.decomposition(data, years, signature)
+ams.decomposition(data, years, trend)
 }
 \arguments{
-\item{data}{Numeric; a vector of annual maximum streamflow data.}
+\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
+Must be strictly positive, finite, and non-missing.}
 
-\item{years}{Numeric; a vector of years with the same length as \code{data}.}
+\item{years}{Numeric vector of observation years corresponding to \code{data}.
+Must be the same length as \code{data} and strictly increasing.}
 
-\item{signature}{Character (1); Indicates trend(s) to remove.  Must be one of:
+\item{trend}{Named list indicating which distribution parameters are
+modeled as non-stationary. Must contain:
 \itemize{
-\item \code{NULL}: Do not remove any trends.
-\item \code{"10"}: Remove linear trend in the mean.
-\item \code{"01"}: Remove linear trend in the variance.
-\item \code{"11"}: Remove trends in both the mean and variance.
+\item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
+\item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
 }}
 }
 \value{
-Numeric; a vector with the same length as \code{data} and \code{years} containing
-the decomposed AMS data with the specified trend(s) removed.
+List; decomposed AMS data with the same names as argument \code{ams}.
 }
 \description{
-Removes trends in the means and/or variances of annual maximum streamflow (AMS)
-data using Sen’s trend estimator and a moving‐window estimator of the variance.
+Removes trends in the mean and/or variance of annual maximum streamflow (AMS)
+data using Sen’s trend estimator and/or a moving‐window estimator of the variance.
 Four scenarios are supported:
 \enumerate{
 \item No trend. The data is returned unmodified.
-\item Trend in means only.
-\item Trend in variance only.
-\item Trends in both means and variance.
+\item Trend in the mean only.
+\item Trend in the variance only.
+\item Trends in both the mean and the variance.
 }
 }
 \details{
 Internally, the function does the following:
 \enumerate{
-\item If \code{signature == NULL}, returns \code{data} without modification.
-\item Constructs a \code{covariate} based on \code{years} using the formula \code{(years - 1900) / 100}.
-\item If \code{signature == "10"}, fits Sen’s trend estimator to \code{data} and \code{covariate}
-and removes the fitted linear mean trend.
-\item If \code{signature == "01"}, computes moving‐window variances using \link{mw.variance},
-fits Sen’s trend estimator to those variances, and rescales the series to remove
-trends in the variance.
-\item If \code{signature == "11"}, applies (3) then (4) sequentially.
-\item Ensures all returned values are greater than 1 by shifting the decomposed data.
+\item Compute \code{covariate = (ams$year - 1900) / 100}.
+\item If there is a trend in the location, fit Sen’s trend estimator to
+\code{ams$data} and \code{covariate}. Then, remove the fitted linear trend.
+\item If there is a trend in the scale, compute the moving‐window variance using
+\link{mw_variance}, fit Sen’s trend estimator to those variances, and then
+rescales the series to remove trends in the scale.
+\item If necessary, shift the data so that its minimum is at least 1.
 }
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 years <- seq(from = 1901, to = 2000)
-ams.decomposition(data, years, "10")
+ams.decomposition(data, years, trend)
 
 }
 \seealso{
-\link{mw.variance}, \link{sens.trend}
+\link{mw_variance}, \link{sens_trend}
 }

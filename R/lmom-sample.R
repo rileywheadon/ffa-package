@@ -24,6 +24,9 @@
 #' - `t3`: L-skewness
 #' - `t4`: L-kurtosis
 #'
+#' @note This function has no parameter validation because \link{sb.uncertainty} makes many 
+#' calls to it. If you are getting errors, ensure that `data` is a positive, numeric vector.
+#'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' lmom.sample(data)

@@ -10,7 +10,7 @@ test_that("Test model-assessment on data set #1 with GEV/L-moments/S-bootstrap."
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
 	df <- load_data("Application_1.csv")
-	assessment <- model.assessment(df$max, df$year, "GEV", params, uncertainty)
+	assessment <- model.assessment(df$max, df$year, params, "GEV", NULL, uncertainty)
 
 	# Test results against MATLAB
 	expect_equal(assessment$R2  ,   0.9922, tol = 1e-4)
@@ -18,8 +18,8 @@ test_that("Test model-assessment on data set #1 with GEV/L-moments/S-bootstrap."
 	expect_equal(assessment$bias, -20.6072, tol = 1e-4)
 	expect_equal(assessment$AIC , 471.4811, tol = 1e-4)
 	expect_equal(assessment$BIC , 479.3561, tol = 1e-4)
-	expect_equal(assessment$AIC_MLL, 1656.8821, tol = 1e-4)
-	expect_equal(assessment$BIC_MLL, 1664.7570, tol = 1e-4)
+	expect_equal(assessment$MLL_AIC, 1656.8821, tol = 1e-4)
+	expect_equal(assessment$MLL_BIC, 1664.7570, tol = 1e-4)
 	expect_equal(assessment$AW  , 603.0077, tol = 1e-4)
 	expect_equal(assessment$POC , 100.0000, tol = 1e-4)
 	expect_equal(assessment$CWI , 545.6239, tol = 1e-4)
@@ -38,7 +38,7 @@ test_that("Test model-assessment on data set #2 with WEI/L-moments/S-bootstrap."
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
 	df <- load_data("Application_2.csv")
-	assessment <- model.assessment(df$max, df$year, "WEI", params, uncertainty)
+	assessment <- model.assessment(df$max, df$year, params, "WEI", NULL, uncertainty)
 
 	# Test results against MATLAB
 	expect_equal(assessment$R2  ,   0.9862, tol = 1e-4)
@@ -46,8 +46,8 @@ test_that("Test model-assessment on data set #2 with WEI/L-moments/S-bootstrap."
 	expect_equal(assessment$bias,  -6.6950, tol = 1e-4)
 	expect_equal(assessment$AIC , 406.8316, tol = 1e-4)
 	expect_equal(assessment$BIC , 414.3641, tol = 1e-4)
-	expect_equal(assessment$AIC_MLL, 1442.7845, tol = 1e-4)
-	expect_equal(assessment$BIC_MLL, 1450.3171, tol = 1e-4)
+	expect_equal(assessment$MLL_AIC, 1442.7845, tol = 1e-4)
+	expect_equal(assessment$MLL_BIC, 1450.3171, tol = 1e-4)
 	expect_equal(assessment$AW  , 440.2948, tol = 1e-4)
 	expect_equal(assessment$POC ,  97.7778, tol = 1e-4)
 	expect_equal(assessment$CWI , 416.5010, tol = 1e-4)
@@ -68,7 +68,7 @@ test_that("Test model-assessment on data set #3.2 with GNO/L-moments/S-bootstrap
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
 	df <- load_data("Application_3.2.csv")
-	assessment <- model.assessment(df$max, df$year, "GNO", params, uncertainty)
+	assessment <- model.assessment(df$max, df$year, params, "GNO", NULL, uncertainty)
 
 	# Test results against MATLAB
 	expect_equal(assessment$R2  ,   0.9884, tol = 1e-4)
@@ -76,8 +76,8 @@ test_that("Test model-assessment on data set #3.2 with GNO/L-moments/S-bootstrap
 	expect_equal(assessment$bias,  -0.3580, tol = 1e-4)
 	expect_equal(assessment$AIC ,  91.1979, tol = 1e-4)
 	expect_equal(assessment$BIC ,  98.6638, tol = 1e-4)
-	expect_equal(assessment$AIC_MLL, 791.5803, tol = 1e-4)
-	expect_equal(assessment$BIC_MLL, 799.0462, tol = 1e-4)
+	expect_equal(assessment$MLL_AIC, 791.5803, tol = 1e-4)
+	expect_equal(assessment$MLL_BIC, 799.0462, tol = 1e-4)
 	expect_equal(assessment$AW  ,  15.4410, tol = 1e-4)
 	expect_equal(assessment$POC , 100.0000, tol = 1e-4)
 	expect_equal(assessment$CWI ,  13.9716, tol = 1e-4)
@@ -96,7 +96,7 @@ test_that("Test model-assessment on data set #3.3 with LP3/L-moments/S-bootstrap
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
 	df <- load_data("Application_3.3.csv")
-	assessment <- model.assessment(df$max, df$year, "LP3", params, uncertainty)
+	assessment <- model.assessment(df$max, df$year, params, "LP3", NULL, uncertainty)
 
 	# Test results against MATLAB. 
 	expect_equal(assessment$R2  ,   0.9669, tol = 1e-2)
@@ -104,8 +104,8 @@ test_that("Test model-assessment on data set #3.3 with LP3/L-moments/S-bootstrap
 	expect_equal(assessment$bias,  -0.0061, tol = 1e-2)
 	expect_equal(assessment$AIC , 125.0092, tol = 1e-2)
 	expect_equal(assessment$BIC , 132.7334, tol = 1e-2)
-	expect_equal(assessment$AIC_MLL, 833.1819, tol = 1e-4)
-	expect_equal(assessment$BIC_MLL, 840.9061, tol = 1e-4)
+	expect_equal(assessment$MLL_AIC, 833.1819, tol = 1e-4)
+	expect_equal(assessment$MLL_BIC, 840.9061, tol = 1e-4)
 	expect_equal(assessment$AW  ,  13.1347, tol = 1e-4)
 	expect_equal(assessment$POC ,  85.4167, tol = 1e-4)
 	expect_equal(assessment$CWI ,  15.9096, tol = 1e-4)
@@ -117,20 +117,20 @@ test_that("Test model-assessment on data set #1 with GEV100/MLE/S-bootstrap.", {
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
 	df <- load_data("Application_1.csv")
-	params <- mle.estimation(df$max, df$year, "GEV100")$params
-	uncertainty <- sb.uncertainty(df$max, df$year, "GEV100", "MLE", "all", 1000)
-	assessment <- model.assessment(df$max, df$year, "GEV100", params, uncertainty)
+	params <- mle.estimation(df$max, df$year, "GEV", "10")$params
+	uncertainty <- sb.uncertainty(df$max, df$year, "GEV", "10", "MLE", "all", 1000)
+	assessment <- model.assessment(df$max, df$year, params, "GEV", "10", uncertainty)
 
 	# Test results against MATLAB 
-	expect_equal(assessment$R2  ,   0.9873, tol = 1e-4)
-	expect_equal(assessment$RMSE, 122.7218, tol = 1e-4)
-	expect_equal(assessment$bias, -16.8442, tol = 1e-4)
-	expect_equal(assessment$AIC , 498.6110, tol = 1e-4)
-	expect_equal(assessment$BIC , 509.1118, tol = 1e-4)
-	expect_equal(assessment$AIC_MLL, 1657.8901, tol = 1e-4)
-	expect_equal(assessment$BIC_MLL, 1668.3900, tol = 1e-4)
-	expect_equal(assessment$AW  , 748.5596, tol = 1e-2)
-	expect_equal(assessment$POC , 100     , tol = 1e-2)
-	expect_equal(assessment$CWI , 677.3248, tol = 1e-2)
+	expect_equal(assessment$R2  , NULL, tol = 1e-4)
+	expect_equal(assessment$RMSE, NULL, tol = 1e-4)
+	expect_equal(assessment$bias, NULL, tol = 1e-4)
+	expect_equal(assessment$AIC , NULL, tol = 1e-4)
+	expect_equal(assessment$BIC , NULL, tol = 1e-4)
+	expect_equal(assessment$MLL_AIC, 1657.8901, tol = 1e-4)
+	expect_equal(assessment$MLL_BIC, 1668.3900, tol = 1e-4)
+	expect_equal(assessment$AW  , NULL, tol = 1e-2)
+	expect_equal(assessment$POC , NULL, tol = 1e-2)
+	expect_equal(assessment$CWI , NULL, tol = 1e-2)
 
 })

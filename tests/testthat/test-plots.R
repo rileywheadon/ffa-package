@@ -59,7 +59,7 @@ test_that("Test runs-plot.R on data set #3.1", {
 	df <- load_data("Application_3.1.csv")
 	residuals <- sens.trend(df$max, df$year)$residuals
 	result <- runs.test(residuals)
-	p <- runs.plot(df$year, residuals, result, "sens-mean")
+	p <- runs.plot(df$year, result, "sens-mean")
 
 	# Basic tests
 	expect_s3_class(p, "ggplot")
@@ -171,7 +171,7 @@ test_that("Test uncertainty-plot.R on data set #3.3", {
 	set.seed(1)
 
 	df <- load_data("Application_3.3.csv")
-	results <- sb.uncertainty(df$max, df$year, "GEV", "L-moments")
+	results <- sb.uncertainty(df$max, df$year, "GEV", NULL, "L-moments")
 	p <- uncertainty.plot("GEV", results)
 
 	# Basic tests
@@ -191,7 +191,7 @@ test_that("Test uncertainty-plot.R on data set #3.3", {
 	set.seed(1)
 
 	df <- load_data("Application_3.3.csv")
-	results <- sb.uncertainty(df$max, df$year, "GEV100", "MLE", n_sim = 1000)
+	results <- sb.uncertainty(df$max, df$year, "GEV", "10", "MLE", n_sim = 1000)
 	p <- uncertainty.plot("GEV100", results, "2017")
 
 	# Basic tests
@@ -210,9 +210,9 @@ test_that("Test uncertainty-plot.R on data set #3.3", {
 test_that("Test assessment-plot.R on data set #3.3", {
 
 	df <- load_data("Application_3.3.csv")
-	params <- mle.estimation(df$max, df$year, "GEV")$params
-	uncertainty <- sb.uncertainty(df$max, df$year, "GEV", "MLE", n_sim = 1000)
-	assessment <-model.assessment(df$max, df$year, "GEV", params, uncertainty)
+	params <- mle.estimation(df$max, df$year, "GEV", NULL)$params
+	uncertainty <- sb.uncertainty(df$max, df$year, "GEV", NULL, "MLE", "all", n_sim = 1000)
+	assessment <-model.assessment(df$max, df$year, params, "GEV", NULL, uncertainty)
 	p <- assessment.plot(df$max, assessment)
 
 	# Basic tests

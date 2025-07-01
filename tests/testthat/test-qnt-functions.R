@@ -165,7 +165,7 @@ test_that("quantile functions handle invalid inputs.", {
 	# Proper handling of non-numeric parameter vectors.
 	expect_error(
 		qntgum(0.5, c("A", "B")),
-		regexp = "'params' must be a numeric vector."
+		regexp = "'params' must be numeric."
 	)
 
 	# Proper handling of parameter vectors of invalid length

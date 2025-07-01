@@ -1,0 +1,291 @@
+\begin{theindex}
+
+  \item \texttt  {ams.decomposition}, \hyperpage{2}
+  \item \texttt  {approx}, \hyperindexformat{\textit}{23}
+  \item \texttt  {assessment.plot}, \hyperpage{3}
+
+  \indexspace
+
+  \item \texttt  {bbmk.plot}, \hyperpage{4}
+  \item \texttt  {bbmk.test}, \hyperindexformat{\textit}{4}, 
+		\hyperpage{5}, \hyperindexformat{\textit}{18}, 
+		\hyperindexformat{\textit}{40}
+
+  \indexspace
+
+  \item \texttt  {cor.test}, \hyperindexformat{\textit}{40}
+
+  \indexspace
+
+  \item \texttt  {gll-functions}, \hyperpage{6}, 
+		\hyperindexformat{\textit}{7}
+  \item \texttt  {gllgev}, \hyperindexformat{\textit}{7}
+  \item \texttt  {gllgev} \textit  {(\texttt  {gll-functions})}, 
+		\hyperpage{6}
+  \item \texttt  {gllgev100}, \hyperindexformat{\textit}{7}
+  \item \texttt  {gllgev100} \textit  {(\texttt  {gll-functions})}, 
+		\hyperpage{6}
+  \item \texttt  {gllgev110}, \hyperindexformat{\textit}{7}
+  \item \texttt  {gllgev110} \textit  {(\texttt  {gll-functions})}, 
+		\hyperpage{6}
+  \item \texttt  {gllxxx}, \hyperindexformat{\textit}{6}, \hyperpage{7}, 
+		\hyperindexformat{\textit}{21}
+
+  \indexspace
+
+  \item \texttt  {kpss.test}, \hyperpage{8}, 
+		\hyperindexformat{\textit}{29}
+
+  \indexspace
+
+  \item \texttt  {ld.selection}, \hyperpage{9}, 
+		\hyperindexformat{\textit}{10}, 
+		\hyperindexformat{\textit}{14}, 
+		\hyperindexformat{\textit}{43}
+  \item \texttt  {lk.selection}, \hyperindexformat{\textit}{9}, 
+		\hyperpage{10}, \hyperindexformat{\textit}{14}, 
+		\hyperindexformat{\textit}{43}
+  \item \texttt  {llv-functions}, \hyperpage{11}, 
+		\hyperindexformat{\textit}{13}
+  \item \texttt  {llvgev} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgev100} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgev110} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvglo} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvglo100} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvglo110} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgno} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgno100} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgno110} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgum} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgum10} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvgum11} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvlno} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvlno10} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvlno11} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvlp3} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvlp3100} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvlp3110} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvnor} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvnor10} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvnor11} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvpe3} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvpe3100} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvpe3110} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvwei} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvwei100} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvwei110} \textit  {(\texttt  {llv-functions})}, 
+		\hyperpage{11}
+  \item \texttt  {llvxxx}, \hyperindexformat{\textit}{12}, 
+		\hyperpage{13}, \hyperindexformat{\textit}{21}
+  \item \texttt  {lm}, \hyperindexformat{\textit}{23}, 
+		\hyperindexformat{\textit}{42}
+  \item \texttt  {lmom.plot}, \hyperpage{14}
+  \item \texttt  {lmom.sample}, \hyperindexformat{\textit}{9, 10}, 
+		\hyperpage{14}, \hyperindexformat{\textit}{24, 25}, 
+		\hyperindexformat{\textit}{36}
+  \item \texttt  {lmr-functions}, \hyperpage{15}, 
+		\hyperindexformat{\textit}{17}
+  \item \texttt  {lmrgev} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrglo} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrgno} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrgum} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrnor} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrpe3} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrwei} \textit  {(\texttt  {lmr-functions})}, 
+		\hyperpage{15}
+  \item \texttt  {lmrxxx}, \hyperpage{17}
+
+  \indexspace
+
+  \item \texttt  {mk.test}, \hyperindexformat{\textit}{5}, 
+		\hyperpage{18}
+  \item \texttt  {mks.plot}, \hyperpage{19}, 
+		\hyperindexformat{\textit}{20}
+  \item \texttt  {mks.test}, \hyperindexformat{\textit}{19}, 
+		\hyperpage{19}
+  \item \texttt  {mle.estimation}, \hyperpage{21}, 
+		\hyperindexformat{\textit}{22}, 
+		\hyperindexformat{\textit}{33}, 
+		\hyperindexformat{\textit}{36}
+  \item \texttt  {model.assessment}, \hyperindexformat{\textit}{3}, 
+		\hyperpage{22}
+  \item \texttt  {mw.variance}, \hyperindexformat{\textit}{3}, 
+		\hyperpage{23}
+
+  \indexspace
+
+  \item \texttt  {nlminb}, \hyperindexformat{\textit}{21}, 
+		\hyperindexformat{\textit}{33}
+
+  \indexspace
+
+  \item \texttt  {optim}, \hyperindexformat{\textit}{9, 10}, 
+		\hyperindexformat{\textit}{25}
+
+  \indexspace
+
+  \item \texttt  {pchisq}, \hyperindexformat{\textit}{42}
+  \item \texttt  {pel-functions}, \hyperpage{24}, 
+		\hyperindexformat{\textit}{26}
+  \item \texttt  {pelgev} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelglo} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelgno} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelgum} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelkap}, \hyperpage{25}, 
+		\hyperindexformat{\textit}{43}
+  \item \texttt  {pellno} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pellp3} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelnor} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelpe3} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelwei} \textit  {(\texttt  {pel-functions})}, 
+		\hyperpage{24}
+  \item \texttt  {pelxxx}, \hyperindexformat{\textit}{21, 22}, 
+		\hyperpage{26}, \hyperindexformat{\textit}{36}
+  \item \texttt  {pettitt.plot}, \hyperpage{26}, 
+		\hyperindexformat{\textit}{28}
+  \item \texttt  {pettitt.test}, \hyperindexformat{\textit}{27}, 
+		\hyperpage{27}
+  \item \texttt  {pp.test}, \hyperindexformat{\textit}{9}, 
+		\hyperpage{28}
+
+  \indexspace
+
+  \item \texttt  {qnt-functions}, \hyperpage{29}, 
+		\hyperindexformat{\textit}{31, 32}
+  \item \texttt  {qntgev} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgev100} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgev110} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntglo} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntglo100} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntglo110} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgno} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgno100} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgno110} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgum} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgum10} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntgum11} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntkap} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntlno} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntlno10} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntlno11} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntlp3} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntlp3100} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntlp3110} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntnor} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntnor10} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntnor11} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntpe3} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntpe3100} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntpe3110} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntwei} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntwei100} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntwei110} \textit  {(\texttt  {qnt-functions})}, 
+		\hyperpage{29}
+  \item \texttt  {qntxxx}, \hyperindexformat{\textit}{31}, 
+		\hyperpage{31}, \hyperindexformat{\textit}{33}, 
+		\hyperindexformat{\textit}{43}
+  \item \texttt  {quantile}, \hyperindexformat{\textit}{36}
+
+  \indexspace
+
+  \item \texttt  {rfpl.uncertainty}, \hyperindexformat{\textit}{22, 23}, 
+		\hyperpage{32}, \hyperindexformat{\textit}{40}
+  \item \texttt  {runs.plot}, \hyperpage{33}, 
+		\hyperindexformat{\textit}{35}
+  \item \texttt  {runs.test}, \hyperindexformat{\textit}{34}, 
+		\hyperpage{34}, \hyperindexformat{\textit}{38}
+
+  \indexspace
+
+  \item \texttt  {sb.uncertainty}, \hyperindexformat{\textit}{22, 23}, 
+		\hyperindexformat{\textit}{33}, \hyperpage{35}, 
+		\hyperindexformat{\textit}{40}
+  \item \texttt  {sens.plot}, \hyperpage{37}
+  \item \texttt  {sens.trend}, \hyperindexformat{\textit}{3}, 
+		\hyperindexformat{\textit}{34, 35}, 
+		\hyperindexformat{\textit}{37}, \hyperpage{38}
+  \item \texttt  {spearman.plot}, \hyperpage{39}
+  \item \texttt  {spearman.test}, \hyperindexformat{\textit}{5}, 
+		\hyperindexformat{\textit}{39}, \hyperpage{39}
+
+  \indexspace
+
+  \item \texttt  {uncertainty.plot}, \hyperpage{40}
+
+  \indexspace
+
+  \item \texttt  {white.test}, \hyperpage{41}
+
+  \indexspace
+
+  \item \texttt  {z.selection}, \hyperindexformat{\textit}{9, 10}, 
+		\hyperindexformat{\textit}{14}, \hyperpage{42}
+
+\end{theindex}
