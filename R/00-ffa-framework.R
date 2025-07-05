@@ -6,14 +6,6 @@
 #' @name param-data
 NULL
 
-#' Parameter 'years'
-#'
-#' @param years Numeric vector of observation years corresponding to `data`.
-#'   Must be the same length as `data` and strictly increasing.
-#'
-#' @name param-years
-NULL
-
 #' Parameter 'model'
 #'
 #' @param model Character scalar. A three-character code indicating 
@@ -23,14 +15,12 @@ NULL
 #' @name param-model
 NULL
 
-#' Parameter 'trend'
+#' Parameter 'method'
 #'
-#' @param trend Named list indicating which distribution parameters are 
-#'   modeled as non-stationary. Must contain:
-#'   - `location`: Logical scalar. If `TRUE`, the location parameter has a trend.
-#'   - `scale`: Logical scalar. If `TRUE`, the scale parameter has a trend.
-#'
-#' @name param-trend
+#' @param method Character scalar specifying the estimation method.
+#'   Must be `"L-moments"`, `"MLE"`, or `"GMLE"`.
+#' 
+#' @name param-method
 NULL
 
 #' Parameter 'params'
@@ -51,9 +41,38 @@ NULL
 #' @name param-prior
 NULL
 
+#' Parameter 'years'
+#'
+#' @param years Numeric vector of observation years corresponding to `data`.
+#'   Must be the same length as `data` and strictly increasing.
+#'
+#' @name param-years
+NULL
+
+#' Parameter 'trend'
+#'
+#' @param trend Named list indicating which distribution parameters are 
+#'   modeled as non-stationary. Must contain:
+#'   - `location`: Logical scalar. If `TRUE`, the location parameter has a trend.
+#'   - `scale`: Logical scalar. If `TRUE`, the scale parameter has a trend.
+#'
+#' @name param-trend
+NULL
+
+#' Parameter 'slice'
+#'
+#' @param slice Numeric scalar specifying the year at which to evaluate the 
+#' quantiles or confidence intervals of a non-stationary probability distribution. 
+#' The year does not have to be an element of the `years` argument. Note that if 
+#' `trend$location` and `trend$scale` are both `FALSE`, this argument will have 
+#' no effect the output of the function.
+#'
+#' @name param-slice
+NULL 
+
 #' Parameter 'alpha'
 #'
-#' @param alpha Numeric scalar in [0.01, 0.1]. The significance 
+#' @param alpha Numeric scalar in \eqn{[0.01, 0.1]}. The significance 
 #'  level for confidence intervals or hypothesis tests. Default is 0.05. 
 #'
 #' @name param-alpha

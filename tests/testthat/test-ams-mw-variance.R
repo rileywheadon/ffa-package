@@ -1,7 +1,7 @@
 test_that("Test ams-mw-variance.R on data set #1", {
 
 	df <- load_data("Application_1.csv")
-	result <- mw.variance(df$max, df$year)
+	result <- ams_mw_variance(df$max, df$year)
 
 	# Year results from MATLAB
 	years <- c(
@@ -26,7 +26,7 @@ test_that("Test ams-mw-variance.R on data set #1", {
 test_that("Test ams-mw-variance.R on data set #2", {
 
 	df <- load_data("Application_2.csv")
-	result <- mw.variance(df$max, df$year)
+	result <- ams_mw_variance(df$max, df$year)
 
 	# Year results from MATLAB
 	years <- c(
@@ -51,7 +51,7 @@ test_that("Test ams-mw-variance.R on data set #2", {
 test_that("Test ams-mw-variance.R on data set #3.1", {
 
 	df <- load_data("Application_3.1.csv")
-	result <- mw.variance(df$max, df$year)
+	result <- ams_mw_variance(df$max, df$year)
 
 	# Year results from MATLAB
 	years <- c(
@@ -76,7 +76,7 @@ test_that("Test ams-mw-variance.R on data set #3.1", {
 test_that("Test ams-mw-variance.R on data set #3.2", {
 
 	df <- load_data("Application_3.2.csv")
-	result <- mw.variance(df$max, df$year)
+	result <- ams_mw_variance(df$max, df$year)
 
 	# Year results from MATLAB
 	years <- c(
@@ -101,7 +101,7 @@ test_that("Test ams-mw-variance.R on data set #3.2", {
 test_that("Test ams-mw-variance.R on data set #3.3", {
 
 	df <- load_data("Application_3.3.csv")
-	result <- mw.variance(df$max, df$year)
+	result <- ams_mw_variance(df$max, df$year)
 
 	# Year results from MATLAB
 	years <- c(
@@ -125,5 +125,5 @@ test_that("Test ams-mw-variance.R on data set #3.3", {
 
 test_that("ams-mw-variance.R throws an error on small dataframes.", {
 	df <- load_data("Application_1.csv")
-	expect_error(mw.variance(df$max[1:5], df$year[1:5]))
+	expect_error(ams_mw_variance(df$max[1:5], df$year[1:5]))
 })

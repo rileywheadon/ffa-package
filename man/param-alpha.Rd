@@ -4,7 +4,7 @@
 \alias{param-alpha}
 \title{Parameter 'alpha'}
 \arguments{
-\item{alpha}{Numeric scalar in \link{0.01, 0.1}. The significance
+\item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
 }
 \description{

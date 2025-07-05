@@ -1,25 +1,27 @@
 #' Mann–Kendall Trend Test
 #'
 #' Performs the Mann–Kendall trend test on a numeric vector to detect the presence 
-#' of a monotonic trend (increasing or decreasing) over time. The test is non-parametric 
-#' and accounts for tied observations in the data.
+#' of a monotonic trend (increasing or decreasing) over time. The test is 
+#' non-parametric and accounts for tied observations in the data. The null
+#' hypothesis assumes there is no monotonic trend.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
 #' @inheritParams param-quiet
 #'
-#' @return List; the test results:
-#' - `s.statistic`: The raw Mann–Kendall test statistic \eqn{S}.
-#' - `s.variance`: The variance of the test statistic under the null hypothesis.
-#' - `p.value`: The p-value associated with the two-sided hypothesis test.
-#' - `reject`: Logical. TRUE if the null hypothesis of no trend is rejected at `alpha`.
-#' - `msg`: A character string summarizing the result (printed if `quiet = FALSE`).
+#' @return A list containing the test results, including:
+#' - `data`: The `data` argument.
+#' - `s_statistic`: The Mann–Kendall test statistic \eqn{S}.
+#' - `s_variance`: The variance of the test statistic under the null hypothesis.
+#' - `p_value`: The p-value associated with the two-sided hypothesis test.
+#' - `reject`: Logical. If `TRUE`, the null hypothesis is rejected at `alpha`.
+#' - `msg`: A character string summarizing the result, printed if `quiet = FALSE`.
 #'
 #' @details
 #' The statistic \eqn{S} is computed as the sum over all pairs \eqn{i < j} of the 
 #' sign of the difference \eqn{x_j - x_i}. Ties are explicitly accounted for when 
 #' calculating the variance of \eqn{S}, using grouped frequencies of tied observations. 
-#' The test statistic \eqn{Z} is then  computed based on the sign and magnitude of 
+#' The test statistic \eqn{Z} is then computed based on the sign and magnitude of 
 #' \eqn{S}, and the p-value is derived from the standard normal distribution.
 #'
 #' @seealso \link{eda_bbmk_test}
@@ -33,9 +35,9 @@
 
 eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
-	validate.data(data)
-	validate.alpha(alpha)
-	validate.quiet(quiet)
+	data <- validate_data(data)
+	alpha <- validate_alpha(alpha)
+	quiet <- validate_quiet(quiet)
 
 	n <- length(data)
 
@@ -71,7 +73,7 @@ eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	reject <- (p_value <= alpha)
 
-	msg <- stats.message(
+	msg <- stats_message(
 		"Mann-Kendall",
 		reject,
 		p_value,
@@ -83,9 +85,10 @@ eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
 	if (!quiet) message(msg)
 
 	list(
-		s.statistic = s,
-		s.variance = s_variance,
-		p.value = p_value,
+		data = data,
+		s_statistic = s,
+		s_variance = s_variance,
+		p_value = p_value,
 		reject = reject,
 		msg = msg
 	)

@@ -1,301 +1,137 @@
 #' Quantile Functions for Probability Models
 #'
-#' Compute the quantiles for stationary and non-stationary variants 
-#' of nine different distributions (`GUM`, `NOR`, `LNO`, `GEV`, `GLO`, 
-#' `GNO`, `PE3`, `LP3`, and `WEI`).
+#' Compute the quantiles for stationary and non-stationary variants  of nine 
+#' different distributions: `"GUM"`, `"NOR"`, `"LNO"`, `"GEV"`, `"GLO"`, `"GNO"`, 
+#' `"PE3"`, `"LP3"`, or `"WEI"`.
 #' 
-#' @details 
-#' The quantile function is the inverse of the cumulative distribution function.
-#' For the two-parameter distributions (`GUM`, `NOR`, `LNO`), there are three 
-#' different `qnt` functions:
-#' 
-#' - `qnt...()`: Stationary location and scale, 2 parameters.
-#' - `qnt...10()`: Time-varying location, stationary scale, 3 parameters.
-#' - `qnt...11()`: Time-varying location and scale, 4 parameters.
-#'
-#' For three-parameter distributions (`GEV`, `GLO`, `GNO`, `PE3`, `LP3`, `WEI`), 
-#' there are also three `qnt` functions:
-#'
-#' - `qnt...()`: Stationary location and scale, 3 parameters.
-#' - `qnt...100()`: Time-varying location, stationary scale, 4 parameters.
-#' - `qnt...110()`: Time-varying location and scale, 5 parameters.
-#'
-#' @note
-#' The `qnt...`, functions perform extensive parameter validation, which can be slow. 
-#' If you plan to make many calls to these methods, it is recommended to use 
-#' the \link{qntxxx} helper function instead.
-#'
 #' @param p Numeric; a vector of probabilities between 0 and 1.
 #'
-#' @param params Numeric; a vector of parameters. Must have the correct length for the model.
+#' @inheritParams param-params
+#' @inheritParams param-slice
+#' @inheritParams param-trend
 #'
-#' @param years Numeric; a vector of years with the same length as `data`.
-#'   Required for non-stationary models, which end in `10`, `11`, `100`, or `110`.
+#' @return A numeric vector of quantiles with the same length as `p`.
 #'
-#' @return If `p` or `years` is a scalar, returns a numeric vector. Otherwise, returns a matrix.
-#'
-#' @seealso \link{qntxxx}
+#' @seealso \link{quantile_fast}
 #'
 #' @examples
-#' # Initialize p, years, and params
+#' # Initialize p and params
 #' p <- runif(n = 10)
-#' years <- seq(from = 1901, to = 2000)
-#' params <- c(0, 1, 1, 1, 0)
+#' params <- c(0, 1, 0)
 #'
 #' # Compute the quantiles
-#' qntwei110(p, params, years)
+#' quantile_wei(p, params)
 #'
-#' @name qnt-functions
+#' @name quantile_methods
 NULL
 
-#' @rdname qnt-functions
-#' @export
-qntgum    <- function(p, params, years = NULL) {
-	validate.params(params, "GUM", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GUM", NULL, p, params)
-}
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntgum10  <- function(p, params, years) {
-	validate.params(params, "GUM", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GUM", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntgum11  <- function(p, params, years) {
-	validate.params(params, "GUM", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GUM", "11", p, params, years)
+quantile_gum <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "GUM", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "GUM", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntnor    <- function(p, params, years = NULL) {
-	validate.params(params, "NOR", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("NOR", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntnor10  <- function(p, params, years) {
-	validate.params(params, "NOR", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("NOR", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntnor11  <- function(p, params, years) {
-	validate.params(params, "NOR", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("NOR", "11", p, params, years)
+quantile_nor <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "NOR", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "NOR", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntlno    <- function(p, params, years = NULL) {
-	validate.params(params, "LNO", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("LNO", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntlno10  <- function(p, params, years) {
-	validate.params(params, "LNO", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("LNO", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntlno11  <- function(p, params, years) {
-	validate.params(params, "LNO", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("LNO", "11", p, params, years)
+quantile_lno <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "LNO", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "LNO", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntgev    <- function(p, params, years = NULL) {
-	validate.params(params, "GEV", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GEV", NULL,  p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntgev100 <- function(p, params, years) {
-	validate.params(params, "GEV", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GEV", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntgev110 <- function(p, params, years) {
-	validate.params(params, "GEV", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GEV", "11", p, params, years)
+quantile_gev <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "GEV", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "GEV", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntglo    <- function(p, params, years = NULL) {
-	validate.params(params, "GLO", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GLO", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntglo100 <- function(p, params, years) {
-	validate.params(params, "GLO", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GLO", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntglo110 <- function(p, params, years) {
-	validate.params(params, "GLO", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GLO", "11", p, params, years)
+quantile_glo <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "GLO", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "GLO", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntgno    <- function(p, params, years = NULL) {
-	validate.params(params, "GNO", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GNO", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntgno100 <- function(p, params, years) {
-	validate.params(params, "GNO", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GNO", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntgno110 <- function(p, params, years) {
-	validate.params(params, "GNO", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("GNO", "11", p, params, years)
+quantile_gno <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "GNO", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "GNO", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntpe3    <- function(p, params, years = NULL) {
-	validate.params(params, "PE3", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("PE3", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntpe3100 <- function(p, params, years) {
-	validate.params(params, "PE3", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("PE3", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntpe3110 <- function(p, params, years) {
-	validate.params(params, "PE3", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("PE3", "11", p, params, years)
+quantile_pe3 <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "PE3", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "PE3", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntlp3    <- function(p, params, years = NULL) {
-	validate.params(params, "LP3", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("LP3", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntlp3100 <- function(p, params, years) {
-	validate.params(params, "LP3", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("LP3", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntlp3110 <- function(p, params, years) {
-	validate.params(params, "LP3", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("LP3", "11", p, params, years)
+quantile_lp3 <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "LP3", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "LP3", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntwei    <- function(p, params, years = NULL) {
-	validate.params(params, "WEI", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("WEI", NULL, p, params)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntwei100 <- function(p, params, years) {
-	validate.params(params, "WEI", "10")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("WEI", "10", p, params, years)
-}
-
-#' @rdname qnt-functions
-#' @export
-qntwei110 <- function(p, params, years) {
-	validate.params(params, "WEI", "11")
-	validate.years(years)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("WEI", "11", p, params, years)
+quantile_wei <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "WEI", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "WEI", params, slice, trend)
 }
 
 
-#' @rdname qnt-functions
+#' @rdname quantile_methods
 #' @export
-qntkap    <- function(p, params, years = NULL) {
-	validate.params(params, "KAP", NULL)
-	if (any(p < 0 | p > 1)) stop("'p' must be between 0 and 1 inclusive.")
-	qntxxx("KAP", NULL, p, params)
+quantile_kap <- function(p, params, slice = NULL, trend = NULL) {
+	p <- validate_probabilities(p)
+	params <- validate_params(params, "KAP", trend)
+	slice <- validate_slice(slice)
+	trend <- validate_trend(trend)
+	quantile_fast(p, "KAP", params, slice, trend)
 }
 

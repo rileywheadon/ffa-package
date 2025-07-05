@@ -1,29 +1,26 @@
 #' Phillips–Perron Unit Root Test
 #'
-#' @order $1
-#'
 #' Applies the Phillips–Perron (PP) test to check for a unit root in annual
 #' maximum streamflow (AMS) data. The null hypothesis is that the series contains a 
 #' unit root (and is thus non-stationary). This implementation of the PP test assumes 
-#' the  time series has both stationary drift and a linear trend.
+#' the time series has both stationary drift and a linear trend.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
-#'
-#' @param alpha Numeric (1); the significance level (default is 0.05).
-#'
-#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
+#' @inheritParams param-data
+#' @inheritParams param-alpha
+#' @inheritParams param-quiet
 #'
 #' @return List; the test results, consisting of:
+#' - `data`: The `data` argument.
 #' - `statistic`: The Z-statistic used to perform the test.
 #' - `p.value`: Reported p-value from the test. See notes on interpolation thresholds.
-#' - `reject`: Logical. TRUE if the null hypothesis of a unit root is rejected at `alpha`.
-#' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
+#' - `reject`: Logical. If `TRUE`, the null hypothesis was rejected at `alpha`.
+#' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
 #'
 #' @details
-#' The implementation of this test is based on the \pkg{aTSA} package, which interpolates 
-#' p-values from a table of critical values presented in Fuller W. A. (1996). The 
-#' critical values are only available for \eqn{\alpha \geq 0.01}. Therefore, a reported 
-#'  p-value of 0.01 indicates \eqn{p \leq 0.01}.
+#' The implementation of this test is based on the \pkg{aTSA} package, which 
+#' interpolates p-values from a table of critical values presented in Fuller W. A. 
+#' (1996). The critical values are only available for \eqn{\alpha \geq 0.01}. 
+#' Therefore, a reported p-value of 0.01 indicates \eqn{p \leq 0.01}.
 #'
 #' @references
 #' Fuller, W. A. (1996). Introduction to statistical time series, second ed., Wiley, 
@@ -40,43 +37,42 @@
 
 eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
-	# Run parameter validation (see helpers.R)
-	validate.data(data)
-	validate.alpha(alpha)
+	data <- validate_data(data)
+	alpha <- validate_alpha(alpha)
 
-	# Construct time series yt and shifted time series yt1 for fitting the autoregressive model 
+	# Construct time series yt and shifted time series yt1
 	z <- embed(data ,2)
     yt <- z[,1]
     yt1 <- z[,2]
 
-	# Set the number of Newey-West lags using the standard choice, proportional to n^(1/4)
+	# Set the number of Newey-West lags proportional to n^(1/4)
     n <- length(yt)
     q <- floor(4 * (n / 100)^0.25)
 
-	# Create an autoregressive model with drift and trend (yt as a function of yt1 and t) 
+	# Create an autoregressive model with drift and trend 
     t <- 1:n
 	model <- lm(yt ~ yt1 + t)
 
 	# Get the residuals, estimate for rho, and estimate for the SE of rho
 	residuals <- resid(model)
-	rho_hat <- summary(model)$coefficients[2,1]
-	se_rho_hat <- summary(model)$coefficients[2,2]
+	rho <- summary(model)$coefficients[2,1]
+	se_rho <- summary(model)$coefficients[2,2]
 
 	# Compute the variance of the residuals (with n-3 degrees of freedom)
-	sigma_hat <- sum(residuals^2)/(n - 3) 
+	sigma <- sum(residuals^2)/(n - 3)
 
 	# Calculate the sample autocovariances and store them in a vector gamma
-	gamma <- numeric(q + 1) 
+	gamma <- numeric(q + 1)
 	for (i in 1:(q + 1)) {
 		u <- embed(residuals, i)
 		gamma[i] = sum(u[,1] * u[,i]) / n
 	}
 
-	# Compute an estimator of the long-run variance 
-	lambda_hat <- gamma[1] + 2 * sum((1 - 1:q / (q + 1)) * gamma[-1])
+	# Compute an estimator of the long-run variance
+	lambda <- gamma[1] + 2 * sum((1 - 1:q / (q + 1)) * gamma[-1])
 
 	# Compute the test statistic z_rho
-	z_rho <- n * (rho_hat - 1) - (n^2 * se_rho_hat^2) / sigma_hat * (lambda_hat - gamma[1]) / 2
+	z_rho <- n * (rho - 1) - (n^2 * se_rho^2) / sigma * (lambda - gamma[1]) / 2
 
 	# Define table of Rho statistics from Fuller W. A. (1996) for model with drift and trend
     table_rho <- rbind(
@@ -87,7 +83,7 @@ eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
         c(-28.9, -24.7, -21.5, -18.1, -9.08, -3.76, -2.66, -1.80, -0.86),
         c(-29.4, -25.0, -21.7, -18.3, -9.11, -3.77, -2.67, -1.81, -0.88)
 	)
-
+	
 	# Define the columns, sizes, and quantiles used in the table
 	columns <- ncol(table_rho)
 	sizes <- c(25, 50, 100, 250, 500, 1000)
@@ -106,16 +102,14 @@ eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
 	reject <- if (alpha == 0.10) p_value < alpha else p_value <= alpha
 
 	# Set the P-value text to inform the user of the limited significance thresholds
-	p_text <- if (p_value == 0.10) { 
-		"*at least* 0.10" 
-	} else if (p_value == 0.01) {
+	p_text <- if (p_value == 0.01) {
 		"*at most* 0.01"
 	} else {
 		round(p_value, 3)
 	}
 
 	# Print the results of the test
-	msg <- stats.message(
+	msg <- stats_message(
 		"Phillips-Perron",
 		reject,
 		p_value,
@@ -128,8 +122,9 @@ eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	# Return the results as a list
 	list(
+		data = data,
 		statistic = z_rho,
-		p.value = p_value,
+		p_value = p_value,
 		reject = reject,
 		msg = msg
 	)

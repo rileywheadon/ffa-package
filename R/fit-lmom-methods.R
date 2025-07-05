@@ -3,86 +3,90 @@
 #' Estimate the parameters of one of nine different distributions (`GUM`, `NOR`, 
 #' `LNO`, `GEV`, `GLO`, `GNO`, `PE3`, `LP3`, and `WEI`) using the method of L-moments. 
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
 #'
 #' @details 
-#' First, the sample L-moments of the data are computed using the \link{lmom.sample} 
-#' method. Then formulas from Hosking (1997) are used to compute the parameters from the
-#' L-moments. Distributions `GNO`, `PE3`, and `LP3` use a rational approximation to compute
-#' the parameters.
+#' First, the sample L-moments of the data are computed using the \link{lmom_sample} 
+#' method. Then formulas from Hosking (1997) are used to compute the parameters from 
+#' the L-moments. Distributions `GNO`, `PE3`, and `LP3` use a rational approximation 
+#' to compute the parameters.
 #'
-#' @return Numeric; a vector of parameters. 
+#' @return A numeric vector of parameters:
+#' - If `model` is `"GUM"`, `"NOR"`, or `"LNO"`, returns a vector of length 2.
+#' - Otherwise, returns a vector of length 3.
 #'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
 #' on L-Moments. Cambridge University Press, New York, USA.
 #'
+#' @seealso \link{fit_lmom_fast}, \link{fit_lmom_kappa}
+#'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' fit_lmom_lp3(data)
 #'
-#' @name pel-functions
+#' @name fit_lmom_methods
 NULL
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_gum <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("GUM", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "GUM")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_nor <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("NOR", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "NOR")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_lno <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("LNO", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "LNO")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_gev <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("GEV", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "GEV")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_glo <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("GLO", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "GLO")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_gno <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("GNO", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "GNO")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_pe3 <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("PE3", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "PE3")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_lp3 <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("LP3", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "LP3")
 }
 
-#' @rdname pel-functions
+#' @rdname fit_lmom_methods
 #' @export
 fit_lmom_wei <- function(data) {
-	validate.data(data)
-	fit_lmom_fast("WEI", data)
+	data <- validate_data(data)
+	fit_lmom_fast(data, "WEI")
 }

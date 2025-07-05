@@ -4,12 +4,12 @@
 #' probability distributions (`GUM`, `NOR`, `GEV`, `GLO`, `GNO`, `PE3`, and `WEI`)
 #' given the parameters of the distribution.
 #'
-#' @param params Numeric; a vector of parameters. Must have the correct length for the model.
+#' @inheritParams param-params
 #'
 #' @details
 #' The distributions `GUM`, `NOR`, `GEV`, `GLO`, and `WEI` have closed-form solutions
 #' for the L-moments and L-moment ratios in terms of the parameters. The distributions 
-#' `GNO` and `PE3` use rational approximations of the L-moment ratios from Hosking (1997).
+#' `GNO`, `PE3` use rational approximations of the L-moment ratios from Hosking (1997).
 #'
 #' @return A numeric vector of length 4 containing:
 #' - \eqn{\lambda_1}: L-mean
@@ -17,61 +17,63 @@
 #' - \eqn{\tau_3}: L-skewness
 #' - \eqn{\tau_4}: L-kurtosis
 #'
+#' @seealso \link{lmom_fast}
+#'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
 #' on L-Moments. Cambridge University Press, New York, USA.
 #'
 #' @examples
-#' lmrgev(c(0, 1, 0))
+#' lmom_theoretical_gev(c(0, 1, 0))
 #'
-#' @name lmr-functions
+#' @name lmom_theoretical
 NULL
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrgum <- function(params) {
-	validate.params(params, "GUM", NULL)
-	lmrxxx("GUM", params)
+lmom_theoretical_gum <- function(params) {
+	params <- validate_params(params, "GUM", NULL)
+	lmom_fast("GUM", params)
 }
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrnor <- function(params) {
-	validate.params(params, "NOR", NULL)
-	lmrxxx("NOR", params)
+lmom_theoretical_nor <- function(params) {
+	params <- validate_params(params, "NOR", NULL)
+	lmom_fast("NOR", params)
 }
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrgev <- function(params) {
-	validate.params(params, "GEV", NULL)
-	lmrxxx("GEV", params)
+lmom_theoretical_gev <- function(params) {
+	params <- validate_params(params, "GEV", NULL)
+	lmom_fast("GEV", params)
 }
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrglo <- function(params) {
-	validate.params(params, "GLO", NULL)
-	lmrxxx("GLO", params)
+lmom_theoretical_glo <- function(params) {
+	params <- validate_params(params, "GLO", NULL)
+	lmom_fast("GLO", params)
 }
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrgno <- function(params) {
-	validate.params(params, "GNO", NULL)
-	lmrxxx("GNO", params)
+lmom_theoretical_gno <- function(params) {
+	params <- validate_params(params, "GNO", NULL)
+	lmom_fast("GNO", params)
 }
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrpe3 <- function(params) {
-	validate.params(params, "PE3", NULL)
-	lmrxxx("PE3", params)
+lmom_theoretical_pe3 <- function(params) {
+	params <- validate_params(params, "PE3", NULL)
+	lmom_fast("PE3", params)
 }
 
-#' @rdname lmr-functions
+#' @rdname lmom_theoretical
 #' @export
-lmrwei <- function(params) {
-	validate.params(params, "WEI", NULL)
-	lmrxxx("WEI", params)
+lmom_theoretical_wei <- function(params) {
+	params <- validate_params(params, "WEI", NULL)
+	lmom_fast("WEI", params)
 }

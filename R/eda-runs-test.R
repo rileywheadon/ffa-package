@@ -1,23 +1,24 @@
 #' Wald–Wolfowitz Runs Test for Randomness
 #'
-#' @order $1
-#'
 #' Applies the Wald–Wolfowitz runs test to a numeric vector of residuals in 
 #' order to assess whether they behave as a random sequence. The test statistic’s 
 #' p-value is compared to the significance level `alpha`, and a decision is 
 #' returned along with a human-readable summary message.
 #'
-#' @param residuals Numeric; A vector of residuals produced by \link{eda_sens_trend}.
+#' @param results A fitted linear model produced by \link{eda_sens_trend}.
 #'
-#' @param alpha Numeric (1); the significance level (default is 0.05).
+#' @inheritParams param-alpha
+#' @inheritParams param-quiet
 #'
-#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
-#'
-#' @return List; test results, including:
-#' - `p.value`: P-value from the Wald–Wolfowitz runs test applied to residuals.
+#' @return A list containing the test results, including:
 #' - `residuals`: Numeric vector of residual values from a fitted linear model.
-#' - `reject`: Logical. TRUE if the null hypothesis of random residuals is rejected.
-#' - `msg`: Character string summarizing the test result.
+#' - `n`: The length of the residuals vector after removing the median.
+#' - `n_plus`, `n_minus`: The number of residuals above/below the median.
+#' - `runs`: The number of runs in the transformed sequence of residuals.
+#' - `statistic`: The runs test statistic, computed using `runs`.
+#' - `p_value`: P-value from the Wald–Wolfowitz runs test applied to residuals.
+#' - `reject`: Logical. If TRUE, the null hypothesis of random residuals is rejected.
+#' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
 #'
 #' @details
 #' The Wald–Wolfowitz runs test examines the sequence of residuals to test for
@@ -28,23 +29,21 @@
 #' Wald, A. and Wolfowitz, J. (1940). On a test whether two samples are from the 
 #' same population. Annals of Mathematical Statistics, 11(2), 147–162.
 #'
-#' @seealso \link{runs.plot}, \link{eda_sens_trend}
+#' @seealso \link{plot_runs_test}, \link{eda_sens_trend}
 #'
 #' @examples
-#' # Initialize data and years
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
-#'
-#' # Perform the runs test
-#' residuals <- eda_sens_trend(data, years)$residuals
-#' eda_runs_test(residuals)
+#' sens <- eda_sens_trend(data, years)
+#' eda_runs_test(sens)
 #'
 #' @export
 
-eda_runs_test <- function(residuals, alpha = 0.05, quiet = TRUE) {
+eda_runs_test <- function(results, alpha = 0.05, quiet = TRUE) {
 
-	# Run parameter validation (see helpers.R)
-	validate.alpha(alpha)
+	residuals <- validate_data(results$residuals, FALSE)
+	alpha <- validate_alpha(alpha)
+	quiet <- validate_quiet(quiet)
 
 	# Remove values from the residuals that are equal to the median
 	filtered_residuals <- residuals[residuals != median(residuals)]
@@ -72,7 +71,7 @@ eda_runs_test <- function(residuals, alpha = 0.05, quiet = TRUE) {
 	reject <- (p_value <= alpha)
 
 	# Print the results of the test
-	msg <- stats.message(
+	msg <- stats_message(
 		"runs",
 		reject,
 		p_value,
@@ -85,13 +84,14 @@ eda_runs_test <- function(residuals, alpha = 0.05, quiet = TRUE) {
 
 	# Return the results as a list
 	list(
+		years = results$years,
+		residuals = residuals,
 		n = n,
-		n.plus = np,
-		n.minus = nm,
+		n_plus = np,
+		n_minus = nm,
 		runs = runs,
 		statistic = z,
-		p.value = p_value,
-		residuals = residuals,
+		p_value = p_value,
 		reject = reject,
 		msg = msg
 	)

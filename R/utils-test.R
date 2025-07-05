@@ -1,5 +1,5 @@
 # Generates an informational message about a statistical test
-stats.message <- function(name, reject, p_value, alpha, msg_fail, msg_reject) {
+stats_message <- function(name, reject, p_value, alpha, msg_fail, msg_reject) {
 
 	s1 <- if(reject) "reject the null" else "fail to reject the null"
 	s2 <- if(reject) msg_reject else msg_fail

@@ -1,42 +1,39 @@
 #' Mann–Kendall–Sneyers Test for Change Point Detection
 #'
-#' @order $1
-#'
 #' Performs the Mann–Kendall–Sneyers (MKS) test to detect the beginning of a monotonic
 #' trend in annual maximum streamflow (AMS) data. The test computes normalized
 #' progressive and regressive Mann–Kendall statistics and identifies statistically
 #' significant crossing points, indicating potential change points in the trend.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
+#' @inheritParams param-years
+#' @inheritParams param-alpha
+#' @inheritParams param-quiet
 #'
-#' @param years Numeric; a vector of years with the same length as `data`.
-#'
-#' @param alpha Numeric (1); the significance level (default is 0.05).
-#'
-#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
-#'
-#' @return List; results of the MKS test:
-#' - `s.progressive`: Normalized progressive Mann–Kendall statistics.
-#' - `s.regressive`: Normalized regressive Mann–Kendall statistics.
+#' @return A list containing the test results, including:
+#' - `data`: The `data` argument.
+#' - `years`: The `years` argument.
+#' - `s_progressive`: Normalized progressive Mann–Kendall-Sneyers statistics.
+#' - `s_regressive`: Normalized regressive Mann–Kendall-Sneyers statistics.
 #' - `bound`: Critical confidence bound for significance based on `alpha`.
-#' - `crossing.df`: Data frame of crossing points with indices, years, statistics, and AMS.
-#' - `change.df`: Subset of `crossing.df` with statistically significant crossings.
-#' - `p.value`: Two-sided p-value assessing the significance of maximum crossing statistic.
-#' - `reject`: Logical indicating whether null hypothesis of no change point is rejected.
+#' - `crossing_df`: Crossing points, including indices, years, statistics, and AMS.
+#' - `change_df`: Subset of `crossing.df` with statistically significant crossings.
+#' - `p_value`: Two-sided p-value derived from the maximum crossing statistic.
+#' - `reject`: Logical. If `TRUE`, the null hypothesis of no change point is rejected.
 #' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
 #'
 #' @details
 #' The function computes progressive and regressive Mann–Kendall statistics \eqn{S_t},
-#' normalized by their expected values and variances under the null hypothesis. The crossing
-#' points where the difference between these normalized statistics changes sign are
-#' identified using linear interpolation. The significance of detected crossings is
-#' assessed using normal quantiles and the maximum absolute crossing statistic.
+#' normalized by their expected values and variances under the null hypothesis. The 
+#' crossing points where the difference between these normalized statistics changes 
+#' sign are identified using linear interpolation. The significance of detected 
+#' crossings is assessed using quantiles of the normal distribution.
 #'
 #' @references
 #' Sneyers, R. (1990). On the statistical analysis of series of observations.
 #' Technical note No. 143, World Meteorological Organization, Geneva.
 #'
-#' @seealso \link{mks.plot}
+#' @seealso \link{plot_mks_test}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -48,10 +45,10 @@
 
 eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
-	# Run parameter validation (see helpers.R)
-	validate.data(data)
-	validate.years(years)
-	validate.alpha(alpha)
+	data <- validate_data(data)
+	years <- validate_years(years, data)
+	alpha <- validate_alpha(alpha)
+	quiet <- validate_quiet(quiet)
 
 	# Compute number of elements such that data[i] > data[j] for all j < i < t for all t.
 	s_statistic <- function(vt, data) {
@@ -134,7 +131,7 @@ eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	reject <- (p_value <= alpha)
 
 	# Print the results of the test
-	msg <- stats.message(
+	msg <- stats_message(
 		"Mann-Kendall-Sneyers",
 		reject,
 		p_value,
@@ -147,12 +144,14 @@ eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
 	# Return a list of values results from the test
 	list(
-		s.progressive = s_prog,
-		s.regressive = s_regr,
+		data = data,
+		years = years,
+		s_progressive = s_prog,
+		s_regressive = s_regr,
 		bound = bound,
-		crossing.df = crossing_df,
-		change.df = change_df,
-		p.value = p_value,
+		crossing_df = crossing_df,
+		change_df = change_df,
+		p_value = p_value,
 		reject = reject,
 		msg = msg
 	)

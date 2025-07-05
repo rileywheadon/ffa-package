@@ -1,21 +1,25 @@
 #' Z-Statistic Method for Distribution Selection
 #'
 #' @description
-#' Selects the best-fit distribution by computing a bias-corrected Z-statistic for the sample
-#' L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set of candidate
-#' distributions. The distribution with the smallest absolute Z-score is selected.
+#' Selects the best-fit distribution by computing a bias-corrected Z-statistic for 
+#' the sample L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set 
+#' of candidate distributions. The distribution with the smallest absolute Z-statistic 
+#' is selected.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
+#' @inheritParams param-samples
 #'
-#' @param samples Integer (1); the number of bootstrap samples (default is 10000).
-#'
-#' @return List; results of distribution selection:
-#' - `method`: `"Z-selection"`
-#' - `params`: Kappa distribution parameters for the raw AMS data.
-#' - `log_params`: Kappa distribution parameters for the log-transformed AMS data.
-#' - `bootstrap`: Bias and standard deviation of the estimated L-kurtosis.
-#' - `distance`: List of computed Z-statistics for each candidate distribution.
+#' @return A list with the results of distribution selection:
+#' - `method`: `"Z-selection"`.
+#' - `data`: The `data` argument.
+#' - `metrics`: List of computed Z-statistics for each candidate distribution.
 #' - `recommendation`: Name of the distribution with the smallest Z-statistic.
+#' - `reg_params`: Kappa distribution parameters for the AMS data.
+#' - `reg_bias_t4`: Bias of the L-kurtosis from the AMS bootstrap.
+#' - `reg_std_t4`: Standard deviation of the L-kurtosis from the AMS bootstrap.
+#' - `log_params`: Kappa distribution parameters for the log-AMS data.
+#' - `log_bias_t4`: Bias of the L-kurtosis from the log-AMS bootstrap.
+#' - `log_std_t4`: Standard deviation of the L-kurtosis from the log-AMS bootstrap.
 #'
 #' @details
 #' The method performs model selection using both raw and log-transformed data. The 
@@ -27,25 +31,26 @@
 #' The L-moments of these bootstrapped samples are used to estimate the Z-statistic 
 #' for each distribution.
 #'
-#' @seealso \link{ld.selection}, \link{lk.selection}, \link{fit_lmom_kappa}, \link{qntxxx}
+#' @seealso \link{select_ldistance}, \link{select_lkurtosis}, \link{fit_lmom_kappa},
+#'   \link{quantile_fast}, \link{plot_lmom_diagram}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' z.selection(data)
+#' select_zstatistic(data)
 #'
 #' @importFrom stats runif optim
 #' @export
 
-z.selection <- function(data, samples = 10000) {
+select_zstatistic <- function(data, samples = 10000L) {
 
-	# Run parameter validation (see helpers.R)
-	validate.data(data)
+	validate_data(data)
+	validate_samples(samples)
 
 	# Helper function that attempts to fit a Kappa distribution and draw a bootstrap
 	get_bootstrap <- function(data) {
 
 		# Get the sample L-moments for the data
-		moments <- lmom.sample(data)
+		moments <- lmom_sample(data)
 		sample_l1 <- moments[1]
 		sample_l2 <- moments[2]
 		sample_t3 <- moments[3]
@@ -62,7 +67,7 @@ z.selection <- function(data, samples = 10000) {
 		# Generate a bootstrap from this Kappa distribution
 		t4_list <- lapply(1:samples, function(i) {
 			u <- runif(length(data))	
-			lmom.sample(qntkap(u, params))[4]
+			lmom_sample(quantile_kap(u, params))[4]
 		})
 
 		t4 <- as.numeric(t4_list)
@@ -96,7 +101,7 @@ z.selection <- function(data, samples = 10000) {
 	for (model in c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
 
 		# Get distribution information
-		info <- model.info(model)
+		info <- model_info(model)
 
 		# Get the correct bootstrap
 		if (info$log & !is.null(log_bootstrap)) {
@@ -109,7 +114,7 @@ z.selection <- function(data, samples = 10000) {
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {
-			distribution_t3 <- lmrxxx(model, c(0, 1, i))[3]
+			distribution_t3 <- lmom_fast(model, c(0, 1, i))[3]
 			abs(distribution_t3 - b$sample_t3)
 		}
 
@@ -123,7 +128,7 @@ z.selection <- function(data, samples = 10000) {
 		)
 
 		# Get the parameters of the fitted distribution and compute the z-score
-		distribution_t4 <- lmrxxx(model, c(0, 1, result$par))[4]
+		distribution_t4 <- lmom_fast(model, c(0, 1, result$par))[4]
 		z <- (distribution_t4 - b$sample_t4 + b$bias_t4) / b$std_t4
 		metrics[[model]] <- z
 
@@ -136,16 +141,15 @@ z.selection <- function(data, samples = 10000) {
 	# Return the results as a list
 	list(
 		method = "Z-statistic",
-		params = reg_bootstrap$params,
-		log_params = log_bootstrap$params,
-		bootstrap = list(
-			bias_t4 = reg_bootstrap$bias_t4,
-			std_t4 = reg_bootstrap$std_t4,
-			log_bias_t4 = log_bootstrap$bias_t4,
-			log_std_t4 = log_bootstrap$std_t4
-		),
+		data = data,
 		metrics = metrics,
-		recommendation = recommendation
+		recommendation = recommendation,
+		reg_params = reg_bootstrap$params,
+		reg_bias_t4 = reg_bootstrap$bias_t4,
+		reg_std_t4 = reg_bootstrap$std_t4,
+		log_params = log_bootstrap$params,
+		log_bias_t4 = log_bootstrap$bias_t4,
+		log_std_t4 = log_bootstrap$std_t4
 	)
 
 }

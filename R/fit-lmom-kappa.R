@@ -1,23 +1,26 @@
 #' L-Moments Parameter Estimation for the Kappa Distribution
 #'
-#' This functions estimates the parameters of the four-parameter Kappa distribution using 
-#' the method of L-moments. Since there is no known closed form solution for the parameters 
-#' in terms of the L-moments, the parameters are computed numerically using Newton-Raphson
-#' iteration.
+#' This functions estimates the parameters of the four-parameter Kappa distribution 
+#' using the method of L-moments. Since there is no known closed form solution for 
+#' the parameters in terms of the L-moments, the parameters are computed numerically 
+#' using Newton-Raphson iteration.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
 #'
 #' @details 
-#' First, the sample L-moments of the data are computed using the \link{lmom.sample}
+#' First, the sample L-moments of the data are computed using the \link{lmom_sample}
 #' method. Then, the \link[stats]{optim} function is used to determine the
 #' parameters by minimizing the `sumquad.tau3tau4` helper function. The implementation of
 #' this routine is based on the deprecated `homtest` package.
 #'
-#' @return Numeric (4); a vector of parameters.
+#' @return A numeric vector of four parameters in the order location, scale, 
+#'   shape (1), shape (2).
 #'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
 #' on L-Moments. Cambridge University Press, New York, USA.
+#'
+#' @seealso \link{lmom_sample}, \link{fit_lmom_fast}, \link{fit_lmom_methods}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -26,11 +29,10 @@
 #' @export
 fit_lmom_kappa <- function(data) {
 
-	# Run parameter validation (see helpers.R)
-	validate.data(data)
+	validate_data(data)
 
 	# Get the sample L-moments
-	moments <- lmom.sample(data)
+	moments <- lmom_sample(data)
 	l1 <- moments[1]
 	l2 <- moments[2]
 	t3 <- moments[3]

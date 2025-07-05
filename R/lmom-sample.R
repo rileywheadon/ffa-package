@@ -5,7 +5,7 @@
 #' provide robust alternatives to conventional moments, with advantages in 
 #' parameter estimation for heavy-tailed and skewed distributions.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
 #'
 #' @details
 #' Given probability weighted moments \eqn{\beta_0, \beta_1, \beta_2, \beta_3}, the 
@@ -18,18 +18,19 @@
 #' Then, the sample L-skewness is \eqn{t_3 = l_3 / l_2} and the sample L-kurtosis
 #' is \eqn{t_4 = l_4 / l_2}.
 #'
-#' @return Numeric (4); a vector containing the first four L-moments and L-moment ratios:
+#' @return A numeric vector containing the first four L-moments and L-moment ratios:
 #' - `l1`: L-mean
 #' - `l2`: L-variance
 #' - `t3`: L-skewness
 #' - `t4`: L-kurtosis
 #'
-#' @note This function has no parameter validation because \link{sb.uncertainty} makes many 
-#' calls to it. If you are getting errors, ensure that `data` is a positive, numeric vector.
+#' @note This function has no parameter validation because \link{uncertainty_bootstrap} 
+#' makes many calls to it. If you are getting errors, ensure that `data` is a positive, 
+#' numeric vector.
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' lmom.sample(data)
+#' lmom_sample(data)
 #'
 #' @references
 #' Hosking, J. R. M. (1990). L-moments: Analysis and estimation of distributions
@@ -38,7 +39,7 @@
 #'
 #' @export
 
-lmom.sample <- function(data) {
+lmom_sample <- function(data) {
 
 	# Sort the data in increasing order
 	x <- sort(data)

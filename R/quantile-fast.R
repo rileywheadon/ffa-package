@@ -1,40 +1,33 @@
 #' Helper Function for Quantile Functions
 #'
-#' A helper function used by \link{qnt-functions}.
+#' A helper function used by \link{quantile_methods}.
 #'
-#' @param model Character (1); three character distribution code. Must be one of: 
-#'   `"GUM"`, `"NOR"`, `"LNO"`, `"GEV"`, `"GLO"`, `"GNO"`, `"PE3"`, `"LP3"`, or `"WEI"`.
+#' @param p A numeric vector of probabilities. Must be between 0 and 1.
 #'
-#' @param trend List; information about non-stationary trend(s) to use:
-#' - `location` Logical (1); if TRUE, there is a trend in the location parameter.
-#' - `scale` Logical (1); if TRUE, there is a trend in the scale parameter.
+#' @inheritParams param-model
+#' @inheritParams param-params
+#' @inheritParams param-slice
+#' @inheritParams param-trend
 #'
-#' @param p Numeric; a vector of probabilities. Must be between 0 and 1.
+#' @return A numeric vector of quantiles with the same length as `p`.
 #'
-#' @param params Numeric; a vector of parameters. Must have the correct length for the model.
-#'
-#' @param years Numeric; a vector of years at which to compute quantiles.
-#'   Required if `trend$location` or `trend$scale` is TRUE.
-#'
-#' @return If `p` or `years` is a scalar, returns a numeric vector. Otherwise, returns a matrix.
-#'
-#' @seealso \link{qnt-functions}
+#' @seealso \link{quantile_methods}
 #'
 #' @examples
-#' # Initialize p and params
+#' # Initialize p, params, and trend
 #' p <- runif(n = 10)
-#' params <- c(0, 1, 0)
+#' params <- c(0, 1, 1, 0)
+#' trend <- list(location = FALSE, scale = TRUE)
 #'
-#' # Compute the log-likelihood
-#' qntxxx("GEV", NULL, p, params)
+#' # Compute the log-likelihood in the year 2000
+#' quantile_fast(p, "GEV", params, 2000, trend)
 #'
 #' @importFrom stats qlnorm qgamma
 #' @export
-qntxxx <- function(model, trend, p, params, years = 0) {
+quantile_fast <- function(p, model, params, slice, trend) {
 
-	# Get the length of the covariate
-	covariate <- get.covariates(years)
-	n <- length(covariate)
+	# Get the covariate for the slice
+	covariate <- get_covariates(slice)
 
 	# Transform non-stationary parmaeters into a vector of stationary parameters
 	if (trend$location) {
@@ -133,31 +126,19 @@ qntxxx <- function(model, trend, p, params, years = 0) {
 		u + (s / k) * (1 - ((1 - p^h) / h)^k)
 	}
 
-	# General helper function for all quantiles
-	xfxxx <- switch(
+	# Compute the result for all probabilities 
+	switch(
 		model,
-		GUM = function(p, i) xfgum(p, u[i], s[i]),
-		NOR = function(p, i) xfnor(p, u[i], s[i]),
-		LNO = function(p, i) xflno(p, u[i], s[i]),
-		GEV = function(p, i) xfgev(p, u[i], s[i], k[i]),
-		GLO = function(p, i) xfglo(p, u[i], s[i], k[i]), 
-		GNO = function(p, i) xfgno(p, u[i], s[i], k[i]),
-		PE3 = function(p, i) xfpe3(p, u[i], s[i], k[i]),
-		LP3 = function(p, i) xflp3(p, u[i], s[i], k[i]),
-		WEI = function(p, i) xfwei(p, u[i], s[i], k[i]),
-		KAP = function(p, i) xfkap(p, u[i], s[i], k[i], h[i])
+		GUM = xfgum(p, u, s),
+		NOR = xfnor(p, u, s),
+		LNO = xflno(p, u, s),
+		GEV = xfgev(p, u, s, k),
+		GLO = xfglo(p, u, s, k), 
+		GNO = xfgno(p, u, s, k),
+		PE3 = xfpe3(p, u, s, k),
+		LP3 = xflp3(p, u, s, k),
+		WEI = xfwei(p, u, s, k),
+		KAP = xfkap(p, u, s, k, h)
 	)
 
-	# Compute the result using apply across rows 
-	result <- vapply(1:n, function(i) xfxxx(p, i), numeric(length(p)))
-
-	# Collapse the result to a vector if possible
-	if (length(p) == 1 | length(covariate) == 1) {
-		return (as.vector(result))
-	} else {
-		return (t(result))
-	}
-
 }
-
-

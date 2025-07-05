@@ -29,8 +29,8 @@
 
 ams_mw_variance <- function(data, years, size = 10, step = 5) { 
 
-	validate_data(data)
-	validate_years(years, data)
+	data <- validate_data(data, FALSE)
+	years <- validate_years(years, data)
 
 	# If length(data) < size, we cannot create a moving window.
 	n <- length(data)
@@ -57,6 +57,6 @@ ams_mw_variance <- function(data, years, size = 10, step = 5) {
 		location <- location + step
 	}
 
-	list(std = std_series, years = year_series)
+	list(std = std_series, year = year_series)
 
 }

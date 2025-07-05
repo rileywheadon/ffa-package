@@ -1,42 +1,31 @@
 #' Log-Likelihood Helper Function
 #'
-#' A helper function used by \link{llv-functions}.
+#' A helper function used by \link{loglik_methods}.
+#' This function does not validate parameters and is intended for internal use.
 #' 
-#' @note 
-#' This function does not perform parameter validation, which improves performance
-#' at the cost of potentially unpredictable behaviour. Use at your own risk.
+#' @inheritParams param-data
+#' @inheritParams param-model
+#' @inheritParams param-params
+#' @inheritParams param-years
+#' @inheritParams param-trend
 #'
-#' @param model Character (1); three character distribution code. Must be one of: 
-#'   `"GUM"`, `"NOR"`, `"LNO"`, `"GEV"`, `"GLO"`, `"GNO"`, `"PE3"`, `"LP3"`, or `"WEI"`.
+#' @return Numeric scalar. The log-likelihood value.
 #'
-#' @param trend List; information about non-stationary trend(s) to use:
-#' - `location` Logical (1); if TRUE, there is a trend in the location parameter.
-#' - `scale` Logical (1); if TRUE, there is a trend in the scale parameter.
-#'
-#' @param data Numeric; a vector of annual maximum streamflow data.
-#'
-#' @param params Numeric; a vector of parameters. Must have the correct length for the model.
-#'
-#' @param covariate Numeric; a vector with the same length as `data`. 
-#'   Required if `trend$location` or `trend$scale` is TRUE.
-#'
-#' @return Numeric (1); the log-likelihood value.
-#'
-#' @seealso \link{llv-functions}
+#' @seealso \link{loglik_methods}
 #'
 #' @examples
-#' # Initialize data and params
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' params <- c(0, 1, 0)
-#'
-#' # Compute the log-likelihood
-#' llvxxx("GEV", NULL, data, params)
+#' years <- seq(from = 1901, to = 2000)
+#' trend <- list(location = FALSE, scale = FALSE)
+#' loglik_fast(data, "GEV", params, years, trend)
 #'
 #' @export
-llvxxx <- function(model, trend, data, params, years = NULL) {
 
-	# Generate the covariate from years if necessary
-	if (!is.null(years)) covariate <- get.covariates(years)
+loglik_fast <- function(data, model, params, years, trend) {
+
+	# Generate the covariate from years 
+	covariate <- get_covariates(years)
 
 	# Minimal amount of error handling to prevent issues during MLE estimation
 	if (any(is.nan(params))) return (-Inf)

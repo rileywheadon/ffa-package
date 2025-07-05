@@ -1,28 +1,24 @@
 #' Pettitt Test for Abrupt Changes in the Mean of a Time Series
 #'
-#' @order $1
-#'
 #' Performs the non-parametric Pettitt test to detect a single change point in the
 #' mean of a time series, used to identify abrupt shifts in hydrological data.
 #'
-#' @param ams List; annual maximum streamflow (AMS) data:
-#' - `data` Numeric; a vector of AMS values or moving-window variances.
-#' - `year` Numeric; a vector of years with the same length as `data`.
-#' - `variance` Logical (1); if `TRUE`, `data` contains AMS variances.
+#' @inheritParams param-data
+#' @inheritParams param-years
+#' @inheritParams param-alpha
+#' @inheritParams param-quiet
 #'
-#' @param alpha Numeric (1); the significance level (default is 0.05).
-#'
-#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
-#'
-#' @return List; the results of the Pettitt test, including:
-#' - `u_t` Numeric; vector of absolute U-statistics for all time indices.
-#' - `k_statistic` Numeric (1); maximum absolute U-statistic.
-#' - `k_critical` Numeric (1);  critical K-statistic value for given `alpha`.
-#' - `p_value` Numeric (1); Approximate p-value for the test.
-#' - `change_index` Integer (1); index of the detected change point (0 if none).
-#' - `change_year` Integer (1); year of the detected change point (0 if none).
-#' - `reject` Logical (1); if TRUE, the null hypothesis was rejected.
-#' - `msg` Character (1); formatted summary message describing the test result.
+#' @return A list containing the test results, including:
+#' - `data`: The `data` argument.
+#' - `years`: The `years` argument.
+#' - `u_t`: Numeric vector of absolute U-statistics for all time indices.
+#' - `k_statistic`: Numeric scalar.Tthe maximum absolute U-statistic.
+#' - `k_critical`: Numeric scalar. The critical K-statistic value for given `alpha`.
+#' - `p_value`: Numeric scalar. Approximate p-value for the test.
+#' - `change_index`: Integer scalar. Index of the detected change point (0 if none).
+#' - `change_year`: Integer scalar. Year of the detected change point (0 if none).
+#' - `reject`: Logical scalar. If `TRUE`, the null hypothesis was rejected.
+#' - `msg`: Character scalar. A formatted summary message describing the test result.
 #'
 #' @details
 #' The Pettitt test is a rank-based non-parametric test that evaluates the
@@ -30,21 +26,23 @@
 #' maximum of the absolute value of the U-statistic over all possible split 
 #' points. The p-value is approximated using an asymptotic formula.
 #'
-#' @seealso \link{pettitt.plot}
+#' @seealso \link{plot_pettitt_test}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
-#' ams <- list(data = data, year = year, variance = FALSE)
 #' eda_pettitt_test(data, years)
+#'
 #' @export
  
-eda_pettitt_test <- function(ams, alpha = 0.05, quiet = TRUE) {
+eda_pettitt_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
-	validate.ams(ams)
-	validate.alpha(alpha)
+	data <- validate_data(data)
+	years <- validate_years(years, data)
+ 	alpha <- validate_alpha(alpha)
+	quiet <- validate_quiet(quiet)
 
-	n <- length(ams$data)
+	n <- length(data)
 	u_t <- numeric(n)
 
 	# u_t = sum(sign(data[j] - data[i])) for all i <= t, j > t
@@ -53,7 +51,7 @@ eda_pettitt_test <- function(ams, alpha = 0.05, quiet = TRUE) {
 
 		for (i in 1:t) {
 			for (j in min(t + 1, n):n) {
-				u = u + sign(ams$data[j] - ams$data[i])
+				u = u + sign(data[j] - data[i])
 			}
 		}
 
@@ -68,9 +66,9 @@ eda_pettitt_test <- function(ams, alpha = 0.05, quiet = TRUE) {
 	# The Pettitt test identifies either 0 or 1 change points
 	reject <- (p_value <= alpha)
 	change_index <- ifelse(reject, which.max(u_t), 0)
-	change_year <- ifelse(reject, ams$year[change_index], 0)
+	change_year <- ifelse(reject, years[change_index], 0)
 
-	msg <- stats.message(
+	msg <- stats_message(
 		"Pettitt",
 		reject,
 		p_value,
@@ -82,6 +80,8 @@ eda_pettitt_test <- function(ams, alpha = 0.05, quiet = TRUE) {
 	if (!quiet) message(msg)
 
 	list(
+		data = data,
+		years = years,
 		u_t = u_t,
 		k_statistic = k_statistic,
 		k_critical = k_critical,

@@ -1,26 +1,23 @@
 #' White Test for Heteroskedasticity
 #'
-#' @order $1
-#'
 #' @description
-#' Performs the White test for heteroskedasticity by regressing the squared residuals of a 
-#' linear model on the original regressors and their squared terms. The null hypothesis 
-#' is homoskedasticity.
+#' Performs the White test for heteroskedasticity by regressing the squared residuals 
+#' of a linear model on the original regressors and their squared terms. The null 
+#' hypothesis is homoskedasticity.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
+#' @inheritParams param-years
+#' @inheritParams param-alpha
+#' @inheritParams param-quiet
 #'
-#' @param years Numeric; a vector of years with the same length as `data`.
-#'
-#' @param alpha Numeric (1); the significance level (default is 0.05).
-#'
-#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
-#'
-#' @return List; results of the White test:
-#' - `r.squared`: Coefficient of determination from the auxiliary regression.
+#' @return A list containing the results of the White test:
+#' - `data`: The `data` argument.
+#' - `years`: The `years` argument.
+#' - `r_squared`: Coefficient of determination from the auxiliary regression.
 #' - `statistic`: White test statistic based on sample size and `r.squared`.
-#' - `p.value`: P-value derived from a Chi-squared distribution with 2 degrees of freedom.
-#' - `reject`: Logical. TRUE if the null hypothesis is rejected at significance `alpha`.
-#' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
+#' - `p_value`: The p-value derived from a Chi-squared distribution with `df = 2`.
+#' - `reject`: Logical. If `TRUE`, the null hypothesis is rejected at `alpha`.
+#' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
 #'
 #' @details
 #' The White test regresses the squared residuals from a primary linear model 
@@ -31,7 +28,8 @@
 #' Rejection of the null hypothesis suggests heteroskedasticity in the residuals.
 #'
 #' @references White, H. (1980). A heteroskedasticity-consistent covariance matrix 
-#' estimator and a direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 817–838.
+#' estimator and a direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 
+#' 817–838.
 #'
 #' @seealso \link[stats]{lm}, \link[stats]{pchisq}
 #'
@@ -45,10 +43,10 @@
 
 eda_white_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
-	# Run parameter validation (see helpers.R)
-	validate.data(data)
-	validate.years(years)
-	validate.alpha(alpha)
+	data <- validate_data(data)
+	years <- validate_years(years)
+	alpha <- validate_alpha(alpha)
+	quiet <- validate_quiet(quiet)
 
 	# Do a linear regression of data against years, get the squared residuals
 	primary_model <- lm(data ~ years)
@@ -66,7 +64,7 @@ eda_white_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	reject <- (p_value <= alpha)
 
 	# Print the results of the test
-	msg <- stats.message(
+	msg <- stats_message(
 		"White",
 		reject,
 		p_value,
@@ -79,9 +77,11 @@ eda_white_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
 	# Return the results of the test
 	list(
-		r.squared = r_squared,
+		data = data,
+		years = years,
+		r_squared = r_squared,
 		statistic = statistic,
-		p.value = p_value,
+		p_value = p_value,
 		reject = reject,
 		msg = msg
 	)

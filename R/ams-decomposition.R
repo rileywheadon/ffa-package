@@ -20,7 +20,7 @@
 #' 2. If there is a trend in the location, fit Sen’s trend estimator to 
 #'    `data` and `covariate`. Then, remove the fitted linear trend.
 #' 3. If there is a trend in the scale, compute the moving‐window variance using 
-#'    \link{mw_variance}, fit Sen’s trend estimator to those variances, and then 
+#'    \link{ams_mw_variance}, fit Sen’s trend estimator to those variances, and then 
 #'    rescales the series to remove trends in the scale.
 #' 4. If necessary, shift the data so that its minimum is at least 1.
 #'
@@ -38,22 +38,22 @@
 
 ams_decomposition <- function(data, years, trend) {
 
-	validate_data(data)
-	validate_years(years, data)
-	validate_trend(trend)
+	data <- validate_data(data)
+	years <- validate_years(years, data)
+	trend <- validate_trend(trend)
 
 	covariate <- get_covariates(years)
 	decomposed <- data
 
 	# Remove trends in location first to get rid of excess variance
 	if (trend$location) {
-		sens <- sens_trend(data, years)
+		sens <- eda_sens_trend(data, years)
 		decomposed <- data - (covariate * sens$slope)
 	}
 
 	if (trend$scale) {
-		variance <- mw_variance(decomposed, years)
-        sens <- sens_trend(variance$std, variance$years)
+		variance <- ams_mw_variance(decomposed, years)
+        sens <- eda_sens_trend(variance$std, variance$year)
         gt <- ((sens$slope * covariate) + sens$intercept) / sens$intercept
 		mu <- mean(decomposed, na.rm = TRUE)
 

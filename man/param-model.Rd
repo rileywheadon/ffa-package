@@ -4,7 +4,7 @@
 \alias{param-model}
 \title{Parameter 'model'}
 \arguments{
-\item{model}{Character string of length 1. A three-character code indicating
+\item{model}{Character scalar. A three-character code indicating
 a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 }

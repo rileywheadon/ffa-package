@@ -1,32 +1,33 @@
 #' Helper Function for L-moments Parameter Estimation
 #'
-#' A helper function used by \link{pel-functions}.
+#' A helper function used by \link{fit_lmom_methods}. 
+#' This function does not validate parameters and is intended for internal use.
 #'
-#' @param model Character (1); three character distribution code. Must be one of: 
-#'   `"GUM"`, `"NOR"`, `"LNO"`, `"GEV"`, `"GLO"`, `"GNO"`, `"PE3"`, `"LP3"`, or `"WEI"`.
+#' @inheritParams param-data
+#' @inheritParams param-model
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
-#'
-#' @return Numeric; a vector of parameters. 
-#' - Numeric (2) if `model` is `GUM`, `NOR`, or `LNO`.
-#' - Numeric (3) if `model` is `GEV`, `GLO`, `GNO`, `PE3`, `LP3`, or `WEI`.
+#' @return A numeric vector of parameters:
+#' - If `model` is `"GUM"`, `"NOR"`, or `"LNO"`, returns a vector of length 2.
+#' - Otherwise, returns a vector of length 3.
 #'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
 #' on L-Moments. Cambridge University Press, New York, USA.
 #'
+#' @seealso \link{lmom_sample}, \link{fit_lmom_kappa}, \link{fit_lmom_methods}
+#'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' fit_lmom_fast("PE3", data)
+#' fit_lmom_fast(data, "PE3")
 #'
 #' @export
-fit_lmom_fast <- function(model, data) {
+fit_lmom_fast <- function(data, model) {
 
 	# Get the correct L-moments based on the distribution
 	moments <- if (model == "LP3") {
-		lmom.sample(log(data))
+		lmom_sample(log(data))
 	} else {
-		lmom.sample(data)
+		lmom_sample(data)
 	}
 
 	# Unpack the L-moments
@@ -82,7 +83,9 @@ fit_lmom_fast <- function(model, data) {
 
 		# Compute shape parameter
 		tt <- t3^2
-        k = -t3 * (A0 + tt * (A1 + tt *(A2 + tt * A3))) / (1 + tt * (B1 + tt * (B2 + tt * B3)))
+		k1 <-  -t3 * (A0 + tt * (A1 + tt *(A2 + tt * A3)))
+		k2 <- 1 + tt * (B1 + tt * (B2 + tt * B3))
+        k <- k1 / k2 
 
 		# Define the error function erf(z)
 		erf <- function(z) 2 * pnorm(z * sqrt(2)) - 1

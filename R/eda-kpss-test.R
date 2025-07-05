@@ -1,15 +1,16 @@
 #' Kwiatkowski–Phillips–Schmidt–Shin (KPSS) Unit Root Test
 #'
 #' Performs the KPSS unit root test on annual maximum streamflow (AMS) data. 
-#' The null hypothesis is that  the time series is trend-stationary with a linear 
-#' trend and constant drift.  The alternative hypothesis is that the time series 
+#' The null hypothesis is that the time series is trend-stationary with a linear 
+#' trend and constant drift. The alternative hypothesis is that the time series 
 #' has a unit root and is non-stationary.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
 #' @inheritParams param-quiet
 #'
-#' @return List; the test results, consisting of:
+#' @return A list containing the test results, including:
+#' - `data`: The `data` argument.
 #' - `statistic`: The KPSS test statistic.
 #' - `p_value`: The interpolated p-value. See note regarding discrete thresholds.
 #' - `reject`: Logical scalar. If, TRUE the null hypothesis is rejected at `alpha`.
@@ -25,8 +26,8 @@
 #' @seealso \link{eda_pp_test}
 #'
 #' @references
-#' Hobijn, B., Franses, P.H. and Ooms, M. (2004), Generalizations of the KPSS-test for 
-#' stationarity. Statistica Neerlandica, 58: 483-502. 
+#' Hobijn, B., Franses, P.H. and Ooms, M. (2004), Generalizations of the KPSS-test 
+#' for stationarity. Statistica Neerlandica, 58: 483-502. 
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -35,11 +36,11 @@
 #' @importFrom stats embed
 #' @export
 
-eda_kpss_test(data, alpha = 0.05, quiet = TRUE) {
+eda_kpss_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
-	validate.data(data)
-	validate.alpha(alpha)
-	validate.quiet(quiet)
+	data <- validate_data(data)
+	alpha <- validate_alpha(alpha)
+	quiet <- validate_quiet(quiet)
 
 	# Construct time series yt/yt1 for fitting the autoregressive model 
 	z <- embed(data, 2)
@@ -86,7 +87,7 @@ eda_kpss_test(data, alpha = 0.05, quiet = TRUE) {
 		round(p_value, 3)
 	}
 
-	msg <- stats.message(
+	msg <- stats_message(
 		"KPSS",
 		reject,
 		p_value,
@@ -98,6 +99,7 @@ eda_kpss_test(data, alpha = 0.05, quiet = TRUE) {
 	if (!quiet) message(msg)
 
 	list(
+		data = data,
 		statistic = statistic,
 		p_value = p_value,
 		reject = reject,

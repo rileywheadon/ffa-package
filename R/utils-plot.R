@@ -1,5 +1,5 @@
 # Adds sensible axis scales to a plot
-add.scales <- function(p) {
+add_scales <- function(p) {
 	p + 
 	scale_x_continuous(breaks = function(limits) pretty(limits, n = 10)) +
 	scale_y_continuous(breaks = function(limits) pretty(limits, n = 10))
@@ -7,7 +7,7 @@ add.scales <- function(p) {
 
 
 # Adds sensible styling to a plot
-add.theme <- function(p) {
+add_theme <- function(p) {
 	p +
 	theme_minimal() +
 	theme(
@@ -26,7 +26,7 @@ add.theme <- function(p) {
 
 
 # Adds a nicely formatted annotation to the top right corner of a plot
-add.annotation <- function(p, label) {
+add_annotation <- function(p, label) {
 
 	grob <- textGrob(label)
 	rect_w <- 0.22

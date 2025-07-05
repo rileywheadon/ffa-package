@@ -12,6 +12,7 @@
 #' @inheritParams param-quiet
 #'
 #' @return List; the results of the test, including:
+#' - `data`: The `data` argument.
 #' - `s_bootstrap`: Vector of bootstrapped test statistics used for plotting.
 #' - `s_statistic`: The Mann-Kendall test statistic computed on the original series.
 #' - `p_value`: Empirical two-sided p-value computed from the bootstrap distribution.
@@ -25,24 +26,24 @@
 #' resampling blocks of the original data  (without replacement) and computing the 
 #' Mann-Kendall S-statistic. This procedure adjusts for autocorrelation in the data. 
 #'
-#' @seealso \link{eda_mk_test}, \link{eda_spearman_test}
+#' @seealso \link{plot_bbmk_test}, \link{eda_mk_test}, \link{eda_spearman_test}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' eda_bbmk_test(data, samples = 1000)
+#' eda_bbmk_test(data, samples = 1000L)
 #'
 #' @importFrom stats quantile
 #' @export
 
 eda_bbmk_test <- function(data, alpha = 0.05, samples = 10000L, quiet = TRUE) {
 
-	validate.data(data)
-	validate.alpha(alpha)
-	validate.samples(samples)
-	validate.quiet(quiet)
+	data <- validate_data(data)
+	alpha <- validate_alpha(alpha)
+	samples <- validate_samples(samples)
+	quiet <- validate_quiet(quiet)
 
-	least_lag <- eda_spearman_test(data, alpha)$least.lag
-	s_statistic  <- eda_mk_test(data, alpha)$s.statistic
+	least_lag <- eda_spearman_test(data, alpha)$least_lag
+	s_statistic  <- eda_mk_test(data, alpha)$s_statistic
 
 	# Blocks have size of least_lag + 1 to remove autocorrelation 
 	n <- length(data)
@@ -74,7 +75,7 @@ eda_bbmk_test <- function(data, alpha = 0.05, samples = 10000L, quiet = TRUE) {
 
 	reject <- (p_value <= alpha)
 
-	msg <- stats.message(
+	msg <- stats_message(
 		"BBMK",
 		reject,
 		p_value,
@@ -86,6 +87,7 @@ eda_bbmk_test <- function(data, alpha = 0.05, samples = 10000L, quiet = TRUE) {
 	if (!quiet) message(msg)
 
 	list(
+		data = data,
 		s_bootstrap = bootstrap_results,
 		s_statistic = s_statistic,
 		p_value = p_value,

@@ -1,17 +1,14 @@
 #' Helper Function for L-moments Ratios
 #'
-#' A helper function used by \link{lmr-functions}.
+#' A helper function used by \link{lmom_theoretical}.
+#' This function does not validate parameters and is intended for internal use.
 #'
-#' @note L-moment ratios for `NOR`/`LNO` and `PE3`/`LP3` are identical
-#'   since it is assumed that the `LNO`/`LP3` L-moments will be compared
-#'   to the sample L-moments of the logarithm of the data.
+#' @note L-moment ratios for `NOR`/`LNO` and `PE3`/`LP3` are identical since 
+#'   it L-moments for the `LNO`/`LP3` distributions are compared with the 
+#'   sample L-moments of the logarithm of the data internally. 
 #'
-#' @param model Character; three character distribution code. Must be one of: 
-#'   `GUM`, `NOR`, `LNO`, `GEV`, `GLO`, `GNO`, `PE3`, `LP3`, or `WEI`.
-#'
-#' @param params Numeric; a vector of parameters. 
-#' - Numeric (2) if `model` is `GUM`, `NOR`, or `LNO`.
-#' - Numeric (3) if `model` is `GEV`, `GLO`, `GNO`, `PE3`, `LP3`, or `WEI`.
+#' @inheritParams param-model
+#' @inheritParams param-params
 #'
 #' @return A numeric vector of length 4 containing:
 #' - \eqn{\lambda_1}: L-mean
@@ -19,15 +16,18 @@
 #' - \eqn{\tau_3}: L-skewness
 #' - \eqn{\tau_4}: L-kurtosis
 #'
+#' @seealso \link{lmom_theoretical}
+#'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
 #' on L-Moments. Cambridge University Press, New York, USA.
 #'
 #' @examples
-#' lmrxxx("GLO", c(0, 1, 0))
+#' lmom_fast("GLO", c(0, 1, 0))
 #'
 #' @export
-lmrxxx <- function(model, params) {
+
+lmom_fast <- function(model, params) {
 
 	# Unpack the parameters
 	u <- params[1]
@@ -42,7 +42,7 @@ lmrxxx <- function(model, params) {
 		t4 <- (16 * log(2) - 10 * log(3)) / log(2)
 	}
 
-	# NOTE: We call lmrxxx("LNO", params) internally to compare the L-moments of log(data) 
+	# NOTE: We call lmom_fast("LNO", params) to compare the L-moments of log(data) 
 	# to the L-moments for NOR. We can do this because Data ~ LNO <=> log(Data) ~ NOR.
 	else if (model == "NOR" | model == "LNO") {
 		l1 <- u
@@ -102,8 +102,8 @@ lmrxxx <- function(model, params) {
 	
 	}
 
-	# NOTE: We call lmrxxx("LP3", params) internally to compare the L-moments of log(data) 
-	# to the L-moments for PE3 We can do this because Data ~ LP3 <=> log(Data) ~ PE3.
+	# NOTE: We call lmom_fast("LP3", params) internally to compare the L-moments 
+	# of log(data) to the L-moments for PE3 since  Data ~ LP3 <=> log(Data) ~ PE3.
 	else if (model == "PE3" | model == "LP3") {
 		
 		# Coefficients used for approximation

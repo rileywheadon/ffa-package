@@ -2,28 +2,28 @@
 #'
 #' Computes Sen's trend estimator for a univariate time series.
 #'
-#' @param data Numeric; a vector of annual maximum streamflow data.
+#' @inheritParams param-data
+#' @inheritParams param-years
+#' @inheritParams param-quiet
 #'
-#' @param years Numeric; a vector of years with the same length as `data`.
-#'
-#' @param quiet Logical (1); if FALSE, prints a summary of results (default is TRUE).
-#'
-#' @return List; the estimated trend:
-#' - `sens.slope`: Median slope of all pairwise data-year combinations.
-#' - `sens.intercept`: Median intercept estimate of the fitted line.
+#' @return A list containing the estimated trend:
+#' - `data`: The `data` argument.
+#' - `years`: The `years` argument.
+#' - `slope`: Median slope of all pairwise data-year combinations.
+#' - `intercept`: Median intercept estimate of the fitted line.
 #' - `residuals`: Vector of residuals between observed and fitted values.
 #' - `msg`: Character string summarizing the results.
 #'
 #' @details
-#' Sen's slope estimator is a robust, non-parametric trend estimator computed from the median
-#' of all pairwise slopes between data points. The corresponding intercept is taken as the
-#' median of residual-corrected values. 
+#' Sen's slope estimator is a robust, non-parametric trend estimator computed from 
+#' the median of all pairwise slopes between data points. The corresponding intercept 
+#' is taken as the median of residual-corrected values. 
 #'
 #' @references
 #' Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau.
 #' \emph{Journal of the American Statistical Association}, 63(324), 1379–1389. 
 #'
-#' @seealso \link{eda_runs_test}
+#' @seealso \link{eda_runs_test}, \link{plot_sens_trend}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -35,14 +35,15 @@
 
 eda_sens_trend <- function(data, years, quiet = TRUE) {
 
-	validate.data(data)
-	validate.years(years, data)
+	data <- validate_data(data)
+	years <- validate_years(years, data)
+	quiet <- validate_quiet(quiet)
 
 	# Get the length of data for convenience
 	n <- length(data)
 
 	# Convert the years into covariates
-	covariate <- get.covariates(years)
+	covariate <- get_covariates(years)
 
 	# Compute all pairwise slopes
 	slopes <- c()
@@ -72,6 +73,8 @@ eda_sens_trend <- function(data, years, quiet = TRUE) {
 
 	# Return the results as a list
 	list(
+		data = data,
+		years = years,
 		slope = sens_slope,
 		intercept = sens_intercept,
 		residuals = residuals,
