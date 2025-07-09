@@ -11,3 +11,4 @@ Only used when \code{model = "GEV"}.}
 \description{
 Parameter 'prior'
 }
+\keyword{internal}

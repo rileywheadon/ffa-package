@@ -11,3 +11,4 @@ scale, shape). The length must be between 2 and 5, depending on the specified
 \description{
 Parameter 'params'
 }
+\keyword{internal}

@@ -9,3 +9,4 @@
 \description{
 Parameter 'samples'
 }
+\keyword{internal}

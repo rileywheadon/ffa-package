@@ -10,7 +10,7 @@ validate_rfpl <- function(
     ci_lower,
     estimates,
     ci_upper,
-	slice = NULL
+	slice = 1900
 ) {
 
 	results <- uncertainty_rfpl(
@@ -240,7 +240,7 @@ validate_rfgpl <- function(
     ci_lower,
     estimates,
     ci_upper,
-    slice = NULL,
+    slice = 1900,
 	prior = c(6, 9)
 ) {
 

@@ -10,3 +10,4 @@ Must be \code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}.}
 \description{
 Parameter 'method'
 }
+\keyword{internal}

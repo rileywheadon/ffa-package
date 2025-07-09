@@ -59,8 +59,8 @@ plot_mks_test <- function(results, show_trend = TRUE, ...) {
     if (!is.null(args$title))  title  <- args$title
     if (!is.null(args$top_xlabel)) top_xlabel <- args$top_xlabel
     if (!is.null(args$top_ylabel)) top_ylabel <- args$top_ylabel
-    if (!is.null(args$bottom_xlabel)) top_xlabel <- args$top_xlabel
-    if (!is.null(args$bottom_ylabel)) top_ylabel <- args$top_ylabel
+    if (!is.null(args$bottom_xlabel)) bottom_xlabel <- args$bottom_xlabel
+    if (!is.null(args$bottom_ylabel)) bottom_ylabel <- args$bottom_ylabel
 
 	# Plot the normalized trend statistics and confidence bands
 	p1 <- ggplot(df, aes(x = .data$year)) +
@@ -74,7 +74,7 @@ plot_mks_test <- function(results, show_trend = TRUE, ...) {
 		) +
 		geom_point(
 			data = results$change_df,
-			aes(x =.data$years, y = .data$statistic, color = "blue"), 
+			aes(x =.data$year, y = .data$statistic, color = "blue"), 
 			size = 4
 		) +
 		labs(title = title, x = top_xlabel, y = top_ylabel, color = "Legend") +
@@ -95,7 +95,7 @@ plot_mks_test <- function(results, show_trend = TRUE, ...) {
 		(if (show_trend) geom_line(color = "black", linewidth = 1.1) else NULL) +
 		geom_point(
 			data = results$change_df,
-			aes(x = .data$years, y = .data$max, color = "blue"), 
+			aes(x = .data$year, y = .data$max, color = "blue"), 
 			size = 4
 		) +
 		labs(x = bottom_xlabel, y = bottom_ylabel, color = "Legend") +

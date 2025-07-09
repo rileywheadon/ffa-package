@@ -70,8 +70,9 @@ plot_pettitt_test <- function(results, show_trend = TRUE, ...) {
     if (!is.null(args$title))  title  <- args$title
     if (!is.null(args$top_xlabel)) top_xlabel <- args$top_xlabel
     if (!is.null(args$top_ylabel)) top_ylabel <- args$top_ylabel
-    if (!is.null(args$bottom_xlabel)) top_xlabel <- args$top_xlabel
-    if (!is.null(args$bottom_ylabel)) top_ylabel <- args$top_ylabel
+    if (!is.null(args$bottom_xlabel)) bottom_xlabel <- args$bottom_xlabel
+    if (!is.null(args$bottom_ylabel)) bottom_ylabel <- args$bottom_ylabel
+
 
 	# First subplot: Mann-Whitney-Pettitt Test
 	p1 <- ggplot(df, aes(x = .data$year, y = .data$u_t)) +

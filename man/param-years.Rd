@@ -10,3 +10,4 @@ Must be the same length as \code{data} and strictly increasing.}
 \description{
 Parameter 'years'
 }
+\keyword{internal}

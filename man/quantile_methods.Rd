@@ -14,25 +14,25 @@
 \alias{quantile_kap}
 \title{Quantile Functions for Probability Models}
 \usage{
-quantile_gum(p, params, slice = NULL, trend = NULL)
+quantile_gum(p, params, slice = 1900, trend = NULL)
 
-quantile_nor(p, params, slice = NULL, trend = NULL)
+quantile_nor(p, params, slice = 1900, trend = NULL)
 
-quantile_lno(p, params, slice = NULL, trend = NULL)
+quantile_lno(p, params, slice = 1900, trend = NULL)
 
-quantile_gev(p, params, slice = NULL, trend = NULL)
+quantile_gev(p, params, slice = 1900, trend = NULL)
 
-quantile_glo(p, params, slice = NULL, trend = NULL)
+quantile_glo(p, params, slice = 1900, trend = NULL)
 
-quantile_gno(p, params, slice = NULL, trend = NULL)
+quantile_gno(p, params, slice = 1900, trend = NULL)
 
-quantile_pe3(p, params, slice = NULL, trend = NULL)
+quantile_pe3(p, params, slice = 1900, trend = NULL)
 
-quantile_lp3(p, params, slice = NULL, trend = NULL)
+quantile_lp3(p, params, slice = 1900, trend = NULL)
 
-quantile_wei(p, params, slice = NULL, trend = NULL)
+quantile_wei(p, params, slice = 1900, trend = NULL)
 
-quantile_kap(p, params, slice = NULL, trend = NULL)
+quantile_kap(p, params, slice = 1900, trend = NULL)
 }
 \arguments{
 \item{p}{Numeric; a vector of probabilities between 0 and 1.}

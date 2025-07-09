@@ -10,7 +10,7 @@ uncertainty_rfpl(
   prior = NULL,
   years = NULL,
   trend = NULL,
-  slice = NULL,
+  slice = 1900,
   alpha = 0.05,
   eps = 0.01
 )

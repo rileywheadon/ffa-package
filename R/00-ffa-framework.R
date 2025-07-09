@@ -4,6 +4,8 @@
 #'   Must be strictly positive, finite, and non-missing.
 #'
 #' @name param-data
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'model'
@@ -13,6 +15,8 @@ NULL
 #'   `"GEV"`, `"GLO"`, `"GNO"`, `"PE3"`, `"LP3"`, or `"WEI"`.
 #'
 #' @name param-model
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'method'
@@ -21,6 +25,8 @@ NULL
 #'   Must be `"L-moments"`, `"MLE"`, or `"GMLE"`.
 #' 
 #' @name param-method
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'params'
@@ -30,6 +36,8 @@ NULL
 #'   `model` and `trend`.
 #'
 #' @name param-params
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'prior'
@@ -39,6 +47,8 @@ NULL
 #'   Only used when `model = "GEV"`.
 #'
 #' @name param-prior
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'years'
@@ -47,6 +57,8 @@ NULL
 #'   Must be the same length as `data` and strictly increasing.
 #'
 #' @name param-years
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'trend'
@@ -57,6 +69,8 @@ NULL
 #'   - `scale`: Logical scalar. If `TRUE`, the scale parameter has a trend.
 #'
 #' @name param-trend
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'slice'
@@ -68,6 +82,8 @@ NULL
 #' no effect the output of the function.
 #'
 #' @name param-slice
+#'
+#' @keywords internal
 NULL 
 
 #' Parameter 'alpha'
@@ -76,6 +92,8 @@ NULL
 #'  level for confidence intervals or hypothesis tests. Default is 0.05. 
 #'
 #' @name param-alpha
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'samples'
@@ -83,6 +101,8 @@ NULL
 #' @param samples Integer scalar. The number of bootstrap samples. Default is 10000.
 #'
 #' @name param-samples
+#'
+#' @keywords internal
 NULL
 
 #' Parameter 'quiet'
@@ -91,5 +111,7 @@ NULL
 #'   test to the console. Default is `TRUE`.
 #'
 #' @name param-quiet
+#'
+#' @keywords internal
 NULL
 

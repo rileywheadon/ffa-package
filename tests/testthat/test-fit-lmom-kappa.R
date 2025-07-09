@@ -58,5 +58,38 @@ test_that("fit_lmom_kappa works on data set #3.3", {
 
 })
 
+test_that("sumquad.tau3tau4 handles GUM case.", {
+	result <- sumquad.tau3tau4(c(0, 0), c(0, 0))
+	expected <- 0.1699^2 + 0.1504^2
+	expect_equal(result, expected, tol = 1e-4)
+})
 
+test_that("sumquad.tau3tau4 handles GEV case.", {
+	result <- sumquad.tau3tau4(c(0.5, 0), c(0, 0))
+	expected <- 0.1140^2 + 0.1054^2
+	expect_equal(result, expected, tol = 1e-4)
+})
 
+test_that("sumquad.tau3tau4 handles invalid parameters.", {
+	expect_error(sumquad.tau3tau4(c(-2, 0), c(0, 0)), "invalid parameters")
+	expect_error(sumquad.tau3tau4(c(-1, -1), c(0, 0)), "invalid parameters")
+	expect_error(sumquad.tau3tau4(c(2, -1), c(0, 0)), "invalid parameters")
+})
+
+test_that("mu.sigma handles GUM case.", {
+	result <- mu.sigma(0, 1, 0, 0)
+	expect_equal(result$mu, -0.5772 / log(2), tol = 1e-4)
+	expect_equal(result$sigma, 1 / log(2), tol = 1e-4)
+})
+
+test_that("mu.sigma handles GEV case.", {
+	result <- mu.sigma(0, 1, 0.5, 0)
+	expect_equal(result$mu, -0.4383, tol = 1e-4)
+	expect_equal(result$sigma, 1.9263, tol = 1e-4)
+})
+
+test_that("mu.sigma handles invalid parameters.", {
+	expect_error(mu.sigma(0, 1, -2,  0), "invalid parameters")
+	expect_error(mu.sigma(0, 1, -1, -1), "invalid parameters")
+	expect_error(mu.sigma(0, 1,  2, -1), "invalid parameters")
+})

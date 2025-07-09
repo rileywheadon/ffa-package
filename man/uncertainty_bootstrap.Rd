@@ -11,7 +11,7 @@ uncertainty_bootstrap(
   prior = NULL,
   years = NULL,
   trend = NULL,
-  slice = NULL,
+  slice = 1900,
   alpha = 0.05,
   samples = 10000L
 )

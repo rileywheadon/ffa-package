@@ -54,7 +54,7 @@ plot_lmom_diagram <- function(results, ...) {
 
 		info <- model_info(model)
 
-		if (info$n.params == 2) {
+		if (info$n_params == 2) {
 			dm <- lmom_fast(model, c(0, 1))
 			dlm[[model]] = data.frame(x = dm[3], y = dm[4])
 		}
@@ -62,7 +62,7 @@ plot_lmom_diagram <- function(results, ...) {
 		else {
 
 			# Generate a sequence of parameter sets to pass to a 3-parameter distribution
-			k_seq <- seq(info$k.bounds[1], info$k.bounds[2], 0.001)
+			k_seq <- seq(info$k_bounds[1], info$k_bounds[2], 0.001)
 			params <- lapply(k_seq, function(i) c(0, 1, i))
 
 			# Get a matrix of likelihood moment ratios for each parameter set in params
@@ -109,8 +109,7 @@ plot_lmom_diagram <- function(results, ...) {
 		geom_point(data = log_lm, aes(color = "2"), shape = 15, size = 5) +
 		scale_color_manual(labels = labels, values = colors) +
 		guides(color = guide_legend(override.aes = list(shape = shapes))) +
-		labs(x = xlabel, y = ylabel, color = "Legend", title = title) +
-		coord_fixed(ratio = 2, xlim = c(-0.7, 0.7), ylim = c(0, 0.7))
+		labs(x = xlabel, y = ylabel, color = "Legend", title = title)
 
 	# Add the theme
 	p1 <- add_theme(add_scales(p1))
@@ -154,7 +153,6 @@ plot_lmom_diagram <- function(results, ...) {
 			)
 
 		# Turn the inset plot into a grob
-		pdf(nullfile())
 		p2_grob <- ggplotGrob(p2)
 
 		# Place inset on main plot using annotation_custom()
@@ -172,6 +170,7 @@ plot_lmom_diagram <- function(results, ...) {
 	}
 
 	# Return the plot
-	p1
+	p1 + coord_fixed(ratio = 2, xlim = c(-0.7, 0.7), ylim = c(0, 0.7))
+
 
 }

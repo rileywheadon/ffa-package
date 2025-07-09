@@ -120,11 +120,11 @@ select_zstatistic <- function(data, samples = 10000L) {
 
 		# Run optimization for three parameter distributions
 		result <- optim(
-			par = (info$k.bounds[1] + info$k.bounds[2]) / 2,
+			par = (info$k_bounds[1] + info$k_bounds[2]) / 2,
 			fn = objective,
 			method = "Brent",
-			lower = info$k.bounds[1],
-			upper = info$k.bounds[2]
+			lower = info$k_bounds[1],
+			upper = info$k_bounds[2]
 		)
 
 		# Get the parameters of the fitted distribution and compute the z-score

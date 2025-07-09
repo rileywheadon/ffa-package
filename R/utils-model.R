@@ -2,21 +2,21 @@
 model_info <- function(model, trend = NULL) {
 	info <- switch(
 		model,	
-		"GUM" = list(n.params = 2, log = FALSE),
-		"NOR" = list(n.params = 2, log = FALSE),
-		"LNO" = list(n.params = 2, log =  TRUE),
-		"GEV" = list(n.params = 3, log = FALSE, k.bounds = c(-9, 9)),
-		"GLO" = list(n.params = 3, log = FALSE, k.bounds = c(-0.999, 0.999)),
-		"PE3" = list(n.params = 3, log = FALSE, k.bounds = c(-10, 10)),
-		"LP3" = list(n.params = 3, log =  TRUE, k.bounds = c(-10, 10)),
-		"GNO" = list(n.params = 3, log = FALSE, k.bounds = c(-4, 4)),
-		"WEI" = list(n.params = 3, log = FALSE, k.bounds = c(-9, 9)),
-		"KAP" = list(n.params = 4, log = FALSE),
+		"GUM" = list(n_params = 2, log = FALSE),
+		"NOR" = list(n_params = 2, log = FALSE),
+		"LNO" = list(n_params = 2, log =  TRUE),
+		"GEV" = list(n_params = 3, log = FALSE, k_bounds = c(-9, 9)),
+		"GLO" = list(n_params = 3, log = FALSE, k_bounds = c(-0.999, 0.999)),
+		"PE3" = list(n_params = 3, log = FALSE, k_bounds = c(-10, 10)),
+		"LP3" = list(n_params = 3, log =  TRUE, k_bounds = c(-10, 10)),
+		"GNO" = list(n_params = 3, log = FALSE, k_bounds = c(-4, 4)),
+		"WEI" = list(n_params = 3, log = FALSE, k_bounds = c(-9, 9)),
+		"KAP" = list(n_params = 4, log = FALSE),
 	)
 
 	# If optional trend parameter is given, update the number of parameters 
 	if (!is.null(trend)) {
-		info$n.params <- info$n.params + trend$location + trend$scale
+		info$n_params <- info$n_params + trend$location + trend$scale
 	}
 
 	info

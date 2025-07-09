@@ -49,7 +49,7 @@ select_lkurtosis <- function(data) {
 		t3_t4 <- if (info$log) log_t3_t4 else reg_t3_t4
 
 		# Compute the L-kurtosis metric directly for two-parameter distributions 
-		if (info$n.params == 2) {
+		if (info$n_params == 2) {
 			tau3_tau4 <- lmom_fast(model, c(0, 1))[3:4]
 			metrics[[model]] <- abs(tau3_tau4[2] - t3_t4[2])
 			next
@@ -63,11 +63,11 @@ select_lkurtosis <- function(data) {
 
 		# Run optimization for three parameter distributions
 		result <- optim(
-			par = (info$k.bounds[1] + info$k.bounds[2]) / 2,
+			par = (info$k_bounds[1] + info$k_bounds[2]) / 2,
 			fn = objective,
 			method = "Brent",
-			lower = info$k.bounds[1],
-			upper = info$k.bounds[2]
+			lower = info$k_bounds[1],
+			upper = info$k_bounds[2]
 		)
 
 		# Get the parameters of the fitted distribution

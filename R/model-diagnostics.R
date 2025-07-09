@@ -108,8 +108,8 @@ model_diagnostics <- function(
 		bias <- mean(estimates - data_sorted)
 
 		# Compute the AIC and BIC
-		AIC <- n * log(RMSE) + (2 * info$n.params)
-		BIC <- n * log(RMSE) + (log(n) * info$n.params)
+		AIC <- n * log(RMSE) + (2 * info$n_params)
+		BIC <- n * log(RMSE) + (log(n) * info$n_params)
 		
 		# Filter t_return and x to indices where t_return is between 2 and 100
 		idx <- which(t_return > 2 & t_return < 100)
@@ -144,8 +144,8 @@ model_diagnostics <- function(
 
 	# Compute the MLL AIC and BIC (S-FFA and NS-FFA)
 	MLL = fit_maximum_likelihood(data, model, years = years, trend = trend)$mll
-	results$MLL_AIC = (2 * info$n.params) - (2 * MLL)
-	results$MLL_BIC = (info$n.params * log(n)) - (2 * MLL)
+	results$MLL_AIC = (2 * info$n_params) - (2 * MLL)
+	results$MLL_BIC = (info$n_params * log(n)) - (2 * MLL)
 
 	# Return assessment results in a list
 	results	

@@ -28,7 +28,7 @@ NULL
 
 #' @rdname quantile_methods
 #' @export
-quantile_gum <- function(p, params, slice = NULL, trend = NULL) {
+quantile_gum <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "GUM", trend)
 	slice <- validate_slice(slice)
@@ -39,7 +39,7 @@ quantile_gum <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_nor <- function(p, params, slice = NULL, trend = NULL) {
+quantile_nor <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "NOR", trend)
 	slice <- validate_slice(slice)
@@ -50,7 +50,7 @@ quantile_nor <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_lno <- function(p, params, slice = NULL, trend = NULL) {
+quantile_lno <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "LNO", trend)
 	slice <- validate_slice(slice)
@@ -61,7 +61,7 @@ quantile_lno <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_gev <- function(p, params, slice = NULL, trend = NULL) {
+quantile_gev <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "GEV", trend)
 	slice <- validate_slice(slice)
@@ -72,7 +72,7 @@ quantile_gev <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_glo <- function(p, params, slice = NULL, trend = NULL) {
+quantile_glo <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "GLO", trend)
 	slice <- validate_slice(slice)
@@ -83,7 +83,7 @@ quantile_glo <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_gno <- function(p, params, slice = NULL, trend = NULL) {
+quantile_gno <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "GNO", trend)
 	slice <- validate_slice(slice)
@@ -94,7 +94,7 @@ quantile_gno <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_pe3 <- function(p, params, slice = NULL, trend = NULL) {
+quantile_pe3 <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "PE3", trend)
 	slice <- validate_slice(slice)
@@ -105,7 +105,7 @@ quantile_pe3 <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_lp3 <- function(p, params, slice = NULL, trend = NULL) {
+quantile_lp3 <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "LP3", trend)
 	slice <- validate_slice(slice)
@@ -116,7 +116,7 @@ quantile_lp3 <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_wei <- function(p, params, slice = NULL, trend = NULL) {
+quantile_wei <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "WEI", trend)
 	slice <- validate_slice(slice)
@@ -127,7 +127,7 @@ quantile_wei <- function(p, params, slice = NULL, trend = NULL) {
 
 #' @rdname quantile_methods
 #' @export
-quantile_kap <- function(p, params, slice = NULL, trend = NULL) {
+quantile_kap <- function(p, params, slice = 1900, trend = NULL) {
 	p <- validate_probabilities(p)
 	params <- validate_params(params, "KAP", trend)
 	slice <- validate_slice(slice)

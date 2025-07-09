@@ -10,3 +10,4 @@ level for confidence intervals or hypothesis tests. Default is 0.05.}
 \description{
 Parameter 'alpha'
 }
+\keyword{internal}

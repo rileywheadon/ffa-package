@@ -10,3 +10,4 @@ Must be strictly positive, finite, and non-missing.}
 \description{
 Parameter 'data'
 }
+\keyword{internal}

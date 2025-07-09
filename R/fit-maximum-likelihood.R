@@ -82,7 +82,7 @@ fit_maximum_likelihood <- function(
 
 	# Set the bounds and initial values for the shape parameter (if necessary)
 	info <- model_info(model)
-	if (info$n.params == 3) {
+	if (info$n_params == 3) {
 		initial <- c(initial, p[3])
 
 		# Shape parameter must between -0.5 and 0.5 if we are doing GMLE 

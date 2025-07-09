@@ -113,7 +113,7 @@ eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	# Create a dataframe of all crossings
 	crossing_df <- data.frame(
 		cross = cross,
-		years = years[cross],
+		year = years[cross],
 		statistic = locations,
 		max = data[cross]
 	)

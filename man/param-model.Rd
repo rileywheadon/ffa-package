@@ -11,3 +11,4 @@ a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"}
 \description{
 Parameter 'model'
 }
+\keyword{internal}

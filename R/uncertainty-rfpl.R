@@ -56,7 +56,7 @@ uncertainty_rfpl <- function(
     prior = NULL,
     years = NULL,
     trend = NULL,
-    slice = NULL,
+    slice = 1900,
     alpha = 0.05,
     eps = 1e-2
 ) {
@@ -116,7 +116,7 @@ uncertainty_rfpl <- function(
 
 		# Add bounds for the shape parameter if necessary
 		info <- model_info(model)
-		if (info$n.params == 3) {
+		if (info$n_params == 3) {
 
 			# Set finite bounds on the shape parameter for RFGPL
 			if (is.null(prior)) {

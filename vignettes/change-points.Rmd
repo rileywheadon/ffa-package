@@ -1,0 +1,97 @@
+---
+title: "Change Point Detection"
+output: 
+  rmarkdown::html_document:
+    theme: readable
+vignette: >
+  %\VignetteIndexEntry{Change Point Detection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+A *change point* marks a structural shift in a time series, such as a jump in mean or a change in trend.
+Detecting change points is essential for flood frequency analysis (FFA), which assumes *trend-stationary* data.
+Therefore, annual maximum streamflow (AMS) must be split at change points to obtain trend-stationary segments.
+Identifying change points can be challenging due to the inherent variability of hydrological data.
+To address this, the FFA framework provides two statistical tests: 
+
+- The Pettitt test, for sudden changes in the mean.
+- The Mann-Kendall-Sneyers (MKS) test, for detecting changes in trend.
+
+This vignette will demonstrate how these statistical tests can be used together to robustly identify change points in the data.
+
+## Setup 
+
+```{r setup}
+library(ffaframework)
+csv_path <- system.file("extdata", "Application_2.csv", package = "ffaframework")
+df <- read.csv(csv_path)
+df <- subset(df, !is.na(max)) # Remove missing values
+```
+
+The example dataset `Application_2.csv` has two columns:
+
+- `max`: the streamflow measurements
+- `year`: the corresponding observation year
+
+## The Pettitt Test
+
+This rank-based test detects a single abrupt change in the median of a time series.
+The null hypothesis, assumes no change point.
+Use the `eda_pettitt_test` function to perform the test. It requires two arguments: 
+
+- `data`: numeric vector of streamflow measurements
+- `years`: corresponding numeric vector of years
+
+```{r}
+pettitt_test <- eda_pettitt_test(df$max, df$year)
+
+print(pettitt_test$p_value)
+print(pettitt_test$change_year)
+```
+
+With a p-value of 0, the test indicates a significant change point in the year 1972.
+To visualize the result:
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+plot_pettitt_test(pettitt_test)
+```
+
+## The MKS Test
+
+The Mann-Kendall-Sneyers (MKS) test identifies trend changes in the data.
+Unlike the Pettitt test, the MKS test can identify *multiple* change points.
+Use `eda_mks_test` with the same arguments as above:
+
+```{r}
+mks_test <- eda_mks_test(df$max, df$year)
+
+print(mks_test$p_value)
+print(mks_test$change_df$year)
+```
+
+The reported p-value reflects the most significant change point detected.
+The test may also return additional candidate change points with weaker evidence.
+To visualize the MKS results:
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+plot_mks_test(mks_test)
+```
+
+## Interpreting and Selecting Change Points
+
+In this example, the Pettitt and MKS tests both suggest structural changes in the time series.
+While the output is informative, selecting change points for partitioning the data requires careful judgment.
+Consider the following guidelines:
+
+1. **Incorporate domain knowledge**. For example, if we knew that a dam was built in 1972, this would support the Pettitt test result.
+2. **Avoid overpartitioning**. Do not split the data at every reported change point. The Pettitt and MKS tests operate independently and may detect overlapping or spurious shifts.
+3. **Prioritize based on p-value**. Lower p-values indicate stronger evidence and should be given more weight.
+4. **Conduct recursive analysis**. After splitting the series, reapply the tests to each segment to detect secondary change points. For example, after splitting at 1972, reapply the MKS test to 1928–1971 and 1972–2020.

@@ -13,3 +13,4 @@ no effect the output of the function.}
 \description{
 Parameter 'slice'
 }
+\keyword{internal}

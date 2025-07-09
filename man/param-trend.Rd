@@ -14,3 +14,4 @@ modeled as non-stationary. Must contain:
 \description{
 Parameter 'trend'
 }
+\keyword{internal}

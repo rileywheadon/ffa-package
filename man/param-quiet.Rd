@@ -10,3 +10,4 @@ test to the console. Default is \code{TRUE}.}
 \description{
 Parameter 'quiet'
 }
+\keyword{internal}

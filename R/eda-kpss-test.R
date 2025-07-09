@@ -67,7 +67,7 @@ eda_kpss_test <- function(data, alpha = 0.05, quiet = TRUE) {
 	}
 
 	# Compute an estimator of the long-run variance 
-	lambda_hat <- gamma[1] + 2*sum((1 - 1:q/(q + 1))*gamma[-1])
+	lambda_hat <- gamma[1] + 2 * sum((1 - 1:q/(q + 1))*gamma[-1])
 	statistic <- sum(Sk) / (lambda_hat * n^2)
 
 	# Table of quantiles and test statistic values from Hobjin et al. (2004)

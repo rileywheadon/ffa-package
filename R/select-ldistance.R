@@ -56,7 +56,7 @@ select_ldistance <- function(data) {
 		t3_t4 <- if (info$log) log_t3_t4 else reg_t3_t4
 
 		# Compute the L-distance metric directly for two-parameter distributions
-		if (info$n.params == 2) {
+		if (info$n_params == 2) {
 			tau3_tau4 <- lmom_fast(model, c(0, 1))[3:4]
 			metrics[[model]] <- distance(tau3_tau4, t3_t4)
 			next
@@ -70,11 +70,11 @@ select_ldistance <- function(data) {
 
 		# Run optimization for three parameter distributions
 		result <- optim(
-			par = (info$k.bounds[1] + info$k.bounds[2]) / 2,
+			par = (info$k_bounds[1] + info$k_bounds[2]) / 2,
 			fn = objective,
 			method = "Brent",
-			lower = info$k.bounds[1],
-			upper = info$k.bounds[2]
+			lower = info$k_bounds[1],
+			upper = info$k_bounds[2]
 		)
 
 		metrics[[model]] <- result$value
