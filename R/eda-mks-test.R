@@ -131,13 +131,15 @@ eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	reject <- (p_value <= alpha)
 
 	# Print the results of the test
+	years_text <- paste(as.integer(change_df$year), collapse  = ", ")
+
 	msg <- stats_message(
 		"Mann-Kendall-Sneyers",
 		reject,
 		p_value,
 		alpha,
 		"NO evidence of change point(s)",
-		sprintf("evidence of change point(s) at %s", toString(change_df$years))
+		sprintf("evidence of change point(s) at %s", years_text)
 	)
 
 	if (!quiet) message(msg)

@@ -74,7 +74,7 @@ eda_pettitt_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 		p_value,
 		alpha,
 		"NO evidence of a change point",
-		sprintf("evidence of a change point in %f", change_year)
+		sprintf("evidence of a change point in %d", as.integer(change_year))
 	)
 
 	if (!quiet) message(msg)
