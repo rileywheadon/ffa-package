@@ -7,7 +7,7 @@
 quantile_fast(p, model, params, slice, trend)
 }
 \arguments{
-\item{p}{A numeric vector of probabilities. Must be between 0 and 1.}
+\item{p}{Numeric vector of probabilities between 0 and 1 with no missing values.}
 
 \item{model}{Character scalar. A three-character code indicating
 a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
@@ -18,10 +18,10 @@ scale, shape). The length must be between 2 and 5, depending on the specified
 \code{model} and \code{trend}.}
 
 \item{slice}{Numeric scalar specifying the year at which to evaluate the
-quantiles or confidence intervals of a non-stationary probability distribution.
-The year does not have to be an element of the \code{years} argument. Note that if
-\code{trend$location} and \code{trend$scale} are both \code{FALSE}, this argument will have
-no effect the output of the function.}
+quantiles of a non-stationary probability distribution.  The slice does not
+have to be an element of the \code{years} argument. Note that if \code{trend$location}
+and \code{trend$scale} are both \code{FALSE}, this argument will have  no effect the
+output of the function.}
 
 \item{trend}{Named list indicating which distribution parameters are
 modeled as non-stationary. Must contain:

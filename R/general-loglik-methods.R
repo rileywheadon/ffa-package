@@ -41,10 +41,10 @@ general_loglik_gev <- function(
 	trend = NULL
 ) {
 
-	data <- validate_data(data)
-	params <- validate_params(params, "GEV", trend)
-	prior <- validate_prior(prior)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("GEV", params, trend)
+	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	general_loglik_fast(data, "GEV", params, prior, years, trend)
 

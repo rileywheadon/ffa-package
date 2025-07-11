@@ -35,9 +35,6 @@
 
 plot_sens_trend <- function(results, type, show_trend = TRUE, ...) {
 
-	data <- validate_data(results$data)
-	years <- validate_years(results$years)
-
 	# Load the results of the test into the environment
 	m <- results$slope
 	b <- results$intercept
@@ -65,9 +62,9 @@ plot_sens_trend <- function(results, type, show_trend = TRUE, ...) {
     if (!is.null(args$ylabel)) ylabel <- args$ylabel
 
 	# Generate dataframes for the trend estimate, data
-	covariate <- get_covariates(years)
+	covariate <- get_covariates(results$years)
 	df_line <- data.frame(x = covariate, y = m * covariate + b)
-	df_data <- data.frame(x = covariate, y = data)
+	df_data <- data.frame(x = covariate, y = results$data)
 
 	# First subplot: Plot of Sen's trend estimator
 	p1 <- ggplot(df_data, aes(x = .data$x, y = .data$y)) +

@@ -30,17 +30,13 @@
 
 plot_mks_test <- function(results, show_trend = TRUE, ...) {
 
-	# Run parameter validation (see helpers.R)
-	data <- validate_data(results$data)
-	years <- validate_years(results$years)
-
 	# Create a dataframe for the bounds
 	bound_df <- data.frame(y = c(-results$bound, results$bound))
 
 	# Create the plotting dataframe
 	df <- data.frame(
-		max = data,
-		year = years,
+		max = results$data,
+		year = results$years,
 		s_progressive = results$s_progressive,
 		s_regressive = results$s_regressive
 	)
@@ -49,18 +45,11 @@ plot_mks_test <- function(results, show_trend = TRUE, ...) {
 	args <- list(...)
 
 	# Define labels for the plot 
-    title <- "Mann-Kendall-Sneyers Test"
-	top_xlabel <- "Year" 
-	top_ylabel <- "Normalized Trend Statistic"
-	bottom_xlabel <- "Year" 
-	bottom_ylabel <- expression(AMS ~ m^3/s)
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$top_xlabel)) top_xlabel <- args$top_xlabel
-    if (!is.null(args$top_ylabel)) top_ylabel <- args$top_ylabel
-    if (!is.null(args$bottom_xlabel)) bottom_xlabel <- args$bottom_xlabel
-    if (!is.null(args$bottom_ylabel)) bottom_ylabel <- args$bottom_ylabel
+    title <- args$title %||% "Mann-Kendall-Sneyers Test"
+	top_xlabel <- args$top_xlabel %||% "Year" 
+	top_ylabel <- args$top_ylabel %||% "Normalized Trend Statistic"
+	bottom_xlabel <- args$bottom_xlabel %||% "Year" 
+	bottom_ylabel <- args$bottom_ylabel %||% expression(AMS ~ m^3/s)
 
 	# Plot the normalized trend statistics and confidence bands
 	p1 <- ggplot(df, aes(x = .data$year)) +

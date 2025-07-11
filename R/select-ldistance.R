@@ -34,7 +34,7 @@
 
 select_ldistance <- function(data) {
 
-	validate_data(data)
+	data <- validate_numeric("data", data, optional = FALSE)
 
 	# Get the sample L-moments for data and log(data)
 	reg_t3_t4 <- lmom_sample(data)[3:4]

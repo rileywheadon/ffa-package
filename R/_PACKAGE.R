@@ -8,6 +8,15 @@
 #' @keywords internal
 NULL
 
+#' Parameter 'p'
+#'
+#' @param p Numeric vector of probabilities between 0 and 1 with no missing values.
+#'
+#' @name param-p
+#'
+#' @keywords internal
+NULL
+
 #' Parameter 'model'
 #'
 #' @param model Character scalar. A three-character code indicating 
@@ -76,15 +85,27 @@ NULL
 #' Parameter 'slice'
 #'
 #' @param slice Numeric scalar specifying the year at which to evaluate the 
-#' quantiles or confidence intervals of a non-stationary probability distribution. 
-#' The year does not have to be an element of the `years` argument. Note that if 
-#' `trend$location` and `trend$scale` are both `FALSE`, this argument will have 
-#' no effect the output of the function.
+#' quantiles of a non-stationary probability distribution.  The slice does not 
+#' have to be an element of the `years` argument. Note that if `trend$location` 
+#' and `trend$scale` are both `FALSE`, this argument will have  no effect the 
+#' output of the function.
 #'
 #' @name param-slice
 #'
 #' @keywords internal
 NULL 
+
+#' Parameter 'slices'
+#'
+#' @param slices Numeric vector specifying the years at which to evaluate the 
+#' return levels confidence intervals of a non-stationary probability distribution. 
+#' The slices do not have to be elements of the `years` argument. 
+#'
+#' @name param-slices
+#'
+#' @keywords internal
+NULL 
+
 
 #' Parameter 'alpha'
 #'
@@ -111,6 +132,16 @@ NULL
 #'   test to the console. Default is `TRUE`.
 #'
 #' @name param-quiet
+#'
+#' @keywords internal
+NULL
+
+#' Parameter 'periods'
+#' 
+#' @param periods Numeric vector used to set the return periods for FFA.
+#'   All entries must be greater than or equal to 1.
+#'
+#' @name param-periods
 #'
 #' @keywords internal
 NULL

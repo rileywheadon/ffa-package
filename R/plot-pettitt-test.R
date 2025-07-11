@@ -30,13 +30,10 @@
 
 plot_pettitt_test <- function(results, show_trend = TRUE, ...) {
 
-	data <- validate_data(results$data)
-	years <- validate_years(results$years)
-
 	# Add u_t to df and create change point df (if change point is significant)
 	df <- data.frame(
-		max = data,
-		year = years,
+		max = results$data,
+		year = results$years,
 		u_t = results$u_t
 	)
 
@@ -60,19 +57,11 @@ plot_pettitt_test <- function(results, show_trend = TRUE, ...) {
 	args <- list(...)
 
 	# Define labels for the plot 
-    title <- "Mann-Whitney-Pettitt Test"
-	top_xlabel <- "Year" 
-	top_ylabel <- expression(U[t] ~ Statistic)
-	bottom_xlabel <- "Year" 
-	bottom_ylabel <- expression(AMS ~ m^3/s)
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$top_xlabel)) top_xlabel <- args$top_xlabel
-    if (!is.null(args$top_ylabel)) top_ylabel <- args$top_ylabel
-    if (!is.null(args$bottom_xlabel)) bottom_xlabel <- args$bottom_xlabel
-    if (!is.null(args$bottom_ylabel)) bottom_ylabel <- args$bottom_ylabel
-
+    title <- args$title %||% "Mann-Whitney-Pettitt Test"
+	top_xlabel <- args$top_xlabel %||% "Year" 
+	top_ylabel <- args$top_ylabel %||% expression(U[t] ~ Statistic)
+	bottom_xlabel <- args$bottom_xlabel %||% "Year" 
+	bottom_ylabel <- args$bottom_ylabel %||% expression(AMS ~ m^3/s)
 
 	# First subplot: Mann-Whitney-Pettitt Test
 	p1 <- ggplot(df, aes(x = .data$year, y = .data$u_t)) +

@@ -32,48 +32,48 @@ NULL
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_gum <- function(params) {
-	params <- validate_params(params, "GUM", NULL)
+	params <- validate_params("GUM", params, NULL)
 	lmom_fast("GUM", params)
 }
 
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_nor <- function(params) {
-	params <- validate_params(params, "NOR", NULL)
+	params <- validate_params("NOR", params, NULL)
 	lmom_fast("NOR", params)
 }
 
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_gev <- function(params) {
-	params <- validate_params(params, "GEV", NULL)
+	params <- validate_params("GEV", params, NULL)
 	lmom_fast("GEV", params)
 }
 
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_glo <- function(params) {
-	params <- validate_params(params, "GLO", NULL)
+	params <- validate_params("GLO", params, NULL)
 	lmom_fast("GLO", params)
 }
 
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_gno <- function(params) {
-	params <- validate_params(params, "GNO", NULL)
+	params <- validate_params("GNO", params, NULL)
 	lmom_fast("GNO", params)
 }
 
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_pe3 <- function(params) {
-	params <- validate_params(params, "PE3", NULL)
+	params <- validate_params("PE3", params, NULL)
 	lmom_fast("PE3", params)
 }
 
 #' @rdname lmom_theoretical
 #' @export
 lmom_theoretical_wei <- function(params) {
-	params <- validate_params(params, "WEI", NULL)
+	params <- validate_params("WEI", params, NULL)
 	lmom_fast("WEI", params)
 }

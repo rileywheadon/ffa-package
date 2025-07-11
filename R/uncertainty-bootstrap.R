@@ -11,11 +11,13 @@
 #' @inheritParams param-prior
 #' @inheritParams param-years
 #' @inheritParams param-trend
-#' @inheritParams param-slice
+#' @inheritParams param-slices
 #' @inheritParams param-alpha
 #' @inheritParams param-samples
+#' @inheritParams param-periods
 #'
-#' @return A list contianing the return levels and confidence intervals containing: 
+#' @return A list of lists containing the return levels and confidence 
+#' intervals for each slice. Each sub-list contains: 
 #' - `estimates`: Estimated quantiles for each return period.
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
@@ -31,7 +33,7 @@
 #' empirical non-exceedance probabilities of the bootstrapped quantiles.
 #'
 #' @seealso \link{fit_lmom_fast}, \link{fit_maximum_likelihood}, \link{lmom_sample},
-#'   \link{quantile_fast}, \link{plot_uncertainty}
+#'   \link{quantile_fast}, \link{plot_sffa}, \link{plot_nsffa}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -48,24 +50,56 @@ uncertainty_bootstrap <- function(
     prior = NULL,
     years = NULL,
     trend = NULL,
-    slice = 1900,
+    slices = 1900,
     alpha = 0.05,
-    samples = 10000L
+    samples = 10000L,
+	periods = c(2, 5, 10, 20, 50, 100)
 ) {
 
-	data <- validate_data(data)
-	model <- validate_model(model)
-	method <- validate_method(method)
-	prior <- validate_prior(prior)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, FALSE)
+	model <- validate_enum("model", model)
+	method <- validate_enum("method", method)
+	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
-	slice <- validate_slice(slice)
-	alpha <- validate_alpha(alpha)
-	samples <- validate_samples(samples)
+	slices <- validate_numeric("slices", slices, FALSE)
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
+	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
+
+	# Return a list of lists
+	lapply(slices, function(slice) {
+		uncertainty_bootstrap_helper(
+			data,
+			model,
+			method,
+			prior,
+			years,
+			trend,
+			slice,
+			alpha,
+			samples,
+			periods
+		)
+	})
+
+}
+
+uncertainty_bootstrap_helper <- function(
+    data,
+    model,
+    method,
+    prior,
+    years,
+    trend,
+    slice,
+    alpha,
+    samples,
+	periods
+) {
 
 	# Set return periods and their quantiles
-	t = c(2, 5, 10, 20, 50, 100)
-    returns <- 1 - (1 / t)
+    probabilities <- 1 - (1 / periods)
     n <- length(data)
 
 	# Define the parameter estimation function
@@ -79,7 +113,7 @@ uncertainty_bootstrap <- function(
 
 	# Get the estimated quantiles
 	params <- fit(data, years)
-	estimates <- quantile_fast(returns, model, params, slice, trend)
+	estimates <- quantile_fast(probabilities, model, params, slice, trend)
 
 	# Generate the bootstrapped quantiles 
 	quantiles <- sapply(1:n, function(i) {
@@ -93,7 +127,7 @@ uncertainty_bootstrap <- function(
 	# Vectorized bootstrap function 
 	bootstrap <- sapply(1:samples, function(i) {
 		bootstrap_params <- fit(quantiles[i, ], years)
-		quantile_fast(returns, model, bootstrap_params, slice, trend)
+		quantile_fast(probabilities, model, bootstrap_params, slice, trend)
 	})
 
 	# Compute confidence intervals
@@ -102,7 +136,7 @@ uncertainty_bootstrap <- function(
 
 	# Generate the results as a list
 	list(
-		t = t,
+		periods = periods,
 		ci_lower = ci[1, ],
 		estimates = estimates,
 		ci_upper = ci[2, ],

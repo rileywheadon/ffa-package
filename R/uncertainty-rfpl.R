@@ -10,13 +10,15 @@
 #' @inheritParams param-prior
 #' @inheritParams param-years
 #' @inheritParams param-trend
-#' @inheritParams param-slice
+#' @inheritParams param-slices
 #' @inheritParams param-alpha
+#' @inheritParams param-periods
 #' 
 #' @param eps Numeric scalar. The log-likelihood tolerance for the Regula-Falsi 
 #' convergence (default is 0.01).
 #'
-#' @return A list contianing the return levels and confidence intervals containing: 
+#' @return A list of lists containing the return levels and confidence 
+#' intervals for each slice. Each sub-list contains: 
 #' - `estimates`: Estimated quantiles for each return period.
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
@@ -41,7 +43,7 @@
 #' values of the likelihood function. 
 #'
 #' @seealso \link{quantile_fast}, \link{uncertainty_bootstrap}, 
-#'   \link{plot_uncertainty}
+#'   \link{plot_sffa}, \link{plot_nsffa}
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -56,18 +58,50 @@ uncertainty_rfpl <- function(
     prior = NULL,
     years = NULL,
     trend = NULL,
-    slice = 1900,
+    slices = 1900,
     alpha = 0.05,
-    eps = 1e-2
+    eps = 1e-2,
+	periods = c(2, 5, 10, 20, 50, 100)
 ) {
 
-	data <- validate_data(data)
-	model <- validate_model(model)
-	prior <- validate_prior(prior)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, FALSE)
+	model <- validate_enum("model", model)
+	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
-	slice <- validate_slice(slice)
-	alpha <- validate_alpha(alpha)
+	slices <- validate_numeric("slices", slices, FALSE)
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	eps <- validate_float("eps", eps, bounds = c(0, 1))
+	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
+
+	# Return a list of lists
+	lapply(slices, function(slice) {
+		uncertainty_rfpl_helper(
+			data,
+			model,
+			prior,
+			years,
+			trend,
+			slice,
+			alpha,
+			eps,
+			periods
+		)
+	})
+
+}
+
+uncertainty_rfpl_helper <- function(
+    data,
+    model,
+    prior,
+    years,
+    trend,
+    slice,
+    alpha,
+    eps,
+	periods
+) {
 
 	# Helper function for computing the profile likelihood
 	profile_likelihood <- function(yp, p, initial, prior = NULL) {
@@ -215,13 +249,12 @@ uncertainty_rfpl <- function(
 	} 
 
 	# Define the non-exceedance probabilities for the target return periods
-	t <- c(2, 5, 10, 20, 50, 100)
-	returns <- 1 - (1 / t)
+	probabilities <- 1 - (1 / periods)
 
 	# Get the results of maximum likelihood estimation
 	mle <- fit_maximum_likelihood(data, model, prior, years, trend) 
 	lp_hat <- mle$mll
-	yp_hat <- quantile_fast(returns, model, mle$params, slice, trend)
+	yp_hat <- quantile_fast(probabilities, model, mle$params, slice, trend)
 
 	# We want to find the roots of the function f defined below:
 	f <- function(yp, p) {
@@ -253,24 +286,24 @@ uncertainty_rfpl <- function(
 
 		# Find initial lower bound for mu
 		yp_minus <- yp_hat[i] * 0.95
-		while (f(yp_minus, returns[i]) > 0) yp_minus <- yp_minus * 0.95
+		while (f(yp_minus, probabilities[i]) > 0) yp_minus <- yp_minus * 0.95
 
 		# Run the iteration algorithm to find the lower confidence interval
-		yp_lower <- regula.falsi(yp_minus, yp_hat[i], returns[i])
+		yp_lower <- regula.falsi(yp_minus, yp_hat[i], probabilities[i])
 		ci_lower[i] <- yp_lower
 
 		# Find initial upper bound for mu
 		yp_plus <- yp_hat[i] * 1.05
-		while (f(yp_plus, returns[i]) > 0) yp_plus <- yp_plus * 1.05
+		while (f(yp_plus, probabilities[i]) > 0) yp_plus <- yp_plus * 1.05
 
 		# Run the iteration algorithm to find the upper confidence interval
-		yp_upper <- regula.falsi(yp_hat[i], yp_plus, returns[i])
+		yp_upper <- regula.falsi(yp_hat[i], yp_plus, probabilities[i])
 		ci_upper[i] <- yp_upper
 
 	}
 
 	list(
-		t = t,
+		periods = periods,
 		ci_lower = ci_lower,
 		estimates = yp_hat ,
 		ci_upper = ci_upper,

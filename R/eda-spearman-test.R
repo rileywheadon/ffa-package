@@ -34,9 +34,9 @@
 
 eda_spearman_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
-	data <- validate_data(data)
-	alpha <- validate_alpha(alpha)
-	quiet <- validate_quiet(quiet)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	quiet <- validate_logical("quiet", quiet)
 
 	# Assign a variable to the number of data points for convenience
 	n <- length(data)
@@ -58,11 +58,11 @@ eda_spearman_test <- function(data, alpha = 0.05, quiet = TRUE) {
 		p_values[i] = result$p.value
 	}
 
-	least_lag <- which(p_values > alpha)[1] - 1
+	least_lag <- which(p_values > alpha)[1]
 
 	# Get a series of booleans for whether the serial correlation is significant
 	sig <- (p_values <= alpha)
-	reject <- (least_lag > 0)
+	reject <- (least_lag > 1)
 	result <- ifelse(reject, "evidence", "NO evidence")
 
 	# Print the results

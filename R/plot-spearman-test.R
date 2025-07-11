@@ -32,14 +32,9 @@ plot_spearman_test <- function(results, ...) {
 	args <- list(...)
 
     # Set default values
-    title <- "Spearman's Rho Autocorrelation"
-    xlabel <- "Lag"
-    ylabel <- "Spearman's Rho"
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$xlabel)) xlabel <- args$xlabel
-    if (!is.null(args$ylabel)) ylabel <- args$ylabel
+    title <- args$title %||% "Spearman's Rho Autocorrelation"
+    xlabel <- args$xlabel %||% "Lag"
+    ylabel <- args$ylabel %||% "Spearman's Rho"
 
 	# First subplot: Spearman's Rho Autocorrelation
 	p1 <- ggplot(rho_df, aes(x = .data$lag, y = .data$rho)) +

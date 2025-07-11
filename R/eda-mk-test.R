@@ -35,9 +35,9 @@
 
 eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
-	data <- validate_data(data)
-	alpha <- validate_alpha(alpha)
-	quiet <- validate_quiet(quiet)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	quiet <- validate_logical("quiet", quiet)
 
 	n <- length(data)
 

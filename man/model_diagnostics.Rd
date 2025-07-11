@@ -12,7 +12,7 @@ model_diagnostics(
   years = NULL,
   trend = NULL,
   alpha = 0.05,
-  pp.formula = "Weibull"
+  pp_formula = "Weibull"
 )
 }
 \arguments{
@@ -43,7 +43,7 @@ modeled as non-stationary. Must contain:
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
 
-\item{pp.formula}{Character (1); string specifying the plotting position formula.
+\item{pp_formula}{Character (1); string specifying the plotting position formula.
 Must be one of \code{"Weibull"}, \code{"Blom"}, \code{"Cunnane"}, \code{"Gringorten"}, or \code{"Hazen"}}
 }
 \value{

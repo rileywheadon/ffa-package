@@ -35,17 +35,17 @@ quantile_wei(p, params, slice = 1900, trend = NULL)
 quantile_kap(p, params, slice = 1900, trend = NULL)
 }
 \arguments{
-\item{p}{Numeric; a vector of probabilities between 0 and 1.}
+\item{p}{Numeric vector of probabilities between 0 and 1 with no missing values.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
 \code{model} and \code{trend}.}
 
 \item{slice}{Numeric scalar specifying the year at which to evaluate the
-quantiles or confidence intervals of a non-stationary probability distribution.
-The year does not have to be an element of the \code{years} argument. Note that if
-\code{trend$location} and \code{trend$scale} are both \code{FALSE}, this argument will have
-no effect the output of the function.}
+quantiles of a non-stationary probability distribution.  The slice does not
+have to be an element of the \code{years} argument. Note that if \code{trend$location}
+and \code{trend$scale} are both \code{FALSE}, this argument will have  no effect the
+output of the function.}
 
 \item{trend}{Named list indicating which distribution parameters are
 modeled as non-stationary. Must contain:

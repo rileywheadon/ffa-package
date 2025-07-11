@@ -32,26 +32,17 @@
 
 plot_model_diagnostics <- function(results, ...) {
 
-	data <- validate_data(results$data)
-
 	# Create a dataframe for the plot
-	x <- data[order(data, decreasing = TRUE)]   
+	x <- results$data[order(results$data, decreasing = TRUE)]   
 	df <- data.frame(x = x, y = x, estimates = results$estimates) 
-
-	# Get labels for the plot
 
 	# Capture optional arguments
 	args <- list(...)
 
-    # Set default values
-    title <- "Model Assessment"
-    xlabel <- expression(Model ~ Quantiles ~ m^3/s)
-	ylabel <- expression(Observed ~ Quantiles ~ m^3/s)
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$xlabel)) xlabel <- args$xlabel
-    if (!is.null(args$ylabel)) ylabel <- args$ylabel
+    # Set default values, overriding if necessary
+    title <- args$title %||% "Model Assessment"
+    xlabel <- args$xlabel %||% expression(Model ~ Quantiles ~ m^3/s)
+	ylabel <- args$ylabel %||% expression(Observed ~ Quantiles ~ m^3/s)
 
 	# Generate the plot
 	p1 <- ggplot(data = df) +

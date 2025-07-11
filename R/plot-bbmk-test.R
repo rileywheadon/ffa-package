@@ -26,15 +26,10 @@ plot_bbmk_test <- function(results, ...) {
 	# Capture optional arguments
 	args <- list(...)
 
-    # Set default values
-    title <- "Block-Bootstrap Mann-Kendall Test"
-    xlabel <- "S-Statistic"
-    ylabel <- "Frequency"
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$xlabel)) xlabel <- args$xlabel
-    if (!is.null(args$ylabel)) ylabel <- args$ylabel
+    # Override defaults if args is provided
+    title <- args$title %||% "Block-Bootstrap Mann-Kendall Test" 
+    xlabel <- args$xlabel %||% "S-Statistic"
+    ylabel <- args$ylabel %||% "Frequency"
 
 	# Generate the plot
 	p1 <- ggplot() +

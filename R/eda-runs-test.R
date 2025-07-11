@@ -41,9 +41,9 @@
 
 eda_runs_test <- function(results, alpha = 0.05, quiet = TRUE) {
 
-	residuals <- validate_data(results$residuals, FALSE)
-	alpha <- validate_alpha(alpha)
-	quiet <- validate_quiet(quiet)
+	residuals <- validate_numeric('results$residuals', results$residuals)
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	quiet <- validate_logical("quiet", quiet)
 
 	# Remove values from the residuals that are equal to the median
 	filtered_residuals <- residuals[residuals != median(residuals)]

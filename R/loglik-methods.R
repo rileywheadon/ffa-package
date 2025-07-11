@@ -30,9 +30,9 @@ NULL
 #' @rdname loglik_methods
 #' @export
 loglik_gum <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "GUM", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("GUM", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "GUM", params, years, trend)
 }
@@ -41,9 +41,9 @@ loglik_gum <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_nor <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "NOR", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("NOR", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "NOR", params, years, trend)
 }
@@ -52,10 +52,10 @@ loglik_nor <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_lno <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
-	params <- validate_params(params, "LNO", trend)
+	params <- validate_params("LNO", params, trend)
 	loglik_fast(data, "LNO", params, years, trend)
 }
 
@@ -63,9 +63,9 @@ loglik_lno <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_gev <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "GEV", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("GEV", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "GEV", params, years, trend)
 }
@@ -74,9 +74,9 @@ loglik_gev <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_glo <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "GLO", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("GLO", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "GLO", params, years, trend)
 }
@@ -85,9 +85,9 @@ loglik_glo <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_gno <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "GNO", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("GNO", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "GNO", params, years, trend)
 }
@@ -96,9 +96,9 @@ loglik_gno <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_pe3 <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "PE3", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("PE3", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "PE3", params, years, trend)
 }
@@ -107,9 +107,9 @@ loglik_pe3 <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_lp3 <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "LP3", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("LP3", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "LP3", params, years, trend)
 }
@@ -118,9 +118,9 @@ loglik_lp3 <- function(data, params, years = NULL, trend = NULL) {
 #' @rdname loglik_methods
 #' @export
 loglik_wei <- function(data, params, years = NULL, trend = NULL) {
-	data <- validate_data(data)
-	params <- validate_params(params, "WEI", trend)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	params <- validate_params("WEI", params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 	loglik_fast(data, "WEI", params, years, trend)
 }

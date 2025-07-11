@@ -30,19 +30,16 @@
 
 plot_lmom_diagram <- function(results, ...) {
 
-	# Run parameter validation (see helpers.R)
-	data <- validate_data(results$data)
-
 	# Get method name from the results
 	method <- results$method
 
 	# Create dataframes for the sample L-moments
-	reg_moments = lmom_sample(data)
+	reg_moments = lmom_sample(results$data)
 	reg_sample_t3 = reg_moments[3]
 	reg_sample_t4 = reg_moments[4]
 	reg_lm <- data.frame(x = reg_sample_t3, y = reg_sample_t4)
 
-	log_moments = lmom_sample(log(data))
+	log_moments = lmom_sample(log(results$data))
 	log_sample_t3 = log_moments[3]
 	log_sample_t4 = log_moments[4]
 	log_lm <- data.frame(x = log_sample_t4, y = log_sample_t4)
@@ -78,44 +75,59 @@ plot_lmom_diagram <- function(results, ...) {
 	}
 
 	# Initilaize the legend information
-	labels <- c("Sample", "Log-Sample", "GEV/GUM", "GLO", "GNO/NOR/LNO", "PE3/LP3", "WEI")
-	colors <- c("#000000", "#000000", "#e69f00", "#56b4e9", "#009e73", "#0072b2", "#d55e00")
-	shapes <- c(24, 15, 16, NA, 16, NA, NA)
+	labels <- c(
+		"Sample",
+		"Log-Sample",
+		"GEV",
+		"GUM",
+		"GLO",
+		"GNO",
+		"NOR/LNO",
+		"PE3/LP3",
+		"WEI"
+	)
+
+	colors <- c(
+		"#000000",
+		"#000000",
+		"#e69f00",
+		"#e69f00",
+		"#56b4e9",
+		"#009e73",
+		"#009e73",
+		"#0072b2",
+		"#d55e00"
+	)
+
+	shapes <- c(17, 15, NA, 16, NA, NA, 16, NA, NA)
 
 	# Capture optional arguments
 	args <- list(...)
 
-    # Set default values
-	title <- paste(method, "Model Selection", sep = " ")
-	xlabel <- expression("L-skewness (" * tau[3] * ")")
-	ylabel <- expression("L-kurtosis (" * tau[4] * ")")
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$xlabel)) xlabel <- args$xlabel
-    if (!is.null(args$ylabel)) ylabel <- args$ylabel
-
+    # Set default values, overriding if necessary
+	title <- args$title %||% paste(method, "Model Selection", sep = " ")
+	xlabel <- args$xlabel %||% expression("L-skewness (" * tau[3] * ")")
+	ylabel <- args$ylabel %||% expression("L-kurtosis (" * tau[4] * ")")
 
 	# Generate the plot
 	p1 <- ggplot(mapping = aes(x = .data$x, y = .data$y)) +
 		geom_line(data = dlm$GEV, aes(color = "3"), linewidth = 1) +
-		geom_line(data = dlm$GLO, aes(color = "4"), linewidth = 1) +
-		geom_line(data = dlm$GNO, aes(color = "5"), linewidth = 1) +
-		geom_line(data = dlm$PE3, aes(color = "6"), linewidth = 1) +
-		geom_line(data = dlm$WEI, aes(color = "7"), linewidth = 1) +
-		geom_point(data = dlm$GUM, aes(color = "3"), shape = 16, size = 4) +
-		geom_point(data = dlm$NOR, aes(color = "5"), shape = 16, size = 4) +
-		geom_point(data = reg_lm, aes(color = "1"), shape = 24, size = 5, fill = "black") +
+		geom_line(data = dlm$GLO, aes(color = "5"), linewidth = 1) +
+		geom_line(data = dlm$GNO, aes(color = "6"), linewidth = 1) +
+		geom_line(data = dlm$PE3, aes(color = "8"), linewidth = 1) +
+		geom_line(data = dlm$WEI, aes(color = "9"), linewidth = 1) +
+		geom_point(data = dlm$GUM, aes(color = "4"), shape = 16, size = 4) +
+		geom_point(data = dlm$NOR, aes(color = "7"), shape = 16, size = 4) +
+		geom_point(data = reg_lm, aes(color = "1"), shape = 17, size = 5) +
 		geom_point(data = log_lm, aes(color = "2"), shape = 15, size = 5) +
 		scale_color_manual(labels = labels, values = colors) +
-		guides(color = guide_legend(override.aes = list(shape = shapes))) +
-		labs(x = xlabel, y = ylabel, color = "Legend", title = title)
+		guides(color = guide_legend(override.aes = list(shape = shapes)))
 
 	# Add the theme
 	p1 <- add_theme(add_scales(p1))
 
 	# If the method is l-distance or l-kurtosis, draw a line to show the distance
-	if (method == "L-distance" | method == "L-kurtosis") {
+	if (method == "L-distance") {
 
 		# Get the sample point with the shortest distance from a distribution
 		point <- if (results$recommendation %in% c("LNO", "LP3")) log_lm else reg_lm
@@ -123,17 +135,9 @@ plot_lmom_diagram <- function(results, ...) {
 		# Get the recommended distribbution
 		df <- dlm[[results$recommendation]]
 
-		# Get the closest point on the (t3, t4) curve (L-distance)
-		if (method == "L-distance") { 
-			df$distance <- sqrt((df$x - point$x)^2 + (df$y - point$y)^2)
-			df <- df[which.min(df$distance), ]
-		}
-
-		# Or get the point with the same t3 value (L-kurtosis)
-		else {
-			df <- df[which.min(abs(df$x - point$x)), ]
-			df$distance <- abs(df$y - point$y)
-		}
+		# Get the closest point on the (t3, t4) curve
+		df$distance <- sqrt((df$x - point$x)^2 + (df$y - point$y)^2)
+		df <- df[which.min(df$distance), ]
 
 		# Dynamically set the radius of the magnified section
 		r <- df$distance * 3
@@ -170,7 +174,10 @@ plot_lmom_diagram <- function(results, ...) {
 	}
 
 	# Return the plot
-	p1 + coord_fixed(ratio = 2, xlim = c(-0.7, 0.7), ylim = c(0, 0.7))
-
+	return (
+		p1 + 
+		coord_fixed(ratio = 2, xlim = c(-0.7, 0.7), ylim = c(0, 0.7)) +
+		labs(x = xlabel, y = ylabel, color = "Legend", title = title)
+	)
 
 }

@@ -37,10 +37,10 @@
  
 eda_pettitt_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 
-	data <- validate_data(data)
-	years <- validate_years(years, data)
- 	alpha <- validate_alpha(alpha)
-	quiet <- validate_quiet(quiet)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
+	years <- validate_numeric("years", years, size = length(data))
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	quiet <- validate_logical("quiet", quiet)
 
 	n <- length(data)
 	u_t <- numeric(n)

@@ -27,10 +27,12 @@
 #' @importFrom stats sd
 #' @export
 
-ams_mw_variance <- function(data, years, size = 10, step = 5) { 
+ams_mw_variance <- function(data, years, size = 10L, step = 5L) { 
 
-	data <- validate_data(data, FALSE)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data)
+	years <- validate_numeric("years", years, size = length(data))
+	size <- validate_integer("size", size, bounds = c(1, Inf))
+	step <- validate_integer("step", step, bounds = c(1, size))
 
 	# If length(data) < size, we cannot create a moving window.
 	n <- length(data)

@@ -294,22 +294,31 @@ test_that("plot-lmom-diagram.R works with custom arguments", {
 
 })
 
-test_that("plot-uncertainty.R on data set #3.3", {
+test_that("plot-sffa.R on data set #3.3", {
 	set.seed(1)
 
 	df <- load_data("Application_3.3.csv")
 	results <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
-	p <- plot_uncertainty(results)
+	p <- plot_sffa(results)
 
 	# Basic tests
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("uncertainty-s", p) 
+  	vdiffr::expect_doppelganger("sffa-default", p) 
+
+	# Test custom plot
+	p_custom <- plot_sffa(results, title = "Title", xlabel = "X", ylabel = "Y")
+
+	# Basic tests
+	expect_s3_class(p_custom, "ggplot")
+
+	# Regression test with vdiffr
+  	vdiffr::expect_doppelganger("sffa-custom", p_custom) 
 
 })
 
-test_that("plot-uncertainty.R on data set #3.3", {
+test_that("plot-nsffa.R on data set #3.3", {
 	set.seed(1)
 
 	df <- load_data("Application_3.3.csv")
@@ -320,32 +329,26 @@ test_that("plot-uncertainty.R on data set #3.3", {
 		"MLE",
 		years = df$year,
 		trend = trend_10,
-		slice = max(df$year),
+		slices = c(1920, 1960, 2000),
 		samples = 1000L
 	)
 
-	p <- plot_uncertainty(results)
+	p <- plot_nsffa(results)
 
 	# Basic tests
 	expect_s3_class(p, "ggplot")
 
 	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("uncertainty-ns", p) 
+  	vdiffr::expect_doppelganger("nsffa-default", p) 
 
-})
-
-test_that("plot-uncertainty.R works with custom arguments", {
-	set.seed(1)
-
-	df <- load_data("Application_3.3.csv")
-	results <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
-	p <- plot_uncertainty(results, title = "Title", xlabel = "X", ylabel = "Y")
+	# Generate a plot with custom arguments
+	p_custom <- plot_nsffa(results, title = "Title", xlable = "X", ylabel = "Y")
 
 	# Basic tests
-	expect_s3_class(p, "ggplot")
+	expect_s3_class(p_custom, "ggplot")
 
 	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("uncertainty-custom", p) 
+  	vdiffr::expect_doppelganger("nsffa-custom", p_custom) 
 
 })
 

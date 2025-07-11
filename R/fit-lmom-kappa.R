@@ -29,7 +29,7 @@
 #' @export
 fit_lmom_kappa <- function(data) {
 
-	validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 
 	# Get the sample L-moments
 	moments <- lmom_sample(data)

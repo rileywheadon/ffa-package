@@ -38,8 +38,8 @@
 
 ams_decomposition <- function(data, years, trend) {
 
-	data <- validate_data(data)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
 
 	covariate <- get_covariates(years)

@@ -49,12 +49,12 @@ fit_maximum_likelihood <- function(
 	trend = NULL
 ) {
 
-	data <- validate_data(data)
-	model <- validate_model(model)
-	prior <- validate_prior(prior)
-	years <- validate_years(years, data)
+	data <- validate_numeric("data", data, optional = FALSE)
+	model <- validate_enum("model", model)
+	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
-
+	
 	# Assume stationarity. Determine the initial parameters using L-moments.
 	p <- fit_lmom_fast(data, model)
 

@@ -10,9 +10,10 @@ uncertainty_rfpl(
   prior = NULL,
   years = NULL,
   trend = NULL,
-  slice = 1900,
+  slices = 1900,
   alpha = 0.05,
-  eps = 0.01
+  eps = 0.01,
+  periods = c(2, 5, 10, 20, 50, 100)
 )
 }
 \arguments{
@@ -37,20 +38,22 @@ modeled as non-stationary. Must contain:
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
 }}
 
-\item{slice}{Numeric scalar specifying the year at which to evaluate the
-quantiles or confidence intervals of a non-stationary probability distribution.
-The year does not have to be an element of the \code{years} argument. Note that if
-\code{trend$location} and \code{trend$scale} are both \code{FALSE}, this argument will have
-no effect the output of the function.}
+\item{slices}{Numeric vector specifying the years at which to evaluate the
+return levels confidence intervals of a non-stationary probability distribution.
+The slices do not have to be elements of the \code{years} argument.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
 
 \item{eps}{Numeric scalar. The log-likelihood tolerance for the Regula-Falsi
 convergence (default is 0.01).}
+
+\item{periods}{Numeric vector used to set the return periods for FFA.
+All entries must be greater than or equal to 1.}
 }
 \value{
-A list contianing the return levels and confidence intervals containing:
+A list of lists containing the return levels and confidence
+intervals for each slice. Each sub-list contains:
 \itemize{
 \item \code{estimates}: Estimated quantiles for each return period.
 \item \code{ci_lower}: Lower bound of the confidence interval for each return period.
@@ -91,5 +94,5 @@ uncertainty_rfpl(data, "GLO")
 }
 \seealso{
 \link{quantile_fast}, \link{uncertainty_bootstrap},
-\link{plot_uncertainty}
+\link{plot_sffa}, \link{plot_nsffa}
 }

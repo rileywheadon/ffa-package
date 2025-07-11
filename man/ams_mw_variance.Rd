@@ -4,7 +4,7 @@
 \alias{ams_mw_variance}
 \title{Estimate Variance for Annual Maximum Streamflow Data}
 \usage{
-ams_mw_variance(data, years, size = 10, step = 5)
+ams_mw_variance(data, years, size = 10L, step = 5L)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum streamflow (AMS) values.

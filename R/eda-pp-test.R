@@ -37,8 +37,8 @@
 
 eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
-	data <- validate_data(data)
-	alpha <- validate_alpha(alpha)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
 
 	# Construct time series yt and shifted time series yt1
 	z <- embed(data ,2)

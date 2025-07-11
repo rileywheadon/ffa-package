@@ -41,6 +41,8 @@
 
 lmom_sample <- function(data) {
 
+	data <- validate_numeric("data", data, FALSE)
+
 	# Sort the data in increasing order
 	x <- sort(data)
 	n <- length(x)

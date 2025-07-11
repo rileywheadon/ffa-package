@@ -15,7 +15,7 @@
 #' @inheritParams param-trend
 #' @inheritParams param-alpha
 #'
-#' @param pp.formula Character (1); string specifying the plotting position formula. 
+#' @param pp_formula Character (1); string specifying the plotting position formula. 
 #'   Must be one of `"Weibull"`, `"Blom"`, `"Cunnane"`, `"Gringorten"`, or `"Hazen"`
 #'
 #'
@@ -58,19 +58,16 @@ model_diagnostics <- function(
   years = NULL,
   trend = NULL,
   alpha = 0.05,
-  pp.formula = "Weibull"
+  pp_formula = "Weibull"
 ) {
 
-	data <- validate_data(data)
-	model <- validate_model(model)
-	params <- validate_params(params, model, trend)
-	years <- validate_years(years)
+	data <- validate_numeric("data", data, optional = FALSE)
+	model <- validate_enum("model", model)
+	params <- validate_params(model, params, trend)
+	years <- validate_numeric("years", years, size = length(data))
 	trend <- validate_trend(trend)
-	alpha <- validate_alpha(alpha)
+	pp_formula <- validate_enum("pp_formula", pp_formula)
 
-	# Get the slice from the uncertainty object
-	slice <- uncertainty$slice
-	
 	# Get the number of data points 
 	n <- length(data)                          
 
@@ -83,12 +80,16 @@ model_diagnostics <- function(
 	# Compare with the method of plotting positions (S-FFA only)
 	if (!trend$location && !trend$scale) {
 
+		# Get the first and only slice of the uncertainty object for SFFA
+		uncertainty <- uncertainty[[1]]
+		slice <- uncertainty$slice
+		
 		# Sort the data vector
 		data_sorted <- data[order(data, decreasing = TRUE)]
 
 		# Determine empirical exceedance probabilities using the plotting position 
 		p_empirical <- switch(
-			pp.formula, 
+			pp_formula, 
 			Weibull = (1:n) / (n + 1),
 			Blom =  ((1:n) - 0.375) / (n + 0.25),
 			Cunnane = ((1:n) - 0.4) / (n + 0.2),
@@ -97,7 +98,7 @@ model_diagnostics <- function(
 			stop("Unknown plotting position formula.")
 		)
 
-		t_return <- 1 / p_empirical               
+		returns <- 1 / p_empirical               
 
 		# Compute the estimates using the appropriate quantile function
 		estimates <- quantile_fast(1 - p_empirical, model, params, slice, trend)
@@ -111,14 +112,14 @@ model_diagnostics <- function(
 		AIC <- n * log(RMSE) + (2 * info$n_params)
 		BIC <- n * log(RMSE) + (log(n) * info$n_params)
 		
-		# Filter t_return and x to indices where t_return is between 2 and 100
-		idx <- which(t_return > 2 & t_return < 100)
-		t_return <- t_return[idx]
+		# Filter returns and x to indices where returns is between 2 and 100
+		idx <- which(returns > 2 & returns < 100)
+		returns <- returns[idx]
 		data_sorted <- data_sorted[idx]
 
 		# Use log-linear interpolation to get confidence intervals for each return period
-		ci_lower <- approx(log(uncertainty$t), uncertainty$ci_lower, log(t_return))
-		ci_upper <- approx(log(uncertainty$t), uncertainty$ci_upper, log(t_return))
+		ci_lower <- approx(log(uncertainty$periods), uncertainty$ci_lower, log(returns))
+		ci_upper <- approx(log(uncertainty$periods), uncertainty$ci_upper, log(returns))
 
 		# Compute the width and coverage of the confidence intervals
 		widths <- ci_upper$y - ci_lower$y

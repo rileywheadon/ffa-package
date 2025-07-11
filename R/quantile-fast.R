@@ -2,8 +2,7 @@
 #'
 #' A helper function used by \link{quantile_methods}.
 #'
-#' @param p A numeric vector of probabilities. Must be between 0 and 1.
-#'
+#' @inheritParams param-p
 #' @inheritParams param-model
 #' @inheritParams param-params
 #' @inheritParams param-slice
@@ -24,6 +23,7 @@
 #'
 #' @importFrom stats qlnorm qgamma
 #' @export
+
 quantile_fast <- function(p, model, params, slice, trend) {
 
 	# Get the covariate for the slice

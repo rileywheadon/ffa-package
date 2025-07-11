@@ -36,8 +36,6 @@
 
 plot_runs_test <- function(results, type, ...) {
 
-	years <- validate_years(results$years)
-
 	# Set labels and data based on the name
 	if (type == "variance") {
 		title <- "Sen's Estimator Residuals (AMS Variance)"
@@ -48,20 +46,15 @@ plot_runs_test <- function(results, type, ...) {
 	}
 
 	# Generate dataframes for the trend estimate, data, and residuals
-	df_residuals <- data.frame(x = years, y = results$residuals)
+	df_residuals <- data.frame(x = results$years, y = results$residuals)
 
 	# Capture optional arguments
 	args <- list(...)
 
     # Set default values
-    title <- "Residual Plot"
-    xlabel <- "Year"
-    ylabel <- "Residual Value"
-
-    # Override defaults if provided
-    if (!is.null(args$title))  title  <- args$title
-    if (!is.null(args$xlabel)) xlabel <- args$xlabel
-    if (!is.null(args$ylabel)) ylabel <- args$ylabel
+    title <- args$title %||% "Residual Plot"
+    xlabel <- args$xlabel %||% "Year"
+    ylabel <- args$ylabel %||% "Residual Value"
 
 	# First subplot: Plot of residuals
 	p1 <- ggplot(df_residuals, aes(x = .data$x, y = .data$y)) +

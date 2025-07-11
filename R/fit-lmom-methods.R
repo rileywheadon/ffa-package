@@ -31,62 +31,62 @@ NULL
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_gum <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "GUM")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_nor <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "NOR")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_lno <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "LNO")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_gev <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "GEV")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_glo <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "GLO")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_gno <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "GNO")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_pe3 <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "PE3")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_lp3 <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "LP3")
 }
 
 #' @rdname fit_lmom_methods
 #' @export
 fit_lmom_wei <- function(data) {
-	data <- validate_data(data)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	fit_lmom_fast(data, "WEI")
 }

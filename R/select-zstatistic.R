@@ -43,8 +43,8 @@
 
 select_zstatistic <- function(data, samples = 10000L) {
 
-	validate_data(data)
-	validate_samples(samples)
+	data <- validate_numeric("data", data, optional = FALSE)
+	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
 
 	# Helper function that attempts to fit a Kappa distribution and draw a bootstrap
 	get_bootstrap <- function(data) {

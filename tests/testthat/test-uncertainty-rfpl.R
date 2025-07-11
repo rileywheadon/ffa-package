@@ -10,7 +10,7 @@ validate_rfpl <- function(
     ci_lower,
     estimates,
     ci_upper,
-	slice = 1900
+	slices = 1900
 ) {
 
 	results <- uncertainty_rfpl(
@@ -18,8 +18,8 @@ validate_rfpl <- function(
 		model,
 		years = df$year,
 		trend = trend,
-		slice = slice
-	)
+		slices = slices
+	)[[1]]
 
 	# NOTE: We check the estimates in test-mle-estimation.R
 	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
@@ -240,7 +240,7 @@ validate_rfgpl <- function(
     ci_lower,
     estimates,
     ci_upper,
-    slice = 1900,
+    slices = 1900,
 	prior = c(6, 9)
 ) {
 
@@ -250,8 +250,8 @@ validate_rfgpl <- function(
 		prior,
 		df$year,
 		trend, 
-		slice = slice
-	)
+		slices = slices
+	)[[1]]
 
 	# NOTE: We check the estimates in test-mle-estimation.R
 	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)

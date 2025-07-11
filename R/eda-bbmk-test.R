@@ -37,17 +37,17 @@
 
 eda_bbmk_test <- function(data, alpha = 0.05, samples = 10000L, quiet = TRUE) {
 
-	data <- validate_data(data)
-	alpha <- validate_alpha(alpha)
-	samples <- validate_samples(samples)
-	quiet <- validate_quiet(quiet)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
+	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
+	quiet <- validate_logical("quiet", quiet)
 
 	least_lag <- eda_spearman_test(data, alpha)$least_lag
 	s_statistic  <- eda_mk_test(data, alpha)$s_statistic
 
-	# Blocks have size of least_lag + 1 to remove autocorrelation 
+	# Blocks have size of least_lag to remove autocorrelation 
 	n <- length(data)
-	size <- least_lag + 1
+	size <- least_lag
 	n_blocks <- ceiling(n / size)
 	blocks <- split(data[1:(n_blocks * size)], rep(1:n_blocks, each = size))
 

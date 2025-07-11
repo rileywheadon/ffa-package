@@ -35,9 +35,9 @@
 
 eda_sens_trend <- function(data, years, quiet = TRUE) {
 
-	data <- validate_data(data)
-	years <- validate_years(years, data)
-	quiet <- validate_quiet(quiet)
+	data <- validate_numeric("data", data, bounds = c(0, Inf))
+	years <- validate_numeric("years", years, size = length(data))
+	quiet <- validate_logical("quiet", quiet)
 
 	# Get the length of data for convenience
 	n <- length(data)
