@@ -1,5 +1,5 @@
 ---
-title: "Non-Stationary FFA"
+title: "Nonstationary FFA"
 output: 
   rmarkdown::html_document:
     theme: readable
@@ -16,15 +16,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates flood frequency analysis (FFA) under *non-stationarity* using the `ffaframework` package.
 
-The framework supports three forms of non-stationarity, modelled as linear trends in the distribution parameters:
+This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis (FFA) under the assumption of nonstationarity.
+Readers unfamiliar with stationary FFA workflows should first consult the *Stationary FFA* vignette.
+
+The framework supports three forms of nonstationarity, modelled as linear trends in the distribution parameters:
 
 1. A linear trend in the mean (location parameter).
 2. A linear trend in the variance (scale parameter).
 3. A linear trend in both the mean and variance.
 
-Readers unfamiliar with stationary FFA workflows should first consult the *Stationary FFA* vignette.
+The shape parameter is treated as a constant considering its difficult estimation due to sample size limitations.
 
 ## Setup
 
@@ -40,7 +42,7 @@ head(df)
 
 ## The `trend` List
 
-This vignette assumes prior identification of a trend in the mean.
+This vignette assumes a scenario where a trend in the mean has been identified.
 
 ```{r}
 trend <- list(location = TRUE, scale = FALSE)
@@ -50,9 +52,9 @@ trend <- list(location = TRUE, scale = FALSE)
 
 ## Distribution Selection
 
-L-moment-based distribution selection remains applicable under non-stationarity, but requires detrending prior to analysis.
-This is accomplished using the `ams_decomposition` function, which takes a vector of streamflow observations, the corresponding vector of years, and the `trend` object.
-The decomposed vector of streamflow observations is then passed to the selection function.
+L-moment-based distribution selection remains applicable under nonstationarity, but requires dataset decomposition (detrending) prior to analysis.
+This is accomplished using the `ams_decomposition` function, which takes an annual maximum series (AMS), the corresponding vector of years, and the `trend` object.
+The decomposed vector of data is then passed to the selection function.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 data_decomposed <- ams_decomposition(df$max, df$year, trend)
@@ -64,21 +66,21 @@ print(selection$recommendation)
 plot_lmom_diagram(selection)
 ```
 
-**Conclusion**: The generalized normal (GNO) distribution is ideal for the data.
+**Conclusion**: The generalized normal (GNO) distribution is the best-fit distribution for the sample.
 
 ## Parameter Estimation
 
-Because L-moments parameter estimation requires stationarity, we use maximum likelihood estimation for non-stationary models.
-The `fit_maximum_likelihood` function implements maximum likelihood estimation for both stationary and non-stationary distributions.
+Because L-moments parameter estimation requires stationarity, we use maximum likelihood estimation for nonstationary models.
+The `fit_maximum_likelihood` function implements maximum likelihood estimation for both stationary and nonstationary distributions.
 It has two required arguments: 
 
-- `data`: The annual maximum streamflow observations. 
+- `data`: The annual maximum series observations. 
 - `model`: A three-letter code corresponding to a probability distribution (ex. `"GNO"`).
 
-Since the dataset has a non-stationary trend, two additional arguments are required:
+Since a nonstationary model is used, two additional arguments are required:
 
 - `years`: The corresponding vector of years for the observations in `data`.
-- `trend`: The non-stationary `trend` object described above.
+- `trend`: The nonstationary `trend` object described above.
 
 ```{r}
 fit <- fit_maximum_likelihood(
@@ -94,20 +96,21 @@ print(fit$mll)
 ```
 
 **Note**: The fitted parameters are: $(\mu_0, \mu_1, \sigma, \kappa)$, where the time-dependent location is modeled as $\mu(t) = \mu_0 + \mu_1 t$.
+The covariate $t$ is a linear function of the years: $(\text{years} - 1900) / 100$.
 
 ## Uncertainty Quantification
 
-Uncertainty quantification is also essential for non-stationary probability distributions.
+Uncertainty quantification is also essential for nonstationary probability distributions.
 In addition to sample bootstrapping, the framework implements the regula-falsi profile likelihood (RFPL) method for MLE.
 The `uncertainty_rfpl` method has two required arguments:
 
-- `data`: The annual maximum streamflow observations. 
+- `data`: The annual maximum series observations. 
 - `model`: A three-letter code corresponding to a probability distribution (ex. `"GNO"`).
 
-Since the dataset has a non-stationary trend, three additional arguments are required:
+Since the dataset has a nonstationary trend, three additional arguments are required:
 
 - `years`: The corresponding vector of years for the observations in `data`.
-- `trend`: The non-stationary `trend` object described above.
+- `trend`: The nonstationary `trend` object described above.
 - `slices`: The years at which return levels are computed.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -124,7 +127,7 @@ print(uncertainty[[2]]$estimates)
 plot_nsffa(uncertainty)
 ```
 
-**Example Conclusion**: In the year 2025, there is a roughly $1/20$ chance of a streamflow event of  $303.2462\text{m}^3/\text{s}$.
+**Example Conclusion**: In the year 2025, there is a $1/20$ exceedance probability of a flood of approximately $300\text{m}^3/\text{s}$ or greater.
 
-**Note**: Under non-stationarity, the return period reflects the probability distribution for a fixed year rather than a long-run average.
+**Note**: Under nonstationarity, the return period reflects the probability distribution for a fixed year rather than a long-run average.
 To clarify this difference from stationary FFA, the phrase "effective return period" is used.

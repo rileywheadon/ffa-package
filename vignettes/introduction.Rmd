@@ -16,10 +16,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-This package provides tools for stationary and non-stationary flood frequency analysis (FFA) based on annual maximum streamflow (AMS) data.
+This package provides tools for stationary and nonstationary flood frequency analysis (FFA) of annual maximum series (AMS) data.
 The package supports flexible workflows with the following core components:
 
-1. **Explore** AMS data using the `eda_*` methods:
+1. **Explore** AMS data for approach selection (S-FFA or NS-FFA) using the `eda_*` methods:
 	- Detect change points.
 	- Identify trends in the *mean* and *variance*.
 2. **Select** a suitable probability model using the `select_* ` methods.
@@ -33,6 +33,6 @@ Additional utility functions support visualization and computation:
 - `ams_*` methods transform or segment AMS time series.
 - `quantile_*`, `loglik_*`, and `lmom_*` implement distribution-specific computation.
 
-This package assumes familiarity with modern statistical techniques used in FFA, including L-moments, maximum likelihood estimation, and bootstrapping.
-For an explanation of these concepts, see the [FFA Framework wiki](https://rileywheadon.github.io/ffa-docs/).
-For examples, see the accompanying vignettes on exploratory data analysis, change point detection, and flood frequency analysis.
+This package assumes familiarity with statistical techniques used in FFA, including L-moments, maximum likelihood estimation, and parametric bootstrap.
+For an explanation of these methods, see the [FFA Framework wiki](https://rileywheadon.github.io/ffa-docs/).
+For examples, see the accompanying vignettes on exploratory data analysis and flood frequency analysis.

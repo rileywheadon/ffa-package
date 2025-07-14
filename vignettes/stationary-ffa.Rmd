@@ -16,12 +16,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis on a *stationary* dataset.
+This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis (model selection, parameter estimation, uncertainty quantification, and model performance assessment) under the assumption of stationarity.
 
 The results are expressed in terms of *return periods* and *return levels*:
 
-- The *return period* of a flood is the expected number of years between streamflow events of equal or greater severity.
-- The *return level* is the magnitude of the streamflow event, measured in $\text{m}^3/\text{s}$.
+- The *return period* of a flood is the expected number of years between annual maximum events of equal or greater magnitude.
+- The *return level* is the magnitude of the annual maximum event, measured in $\text{m}^3/\text{s}$.
 
 ## Setup
 
@@ -37,10 +37,10 @@ head(df)
 
 ## Distribution Selection
 
-First, a suitable probability distribution for the data is selected using the method of L-moments.
+First, a suitable probability distribution for the data is selected using the L-moments.
 
-1. `select_ldistance` chooses the distribution whose theoretical L-skewness ($\tau_3$) and L-kurtosis ($\tau_4$) has the smallest Euclidean distance from the sample point.
-2. `select_lkurtosis` matches the theoretical L-kurtosis to the sample L-kurtosis.
+1. `select_ldistance` chooses the distribution with theoretical L-skewness ($\tau_3$) and L-kurtosis ($\tau_4$) closest to the sample, based on Euclidean distance.
+2. `select_lkurtosis` selects the distribution with the smallest difference between sample and theoretical L-kurtosis (for three-parameter distributions only).
 3. `select_zstatistic` uses a fitted 4-parameter Kappa distribution to estimate the sampling distribution of the L-kurtosis and selects the distribution with the smallest z-statistic.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -51,35 +51,35 @@ print(selection$recommendation)
 plot_lmom_diagram(selection)
 ```
 
-**Conclusion**: Use the generalized extreme value (GEV) distribution.
+**Recommendation**: Use the generalized extreme value (GEV) distribution.
 
 **Note**: For information about the other distributions, see the `selection$metrics` item.
 
-You can find more information about the probability distributions supported by the framework [here](https://rileywheadon.github.io/ffa-docs/distributions/).
+You can find more information about the probability distributions supported by the framework [here](https://rileywheadon.github.io/ffa-docs/probability-distributions/).
 
 ## Parameter Estimation
 
-The `ffaframework` package provides two methods for parameter estimation.
+The `ffaframework` package provides three methods for parameter estimation.
 See [here](https://rileywheadon.github.io/ffa-docs/parameter-estimation/) for more information.
 
 - `fit_lmom_*`: L-moments parameter estimation for each distribution.
 - `fit_maximum_likelihood`: Maximum likelihood and generalized maximum likelihood.
 
 ```{r}
-params <- fit_lmom_gev(df$max)
+params <- fit_lmom_gev(df$max)$params
 
 print(params)
 ```
 
-**Conclusion**: The $\text{GEV}(1600.22, 616.67, 0.12)$ distribution will be used.
+**Conclusion**: The GEV distribution with parameters `location = 1600`, `scale = 616`, and `shape = 0.12` will be used.
 
 ## Uncertainty Quantification
 
-Given a fitted probability distribution it is easy to estimate the return levels. 
-However, point estimates alone are insufficient; confidence intervals should also be reported.
-The `uncertainty_bootstrap` function performs uncertainty quantification using the sample bootstrap method. It requires three arguments:
+Once a probability distribution is fitted, return levels (design events) can be readily estimated.
+However, point estimates alone can be misleading --it is more informative to report confidence intervals to reflect estimation uncertainty.
+The `uncertainty_bootstrap` function performs uncertainty quantification using the parametric bootstrap method. It requires three arguments:
 
-- `data`: A vector of annual maximum streamflow observations.
+- `data`: A vector of annual maximum series data.
 - `model`: A three-letter code for a probability distribution (ex. `"GEV"`).
 - `method`: A parameter estimation method. Must be `"L-moments"`, `"MLE"`, or `"GMLE"`.
 
@@ -93,12 +93,12 @@ print(uncertainty[[1]]$estimates)
 plot_sffa(uncertainty)
 ```
 
-**Example Conclusion**: Every 10 years, we can expect a streamflow event of $3194.788\text{m}^3/\text{s}$ or greater.
+**Example Conclusion**: Every 10 years, we can expect a flood of roughly $3{\small,}200\text{m}^3/\text{s}$ or greater.
 
 ## Model Assessment
 
 Model performance is assessed using `model_diagnostics`, which reports a collection of assessment statistics about the flood frequency analysis.
-`plot_model_diagnostics` compares the empirical plotting positions (the "Observed Quantiles") and the predictions of the parametric model (the "Model Quantiles"). 
+`plot_model_diagnostics` compares the empirical plotting positions ("Observed Quantiles") and the predictions of the parametric model ("Model Quantiles"). 
 The black line represents a perfect 1:1 correspondence between the model and the data.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -107,4 +107,5 @@ diagnostics <- model_diagnostics(df$max, "GEV", params, uncertainty)
 plot_model_diagnostics(diagnostics)
 ```
 
-**Conclusion**: The parametric model generally matches the plotting positions. There is a small positive bias around $4000\text{m}^3/\text{s}$.
+**Conclusion**: The parametric model generally matches the plotting positions.
+There is a small positive bias from $3{\small,}500\text{m}^3/\text{s}$ to $5{\small,}000\text{m}^3/\text{s}$.
