@@ -1,8 +1,8 @@
-#' Sample Bootstrap Confidence Intervals for Flood Quantile Estimates
+#' Parametric Bootstrap Confidence Intervals for Flood Quantile Estimates
 #'
 #' @description
 #' Computes estimates and confidence intervals for return levels at return periods
-#' 2, 5, 10, 20, 50, and 100 years using the sample bootstrap method. This function 
+#' 2, 5, 10, 20, 50, and 100 years using the parametric bootstrap method. This function 
 #' supports a variety of probability models and parameter estimation methods.
 #'
 #' @inheritParams param-data
@@ -120,9 +120,6 @@ uncertainty_bootstrap_helper <- function(
 		u <- runif(samples)
 		quantile_fast(u, model, params, slice, trend)
 	})
-
-	# Some distributions generate negative values. Adjust these to epsilon.
-	quantiles[quantiles < 0] = 1e-8
 
 	# Vectorized bootstrap function 
 	bootstrap <- sapply(1:samples, function(i) {
