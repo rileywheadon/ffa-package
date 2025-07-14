@@ -68,7 +68,7 @@ eda_sens_trend <- function(data, years, quiet = TRUE) {
 	# Print the results of Sen's trend estimator
 	m <- round(sens_slope, 3)
 	b <- round(sens_intercept, 2)
-	msg <- sprintf("Estimated trend: y = %fx + %f.", m, b)
+	msg <- sprintf("Estimated trend: y = %.3fx + %.2f.", m, b)
 	if (!quiet) message(msg)
 
 	# Return the results as a list

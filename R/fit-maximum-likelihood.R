@@ -56,7 +56,7 @@ fit_maximum_likelihood <- function(
 	trend <- validate_trend(trend)
 	
 	# Assume stationarity. Determine the initial parameters using L-moments.
-	p <- fit_lmom_fast(data, model)
+	p <- fit_lmom_fast(data, model)$params
 
 	# Set the bounds and initial values for the location parameter(s)
 	if (trend$location) {
@@ -133,6 +133,10 @@ fit_maximum_likelihood <- function(
 	}
 
 	# Return the optimal parameters and maximum log-likelihood
-	list(params = result$par, mll = -result$objective)
+	list(
+		method = if (is.null(prior)) "MLE" else "GMLE",
+		params = result$par,
+		mll = -result$objective
+	)
 
 }

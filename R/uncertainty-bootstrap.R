@@ -105,7 +105,7 @@ uncertainty_bootstrap_helper <- function(
 	# Define the parameter estimation function
 	fit <- function(data, years) {
 		if (method == "L-moments") {
-			return (fit_lmom_fast(data, model))
+			return (fit_lmom_fast(data, model)$params)
 		} else {
 			return (fit_maximum_likelihood(data, model, prior, years, trend)$params)
 		}
@@ -136,6 +136,7 @@ uncertainty_bootstrap_helper <- function(
 
 	# Generate the results as a list
 	list(
+		method = "S-bootstrap",
 		periods = periods,
 		ci_lower = ci[1, ],
 		estimates = estimates,

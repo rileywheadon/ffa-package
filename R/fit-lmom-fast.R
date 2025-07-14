@@ -145,7 +145,7 @@ fit_lmom_fast <- function(data, model) {
 
 	} 
 
-	# Return results as a vector
-	c(u, s, k)
+	# Return results as a list
+	list(method = "L-moments", params = c(u, s, k))
 
 }

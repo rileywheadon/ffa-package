@@ -303,6 +303,7 @@ uncertainty_rfpl_helper <- function(
 	}
 
 	list(
+		method = if (is.null(prior)) "RFPL" else "RFGPL",
 		periods = periods,
 		ci_lower = ci_lower,
 		estimates = yp_hat ,

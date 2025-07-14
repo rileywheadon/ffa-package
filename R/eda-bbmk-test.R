@@ -80,8 +80,8 @@ eda_bbmk_test <- function(data, alpha = 0.05, samples = 10000L, quiet = TRUE) {
 		reject,
 		p_value,
 		alpha,
-		"evidence of a trend given the serial correlation.",
-		"NO evidence of a trend given the serial correlation."
+		"NO evidence of a trend given the serial correlation",
+		"evidence of a trend given the serial correlation"
 	)
 
 	if (!quiet) message(msg)

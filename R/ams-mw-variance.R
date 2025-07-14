@@ -49,11 +49,12 @@ ams_mw_variance <- function(data, years, size = 10L, step = 5L) {
 
 		window <- which(years >= location & years < location + size)
 
-		std <- sd(data[window])
-		std_series <- c(std_series, std)
-
-		year <- mean(years[window])
-		year_series <- c(year_series, year)
+		if (length(window) > 1) {
+			std <- sd(data[window])
+			std_series <- c(std_series, std)
+			year <- mean(years[window])
+			year_series <- c(year_series, year)
+		}
 
 		# Increment move the trailing edge of the moving window by the step
 		location <- location + step

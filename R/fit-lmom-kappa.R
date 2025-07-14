@@ -48,7 +48,7 @@ fit_lmom_kappa <- function(data) {
         sigma <- params$sigma
     }
 
-	c(mu, sigma, k, h)
+	list(method = "L-moments", params = c(mu, sigma, k, h))
 
 }
 

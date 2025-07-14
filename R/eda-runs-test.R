@@ -76,8 +76,8 @@ eda_runs_test <- function(results, alpha = 0.05, quiet = TRUE) {
 		reject,
 		p_value,
 		alpha,
-		"evidence that a linear model is inappropriate.",
-		"NO evidence that a linear model is inappropriate."
+		"NO evidence that a linear model is inappropriate",
+		"evidence that a linear model is inappropriate"
 	)
 
 	if (!quiet) message(msg)

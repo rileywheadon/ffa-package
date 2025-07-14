@@ -78,8 +78,8 @@ eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
 		reject,
 		p_value,
 		alpha,
-		"evidence of a monotonic trend",
-		"NO evidence of a monotonic trend"
+		"NO evidence of a monotonic trend",
+		"evidence of a monotonic trend"
 	)
 
 	if (!quiet) message(msg)

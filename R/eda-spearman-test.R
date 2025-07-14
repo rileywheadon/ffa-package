@@ -66,7 +66,7 @@ eda_spearman_test <- function(data, alpha = 0.05, quiet = TRUE) {
 	result <- ifelse(reject, "evidence", "NO evidence")
 
 	# Print the results
-	l1 <- sprintf("The Spearman test found a least insignificant lag of %f.", least_lag)
+	l1 <- sprintf("The Spearman test found a least insignificant lag of %d.", least_lag)
 	l2 <- sprintf("There is %s of serial correlation.", result)
 	msg <- paste0("\n - ", c(l1, l2), collapse = "")
 	if (!quiet) message(msg)

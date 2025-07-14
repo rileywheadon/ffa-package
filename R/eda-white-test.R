@@ -69,8 +69,8 @@ eda_white_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 		reject,
 		p_value,
 		alpha,
-		"evidence of heteroskedasticity",
-		"evidence of homoskedasticity"
+		"NO evidence of heteroskedasticity",
+		"evidence of heteroskedasticity"
 	)
 	
 	if (!quiet) message(msg)

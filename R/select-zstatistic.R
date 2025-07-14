@@ -62,7 +62,7 @@ select_zstatistic <- function(data, samples = 10000L) {
 		}
 
 		# Attempt to fit the Kappa distribution
-		params <- fit_lmom_kappa(data)
+		params <- fit_lmom_kappa(data)$params
 
 		# Generate a bootstrap from this Kappa distribution
 		t4_list <- lapply(1:samples, function(i) {
