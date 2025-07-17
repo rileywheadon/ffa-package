@@ -30,8 +30,8 @@
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
-#' results <- eda_sens_trend(data, years)
-#' plot_sens_trend(results, "mean")
+#' mean_trend <- eda_sens_trend(data, years)
+#' plot_sens_trend(data, years, meant_trend = mean_trend)
 #'
 #' @import ggplot2
 #' @importFrom grid textGrob

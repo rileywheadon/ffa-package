@@ -108,6 +108,9 @@ uncertainty_rfpl_helper <- function(
 	periods
 ) {
 
+	# Failure message
+	msg <- "RFPL uncertainty quantification failed to converge. Try bootstrap instead."
+
 	# Helper function for computing the profile likelihood
 	profile_likelihood <- function(yp, p, initial, prior = NULL) {
 
@@ -239,7 +242,7 @@ uncertainty_rfpl_helper <- function(
 			result <- tryCatch(optimizer(params), error = function(e) NULL)
 
 			# If optimization succeeded, end the loop
-			if (!is.null(result)) break
+			if (!is.null(result) && result$convergence == 0) break
 
 			# If optimization failed, perturb the parameters and try again
 			perturbation <- rnorm(n = length(params), mean = 0, sd = 0.2)
@@ -249,9 +252,7 @@ uncertainty_rfpl_helper <- function(
 		}
 
 		# Throw an error if optimization failed
-		if (attempts == 100) {
-			stop("RFPL uncertainty quantification failed to converge. Try bootstrap instead.")
-		}
+		if (attempts == 100) stop(msg)
 
 		# Flip the sign because we optimized the negative log-likelihood earlier
 		0 - result$objective
@@ -296,7 +297,10 @@ uncertainty_rfpl_helper <- function(
 
 		# Find initial lower bound for mu
 		yp_minus <- yp_hat[i] * 0.95
-		while (f(yp_minus, probabilities[i]) > 0) yp_minus <- yp_minus * 0.95
+		while (f(yp_minus, probabilities[i]) > 0) {
+			if (yp_minus < 1) stop(msg)
+			yp_minus <- yp_minus * 0.95
+		}
 
 		# Run the iteration algorithm to find the lower confidence interval
 		yp_lower <- regula.falsi(yp_minus, yp_hat[i], probabilities[i])
@@ -305,6 +309,7 @@ uncertainty_rfpl_helper <- function(
 		# Find initial upper bound for mu
 		yp_plus <- yp_hat[i] * 1.05
 		while (f(yp_plus, probabilities[i]) > 0) {
+			if (yp_plus > 1e9) stop(msg)
 			yp_plus <- yp_plus * 1.05
 		}
 

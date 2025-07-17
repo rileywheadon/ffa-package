@@ -331,6 +331,18 @@ test_that("convergence errors are caught.", {
 		slices = 1900
 	), "RFPL uncertainty quantification failed to converge.")
 
+	# Similar error in Application 2
+	df <- load_data("Application_2.csv")
+	df <- subset(df, year >= 1985)
+
+	expect_error(uncertainty_rfpl(
+		df$max,
+		"WEI",
+		years = df$year,
+		trend = trend_11,
+		slices = 2000
+	), "RFPL uncertainty quantification failed to converge.")
+
 })
 
 
