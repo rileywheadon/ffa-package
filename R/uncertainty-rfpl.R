@@ -19,6 +19,7 @@
 #'
 #' @return A list of lists containing the return levels and confidence 
 #' intervals for each slice. Each sub-list contains: 
+#' - `method`: Either "RFPL" or "RFGPL"
 #' - `estimates`: Estimated quantiles for each return period.
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
@@ -39,8 +40,12 @@
 #'    given the return level estimates.
 #'
 #' @note Although the more modern \link[stats]{optim} function is preferred over 
-#' \link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports non-finite
+#' \link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports infinite
 #' values of the likelihood function. 
+#'
+#' RFPL uncertainty quantification can be numerically unstable for some datasets. 
+#' If this function encounters an issue, it will return an error and recommend 
+#' using the parametric bootstrap (`uncertainty_bootstrap`) instead.
 #'
 #' @seealso \link{quantile_fast}, \link{uncertainty_bootstrap}, 
 #'   \link{plot_sffa}, \link{plot_nsffa}
@@ -224,12 +229,12 @@ uncertainty_rfpl_helper <- function(
 			nlminb(theta, objective, lower = lower, upper = upper)
 		}
 
-		# Repeatedly attempt optimization using the optim() function
+		# Repeatedly attempt optimization using the nlminb() function
 		attempts <- 1
 		params <- initial
 
-		while (attempts <= 100) {
-			
+		while (attempts < 100) {
+
 			# Attempt to run the optimize() function
 			result <- tryCatch(optimizer(params), error = function(e) NULL)
 
@@ -243,12 +248,17 @@ uncertainty_rfpl_helper <- function(
 
 		}
 
+		# Throw an error if optimization failed
+		if (attempts == 100) {
+			stop("RFPL uncertainty quantification failed to converge. Try bootstrap instead.")
+		}
+
 		# Flip the sign because we optimized the negative log-likelihood earlier
 		0 - result$objective
 
 	} 
 
-	# Define the non-exceedance probabilities for the target return periods
+	# Define the nonexceedance probabilities for the target return periods
 	probabilities <- 1 - (1 / periods)
 
 	# Get the results of maximum likelihood estimation
@@ -294,7 +304,9 @@ uncertainty_rfpl_helper <- function(
 
 		# Find initial upper bound for mu
 		yp_plus <- yp_hat[i] * 1.05
-		while (f(yp_plus, probabilities[i]) > 0) yp_plus <- yp_plus * 1.05
+		while (f(yp_plus, probabilities[i]) > 0) {
+			yp_plus <- yp_plus * 1.05
+		}
 
 		# Run the iteration algorithm to find the upper confidence interval
 		yp_upper <- regula.falsi(yp_hat[i], yp_plus, probabilities[i])

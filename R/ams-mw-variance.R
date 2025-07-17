@@ -1,7 +1,7 @@
 #' Estimate Variance for Annual Maximum Streamflow Data 
 #'
 #' This function estimates the standard deviation of a vector of annual maximum 
-#' streamflow (AMS) data using a moving window algorithm, returning a list that
+#' series (AMS) data using a moving window algorithm, returning a list that
 #' pairs each window’s mean year with its computed standard deviation. The 
 #' parameters `size` and `step` parameters control the behaviour of the window.
 #'
@@ -22,12 +22,12 @@
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
-#' ams_mw_variance(data, years)
+#' ams_mw_variability(data, years)
 #'
 #' @importFrom stats sd
 #' @export
 
-ams_mw_variance <- function(data, years, size = 10L, step = 5L) { 
+ams_mw_variability <- function(data, years, size = 10L, step = 5L) { 
 
 	data <- validate_numeric("data", data)
 	years <- validate_numeric("years", years, size = length(data))

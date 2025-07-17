@@ -7,8 +7,8 @@
 eda_mk_test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -30,7 +30,7 @@ A list containing the test results, including:
 \description{
 Performs the Mann–Kendall trend test on a numeric vector to detect the presence
 of a monotonic trend (increasing or decreasing) over time. The test is
-non-parametric and accounts for tied observations in the data. The null
+nonparametric and accounts for tied observations in the data. The null
 hypothesis assumes there is no monotonic trend.
 }
 \details{

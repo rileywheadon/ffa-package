@@ -1,0 +1,145 @@
+---
+title: "Trend Identification (Variability)"
+output: 
+  rmarkdown::html_document:
+    theme: readable
+vignette: >
+  %\VignetteIndexEntry{Trend Identification (Variability)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Many factors can produce *nonstationarity* in annual maximum series (AMS) data, including changes in climate, land use/cover, and water management.
+This vignette demonstrates how to use the `ffaframework` to check for evidence of nonstationarity in the *variability* of a time series.
+
+## List of Tests
+
+**Mean Trend Tests**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| `eda_mk_test`       | Tests for a monotonic trend (Mann-Kendall test).                   |
+| `eda_bbmk_test`     | Tests for a monotonic trend under serial correlation (block-bootstrap MK test). |
+
+ **Stationarity Tests**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| `eda_spearman_test` | Tests for serial correlation (Spearman test).                                 |
+| `eda_kpss_test`     | Tests for a stochastic trend (KPSS test). |
+| `eda_pp_test`       | Tests for a deterministic trend (Phillips-Perron test). |
+
+**Variability Trend Tests**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| MW-MK Test           | Tests for a trend in the variability (moving-window MK test)                            |
+| `eda_white_test`    | Tests for time-dependence in the variability (White test).   |
+
+**Trend Estimation (Mean and Variability)**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| `eda_sens_trend`    | Estimates slope and intercept of a linear trend (Sen's slope estimator).|
+| `eda_runs_test`     | Evaluates residuals' structure under linear model assumptions (Wald-Wolfowitz runs test).  |
+
+## Case Study 
+
+This vignette will explore data from the Mission Creek near East Kelowna (08NM116) hydrological monitoring station.
+The remoteness of this station means that trends annual maxima are caused by changes in climate as opposed to changes in land use or cover.
+Data for this station is provided as `Application_5.csv` in the `ffaframework` package.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+library(ffaframework)
+
+csv_path <- system.file("extdata", "Application_5.csv", package = "ffaframework")
+df <- read.csv(csv_path, comment.char = "#")
+df <- subset(df, !is.na(max)) # Remove missing values
+
+head(df)
+
+plot_ams_data(df$max, df$year, title = "Mission Creek near East Kelowna (08NM116)")
+```
+
+## Assessing Trends in the Variance 
+
+### Moving-Window Mann-Kendall (MWMK) Test
+
+The MWMK test is used to detect trends in the variability of a time series.
+First, a moving-window algorithm is used to estimate the variability of the AMS data.
+Then, the Mann-Kendall test is applied to the series of standard deviations to check for a trend.
+
+The `ams_mw_variability` estimates the moving-window standard deviations and the `eda_mk_test` function performs the Mann-Kendall test.
+
+```{r}
+mw <- ams_mw_variability(df$max, df$year)
+mwmk_test <- eda_mk_test(mw$std)
+print(mwmk_test$p_value)
+```
+
+**Conclusion**: At a p-value of 0.016, we *reject* the null hypothesis. 
+There is evidence of a linear trend in the variability in the data.
+
+### White Test
+
+The White test checks for *heteroskedasticity*, or general time-dependence in the variability.
+The null hypothesis is *homoskedasticity*, or constant variability in the data.
+
+```{r}
+white_test <- eda_white_test(df$max, df$year)
+print(white_test$p_value)
+```
+
+**Conclusion**: At a p-value of 0.0012, we *reject* the null hypothesis.
+There is statistical evidence of heteroskedasticity. 
+
+### Sen's Trend Estimator
+
+While the previous tests provide evidence for a monotonic trend in the variability, they do not estimate the slope or intercept of this trend.
+We can estimate the monotonic trend using Sen's trend estimator, which uses a nonparametric approach that is robust to outliers.
+
+`eda_sens_trend()` takes two arguments: the data (either an annual maximum series or vector of standard deviations) and the corresponding vector of years.
+Then, `plot_sens_trend()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
+It also takes an optional trend in the mean (`mean_trend`), or a trend in the variability (`variability_trend`).
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+variability_trend <- eda_sens_trend(mw$std, mw$year)
+
+plot_sens_trend(df$max, df$year, variability_trend = variability_trend)
+```
+
+**Note**: The covariate is computed using the formula $(\text{years} - 1900) / 100$.
+
+### Runs Test
+
+Sen's trend estimator assumed that the nonstationarity is linear.
+The Wald-Wolfowitz runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
+If the residuals are random (the null hypothesis), there is evidence that the underlying trend is linear.
+The `eda_runs_test()` function takes the output of `eda_sens_trend()` as an argument.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+runs_test <- eda_runs_test(variability_trend)
+
+print(runs_test$p_value)
+
+plot_runs_test(runs_test, title = "Runs Test (AMS Variability)")
+```
+
+**Conclusion**: At a p-value of $0.266$, we *fail to reject* the null hypothesis.
+There is evidence that the residuals are random and a linear trend is suitable for the data.
+
+## Conclusion
+
+The MWMK and White tests find *evidence of nonstationarity in the variability of the AMS*. 
+The runs test confirms that a *linear model is suitable for the nonstationarity*.
+Flood frequency analysis of this dataset requires a time-dependent probability model.
+
+**Recommendation**: Use NS-FFA.
+

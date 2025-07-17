@@ -7,14 +7,14 @@
 ams_decomposition(data, years, trend)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{trend}{Named list indicating which distribution parameters are
-modeled as non-stationary. Must contain:
+modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
@@ -24,7 +24,7 @@ modeled as non-stationary. Must contain:
 Numeric vector of decomposed AMS data with the same length as \code{data}.
 }
 \description{
-Removes trends in the mean and/or variance of annual maximum streamflow (AMS)
+Removes trends in the mean and/or variance of annual maximum series (AMS)
 data using Sen’s trend estimator and/or a moving‐window estimator of the variance.
 Four scenarios are supported:
 \enumerate{
@@ -41,7 +41,7 @@ Internally, the function does the following:
 \item If there is a trend in the location, fit Sen’s trend estimator to
 \code{data} and \code{covariate}. Then, remove the fitted linear trend.
 \item If there is a trend in the scale, compute the moving‐window variance using
-\link{ams_mw_variance}, fit Sen’s trend estimator to those variances, and then
+\link{ams_mw_variability}, fit Sen’s trend estimator to those variances, and then
 rescales the series to remove trends in the scale.
 \item If necessary, shift the data so that its minimum is at least 1.
 }
@@ -54,5 +54,5 @@ ams_decomposition(data, years, trend)
 
 }
 \seealso{
-\link{ams_mw_variance}, \link{eda_sens_trend}
+\link{ams_mw_variability}, \link{eda_sens_trend}
 }

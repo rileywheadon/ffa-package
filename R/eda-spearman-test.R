@@ -1,7 +1,7 @@
 #' Spearman Test for Autocorrelation
 #'
 #' @description
-#' Performs the Spearman rank autocorrelation test on annual maximum streamflow 
+#' Performs the Spearman rank autocorrelation test on annual maximum series 
 #' (AMS) data to check for autocorrelation at various lags. Reports the smallest 
 #' lag where the autocorrelation is not statistically significant at the given 
 #' significance level.
@@ -48,7 +48,7 @@ eda_spearman_test <- function(data, alpha = 0.05, quiet = TRUE) {
 		cor.test(data_original, data_lagged, method="spearman", exact=FALSE)
 	}
 
-	# Find the lowest non-significant serial correlation lag
+	# Find the lowest insignificant serial correlation lag
 	rho <- numeric(n - 3)
 	p_values <- numeric(n - 3)
 

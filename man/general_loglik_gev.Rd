@@ -7,8 +7,8 @@
 general_loglik_gev(data, params, prior, years = NULL, trend = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
@@ -22,7 +22,7 @@ Only used when \code{model = "GEV"}.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{trend}{Named list indicating which distribution parameters are
-modeled as non-stationary. Must contain:
+modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
@@ -32,7 +32,7 @@ modeled as non-stationary. Must contain:
 Numeric scalar. The generalized log-likelihood value.
 }
 \description{
-Computes the generalized log-likelihood for stationary and non-stationary
+Computes the generalized log-likelihood for stationary and nonstationary
 variants of the  Generalized Extreme Value (GEV) distribution with a Beta
 prior on the shape parameter.
 }

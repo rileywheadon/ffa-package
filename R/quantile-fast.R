@@ -29,7 +29,7 @@ quantile_fast <- function(p, model, params, slice, trend) {
 	# Get the covariate for the slice
 	covariate <- get_covariates(slice)
 
-	# Transform non-stationary parmaeters into a vector of stationary parameters
+	# Transform nonstationary parmaeters into a vector of stationary parameters
 	if (trend$location) {
 		u <- params[1] + (covariate * params[2])
 	} else {

@@ -1,9 +1,9 @@
 #' Kwiatkowski–Phillips–Schmidt–Shin (KPSS) Unit Root Test
 #'
-#' Performs the KPSS unit root test on annual maximum streamflow (AMS) data. 
+#' Performs the KPSS unit root test on annual maximum series (AMS) data. 
 #' The null hypothesis is that the time series is trend-stationary with a linear 
 #' trend and constant drift. The alternative hypothesis is that the time series 
-#' has a unit root and is non-stationary.
+#' has a unit root and is nonstationary.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha

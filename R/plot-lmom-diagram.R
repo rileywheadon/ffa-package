@@ -127,7 +127,7 @@ plot_lmom_diagram <- function(results, ...) {
 	p1 <- add_theme(add_scales(p1))
 
 	# If the method is l-distance or l-kurtosis, draw a line to show the distance
-	if (method == "L-distance") {
+	if (method %in% c("L-distance", "L-kurtosis")) {
 
 		# Get the sample point with the shortest distance from a distribution
 		point <- if (results$recommendation %in% c("LNO", "LP3")) log_lm else reg_lm
@@ -135,9 +135,17 @@ plot_lmom_diagram <- function(results, ...) {
 		# Get the recommended distribbution
 		df <- dlm[[results$recommendation]]
 
-		# Get the closest point on the (t3, t4) curve
-		df$distance <- sqrt((df$x - point$x)^2 + (df$y - point$y)^2)
-		df <- df[which.min(df$distance), ]
+		# Get the closest point on the (t3, t4) curve (L-distance)
+		if (method == "L-distance") {
+			df$distance <- sqrt((df$x - point$x)^2 + (df$y - point$y)^2)
+			df <- df[which.min(df$distance), ]
+		}
+
+		# Or get the point with the same t3 value (L-kurtosis)
+		else {
+			df <- df[which.min(abs(df$x - point$x)), ]
+			df$distance <- abs(df$y - point$y)
+		}
 
 		# Dynamically set the radius of the magnified section
 		r <- df$distance * 3

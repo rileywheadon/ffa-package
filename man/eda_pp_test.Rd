@@ -7,8 +7,8 @@
 eda_pp_test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -28,8 +28,8 @@ List; the test results, consisting of:
 }
 \description{
 Applies the Phillips–Perron (PP) test to check for a unit root in annual
-maximum streamflow (AMS) data. The null hypothesis is that the series contains a
-unit root (and is thus non-stationary). This implementation of the PP test assumes
+maximum series (AMS) data. The null hypothesis is that the series contains a
+unit root (and is thus nonstationary). This implementation of the PP test assumes
 the time series has both stationary drift and a linear trend.
 }
 \details{

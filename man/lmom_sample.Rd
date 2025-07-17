@@ -7,8 +7,8 @@
 lmom_sample(data)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 }
 \value{
 A numeric vector containing the first four L-moments and L-moment ratios:

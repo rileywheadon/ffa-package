@@ -1,6 +1,6 @@
 #' Quantile Functions for Probability Models
 #'
-#' Compute the quantiles for stationary and non-stationary variants  of nine 
+#' Compute the quantiles for stationary and nonstationary variants  of nine 
 #' different distributions: `"GUM"`, `"NOR"`, `"LNO"`, `"GEV"`, `"GLO"`, `"GNO"`, 
 #' `"PE3"`, `"LP3"`, or `"WEI"`.
 #' 

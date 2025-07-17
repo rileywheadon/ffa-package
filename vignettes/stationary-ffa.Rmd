@@ -23,16 +23,22 @@ The results are expressed in terms of *return periods* and *return levels*:
 - The *return period* of a flood is the expected number of years between annual maximum events of equal or greater magnitude.
 - The *return level* is the magnitude of the annual maximum event, measured in $\text{m}^3/\text{s}$.
 
-## Setup
+## Case Study
 
-```{r setup}
+This vignette will explore data from the Athabasca River at Athabasca (07BE001) hydrological monitoring station.
+A statistical analysis of the data from this station does not reveal any evidence of trends in the mean or variability of the data.
+Data for this station is provided as `Application_1.csv` in the `ffaframework` package.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 library(ffaframework)
 
 csv_path <- system.file("extdata", "Application_1.csv", package = "ffaframework")
-df <- read.csv(csv_path)
+df <- read.csv(csv_path, comment.char = "#")
 df <- subset(df, !is.na(max)) # Remove missing values
 
 head(df)
+
+plot_ams_data(df$max, df$year, title = "Athabasca River at Athabasca (07BE001)")
 ```
 
 ## Distribution Selection

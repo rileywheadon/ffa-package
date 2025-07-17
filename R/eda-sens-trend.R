@@ -15,7 +15,7 @@
 #' - `msg`: Character string summarizing the results.
 #'
 #' @details
-#' Sen's slope estimator is a robust, non-parametric trend estimator computed from 
+#' Sen's slope estimator is a robust, nonparametric trend estimator computed from 
 #' the median of all pairwise slopes between data points. The corresponding intercept 
 #' is taken as the median of residual-corrected values. 
 #'

@@ -244,3 +244,22 @@ test_that("Test s-bootstrap.R on data set #1 with GMLE", {
 	expect_equal(GEV100$ci_upper , c(2239, 3119, 3792, 4510, 5520, 6350), tol = 1e-2)
 
 })
+
+test_that("convergence errors are caught.", {
+	set.seed(1)
+
+	# Load dataset
+	df <- load_data("Application_2.csv")
+	df <- subset(df, year >= 1985)
+
+	expect_error(uncertainty_bootstrap(
+		df$max,
+		"WEI",
+		"MLE",
+		years = df$year,
+		trend = trend_11, 
+		slices = 2000,
+		samples = 2000L
+	), "Bootstrap uncertainty quantification failed to converge.")
+
+})

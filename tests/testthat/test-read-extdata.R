@@ -6,7 +6,7 @@ test_that("extdata/Application_1.csv is readable", {
   expect_true(file.exists(csv_path), info = "File must exist on disk")
 
   # Read the file using base R
-  df <- read.csv(csv_path, stringsAsFactors = FALSE)
+  df <- read.csv(csv_path, comment.char = "#", stringsAsFactors = FALSE)
 
   # Check that the dataframe contains the correct information
   expect_true("year" %in% names(df))
@@ -25,7 +25,7 @@ test_that("extdata/Application_2.csv is readable", {
   expect_true(file.exists(csv_path), info = "File must exist on disk")
 
   # Read the file using base R
-  df <- read.csv(csv_path, stringsAsFactors = FALSE)
+  df <- read.csv(csv_path, comment.char = "#", stringsAsFactors = FALSE)
 
   # Check that the dataframe contains the correct information
   expect_true("year" %in% names(df))
@@ -44,7 +44,7 @@ test_that("extdata/Application_3.1.csv is readable", {
   expect_true(file.exists(csv_path), info = "File must exist on disk")
 
   # Read the file using base R
-  df <- read.csv(csv_path, stringsAsFactors = FALSE)
+  df <- read.csv(csv_path, comment.char = "#", stringsAsFactors = FALSE)
 
   # Check that the dataframe contains the correct information
   expect_true("year" %in% names(df))
@@ -63,7 +63,7 @@ test_that("extdata/Application_3.2.csv is readable", {
   expect_true(file.exists(csv_path), info = "File must exist on disk")
 
   # Read the file using base R
-  df <- read.csv(csv_path, stringsAsFactors = FALSE)
+  df <- read.csv(csv_path, comment.char = "#", stringsAsFactors = FALSE)
 
   # Check that the dataframe contains the correct information
   expect_true("year" %in% names(df))
@@ -82,7 +82,7 @@ test_that("extdata/Application_3.3.csv is readable", {
   expect_true(file.exists(csv_path), info = "File must exist on disk")
 
   # Read the file using base R
-  df <- read.csv(csv_path, stringsAsFactors = FALSE)
+  df <- read.csv(csv_path, comment.char = "#", stringsAsFactors = FALSE)
 
   # Check that the dataframe contains the correct information
   expect_true("year" %in% names(df))

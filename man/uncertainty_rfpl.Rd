@@ -17,8 +17,8 @@ uncertainty_rfpl(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{model}{Character scalar. A three-character code indicating
 a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
@@ -32,14 +32,14 @@ Only used when \code{model = "GEV"}.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{trend}{Named list indicating which distribution parameters are
-modeled as non-stationary. Must contain:
+modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
 }}
 
 \item{slices}{Numeric vector specifying the years at which to evaluate the
-return levels confidence intervals of a non-stationary probability distribution.
+return levels confidence intervals of a nonstationary probability distribution.
 The slices do not have to be elements of the \code{years} argument.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
@@ -55,6 +55,7 @@ All entries must be greater than or equal to 1.}
 A list of lists containing the return levels and confidence
 intervals for each slice. Each sub-list contains:
 \itemize{
+\item \code{method}: Either "RFPL" or "RFGPL"
 \item \code{estimates}: Estimated quantiles for each return period.
 \item \code{ci_lower}: Lower bound of the confidence interval for each return period.
 \item \code{ci_upper}: Upper bound of the confidence interval for each return period.
@@ -84,8 +85,12 @@ given the return level estimates.
 }
 \note{
 Although the more modern \link[stats]{optim} function is preferred over
-\link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports non-finite
+\link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports infinite
 values of the likelihood function.
+
+RFPL uncertainty quantification can be numerically unstable for some datasets.
+If this function encounters an issue, it will return an error and recommend
+using the parametric bootstrap (\code{uncertainty_bootstrap}) instead.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

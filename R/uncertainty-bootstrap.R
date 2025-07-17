@@ -18,6 +18,7 @@
 #'
 #' @return A list of lists containing the return levels and confidence 
 #' intervals for each slice. Each sub-list contains: 
+#' - `method`: "Bootstrap"
 #' - `estimates`: Estimated quantiles for each return period.
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
@@ -30,7 +31,13 @@
 #' transform sampling. For each bootstrapped sample, the parameters are re-estimated 
 #' using the specified `method`. Then, the bootstrapped parameters are used to compute 
 #' a new set of bootstrapped quantiles. Confidence intervals are obtained from the 
-#' empirical non-exceedance probabilities of the bootstrapped quantiles.
+#' empirical nonexceedance probabilities of the bootstrapped quantiles.
+#'
+#' @note
+#' The parametric bootstrap is known to give unreasonably wide confidence intervals 
+#' for small datasets. If this function detects a confidence interval that is 5+ times 
+#' wider than the return levels themselves, it will return an error and recommend 
+#' RFPL uncertainty quantification (with `uncertainty_rfpl`).
 #'
 #' @seealso \link{fit_lmom_fast}, \link{fit_maximum_likelihood}, \link{lmom_sample},
 #'   \link{quantile_fast}, \link{plot_sffa}, \link{plot_nsffa}
@@ -131,9 +138,14 @@ uncertainty_bootstrap_helper <- function(
 	probs <- c(alpha / 2, 1 - (alpha / 2))
 	ci <- apply(bootstrap, 1, quantile, probs = probs)
 
+	# Check for unreasonably large confidence intervals (5x the estimates)
+	if (any(ci[2, ] - ci[1, ] >= 5 * estimates)) {
+		stop("Bootstrap uncertainty quantification failed to converge. Try RFPL instead.")
+	}
+
 	# Generate the results as a list
 	list(
-		method = "S-bootstrap",
+		method = "Bootstrap",
 		periods = periods,
 		ci_lower = ci[1, ],
 		estimates = estimates,

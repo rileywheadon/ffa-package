@@ -7,8 +7,8 @@
 eda_sens_trend(data, years, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
@@ -31,7 +31,7 @@ A list containing the estimated trend:
 Computes Sen's trend estimator for a univariate time series.
 }
 \details{
-Sen's slope estimator is a robust, non-parametric trend estimator computed from
+Sen's slope estimator is a robust, nonparametric trend estimator computed from
 the median of all pairwise slopes between data points. The corresponding intercept
 is taken as the median of residual-corrected values.
 }

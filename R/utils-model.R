@@ -24,7 +24,7 @@ model_info <- function(model, trend = NULL) {
 
 # Helper function for computing covariates. A covariate is a normalized version of 
 # the year where 0 corresponds to the first year and 1 is the last year. Covariates
-# are used to fit parameters for non-stationary distributions.
+# are used to fit parameters for nonstationary distributions.
 get_covariates <- function(years) (years - 1900) / 100
 
 

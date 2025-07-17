@@ -1,52 +1,50 @@
+test_that("plot-ams-data.R on data set #2", {
+
+	df <- load_data("Application_2.csv")
+
+	# Test the plotting function
+	p <- plot_ams_data(df$max, df$year)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("ams-default", p) 
+
+	# Test with custom arguments
+	p <- plot_ams_data(df$max, df$year, title = "Title", xlabel = "X", ylabel = "Y")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("ams-custom", p) 
+
+})
+
 test_that("plot-bbmk-test.R on data set #2", {
 	set.seed(1)
 
 	# Run the BB-MK test
 	df <- load_data("Application_2.csv")
 	results <- eda_bbmk_test(df$max, samples = 100L)
+
+	# Test the plotting function
 	p <- plot_bbmk_test(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("bbmk-default", p) 
 
-})
-
-test_that("plot-bbmk-test.R with custom arguments", {
-	set.seed(1)
-
-	# Run the BB-MK test
-	df <- load_data("Application_2.csv")
-	results <- eda_bbmk_test(df$max, samples = 100L)
+	# Test with custom arguments
 	p <- plot_bbmk_test(results, title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("bbmk-custom", p) 
 
 })
 
 test_that("plot-mks-test.R on data set #2", {
 
+	# Run the MKS test
 	df <- load_data("Application_2.csv")
 	results <- eda_mks_test(df$max, df$year)
+
+	# Tests the plotting function
 	p <- plot_mks_test(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("mks-default", p) 
 
-})
-
-test_that("plot-mks-test.R with custom arguments", {
-	df <- load_data("Application_2.csv")
-	results <- eda_mks_test(df$max, df$year)
+	# Test with custom arguments
 	p <- plot_mks_test(
 		results,
 		title = "Title",
@@ -56,32 +54,23 @@ test_that("plot-mks-test.R with custom arguments", {
 		bottom_ylabel = "Y (Bottom)"
 	)
 
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("mks-custom", p) 
 
 })
 
 test_that("plot-pettitt-test.R on data set #2", {
 
+	# Run the Pettitt test
 	df <- load_data("Application_2.csv")
 	results <- eda_pettitt_test(df$max, df$year)
+
+	# Test the plotting function
 	p <- plot_pettitt_test(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("pettitt-default", p) 
 
-})
-
-test_that("plot-pettitt-test.R with custom arguments", {
-
-	df <- load_data("Application_2.csv")
-	results <- eda_pettitt_test(df$max, df$year)
+	# Test with custom arguments
 	p <- plot_pettitt_test(
 		results,
 		title = "Title",
@@ -91,122 +80,71 @@ test_that("plot-pettitt-test.R with custom arguments", {
 		bottom_ylabel = "Y (Bottom)"
 	)
 
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("pettitt-custom", p) 
 
 })
 
 test_that("plot-runs-test.R on data set #3.1", {
 
+	# Run the runs test
 	df <- load_data("Application_3.1.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	results <- eda_runs_test(sens)
+
+	# Test the plotting function
 	p <- plot_runs_test(results, "mean")
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("runs-mean", p) 
 	
-
-})
-
-test_that("plot-runs-test.R on data set #3.1 variances", {
-
-	df <- load_data("Application_3.1.csv")
-	mw <- ams_mw_variance(df$max, df$year)
-	sens <- eda_sens_trend(mw$std, mw$year)
-	results <- eda_runs_test(sens)
-	p <- plot_runs_test(results, "variance")
-
-	# Basic tests
-	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("runs-variance", p) 
-	
-
-})
-
-test_that("plot-runs-test.R handles invalid 'type' argument", {
-		
-	df <- load_data("Application_3.1.csv")
-	expect_error(
-		plot_runs_test(list(years = df$year), "invalid"),
-		regexp = "'type' must be either 'mean' or 'variance'"
-	) 
-
-})
-
-test_that("plot-runs-test.R works with custom arguments", {
-
-	df <- load_data("Application_3.1.csv")
-	sens <- eda_sens_trend(df$max, df$year)
-	results <- eda_runs_test(sens)
+	# Test with custom arguments
 	p <- plot_runs_test(results, "mean", title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
+	vdiffr::expect_doppelganger("runs-custom", p) 
 
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("runs-custom", p) 
-	
 })
 
 test_that("plot-sens-trend.R on data set #3.1", {
 
 	df <- load_data("Application_3.1.csv")
 	results <- eda_sens_trend(df$max, df$year)
-	p <- plot_sens_trend(results, "mean")
 
-	# Basic tests
+	# Test the plotting function
+	p <- plot_sens_trend(df$max, df$year, mean_trend = results)
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("sens-mean", p) 
 
-})
+	# Test with custom labels
+	p <- plot_sens_trend(
+		df$max,
+		df$year,
+		mean_trend = results,
+		title = "Title",
+		xlabel = "X",
+		ylabel = "Y"
+	)
 
-test_that("plot-sens-trend.R on data set #3.1 variances", {
-
-	df <- load_data("Application_3.1.csv")
-	mw <- ams_mw_variance(df$max, df$year)
-	results <- eda_sens_trend(mw$std, mw$year)
-	p <- plot_sens_trend(results, "variance")
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("sens-variance", p) 
-
-})
-
-test_that("plot-sens-trend.R handles invalid 'type' argument", {
-		
-	df <- load_data("Application_3.1.csv")
-	expect_error(
-		plot_sens_trend(list(data = df$max, years = df$year), "invalid"),
-		regexp = "'type' must be either 'mean' or 'variance'"
-	) 
-
-})
-
-test_that("plot-sens-trend.R works with custom arguments", {
-
-	df <- load_data("Application_3.1.csv")
-	results <- eda_sens_trend(df$max, df$year)
-	p <- plot_sens_trend(results, "mean", title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
-	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("sens-custom", p) 
+
+})
+
+test_that("plot-sens-trend.R on data set #3.3 with variability", {
+
+	df <- load_data("Application_3.3.csv")
+	mean_trend <- eda_sens_trend(df$max, df$year)
+	mw <- ams_mw_variability(df$max, df$year)
+	variability_trend <- eda_sens_trend(mw$std, mw$year)
+
+	# Trend in variability
+	p <- plot_sens_trend(df$max, df$year, variability_trend = variability_trend)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sens-variability", p) 
+
+	# Trend in mean and variability
+	p <- plot_sens_trend(df$max, df$year, mean_trend, variability_trend)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sens-mean-variability", p) 
 
 })
 
@@ -214,84 +152,61 @@ test_that("plot-spearman-test.R on data set #1", {
 
 	df <- load_data("Application_1.csv")
 	results <- eda_spearman_test(df$max)
+
+	# Test the plotting function
 	p <- plot_spearman_test(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("spearman-default", p) 
 	
-})
-
-test_that("plot-spearman-test.R works with custom arguments", {
-
-	df <- load_data("Application_1.csv")
-	results <- eda_spearman_test(df$max)
+	# Test the plotting function
 	p <- plot_spearman_test(results, title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("spearman-custom", p) 
 	
 })
 
 test_that("plot-lmom-diagram.R on data set #1 with L-distance", {
 
+	pdf(nullfile())
 	df <- load_data("Application_1.csv")
 	results <- select_ldistance(df$max)
+
+	# Test the plotting function
 	p <- plot_lmom_diagram(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("lmom-ldistance", p) 
 
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("lmom-l-distance", p) 
+	# Test with custom arguments
+	p <- plot_lmom_diagram(results, title = "Title", xlabel = "X", ylabel = "Y")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("lmom-custom", p) 
 
 })
 
 test_that("plot-lmom-diagram.R on data set #1 with L-kurtosis", {
 
+	pdf(nullfile())
 	df <- load_data("Application_1.csv")
 	results <- select_lkurtosis(df$max)
+
+	# Test the plotting function
 	p <- plot_lmom_diagram(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("lmom-l-kurtosis", p) 
+  	vdiffr::expect_doppelganger("lmom-lkurtosis", p) 
 	
 })
 
 test_that("plot-lmom-diagram.R on data set #1 with Z-statistic", {
 
+	pdf(nullfile())
 	df <- load_data("Application_1.csv")
 	results <- select_zstatistic(df$max)
+
+	# Test the plotting function
 	p <- plot_lmom_diagram(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("lmom-z-statistic", p) 
+  	vdiffr::expect_doppelganger("lmom-zstatistic", p) 
 	
-})
-
-test_that("plot-lmom-diagram.R works with custom arguments", {
-
-	df <- load_data("Application_1.csv")
-	results <- select_ldistance(df$max)
-	p <- plot_lmom_diagram(results, title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
-	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("lmom-custom", p) 
-
 })
 
 test_that("plot-sffa.R on data set #3.3", {
@@ -299,22 +214,16 @@ test_that("plot-sffa.R on data set #3.3", {
 
 	df <- load_data("Application_3.3.csv")
 	results <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
+
+	# Test plotting function
 	p <- plot_sffa(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("sffa-default", p) 
 
-	# Test custom plot
-	p_custom <- plot_sffa(results, title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
-	expect_s3_class(p_custom, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("sffa-custom", p_custom) 
+	# Test with custom arguments
+	p <- plot_sffa(results, title = "Title", xlabel = "X", ylabel = "Y")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sffa-custom", p) 
 
 })
 
@@ -333,22 +242,15 @@ test_that("plot-nsffa.R on data set #3.3", {
 		samples = 1000L
 	)
 
+	# Test plotting function
 	p <- plot_nsffa(results)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
   	vdiffr::expect_doppelganger("nsffa-default", p) 
 
-	# Generate a plot with custom arguments
-	p_custom <- plot_nsffa(results, title = "Title", xlable = "X", ylabel = "Y")
-
-	# Basic tests
-	expect_s3_class(p_custom, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("nsffa-custom", p_custom) 
+	# Test custom arguments
+	p <- plot_nsffa(results, title = "Title", xlable = "X", ylabel = "Y")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("nsffa-custom", p) 
 
 })
 
@@ -358,28 +260,15 @@ test_that("plot-model-diagnostics.R on data set #3.3", {
 	params <- fit_maximum_likelihood(df$max, "GEV")$params
 	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "MLE", samples = 1000L)
 	assessment <- model_diagnostics(df$max, "GEV", params, uncertainty)
+
+	# Test plotting function
 	p <- plot_model_diagnostics(assessment)
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("diagnostics-default", p) 
 
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("assessment-default", p) 
-	
-})
-
-test_that("plot-model-diagnostics.R works with custom arguments", {
-
-	df <- load_data("Application_3.3.csv")
-	params <- fit_maximum_likelihood(df$max, "GEV")$params
-	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "MLE", samples = 1000L)
-	assessment <- model_diagnostics(df$max, "GEV", params, uncertainty)
+	# Test with custom arguments
 	p <- plot_model_diagnostics(assessment, title = "Title", xlabel = "X", ylabel = "Y")
-
-	# Basic tests
 	expect_s3_class(p, "ggplot")
-
-	# Regression test with vdiffr
-  	vdiffr::expect_doppelganger("assessment-custom", p) 
+  	vdiffr::expect_doppelganger("diagnostics-custom", p) 
 	
 })

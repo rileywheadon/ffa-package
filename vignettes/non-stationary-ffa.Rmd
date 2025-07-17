@@ -4,7 +4,7 @@ output:
   rmarkdown::html_document:
     theme: readable
 vignette: >
-  %\VignetteIndexEntry{Non-Stationary FFA}
+  %\VignetteIndexEntry{Nonstationary FFA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
 
 This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis (FFA) under the assumption of nonstationarity.
 Readers unfamiliar with stationary FFA workflows should first consult the *Stationary FFA* vignette.
@@ -28,21 +27,28 @@ The framework supports three forms of nonstationarity, modelled as linear trends
 
 The shape parameter is treated as a constant considering its difficult estimation due to sample size limitations.
 
-## Setup
+## Case Study
 
-```{r setup}
+This vignette will explore data from the Bow River at Banff (05BB001) hydrological monitoring station.
+The remoteness of this station means that trends annual maxima are caused by changes in climate as opposed to changes in land use or cover.
+Data for this station is provided as `Application_3.1.csv` in the `ffaframework` package.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 library(ffaframework)
 
 csv_path <- system.file("extdata", "Application_3.1.csv", package = "ffaframework")
-df <- read.csv(csv_path)
+df <- read.csv(csv_path, comment.char = "#")
 df <- subset(df, !is.na(max)) # Remove missing values
 
 head(df)
+
+plot_ams_data(df$max, df$year, title = "Bow River at Banff (05BB001)")
 ```
 
-## The `trend` List
+### The `trend` List
 
 This vignette assumes a scenario where a trend in the mean has been identified.
+To specify a trend in the time series during FFA, create a `trend` list as shown below:
 
 ```{r}
 trend <- list(location = TRUE, scale = FALSE)
@@ -101,7 +107,7 @@ The covariate $t$ is a linear function of the years: $(\text{years} - 1900) / 10
 ## Uncertainty Quantification
 
 Uncertainty quantification is also essential for nonstationary probability distributions.
-In addition to sample bootstrapping, the framework implements the regula-falsi profile likelihood (RFPL) method for MLE.
+In addition to the parametric bootstrap, the framework implements the regula-falsi profile likelihood (RFPL) method for MLE.
 The `uncertainty_rfpl` method has two required arguments:
 
 - `data`: The annual maximum series observations. 

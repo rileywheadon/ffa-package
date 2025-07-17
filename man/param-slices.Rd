@@ -5,7 +5,7 @@
 \title{Parameter 'slices'}
 \arguments{
 \item{slices}{Numeric vector specifying the years at which to evaluate the
-return levels confidence intervals of a non-stationary probability distribution.
+return levels confidence intervals of a nonstationary probability distribution.
 The slices do not have to be elements of the \code{years} argument.}
 }
 \description{

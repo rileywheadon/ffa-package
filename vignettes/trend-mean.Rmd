@@ -1,0 +1,155 @@
+---
+title: "Trend Identification (Mean)"
+output: 
+  rmarkdown::html_document:
+    theme: readable
+vignette: >
+  %\VignetteIndexEntry{Trend Identification (Mean)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Many factors can produce *nonstationarity* in annual maximum series (AMS) data, including changes in climate, land use/cover, and water management.
+This vignette demonstrates how to use the `ffaframework` to check for evidence of nonstationarity in the mean of a time series.
+
+## List of Tests
+
+**Mean Trend Tests**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| `eda_mk_test`       | Tests for a monotonic trend (Mann-Kendall test).                   |
+| `eda_bbmk_test`     | Tests for a monotonic trend under serial correlation (block-bootstrap MK test). |
+
+ **Stationarity Tests**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| `eda_spearman_test` | Tests for serial correlation (Spearman test).                                 |
+| `eda_kpss_test`     | Tests for a stochastic trend (KPSS test). |
+| `eda_pp_test`       | Tests for a deterministic trend (Phillips-Perron test). |
+
+**Variability Trend Tests**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| MW-MK Test           | Tests for a trend in the variability (moving-window MK test)                            |
+| `eda_white_test`    | Tests for time-dependence in the variability (White test).   |
+
+**Trend Estimation (Mean & Variability)**
+
+| Function            | Purpose                                                       |
+|---------------------|---------------------------------------------------------------|
+| `eda_sens_trend`    | Estimates slope and intercept of a linear trend (Sen's slope estimator).|
+| `eda_runs_test`     | Evaluates residuals' structure under linear model assumptions (Wald-Wolfowitz runs test).  |
+
+## Case Study 
+
+This vignette will explore data from the Bow River at Banff (05BB001) hydrological monitoring station.
+The remoteness of this station means that trends annual maxima are caused by changes in climate as opposed to changes in land use or cover.
+Data for this station is provided as `Application_3.1.csv` in the `ffaframework` package.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+library(ffaframework)
+
+csv_path <- system.file("extdata", "Application_3.1.csv", package = "ffaframework")
+df <- read.csv(csv_path, comment.char = "#")
+df <- subset(df, !is.na(max)) # Remove missing values
+
+head(df)
+
+plot_ams_data(df$max, df$year, title = "Bow River at Banff (05BB001)")
+```
+
+## Assessing Trends in the Mean
+
+### Mann-Kendall (MK) Test
+
+The MK test is a non-parametric test used to detect monotonic trends in a time series.
+Under the null hypothesis, there is no trend.
+
+Pass a vector of annual maximum series (AMS) data to `eda_mk_test()` to perform the MK test. 
+
+```{r}
+mk_test <- eda_mk_test(df$max)
+
+print(mk_test$p_value)
+```
+
+**Conclusion**: At a p-value of $0.0067$, we *reject* the null hypothesis. 
+There is statistical evidence of a trend in the mean.
+
+### Spearman Test
+
+The Spearman test is used to check for *serial correlation*, which can cause the MK test to identify a spurious trend.
+The smallest lag at which the serial correlation is not statistically significant is known as the "least lag". 
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+spearman_test <- eda_spearman_test(df$max)
+
+print(spearman_test$least_lag)
+
+plot_spearman_test(spearman_test)
+```
+
+**Conclusion**: A least lag of 1 provides no evidence of serial correlation.
+
+### Further Tests 
+
+If the Spearman test identified serial correlation, we would use the block-bootstrap Mann-Kendall test (with `eda_bbmk_test`) to check for a monotonic trend under serial correlation.
+The BBMK test uses a reshuffling procedure to remove serial correlation from the data.
+
+The Phillips-Perron (`eda_pp_test`) and KPSS (`eda_kpss_test`) tests are used to check for a unit root (or *stochastic trend*) in the data.
+A unit root is an extreme type of serial correlation that creates unpredictable variation in the data.
+Since we did not find evidence of serial correlation in the Spearman test, it is not necessary to apply these tests.
+The Phillips-Perron and KPSS tests have opposite hypotheses: the Phillips-Perron assumes the presence of a unit root as the null hypothesis, while the KPSS test does not.
+
+### Sen's Trend Estimator
+
+While the Mann-Kendall identified a significant monotonic trend, it did not estimate its slope or intercept.
+We can estimate the monotonic trend using Sen's trend estimator, which uses a non-parametric approach that is robust to outliers.
+
+`eda_sens_trend()` takes two arguments: the annual maximum series and the corresponding vector of years.
+Then, `plot_sens_trend()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
+It also takes an optional trend in the mean (`mean_trend`), or a trend in the variability (`variability_trend`).
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+mean_trend <- eda_sens_trend(df$max, df$year)
+
+plot_sens_trend(df$max, df$year, mean_trend = mean_trend)
+```
+
+**Note**: The covariate is computed using the formula $(\text{years} - 1900) / 100$.
+
+### Runs Test
+
+The previous statistical tests have assumed the nonstationarity is linear.
+The Wald-Wolfowitz runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
+If the residuals are random (the null hypothesis), there is evidence that the underlying trend is linear.
+The `eda_runs_test()` function takes the output of `eda_sens_trend()` as an argument.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+runs_test <- eda_runs_test(mean_trend)
+
+print(runs_test$p_value)
+
+plot_runs_test(runs_test, "Runs Test (AMS Mean)")
+```
+
+**Conclusion**: At a p-value of $0.682$, there is evidence that a linear trend is suitable for the data.
+
+## Conclusion
+
+The Mann-Kendall test identified *evidence of nonstationarity in the mean of the AMS*.
+The Spearman test *did not find evidence of serial correlation*, validating the results of the Mann-Kendall test.
+The runs test found that a *linear model is suitable for the nonstationarity*.
+Flood frequency analysis of this dataset requires a time-dependent probability model.
+
+**Recommendation**: Use NS-FFA.

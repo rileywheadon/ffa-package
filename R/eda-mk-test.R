@@ -2,7 +2,7 @@
 #'
 #' Performs the Mann–Kendall trend test on a numeric vector to detect the presence 
 #' of a monotonic trend (increasing or decreasing) over time. The test is 
-#' non-parametric and accounts for tied observations in the data. The null
+#' nonparametric and accounts for tied observations in the data. The null
 #' hypothesis assumes there is no monotonic trend.
 #'
 #' @inheritParams param-data

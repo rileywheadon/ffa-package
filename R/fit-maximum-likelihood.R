@@ -26,7 +26,7 @@
 #'    up to 100 times if a maximum cannot be found.  
 #'
 #' @note Although the more modern \link[stats]{optim} function is preferred over 
-#' \link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports non-finite
+#' \link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports infinite
 #' values of the likelihood function. 
 #'
 #' @seealso \link{loglik_fast}, \link{general_loglik_fast}, \link{fit_lmom_fast},

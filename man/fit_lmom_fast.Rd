@@ -7,8 +7,8 @@
 fit_lmom_fast(data, model)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{model}{Character scalar. A three-character code indicating
 a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},

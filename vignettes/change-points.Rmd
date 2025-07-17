@@ -26,16 +26,22 @@ The FFA framework provides two statistical tests for change point detection:
 
 This vignette will demonstrate how these statistical tests can be used together to robustly identify change points in the data.
 
-## Setup 
+## Case Study
 
-```{r setup}
+This vignette will explore the Kootenai River at Porthill (08NH021) station, located on the border of British Columbia and Idaho.
+The Porthill station is also downstream of the Libby Dam, which finished construction in 1972.
+Data for this station is provided as `Application_2.csv` in the `ffaframework` package.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 library(ffaframework)
 
 csv_path <- system.file("extdata", "Application_2.csv", package = "ffaframework")
-df <- read.csv(csv_path)
+df <- read.csv(csv_path, comment.char = "#")
 df <- subset(df, !is.na(max)) # Remove missing values
 
 head(df)
+
+plot_ams_data(df$max, df$year, title = "Kootenai River at Porthill (08NH021)")
 ```
 
 ## The Pettitt Test
@@ -58,7 +64,7 @@ print(pettitt_test$change_year)
 plot_pettitt_test(pettitt_test)
 ```
 
-**Conclusion**: A p-value <0.001 provides strong evidence of a change point in the year 1972.
+**Conclusion**: A p-value of <0.001 provides strong evidence of a change point in the year 1972.
 
 ## The MKS Test
 

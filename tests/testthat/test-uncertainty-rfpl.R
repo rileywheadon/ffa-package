@@ -317,3 +317,20 @@ test_that("Test RFGPL uncertainty on data set #1", {
 	)
 
 })
+
+test_that("convergence errors are caught.", {
+
+	# Load dataset and run RFPL uncertainty quantification
+	df <- load_data("Application_4.csv")
+
+	expect_error(uncertainty_rfpl(
+		df$max,
+		"GLO",
+		years = df$year,
+		trend = trend_01,
+		slices = 1900
+	), "RFPL uncertainty quantification failed to converge.")
+
+})
+
+

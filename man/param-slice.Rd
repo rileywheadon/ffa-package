@@ -5,7 +5,7 @@
 \title{Parameter 'slice'}
 \arguments{
 \item{slice}{Numeric scalar specifying the year at which to evaluate the
-quantiles of a non-stationary probability distribution.  The slice does not
+quantiles of a nonstationary probability distribution.  The slice does not
 have to be an element of the \code{years} argument. Note that if \code{trend$location}
 and \code{trend$scale} are both \code{FALSE}, this argument will have  no effect the
 output of the function.}

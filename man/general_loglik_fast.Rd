@@ -7,8 +7,8 @@
 general_loglik_fast(data, model, params, prior, years, trend)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{model}{Character scalar. A three-character code indicating
 a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
@@ -26,7 +26,7 @@ Only used when \code{model = "GEV"}.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{trend}{Named list indicating which distribution parameters are
-modeled as non-stationary. Must contain:
+modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.

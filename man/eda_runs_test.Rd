@@ -36,7 +36,7 @@ returned along with a human-readable summary message.
 }
 \details{
 The Wald–Wolfowitz runs test examines the sequence of residuals to test for
-randomness around the median. A small p-value suggests non-random clustering,
+randomness around the median. A small p-value suggests nonrandom clustering,
 which may indicate that a linear model is inappropriate for the data.
 }
 \examples{

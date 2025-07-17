@@ -1,7 +1,7 @@
 #' Parameter 'data'
 #'
-#' @param data Numeric vector of annual maximum streamflow (AMS) values.
-#'   Must be strictly positive, finite, and non-missing.
+#' @param data Numeric vector of annual maximum series (AMS) values.
+#'   Must be strictly positive, finite, and not missing.
 #'
 #' @name param-data
 #'
@@ -73,7 +73,7 @@ NULL
 #' Parameter 'trend'
 #'
 #' @param trend Named list indicating which distribution parameters are 
-#'   modeled as non-stationary. Must contain:
+#'   modeled as nonstationary. Must contain:
 #'   - `location`: Logical scalar. If `TRUE`, the location parameter has a trend.
 #'   - `scale`: Logical scalar. If `TRUE`, the scale parameter has a trend.
 #'
@@ -85,7 +85,7 @@ NULL
 #' Parameter 'slice'
 #'
 #' @param slice Numeric scalar specifying the year at which to evaluate the 
-#' quantiles of a non-stationary probability distribution.  The slice does not 
+#' quantiles of a nonstationary probability distribution.  The slice does not 
 #' have to be an element of the `years` argument. Note that if `trend$location` 
 #' and `trend$scale` are both `FALSE`, this argument will have  no effect the 
 #' output of the function.
@@ -98,7 +98,7 @@ NULL
 #' Parameter 'slices'
 #'
 #' @param slices Numeric vector specifying the years at which to evaluate the 
-#' return levels confidence intervals of a non-stationary probability distribution. 
+#' return levels confidence intervals of a nonstationary probability distribution. 
 #' The slices do not have to be elements of the `years` argument. 
 #'
 #' @name param-slices

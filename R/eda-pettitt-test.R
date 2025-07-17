@@ -1,6 +1,6 @@
 #' Pettitt Test for Abrupt Changes in the Mean of a Time Series
 #'
-#' Performs the non-parametric Pettitt test to detect a single change point in the
+#' Performs the nonparametric Pettitt test to detect a single change point in the
 #' mean of a time series, used to identify abrupt shifts in hydrological data.
 #'
 #' @inheritParams param-data
@@ -21,7 +21,7 @@
 #' - `msg`: Character scalar. A formatted summary message describing the test result.
 #'
 #' @details
-#' The Pettitt test is a rank-based non-parametric test that evaluates the
+#' The Pettitt test is a rank-based nonparametric test that evaluates the
 #' hypothesis of a change point in the mean of a time series. It computes the 
 #' maximum of the absolute value of the U-statistic over all possible split 
 #' points. The p-value is approximated using an asymptotic formula.

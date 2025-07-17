@@ -7,8 +7,8 @@
 select_zstatistic(data, samples = 10000L)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{samples}{Integer scalar. The number of bootstrap samples. Default is 10000.}
 }

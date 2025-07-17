@@ -1,6 +1,6 @@
 #' Generalized Log-Likelihood Functions for GEV Models
 #'
-#' Computes the generalized log-likelihood for stationary and non-stationary 
+#' Computes the generalized log-likelihood for stationary and nonstationary 
 #' variants of the  Generalized Extreme Value (GEV) distribution with a Beta 
 #' prior on the shape parameter.
 #' 

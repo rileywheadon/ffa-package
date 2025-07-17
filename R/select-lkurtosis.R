@@ -2,8 +2,8 @@
 #'
 #' Selects a probability distribution by minimizing the absolute distance
 #' between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis 
-#' (\eqn{t_4}). For 3-parameter distributions, we use the shape parameter that 
-#' best replicates the sample L-skewness (\eqn{t_3}) of the data.
+#' (\eqn{t_4}). Only supports 3-parameter distributions. The  sample L-skewness 
+#' (\eqn{t_3}) is used to determine the shape parameter.
 #'
 #' @inheritParams param-data
 #'
@@ -48,12 +48,8 @@ select_lkurtosis <- function(data) {
 		# Determine the sample L-moments (regular or log)
 		t3_t4 <- if (info$log) log_t3_t4 else reg_t3_t4
 
-		# Compute the L-kurtosis metric directly for two-parameter distributions 
-		if (info$n_params == 2) {
-			tau3_tau4 <- lmom_fast(model, c(0, 1))[3:4]
-			metrics[[model]] <- abs(tau3_tau4[2] - t3_t4[2])
-			next
-		}
+		# Skip two-parameter distributions 
+		if (info$n_params == 2) next
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {

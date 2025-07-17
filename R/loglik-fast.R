@@ -31,7 +31,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 	if (any(is.nan(params))) return (-Inf)
 	if (any(is.nan(data))) return (-Inf)
 
-	# Transform non-stationary parmaeters into a vector of stationary parameters
+	# Transform nonstationary parmaeters into a vector of stationary parameters
 	if (trend$location) {
 		u <- params[1] + (covariate * params[2])
 	} else {

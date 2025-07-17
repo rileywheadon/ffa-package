@@ -32,8 +32,8 @@ fit_lmom_lp3(data)
 fit_lmom_wei(data)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 }
 \value{
 A numeric vector of parameters:

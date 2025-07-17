@@ -1,7 +1,7 @@
 # Helper function to load a data file, remove NA values, and return as a list
 load_data <- function(file_name) {
 	csv_path <- system.file("extdata", file_name, package = "ffaframework")
-	df <- read.csv(csv_path)
+	df <- read.csv(csv_path, comment.char = "#")
 	df[which(!is.na(df$max)), ]
 }
 

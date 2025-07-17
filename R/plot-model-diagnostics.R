@@ -1,7 +1,7 @@
 #' Plot Model Assessment Results
 #'
 #' @description
-#' Creates a quantile–quantile plot comparing observed annual maximum streamflow (AMS)
+#' Creates a quantile–quantile plot comparing observed annual maximum series (AMS)
 #' data to quantile estimates from a fitted parametric model. The 1:1 line is drawn in 
 #' black and the model estimates are plotted as semi‐transparent red points.
 #'

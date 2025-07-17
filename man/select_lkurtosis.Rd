@@ -7,8 +7,8 @@
 select_lkurtosis(data)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 }
 \value{
 A list with the results of distribution selection:
@@ -22,8 +22,8 @@ A list with the results of distribution selection:
 \description{
 Selects a probability distribution by minimizing the absolute distance
 between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis
-(\eqn{t_4}). For 3-parameter distributions, we use the shape parameter that
-best replicates the sample L-skewness (\eqn{t_3}) of the data.
+(\eqn{t_4}). Only supports 3-parameter distributions. The  sample L-skewness
+(\eqn{t_3}) is used to determine the shape parameter.
 }
 \details{
 This method computes the distance between the sample and theoretical L-kurtosis

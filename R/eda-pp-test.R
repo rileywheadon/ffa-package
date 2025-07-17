@@ -1,8 +1,8 @@
 #' Phillips–Perron Unit Root Test
 #'
 #' Applies the Phillips–Perron (PP) test to check for a unit root in annual
-#' maximum streamflow (AMS) data. The null hypothesis is that the series contains a 
-#' unit root (and is thus non-stationary). This implementation of the PP test assumes 
+#' maximum series (AMS) data. The null hypothesis is that the series contains a 
+#' unit root (and is thus nonstationary). This implementation of the PP test assumes 
 #' the time series has both stationary drift and a linear trend.
 #'
 #' @inheritParams param-data

@@ -7,8 +7,8 @@
 eda_kpss_test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -27,10 +27,10 @@ A list containing the test results, including:
 }
 }
 \description{
-Performs the KPSS unit root test on annual maximum streamflow (AMS) data.
+Performs the KPSS unit root test on annual maximum series (AMS) data.
 The null hypothesis is that the time series is trend-stationary with a linear
 trend and constant drift. The alternative hypothesis is that the time series
-has a unit root and is non-stationary.
+has a unit root and is nonstationary.
 }
 \details{
 The implementation of the KPSS test is based on the \pkg{aTSA} package, which

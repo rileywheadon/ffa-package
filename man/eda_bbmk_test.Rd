@@ -7,8 +7,8 @@
 eda_bbmk_test(data, alpha = 0.05, samples = 10000L, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -32,7 +32,7 @@ List; the results of the test, including:
 }
 \description{
 Performs a bootstrapped version of the Mann-Kendall trend test to account
-for serial correlation in annual maximum streamflow (AMS) data. The procedure
+for serial correlation in annual maximum series (AMS) data. The procedure
 uses Spearman’s autocorrelation test to estimate the least insignificant lag,
 then applies a bootstrap procedure to obtain the empirical p-value and confidence
 bounds for the Mann-Kendall S-statistic.

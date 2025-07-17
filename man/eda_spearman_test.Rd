@@ -7,8 +7,8 @@
 eda_spearman_test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -28,7 +28,7 @@ A list containing the test results, including:
 }
 }
 \description{
-Performs the Spearman rank autocorrelation test on annual maximum streamflow
+Performs the Spearman rank autocorrelation test on annual maximum series
 (AMS) data to check for autocorrelation at various lags. Reports the smallest
 lag where the autocorrelation is not statistically significant at the given
 significance level.

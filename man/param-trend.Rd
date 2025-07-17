@@ -5,7 +5,7 @@
 \title{Parameter 'trend'}
 \arguments{
 \item{trend}{Named list indicating which distribution parameters are
-modeled as non-stationary. Must contain:
+modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.

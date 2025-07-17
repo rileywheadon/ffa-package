@@ -2,7 +2,7 @@
 % Please edit documentation in R/uncertainty-bootstrap.R
 \name{uncertainty_bootstrap}
 \alias{uncertainty_bootstrap}
-\title{Sample Bootstrap Confidence Intervals for Flood Quantile Estimates}
+\title{Parametric Bootstrap Confidence Intervals for Flood Quantile Estimates}
 \usage{
 uncertainty_bootstrap(
   data,
@@ -18,8 +18,8 @@ uncertainty_bootstrap(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum streamflow (AMS) values.
-Must be strictly positive, finite, and non-missing.}
+\item{data}{Numeric vector of annual maximum series (AMS) values.
+Must be strictly positive, finite, and not missing.}
 
 \item{model}{Character scalar. A three-character code indicating
 a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
@@ -36,14 +36,14 @@ Only used when \code{model = "GEV"}.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{trend}{Named list indicating which distribution parameters are
-modeled as non-stationary. Must contain:
+modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
 \item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
 }}
 
 \item{slices}{Numeric vector specifying the years at which to evaluate the
-return levels confidence intervals of a non-stationary probability distribution.
+return levels confidence intervals of a nonstationary probability distribution.
 The slices do not have to be elements of the \code{years} argument.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
@@ -58,6 +58,7 @@ All entries must be greater than or equal to 1.}
 A list of lists containing the return levels and confidence
 intervals for each slice. Each sub-list contains:
 \itemize{
+\item \code{method}: "Bootstrap"
 \item \code{estimates}: Estimated quantiles for each return period.
 \item \code{ci_lower}: Lower bound of the confidence interval for each return period.
 \item \code{ci_upper}: Upper bound of the confidence interval for each return period.
@@ -68,7 +69,7 @@ intervals for each slice. Each sub-list contains:
 }
 \description{
 Computes estimates and confidence intervals for return levels at return periods
-2, 5, 10, 20, 50, and 100 years using the sample bootstrap method. This function
+2, 5, 10, 20, 50, and 100 years using the parametric bootstrap method. This function
 supports a variety of probability models and parameter estimation methods.
 }
 \details{
@@ -76,7 +77,13 @@ The bootstrap procedure samples from the fitted distribution via inverse
 transform sampling. For each bootstrapped sample, the parameters are re-estimated
 using the specified \code{method}. Then, the bootstrapped parameters are used to compute
 a new set of bootstrapped quantiles. Confidence intervals are obtained from the
-empirical non-exceedance probabilities of the bootstrapped quantiles.
+empirical nonexceedance probabilities of the bootstrapped quantiles.
+}
+\note{
+The parametric bootstrap is known to give unreasonably wide confidence intervals
+for small datasets. If this function detects a confidence interval that is 5+ times
+wider than the return levels themselves, it will return an error and recommend
+RFPL uncertainty quantification (with \code{uncertainty_rfpl}).
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
