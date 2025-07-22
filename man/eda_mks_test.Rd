@@ -28,7 +28,7 @@ A list containing the test results, including:
 \item \code{s_regressive}: Normalized regressive Mann–Kendall-Sneyers statistics.
 \item \code{bound}: Critical confidence bound for significance based on \code{alpha}.
 \item \code{crossing_df}: Crossing points, including indices, years, statistics, and AMS.
-\item \code{change_df}: Subset of \code{crossing.df} with statistically significant crossings.
+\item \code{change_df}: Subset of \code{crossing_df} with statistically significant crossings.
 \item \code{p_value}: Two-sided p-value derived from the maximum crossing statistic.
 \item \code{reject}: Logical. If \code{TRUE}, the null hypothesis of no change point is rejected.
 \item \code{msg}: Character string summarizing the test result (printed if \code{quiet = FALSE}).
@@ -58,5 +58,5 @@ Sneyers, R. (1990). On the statistical analysis of series of observations.
 Technical note No. 143, World Meteorological Organization, Geneva.
 }
 \seealso{
-\link{plot_mks_test}
+\code{\link[=plot_mks_test]{plot_mks_test()}}
 }

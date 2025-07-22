@@ -1,6 +1,6 @@
 #' Sen's Trend Estimator
 #'
-#' Computes Sen's trend estimator for a univariate time series.
+#' Computes Sen's linear trend estimator for a univariate time series.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years
@@ -15,15 +15,15 @@
 #' - `msg`: Character string summarizing the results.
 #'
 #' @details
-#' Sen's slope estimator is a robust, nonparametric trend estimator computed from 
-#' the median of all pairwise slopes between data points. The corresponding intercept 
-#' is taken as the median of residual-corrected values. 
+#' Sen's slope estimator is a robust, nonparametric trend estimator based on the 
+#' median of all pairwise slopes between data points. The corresponding intercept 
+#' is the median of each \eqn{y_i - mx_i} where \eqn{m} is the estimated slope.
 #'
 #' @references
 #' Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau.
 #' \emph{Journal of the American Statistical Association}, 63(324), 1379–1389. 
 #'
-#' @seealso \link{eda_runs_test}, \link{plot_sens_trend}
+#' @seealso [eda_runs_test()], [plot_sens_trend()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

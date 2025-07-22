@@ -1,7 +1,7 @@
-test_that("fit_lmom methods work on data set #1", {
+test_that("fit_lmom methods work on ATHABASCA RIVER (07BE001)", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 
 	# Gumbel (GUM) Distribution
 	GUM <- fit_lmom_gum(df$max)$params
@@ -57,10 +57,10 @@ test_that("fit_lmom methods work on data set #1", {
 })
 
 
-test_that("fit_lmom methods work on data set #2", {
+test_that("fit_lmom methods work on KOOTENAI RIVER (08NH021)", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 
 	# Gumbel (GUM) Distribution
 	GUM <- fit_lmom_gum(df$max)$params
@@ -115,10 +115,10 @@ test_that("fit_lmom methods work on data set #2", {
 
 })
 
-test_that("fit_lmom methods work on data set #3.1", {
+test_that("fit_lmom methods work on BOW RIVER (05BB001)", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 
 	# Gumbel (GUM) Distribution
 	GUM <- fit_lmom_gum(df$max)$params
@@ -174,10 +174,10 @@ test_that("fit_lmom methods work on data set #3.1", {
 })
 
 
-test_that("fit_lmom methods work on data set #3.2", {
+test_that("fit_lmom methods work on CHILLIWACK RIVER (08MH016)", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.2.csv")
+	df <- data_local("CAN-08MH016.csv")
 
 	# Gumbel (GUM) Distribution
 	GUM <- fit_lmom_gum(df$max)$params
@@ -233,10 +233,10 @@ test_that("fit_lmom methods work on data set #3.2", {
 })
 
 
-test_that("fit_lmom methods work on data set #3.3", {
+test_that("fit_lmom methods work on OKANAGAN RIVER (08NM050)", {
 
 	# Load dataset and run L-moments estimation
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 
 	# Gumbel (GUM) Distribution
 	GUM <- fit_lmom_gum(df$max)$params

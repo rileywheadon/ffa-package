@@ -8,23 +8,25 @@
 #' @inheritParams param-data
 #'
 #' @details 
-#' First, the sample L-moments of the data are computed using the \link{lmom_sample}
-#' method. Then, the \link[stats]{optim} function is used to determine the
-#' parameters by minimizing the `sumquad.tau3tau4` helper function. The implementation of
-#' this routine is based on the deprecated `homtest` package.
+#' First, the sample L-moments of the data are computed using the [lmom_sample()]
+#' method. Then, the [stats::optim()] function is used to determine the parameters 
+#' by minimizing the euclidian distance between the sample and theoretical L-moment
+#' ratios. The implementation of this routine is based on the deprecated `homtest` 
+#' package, formerly avilable at \url{https://CRAN.R-project.org/package=homtest}.
 #'
-#' @return A numeric vector of four parameters in the order location, scale, 
-#'   shape (1), shape (2).
+#' @return A list containing the results of parameter estimation:
+#' - `method`: `"L-moments"`.
+#' - `params`: numeric vector of 4 parameters in the order location, scale, shape (2).
 #'
-#' @references
-#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
-#' on L-Moments. Cambridge University Press, New York, USA.
-#'
-#' @seealso \link{lmom_sample}, \link{fit_lmom_fast}, \link{fit_lmom_methods}
+#' @seealso [lmom_sample()], [fit_lmom_fast()], [fit_lmom_xxx()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' fit_lmom_kappa(data)
+#'
+#' @references
+#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
+#' on L-Moments. Cambridge University Press, New York, USA.
 #'
 #' @export
 fit_lmom_kappa <- function(data) {
@@ -38,12 +40,12 @@ fit_lmom_kappa <- function(data) {
 	t3 <- moments[3]
 	t4 <- moments[4]
 
-    result <- optim(c(1, 1), sumquad.tau3tau4, t3.t4 = c(t3, t4))
+    result <- optim(c(1, 1), sumquad_tau3tau4, t3.t4 = c(t3, t4))
 
     if (result$value != -1) {
         k <- result$par[1]
         h <- result$par[2]
-        params <- mu.sigma(l1, l2, k, h)
+        params <- mu_sigma(l1, l2, k, h)
         mu <- params$mu
         sigma <- params$sigma
     }
@@ -55,7 +57,7 @@ fit_lmom_kappa <- function(data) {
 #' Compute L-moment Distance for Kappa Distribution
 #'
 #' @keywords internal
-sumquad.tau3tau4 = function (k.h, t3.t4) {
+sumquad_tau3tau4 = function (k.h, t3.t4) {
 
 	k <- k.h[1]
 	h <- k.h[2]
@@ -63,7 +65,7 @@ sumquad.tau3tau4 = function (k.h, t3.t4) {
 	t4 <- t3.t4[2]
 
 	if (((k < -1) && (h >= 0)) || ((h < 0) && ((k <= -1) || (k >= -1/h)))) {
-		stop("invalid parameters")
+		stop("Invalid parameters")
 	}
 
 	g <- c(0,0,0,0)
@@ -102,10 +104,10 @@ sumquad.tau3tau4 = function (k.h, t3.t4) {
 #' Compute Location and Scale of Kappa Distribution
 #'
 #' @keywords internal
-mu.sigma = function (l1, l2, k, h) {
+mu_sigma = function (l1, l2, k, h) {
 
 	if (((k < -1) && (h >= 0)) || ((h < 0) && ((k <= -1) || (k >= -1/h)))) {
-		stop("invalid parameters")
+		stop("Invalid parameters")
 	}
 
 	g <- c(0,0)

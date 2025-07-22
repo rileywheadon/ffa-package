@@ -1,8 +1,6 @@
 ---
 title: "Nonstationary FFA"
-output: 
-  rmarkdown::html_document:
-    theme: readable
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Nonstationary FFA}
   %\VignetteEngine{knitr::rmarkdown}

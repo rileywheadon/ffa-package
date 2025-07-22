@@ -17,7 +17,7 @@
 #' - `s_regressive`: Normalized regressive Mann–Kendall-Sneyers statistics.
 #' - `bound`: Critical confidence bound for significance based on `alpha`.
 #' - `crossing_df`: Crossing points, including indices, years, statistics, and AMS.
-#' - `change_df`: Subset of `crossing.df` with statistically significant crossings.
+#' - `change_df`: Subset of `crossing_df` with statistically significant crossings.
 #' - `p_value`: Two-sided p-value derived from the maximum crossing statistic.
 #' - `reject`: Logical. If `TRUE`, the null hypothesis of no change point is rejected.
 #' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
@@ -29,16 +29,16 @@
 #' sign are identified using linear interpolation. The significance of detected 
 #' crossings is assessed using quantiles of the normal distribution.
 #'
-#' @references
-#' Sneyers, R. (1990). On the statistical analysis of series of observations.
-#' Technical note No. 143, World Meteorological Organization, Geneva.
-#'
-#' @seealso \link{plot_mks_test}
+#' @seealso [plot_mks_test()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
 #' eda_mks_test(data, years)
+#'
+#' @references
+#' Sneyers, R. (1990). On the statistical analysis of series of observations.
+#' Technical note No. 143, World Meteorological Organization, Geneva.
 #'
 #' @importFrom stats pnorm qnorm lm coef
 #' @export

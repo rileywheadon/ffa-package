@@ -1,13 +1,10 @@
 # NOTE: Tolerance is higher in some tests because of randomness in the bootstrap
-test_that("Test z-statistic.R on data set #1", {
+test_that("select-zstatistic.R works on ATHABASCA RIVER (07BE001)", {
 	set.seed(1)
 
-	# Run Z-statistic selection with optional profiling
-	start <- Sys.time()
-	df <- load_data("Application_1.csv")
+	# Load dataset and run Z-statistic selection 
+	df <- data_local("CAN-07BE001.csv")
 	results <- select_zstatistic(df$max, samples = 25000L)
-	end <- Sys.time()
-	# print(end - start)
 
 	# Check the Kappa distribution parameters (only k and h)
 	expect_equal(results$reg_params[3], -0.1544, tol = 1e-3)
@@ -34,12 +31,13 @@ test_that("Test z-statistic.R on data set #1", {
 
 })
 
-
-test_that("Test z-statistic.R on data set #2", {
+# NOTE: Skip the remainder of the tests on CRAN to keep the test suite light
+test_that("select-zstatistic.R works on KOOTENAI RIVER (08NH021)", {
+	skip_on_cran()
 	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
@@ -67,11 +65,12 @@ test_that("Test z-statistic.R on data set #2", {
 
 })
 
-test_that("Test z-statistic.R on data set #3.1", {
+test_that("select-zstatistic.R works on BOW RIVER (05BB001)", {
+	skip_on_cran()
 	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
@@ -99,11 +98,12 @@ test_that("Test z-statistic.R on data set #3.1", {
 
 })
 
-test_that("Test z-statistic.R on data set #3.2", {
+test_that("select-zstatistic.R works on CHILLIWACK RIVER (08MH016)", {
+	skip_on_cran()
 	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
-	df <- load_data("Application_3.2.csv")
+	df <- data_local("CAN-08MH016.csv")
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
@@ -131,11 +131,12 @@ test_that("Test z-statistic.R on data set #3.2", {
 
 })
 
-test_that("Test z-statistic.R on data set #3.3", {
+test_that("select-zstatistic.R works on OKANAGAN RIVER (08NM050)", {
+	skip_on_cran()
 	set.seed(1)
 
 	# Load dataset and run Z-statistic selection
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)

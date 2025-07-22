@@ -6,11 +6,11 @@
 \usage{
 uncertainty_bootstrap(
   data,
-  model,
+  distribution,
   method,
   prior = NULL,
   years = NULL,
-  trend = NULL,
+  structure = NULL,
   slices = 1900,
   alpha = 0.05,
   samples = 10000L,
@@ -21,8 +21,8 @@ uncertainty_bootstrap(
 \item{data}{Numeric vector of annual maximum series (AMS) values.
 Must be strictly positive, finite, and not missing.}
 
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
+\item{distribution}{Character scalar. A three-character code indicating
+a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 
 \item{method}{Character scalar specifying the estimation method.
@@ -30,12 +30,12 @@ Must be \code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}.}
 
 \item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
 parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{model = "GEV"}.}
+Only used when \code{distribution = "GEV"}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{trend}{Named list indicating which distribution parameters are
+\item{structure}{Named list indicating which distribution parameters are
 modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
@@ -63,19 +63,20 @@ intervals for each slice. Each sub-list contains:
 \item \code{ci_lower}: Lower bound of the confidence interval for each return period.
 \item \code{ci_upper}: Upper bound of the confidence interval for each return period.
 \item \code{t}: Vector of return periods; \code{c(2, 5, 10, 20, 50, 100)}.
-\item \code{slice}: The value of \code{slice} argument.
-\item \code{trend}: The value of \code{trend} argument.
+\item \code{slice}: The value of the \code{slice} argument.
+\item \code{structure}: The value of the \code{structure} argument.
 }
 }
 \description{
-Computes estimates and confidence intervals for return levels at return periods
-2, 5, 10, 20, 50, and 100 years using the parametric bootstrap method. This function
-supports a variety of probability models and parameter estimation methods.
+Computes return level estimates and confidence intervals at the specified return
+periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the parametric bootstrap
+method. This function supports a variety of probability models and parameter estimation
+methods.
 }
 \details{
 The bootstrap procedure samples from the fitted distribution via inverse
 transform sampling. For each bootstrapped sample, the parameters are re-estimated
-using the specified \code{method}. Then, the bootstrapped parameters are used to compute
+using the \code{method} argument. Then, the bootstrapped parameters are used to compute
 a new set of bootstrapped quantiles. Confidence intervals are obtained from the
 empirical nonexceedance probabilities of the bootstrapped quantiles.
 }
@@ -91,7 +92,12 @@ years <- seq(from = 1901, to = 2000)
 uncertainty_bootstrap(data, "WEI", "L-moments")
 
 }
+\references{
+Vidrio-Sahagún, C.T., He, J. Enhanced profile likelihood method for the nonstationary
+hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022).
+\doi{10.1016/j.advwatres.2022.104151}
+}
 \seealso{
-\link{fit_lmom_fast}, \link{fit_maximum_likelihood}, \link{lmom_sample},
-\link{quantile_fast}, \link{plot_sffa}, \link{plot_nsffa}
+\code{\link[=fit_lmom_fast]{fit_lmom_fast()}}, \code{\link[=fit_maximum_likelihood]{fit_maximum_likelihood()}}, \code{\link[=lmom_sample]{lmom_sample()}},
+\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=plot_sffa]{plot_sffa()}}, \code{\link[=plot_nsffa]{plot_nsffa()}}
 }

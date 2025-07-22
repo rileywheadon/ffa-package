@@ -5,7 +5,7 @@
 #' p-value is compared to the significance level `alpha`, and a decision is 
 #' returned along with a human-readable summary message.
 #'
-#' @param results A fitted linear model produced by \link{eda_sens_trend}.
+#' @param results A fitted linear model produced by [eda_sens_trend()].
 #'
 #' @inheritParams param-alpha
 #' @inheritParams param-quiet
@@ -13,7 +13,8 @@
 #' @return A list containing the test results, including:
 #' - `residuals`: Numeric vector of residual values from a fitted linear model.
 #' - `n`: The length of the residuals vector after removing the median.
-#' - `n_plus`, `n_minus`: The number of residuals above/below the median.
+#' - `n_plus`: The number of residuals above the median.
+#' - `n_minus`: The number of residuals below the median.
 #' - `runs`: The number of runs in the transformed sequence of residuals.
 #' - `statistic`: The runs test statistic, computed using `runs`.
 #' - `p_value`: P-value from the Wald–Wolfowitz runs test applied to residuals.
@@ -29,7 +30,7 @@
 #' Wald, A. and Wolfowitz, J. (1940). On a test whether two samples are from the 
 #' same population. Annals of Mathematical Statistics, 11(2), 147–162.
 #'
-#' @seealso \link{plot_runs_test}, \link{eda_sens_trend}
+#' @seealso [plot_runs_test()], [eda_sens_trend()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

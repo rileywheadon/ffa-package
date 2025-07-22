@@ -1,8 +1,6 @@
 ---
 title: "Introduction"
-output: 
-  rmarkdown::html_document:
-    theme: readable
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}

@@ -38,7 +38,11 @@ data <- rnorm(n = 100, mean = 100, sd = 10)
 select_ldistance(data)
 
 }
+\references{
+Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based
+on L-Moments. Cambridge University Press, New York, USA.
+}
 \seealso{
-\link{lmom_sample}, \link{select_lkurtosis}, \link{select_zstatistic},
-\link{plot_lmom_diagram}
+\code{\link[=lmom_sample]{lmom_sample()}}, \code{\link[=select_lkurtosis]{select_lkurtosis()}}, \code{\link[=select_zstatistic]{select_zstatistic()}},
+\code{\link[=plot_lmom_diagram]{plot_lmom_diagram()}}
 }

@@ -7,16 +7,12 @@
 lmom_fast(model, params)
 }
 \arguments{
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
-\code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
-
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
-\code{model} and \code{trend}.}
+\code{distribution} and \code{structure}.}
 }
 \value{
-A numeric vector of length 4 containing:
+A numeric vector of with four elements:
 \itemize{
 \item \eqn{\lambda_1}: L-mean
 \item \eqn{\lambda_2}: L-variance
@@ -25,13 +21,13 @@ A numeric vector of length 4 containing:
 }
 }
 \description{
-A helper function used by \link{lmom_theoretical}.
-This function does not validate parameters and is intended for internal use.
+A helper function used by \code{\link[=lmom_theoretical]{lmom_theoretical()}}.
+This function does not validate parameters and is designed for use in other methods.
 }
 \note{
-L-moment ratios for \code{NOR}/\code{LNO} and \code{PE3}/\code{LP3} are identical since
-it L-moments for the \code{LNO}/\code{LP3} distributions are compared with the
-sample L-moments of the logarithm of the data internally.
+This function returns identical L-moment ratios for \code{"NOR"}/\code{"LNO"} and
+\code{"PE3"}/\code{"LP3"} since L-moments for the \code{"LNO"} and \code{"LP3"} distributions are
+compared with the sample L-moments of log-transformed data internally.
 }
 \examples{
 lmom_fast("GLO", c(0, 1, 0))
@@ -42,5 +38,5 @@ Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach b
 on L-Moments. Cambridge University Press, New York, USA.
 }
 \seealso{
-\link{lmom_theoretical}
+\code{\link[=lmom_theoretical]{lmom_theoretical()}}
 }

@@ -94,7 +94,7 @@ validate_enum <- function(name, x) {
 	err <- function(msg, ...) stop(do.call(sprintf, list(msg, name, ...)))
 
 	# Get options based on the name
-	options <- if (name == "model") {
+	options <- if (name == "distribution") {
 		c("GUM", "NOR", "LNO", "GEV", "GLO", "GNO", "PE3", "LP3", "WEI")
 	} else if (name == "method") {
 		c("L-moments", "MLE", "GMLE")
@@ -111,28 +111,28 @@ validate_enum <- function(name, x) {
 	return(as.vector(x))
 }
 
-# Validate a 'trend' object
-validate_trend <- function(x) {
+# Validate a 'structure' object
+validate_structure <- function(x) {
 
-	# If trend is NULL, return a stationary trend object
+	# If structure is NULL, return a stationary structure object
 	if (is.null(x)) return (list(location = FALSE, scale = FALSE))
 
 	# Validate the location option
 	location <- x$location
-	if (is.null(location)) stop("'trend' requires item 'location'")
-	validate_logical('trend$location', x$location)
+	if (is.null(location)) stop("'structure' requires item 'location'")
+	validate_logical('structure$location', x$location)
 
 	# Validate the scale option
 	scale <- x$scale
-	if (is.null(scale)) stop("'trend' requires item 'scale'")
-	validate_logical('trend$scale', x$scale)
+	if (is.null(scale)) stop("'structure' requires item 'scale'")
+	validate_logical('structure$scale', x$scale)
 
 	return (x)
 
 }
 
 # Validate a 'params' vector
-validate_params <- function(model, x, trend = NULL) {
-	n <- model_info(model, trend)$n_params 
+validate_params <- function(distribution, x, structure = NULL) {
+	n <- model_info(distribution, structure)$n_params 
 	validate_numeric("params", x, FALSE, size = n)
 }

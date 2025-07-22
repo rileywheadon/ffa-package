@@ -1,7 +1,7 @@
-test_that("Test l-kurtosis.R on data set #1", {
+test_that("select-lkurtosis.R works on ATHABASCA RIVER (07BE001)", {
 
-	# Load dataset and run L-distance selection
-	df <- load_data("Application_1.csv")
+	# Load dataset and run L-kurtosis selection
+	df <- data_local("CAN-07BE001.csv")
 	results <- select_lkurtosis(df$max)
 	
 	# Check the distances
@@ -18,10 +18,10 @@ test_that("Test l-kurtosis.R on data set #1", {
 })
 
 
-test_that("Test l-kurtosis.R on data set #2", {
+test_that("select-lkurtosis.R works on KOOTENAI RIVER (08NH021)", {
 
-	# Load dataset and run L-distance selection
-	df <- load_data("Application_2.csv")
+	# Load dataset and run L-kurtosis selection
+	df <- data_local("CAN-08NH021.csv")
 	results <- select_lkurtosis(df$max)
 	
 	# Check the distances
@@ -38,10 +38,10 @@ test_that("Test l-kurtosis.R on data set #2", {
 })
 
 
-test_that("Test l-kurtosis.R on data set #3.1", {
+test_that("select-lkurtosis.R works on BOW RIVER (05BB001)", {
 
-	# Load dataset and run L-distance selection
-	df <- load_data("Application_3.1.csv")
+	# Load dataset and run L-kurtosis selection
+	df <- data_local("CAN-05BB001.csv")
 	results <- select_lkurtosis(df$max)
 	
 	# Check the distances
@@ -58,10 +58,10 @@ test_that("Test l-kurtosis.R on data set #3.1", {
 })
 
 
-test_that("Test l-kurtosis.R on data set #3.2", {
+test_that("select-lkurtosis.R works on CHILLIWACK RIVER (08MH016)", {
 
-	# Load dataset and run L-distance selection
-	df <- load_data("Application_3.2.csv")
+	# Load dataset and run L-kurtosis selection
+	df <- data_local("CAN-08MH016.csv")
 	results <- select_lkurtosis(df$max)
 	
 	# Check the distances
@@ -78,10 +78,10 @@ test_that("Test l-kurtosis.R on data set #3.2", {
 })
 
 
-test_that("Test l-kurtosis.R on data set #3.3", {
+test_that("select-lkurtosis.R works on OKANAGAN RIVER (08NM050)", {
 
-	# Load dataset and run L-distance selection
-	df <- load_data("Application_3.3.csv")
+	# Load dataset and run L-kurtosis selection
+	df <- data_local("CAN-08NM050.csv")
 	results <- select_lkurtosis(df$max)
 	
 	# Check the distances

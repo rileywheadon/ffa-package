@@ -7,9 +7,8 @@
 #'
 #' @inheritParams param-data
 #'
-#' @details
-#' Given probability weighted moments \eqn{\beta_0, \beta_1, \beta_2, \beta_3}, the 
-#' first four sample L-moments are: 
+#' @details Given probability weighted moments \eqn{\beta_0, \beta_1, \beta_2, \beta_3}, 
+#' the first four sample L-moments are: 
 #' - \eqn{l_1 = \beta_0}
 #' - \eqn{l_2 = 2\beta_1 - \beta_0}
 #' - \eqn{l_3 = 6\beta_2 - 6\beta_1 + \beta_0}
@@ -18,15 +17,11 @@
 #' Then, the sample L-skewness is \eqn{t_3 = l_3 / l_2} and the sample L-kurtosis
 #' is \eqn{t_4 = l_4 / l_2}.
 #'
-#' @return A numeric vector containing the first four L-moments and L-moment ratios:
-#' - `l1`: L-mean
-#' - `l2`: L-variance
-#' - `t3`: L-skewness
-#' - `t4`: L-kurtosis
-#'
-#' @note This function has no parameter validation because \link{uncertainty_bootstrap} 
-#' makes many calls to it. If you are getting errors, ensure that `data` is a positive, 
-#' numeric vector.
+#' @return A numeric vector containing the first four sample L-moments and L-moment ratios:
+#' - \eqn{l_1}: L-mean
+#' - \eqn{l_2}: L-variance
+#' - \eqn{t_3}: L-skewness
+#' - \eqn{t_4}: L-kurtosis
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

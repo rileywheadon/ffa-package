@@ -1,6 +1,5 @@
 #' L-Distance Method for Distribution Selection
 #'
-#' @description
 #' Selects a distribution from a set of candidate distributions by minimizing the 
 #' Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)} 
 #' and the sample L-moment ratios \eqn{(t_3, t_4)}.
@@ -22,12 +21,16 @@
 #' If a distribution is fit to log-transformed data (Log-Normal or Log-Pearson Type 
 #' III), the L-moment ratios for the log-transformed sample are used instead.
 #'
-#' @seealso \link{lmom_sample}, \link{select_lkurtosis}, \link{select_zstatistic}, 
-#'   \link{plot_lmom_diagram}
+#' @seealso [lmom_sample()], [select_lkurtosis()], [select_zstatistic()], 
+#'   [plot_lmom_diagram()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' select_ldistance(data)
+#'
+#' @references
+#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
+#' on L-Moments. Cambridge University Press, New York, USA.
 #'
 #' @importFrom stats optim
 #' @export

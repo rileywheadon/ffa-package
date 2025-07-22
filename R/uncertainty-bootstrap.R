@@ -1,16 +1,16 @@
 #' Parametric Bootstrap Confidence Intervals for Flood Quantile Estimates
 #'
-#' @description
-#' Computes estimates and confidence intervals for return levels at return periods
-#' 2, 5, 10, 20, 50, and 100 years using the parametric bootstrap method. This function 
-#' supports a variety of probability models and parameter estimation methods.
+#' Computes return level estimates and confidence intervals at the specified return 
+#' periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the parametric bootstrap 
+#' method. This function supports a variety of probability models and parameter estimation 
+#' methods.
 #'
 #' @inheritParams param-data
-#' @inheritParams param-model
+#' @inheritParams param-distribution
 #' @inheritParams param-method
 #' @inheritParams param-prior
 #' @inheritParams param-years
-#' @inheritParams param-trend
+#' @inheritParams param-structure
 #' @inheritParams param-slices
 #' @inheritParams param-alpha
 #' @inheritParams param-samples
@@ -23,13 +23,13 @@
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
 #' - `t`: Vector of return periods; `c(2, 5, 10, 20, 50, 100)`.
-#' - `slice`: The value of `slice` argument.
-#' - `trend`: The value of `trend` argument.
+#' - `slice`: The value of the `slice` argument.
+#' - `structure`: The value of the `structure` argument.
 #'
 #' @details
 #' The bootstrap procedure samples from the fitted distribution via inverse 
 #' transform sampling. For each bootstrapped sample, the parameters are re-estimated 
-#' using the specified `method`. Then, the bootstrapped parameters are used to compute 
+#' using the `method` argument. Then, the bootstrapped parameters are used to compute 
 #' a new set of bootstrapped quantiles. Confidence intervals are obtained from the 
 #' empirical nonexceedance probabilities of the bootstrapped quantiles.
 #'
@@ -39,8 +39,13 @@
 #' wider than the return levels themselves, it will return an error and recommend 
 #' RFPL uncertainty quantification (with `uncertainty_rfpl`).
 #'
-#' @seealso \link{fit_lmom_fast}, \link{fit_maximum_likelihood}, \link{lmom_sample},
-#'   \link{quantile_fast}, \link{plot_sffa}, \link{plot_nsffa}
+#' @references
+#' Vidrio-Sahagún, C.T., He, J. Enhanced profile likelihood method for the nonstationary 
+#' hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022). 
+#' \doi{10.1016/j.advwatres.2022.104151}
+#' 
+#' @seealso [fit_lmom_fast()], [fit_maximum_likelihood()], [lmom_sample()],
+#'   [quantile_fast()], [plot_sffa()], [plot_nsffa()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -52,11 +57,11 @@
 
 uncertainty_bootstrap <- function(
     data,
-    model,
+    distribution,
     method,
     prior = NULL,
     years = NULL,
-    trend = NULL,
+    structure = NULL,
     slices = 1900,
     alpha = 0.05,
     samples = 10000L,
@@ -64,11 +69,11 @@ uncertainty_bootstrap <- function(
 ) {
 
 	data <- validate_numeric("data", data, FALSE)
-	model <- validate_enum("model", model)
+	distribution <- validate_enum("distribution", distribution)
 	method <- validate_enum("method", method)
 	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
 	years <- validate_numeric("years", years, size = length(data))
-	trend <- validate_trend(trend)
+	structure <- validate_structure(structure)
 	slices <- validate_numeric("slices", slices, FALSE)
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
 	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
@@ -78,11 +83,11 @@ uncertainty_bootstrap <- function(
 	lapply(slices, function(slice) {
 		uncertainty_bootstrap_helper(
 			data,
-			model,
+			distribution,
 			method,
 			prior,
 			years,
-			trend,
+			structure,
 			slice,
 			alpha,
 			samples,
@@ -94,11 +99,11 @@ uncertainty_bootstrap <- function(
 
 uncertainty_bootstrap_helper <- function(
     data,
-    model,
+    distribution,
     method,
     prior,
     years,
-    trend,
+    structure,
     slice,
     alpha,
     samples,
@@ -112,26 +117,26 @@ uncertainty_bootstrap_helper <- function(
 	# Define the parameter estimation function
 	fit <- function(data, years) {
 		if (method == "L-moments") {
-			return (fit_lmom_fast(data, model)$params)
+			return (fit_lmom_fast(data, distribution)$params)
 		} else {
-			return (fit_maximum_likelihood(data, model, prior, years, trend)$params)
+			return (fit_maximum_likelihood(data, distribution, prior, years, structure)$params)
 		}
 	}
 
 	# Get the estimated quantiles
 	params <- fit(data, years)
-	estimates <- quantile_fast(probabilities, model, params, slice, trend)
+	estimates <- quantile_fast(probabilities, distribution, params, slice, structure)
 
 	# Generate the bootstrapped quantiles 
 	quantiles <- sapply(1:n, function(i) {
 		u <- runif(samples)
-		quantile_fast(u, model, params, slice, trend)
+		quantile_fast(u, distribution, params, slice, structure)
 	})
 
 	# Vectorized bootstrap function 
 	bootstrap <- sapply(1:samples, function(i) {
 		bootstrap_params <- fit(quantiles[i, ], years)
-		quantile_fast(probabilities, model, bootstrap_params, slice, trend)
+		quantile_fast(probabilities, distribution, bootstrap_params, slice, structure)
 	})
 
 	# Compute confidence intervals
@@ -151,7 +156,7 @@ uncertainty_bootstrap_helper <- function(
 		estimates = estimates,
 		ci_upper = ci[2, ],
 		slice = slice,
-		trend = trend
+		structure = structure
 	)
 
 }

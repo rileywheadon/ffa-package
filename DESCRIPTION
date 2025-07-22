@@ -1,19 +1,42 @@
 Package: ffaframework
 Title: Flood Frequency Analysis Framework
+Description: Tools to support systematic and reproducible workflows for both stationary and nonstationary flood frequency analysis, with applications extending to other hydroclimate extremes such as precipitation frequency analysis. This package implements the FFA framework proposed by Vidrio-Sahagún et al. (2024) <doi:10.1016/j.envsoft.2024.105940>, originally developed in MATLAB, now adapted for the R environment. 
 Version: 0.2.1
 Authors@R: 
-    person(given = "Riley", 
-           family = "Wheadon", 
-           email = "rileywheadon@gmail.com", 
-           role = c("aut", "cre"))
-Author: Riley Wheadon [aut, cre]
+    c(person(
+        "Riley",
+        "Wheadon", 
+        email = "rileywheadon@gmail.com", 
+        role = c("aut", "cre")
+    ),
+	person(
+		"Cuauhtémoc",
+		"Vidrio-Sahagún",
+		email = "ct.vidrio-sahagun@usask.ca",
+		role = "aut"
+	),
+	person(
+		"Alain",
+		"Pietroniro",
+		email = "alain.pietroniro@ucalgary.ca",
+		role = "aut"
+	),
+	person(
+		"Jianxun",
+		"He",
+		email = "jianhe@ucalgary.ca",
+		role = "aut"
+	)) 
 Maintainer: Riley Wheadon <rileywheadon@gmail.com>
-Description: Tools for exploratory data analysis and flood frequency analysis. Implements statistical tests and methods for distribution selection, parameter estimation, uncertainty quantification, and model assessment.
-License: CC BY 4.0
+URL: https://rileywheadon.github.io/ffa-docs/
+BugReports: https://github.com/rileywheadon/ffa-framework/issues
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 4.5.0), ggplot2, patchwork
+Depends: R (>= 4.4.3)
+Imports: ggplot2, patchwork, stats
 Suggests: knitr, testthat, vdiffr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+

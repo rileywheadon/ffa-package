@@ -7,7 +7,7 @@
 eda_runs_test(results, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{results}{A fitted linear model produced by \link{eda_sens_trend}.}
+\item{results}{A fitted linear model produced by \code{\link[=eda_sens_trend]{eda_sens_trend()}}.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -20,7 +20,8 @@ A list containing the test results, including:
 \itemize{
 \item \code{residuals}: Numeric vector of residual values from a fitted linear model.
 \item \code{n}: The length of the residuals vector after removing the median.
-\item \code{n_plus}, \code{n_minus}: The number of residuals above/below the median.
+\item \code{n_plus}: The number of residuals above the median.
+\item \code{n_minus}: The number of residuals below the median.
 \item \code{runs}: The number of runs in the transformed sequence of residuals.
 \item \code{statistic}: The runs test statistic, computed using \code{runs}.
 \item \code{p_value}: P-value from the Wald–Wolfowitz runs test applied to residuals.
@@ -51,5 +52,5 @@ Wald, A. and Wolfowitz, J. (1940). On a test whether two samples are from the
 same population. Annals of Mathematical Statistics, 11(2), 147–162.
 }
 \seealso{
-\link{plot_runs_test}, \link{eda_sens_trend}
+\code{\link[=plot_runs_test]{plot_runs_test()}}, \code{\link[=eda_sens_trend]{eda_sens_trend()}}
 }

@@ -1,30 +1,30 @@
 #' Helper Function for L-moments Parameter Estimation
 #'
-#' A helper function used by \link{fit_lmom_methods}. 
-#' This function does not validate parameters and is intended for internal use.
+#' A helper function used by [fit_lmom_xxx()]. 
+#' This function does not validate parameters and is designed for use in other methods.
 #'
 #' @inheritParams param-data
-#' @inheritParams param-model
+#' @inheritParams param-distribution
 #'
-#' @return A numeric vector of parameters:
-#' - If `model` is `"GUM"`, `"NOR"`, or `"LNO"`, returns a vector of length 2.
-#' - Otherwise, returns a vector of length 3.
+#' @return A list containing the results of parameter estimation:
+#' - `method`: `"L-moments"`.
+#' - `params`: numeric vector of 2 or 3 parameters depending on the distribution.
 #'
-#' @references
-#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
-#' on L-Moments. Cambridge University Press, New York, USA.
-#'
-#' @seealso \link{lmom_sample}, \link{fit_lmom_kappa}, \link{fit_lmom_methods}
+#' @seealso [lmom_sample()], [fit_lmom_kappa()], [fit_lmom_xxx()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' fit_lmom_fast(data, "PE3")
 #'
+#' @references
+#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
+#' on L-Moments. Cambridge University Press, New York, USA.
+#'
 #' @export
-fit_lmom_fast <- function(data, model) {
+fit_lmom_fast <- function(data, distribution) {
 
 	# Get the correct L-moments based on the distribution
-	moments <- if (model == "LP3") {
+	moments <- if (distribution == "LP3") {
 		lmom_sample(log(data))
 	} else {
 		lmom_sample(data)
@@ -37,39 +37,39 @@ fit_lmom_fast <- function(data, model) {
 	t4 <- moments[4]
 
 	# NOTE: -digamma(1) is Euler's constant (~0.5772)
-	if (model == "GUM") {
+	if (distribution == "GUM") {
 		s <- l2 / log(2)
 		u <- l1	+ digamma(1) * s
 		k <- NULL
 	}
 
-	else if (model == "NOR") {
+	else if (distribution == "NOR") {
 		u <- l1
 		s <- l2 * sqrt(pi)
 		k <- NULL
 	}
 
 	# NOTE: Copied from MATLAB, not sure why we use this formula.
-	else if (model == "LNO") {
+	else if (distribution == "LNO") {
 		s <- sqrt(2) * qnorm((1 + (l2 / l1)) / 2)
         u <- log(l1) - s^2 / 2
 		k <- NULL
 	}
 
-	else if (model == "GEV") {
+	else if (distribution == "GEV") {
 		c <- (2 / (3 + t3)) - (log(2) / log(3))
 		k <- -7.8590 * c - 2.9554 * c^2
 		s <- (l2 * -k) / ((1 - 2^k) * gamma(1 - k))
 		u <- l1 + s * (1 - gamma(1 - k)) / k
 	}
 
-	else if (model == "GLO") {
+	else if (distribution == "GLO") {
 		k <- -t3
 		s <- l2 * sin(k * pi) / (k * pi)
 		u <- l1 - s * ((1 / k) - (pi / sin(k * pi)))
 	}
 
-	else if (model == "GNO") {
+	else if (distribution == "GNO") {
 
 		# Define coefficients
      	A0 <-  0.20466534e1
@@ -98,7 +98,7 @@ fit_lmom_fast <- function(data, model) {
 	}
 
 	# NOTE: Computation for PE3 and LP3 is identical, just with different sample L-moments
-	else if (model == "PE3" | model == "LP3") {
+	else if (distribution == "PE3" | distribution == "LP3") {
 
 		# Define constants for numerical approximation
 		A1 <- 0.2906
@@ -130,7 +130,7 @@ fit_lmom_fast <- function(data, model) {
 
 	}
 
-	else if (model == "WEI") {
+	else if (distribution == "WEI") {
 
 		# Estimate GEV parameters, flipping the sign of l1, t3
 		c <- (2 / (3 - t3)) - (log(2) / log(3))

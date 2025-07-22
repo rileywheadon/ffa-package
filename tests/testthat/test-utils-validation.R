@@ -124,44 +124,44 @@ test_that("validate_float is working properly", {
 test_that("validate_enum is working properly", {
 
 	# Valid options all pass
-	expect_silent(validate_enum("model", "GUM"))
+	expect_silent(validate_enum("distribution", "GUM"))
 	expect_silent(validate_enum("method", "L-moments"))
 	expect_silent(validate_enum("pp_formula", "Weibull"))
 
 	# Non-character inputs are rejected
-    expect_error(validate_enum("model", 1), "'model' must be a character string")
-    expect_error(validate_enum("model", TRUE), "'model' must be a character string")
+    expect_error(validate_enum("method", 1), "'method' must be a character string")
+    expect_error(validate_enum("method", TRUE), "'method' must be a character string")
 
 	# Incorrect lengths fail
-	expect_error(validate_enum("model", character(0)), "'model' must have length 1")
-	expect_error(validate_enum("model", c("GUM", "GEV")), "'model' must have length 1")
+	expect_error(validate_enum("method", character(0)), "'method' must have length 1")
+	expect_error(validate_enum("method", c("L-Moments", "MLE")), "'method' must have length 1")
 
 	# Models outside of the list of options fail
-    expect_error(validate_enum("model", NA_character_), "'model' must be one of")
-    expect_error(validate_enum("model", "gev"), "'model' must be one of")
-    expect_error(validate_enum("model", ""), "'model' must be one of")
+    expect_error(validate_enum("method", NA_character_), "'method' must be one of")
+    expect_error(validate_enum("method", "l-moments"), "'method' must be one of")
+    expect_error(validate_enum("method", ""), "'method' must be one of")
 
 })
 
-# Test that validate_trend correctly checks the trend object
-test_that("validate_trend is working properly", {
+# Test that validate_structure correctly checks the trend object
+test_that("validate_structure is working properly", {
 	
 	# Check valid cases (NULL or correct trend object)
-	expect_silent(validate_trend(NULL))
-	expect_silent(validate_trend(trend_00))
-	expect_silent(validate_trend(trend_10))
-	expect_silent(validate_trend(trend_01))
-	expect_silent(validate_trend(trend_11))
+	expect_silent(validate_structure(NULL))
+	expect_silent(validate_structure(S00))
+	expect_silent(validate_structure(S10))
+	expect_silent(validate_structure(S01))
+	expect_silent(validate_structure(S11))
 
 	# Throws error if keys 'location' or 'scale' do not exist
-	expect_error(validate_trend(list(scale = FALSE)), "'trend' requires item 'location'")
-	expect_error(validate_trend(list(location = TRUE)), "'trend' requires item 'scale'")
+	expect_error(validate_structure(list(scale = FALSE)), "'structure' requires item 'location'")
+	expect_error(validate_structure(list(location = TRUE)), "'structure' requires item 'scale'")
 
 	# Check that items are logical and have length 1
 	invalid_length <- list(location = c(TRUE, FALSE), scale = FALSE)
 	invalid_type <- list(location = TRUE, scale = "ABC")
-	expect_error(validate_trend(invalid_length), "location' must have length 1")
-	expect_error(validate_trend(invalid_type), "scale' must be logical")
+	expect_error(validate_structure(invalid_length), "location' must have length 1")
+	expect_error(validate_structure(invalid_type), "scale' must be logical")
 
 })
 
@@ -171,14 +171,14 @@ test_that("validate_params is working properly", {
 	# Passing test cases
     expect_silent(validate_params("GUM", c(1, 2)))
     expect_silent(validate_params("GEV", c(1, 2, 3)))           
-    expect_silent(validate_params("GUM", c(1, 2), trend_00))           
-    expect_silent(validate_params("GEV", c(1, 2, 3, 1), trend_01))           
-    expect_silent(validate_params("GUM", c(1, 2, 3), trend_10))           
-    expect_silent(validate_params("GEV", c(1, 2, 3, 1, 2), trend_11))           
+    expect_silent(validate_params("GUM", c(1, 2), S00))           
+    expect_silent(validate_params("GEV", c(1, 2, 3, 1), S01))           
+    expect_silent(validate_params("GUM", c(1, 2, 3), S10))           
+    expect_silent(validate_params("GEV", c(1, 2, 3, 1, 2), S11))           
 
 	# Failing test cases
     expect_error(validate_params("GEV", c(1, 2)), "'params' must have length 3")
     expect_error(validate_params("GUM", c(1, 2, 3)), "'params' must have length 2")
-    expect_error(validate_params("GEV", 3, trend_01), "'params' must have length 4")
+    expect_error(validate_params("GEV", 3, S01), "'params' must have length 4")
 
 })

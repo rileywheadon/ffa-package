@@ -1,4 +1,4 @@
-test_that("Test model-diagnostics.R on data set #1 with GEV/L-moments/S-bootstrap.", {
+test_that("model-diagnostics.R works on with GEV/L-moments/S-bootstrap.", {
 
 	# Use identical parameters and uncertainty results to the MATLAB version 
 	params <- c(1600.219872, 616.666030, 0.120747)
@@ -9,7 +9,7 @@ test_that("Test model-diagnostics.R on data set #1 with GEV/L-moments/S-bootstra
 	))
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	assessment <- model_diagnostics(df$max, "GEV", params, uncertainty)
 
 	# Test results against MATLAB
@@ -26,7 +26,7 @@ test_that("Test model-diagnostics.R on data set #1 with GEV/L-moments/S-bootstra
 
 })
 
-test_that("Test model-diagnostics.R on data set #2 with WEI/L-moments/S-bootstrap.", {
+test_that("model-diagnostics.R works with WEI/L-moments/S-bootstrap.", {
 
 	# Use identical parameters and uncertainty results to the MATLAB version 
 	params <- c(327.675316, 1520.238106, 1.988484)
@@ -37,7 +37,7 @@ test_that("Test model-diagnostics.R on data set #2 with WEI/L-moments/S-bootstra
 	))
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	assessment <- model_diagnostics(df$max, "WEI", params, uncertainty)
 
 	# Test results against MATLAB
@@ -54,9 +54,7 @@ test_that("Test model-diagnostics.R on data set #2 with WEI/L-moments/S-bootstra
 
 })
 
-# NOTE: Test case on dataset #3.1 with PE3 has been removed, see matlab.md
-
-test_that("Test model-diagnostics.R on data set #3.2 with GNO/L-moments/S-bootstrap.", {
+test_that("model-diagnostics.R works with GNO/L-moments/S-bootstrap.", {
 
 	# Use identical parameters and uncertainty results to the MATLAB version 
 	params <- c(68.735078, 20.032161, -0.378291)
@@ -67,7 +65,7 @@ test_that("Test model-diagnostics.R on data set #3.2 with GNO/L-moments/S-bootst
 	))
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
-	df <- load_data("Application_3.2.csv")
+	df <- data_local("CAN-08MH016.csv")
 	assessment <- model_diagnostics(df$max, "GNO", params, uncertainty)
 
 	# Test results against MATLAB
@@ -84,7 +82,7 @@ test_that("Test model-diagnostics.R on data set #3.2 with GNO/L-moments/S-bootst
 
 })
 
-test_that("Test model-diagnostics.R on data set #3.3 with LP3/L-moments/S-bootstrap.", {
+test_that("model-diagnostics.R works with LP3/L-moments/S-bootstrap.", {
 
 	# Use identical parameters and uncertainty results to the MATLAB version 
 	params <- c(3.51100, 0.55044, -0.54165)
@@ -95,7 +93,7 @@ test_that("Test model-diagnostics.R on data set #3.3 with LP3/L-moments/S-bootst
 	))
 
 	# Load dataset and run L-moments estimation with uncertainty analysis
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	assessment <- model_diagnostics(df$max, "LP3", params, uncertainty)
 
 	# Test results against MATLAB. 
@@ -112,17 +110,16 @@ test_that("Test model-diagnostics.R on data set #3.3 with LP3/L-moments/S-bootst
 
 })
 
-test_that("Test model-diagnostics.R on data set #1 with GEV100/MLE/S-bootstrap.", {
-	set.seed(1)
+test_that("model-diagnostics.R works with nonstationary GEV/MLE/S-bootstrap.", {
 
-	# Load dataset and run L-moments estimation with uncertainty analysis
-	df <- load_data("Application_1.csv")
+	set.seed(1)
+	df <- data_local("CAN-07BE001.csv")
 
 	params <- fit_maximum_likelihood(
 		df$max,
 		"GEV",
 		years = df$year,
-		trend = trend_10
+		structure = S10
 	)$params
 
 	uncertainty <- uncertainty_bootstrap(
@@ -130,7 +127,7 @@ test_that("Test model-diagnostics.R on data set #1 with GEV100/MLE/S-bootstrap."
 		"GEV",
 		"MLE",
 		years = df$year,
-		trend = trend_10,
+		structure = S10,
 		samples = 1000L
 	)
 
@@ -140,7 +137,7 @@ test_that("Test model-diagnostics.R on data set #1 with GEV100/MLE/S-bootstrap."
 		params,
 		uncertainty,
 		df$year,
-		trend_10
+		S10
 	)
 
 	# Test results against MATLAB 

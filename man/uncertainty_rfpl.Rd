@@ -2,14 +2,14 @@
 % Please edit documentation in R/uncertainty-rfpl.R
 \name{uncertainty_rfpl}
 \alias{uncertainty_rfpl}
-\title{Regula-Falsi Confidence Intervals for Flood Quantile Estimates}
+\title{(Generalized) Regula-Falsi Confidence Intervals for Flood Quantile Estimates}
 \usage{
 uncertainty_rfpl(
   data,
-  model,
+  distribution,
   prior = NULL,
   years = NULL,
-  trend = NULL,
+  structure = NULL,
   slices = 1900,
   alpha = 0.05,
   eps = 0.01,
@@ -20,18 +20,18 @@ uncertainty_rfpl(
 \item{data}{Numeric vector of annual maximum series (AMS) values.
 Must be strictly positive, finite, and not missing.}
 
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
+\item{distribution}{Character scalar. A three-character code indicating
+a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 
 \item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
 parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{model = "GEV"}.}
+Only used when \code{distribution = "GEV"}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{trend}{Named list indicating which distribution parameters are
+\item{structure}{Named list indicating which distribution parameters are
 modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
@@ -61,21 +61,21 @@ intervals for each slice. Each sub-list contains:
 \item \code{ci_upper}: Upper bound of the confidence interval for each return period.
 \item \code{t}: Vector of return periods \code{c(2, 5, 10, 20, 50, 100)} in years.
 \item \code{slice}: The value of \code{slice} argument.
-\item \code{trend}: The value of \code{trend} argument.
+\item \code{structure}: The value of \code{structure} argument.
 }
 }
 \description{
-Calculates estimates and confidence intervals for return levels at standard
-return periods (2, 5, 10, 20, 50, and 100 years) using the profile likelihood
-and Regula-Falsi root‐finding method.
+Calculates return level estimates and confidence intervals at specified return
+periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the Regula-Falsi profile
+likelihood or Regula-Falsi generalized profile likelihood root‐finding methods.
 }
 \details{
 \enumerate{
-\item Fits the model using \link{fit_maximum_likelihood} to obtain parameter
+\item Fits the distribution using \code{\link[=fit_maximum_likelihood]{fit_maximum_likelihood()}} to obtain parameter
 estimates and log‐likelihood.
 \item Defines an objective function \eqn{f(y_p, p)} based on the chi-squared
 distribution.
-\item Iteratively brackets the root by scaling initial guesses by 0.05 until
+\item Iteratively brackets the root by rescaling initial guesses by 0.05 until
 \eqn{f(y_p, p)} changes sign.
 \item Uses the Regula Falsi method to solve \eqn{f(y_p, p) = 0} for each
 return-period probability.
@@ -84,20 +84,29 @@ given the return level estimates.
 }
 }
 \note{
-Although the more modern \link[stats]{optim} function is preferred over
-\link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports infinite
+Although the more modern \code{\link[stats:optim]{stats::optim()}} function is preferred over
+\code{\link[stats:nlminb]{stats::nlminb()}}, we use \code{\link[stats:nlminb]{stats::nlminb()}} because it supports infinite
 values of the likelihood function.
 
 RFPL uncertainty quantification can be numerically unstable for some datasets.
 If this function encounters an issue, it will return an error and recommend
-using the parametric bootstrap (\code{uncertainty_bootstrap}) instead.
+using the parametric bootstrap method (\code{uncertainty_bootstrap}) instead.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 uncertainty_rfpl(data, "GLO")
 
 }
+\references{
+Vidrio-Sahagún, C.T., He, J. Enhanced profile likelihood method for the nonstationary
+hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022).
+\doi{10.1016/j.advwatres.2022.104151}
+
+Vidrio-Sahagún, C.T., He, J. & Pietroniro, A. Multi-distribution regula-falsi profile
+likelihood method for nonstationary hydrological frequency analysis. Stoch Environ Res
+Risk Assess 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
+}
 \seealso{
-\link{quantile_fast}, \link{uncertainty_bootstrap},
-\link{plot_sffa}, \link{plot_nsffa}
+\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}},
+\code{\link[=plot_sffa]{plot_sffa()}}, \code{\link[=plot_nsffa]{plot_nsffa()}}
 }

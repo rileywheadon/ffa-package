@@ -28,10 +28,10 @@ lmom_theoretical_wei(params)
 \arguments{
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
-\code{model} and \code{trend}.}
+\code{distribution} and \code{structure}.}
 }
 \value{
-A numeric vector of length 4 containing:
+A numeric vector of with four elements:
 \itemize{
 \item \eqn{\lambda_1}: L-mean
 \item \eqn{\lambda_2}: L-variance
@@ -40,14 +40,15 @@ A numeric vector of length 4 containing:
 }
 }
 \description{
-Computes the first four L-moments and L-moment ratios of seven different
-probability distributions (\code{GUM}, \code{NOR}, \code{GEV}, \code{GLO}, \code{GNO}, \code{PE3}, and \code{WEI})
+Computes the first four L-moments and L-moment ratios of seven different probability
+distributions (\code{"GUM"}, \code{"NOR"}, \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, and \code{"WEI"})
 given the parameters of the distribution.
 }
 \details{
-The distributions \code{GUM}, \code{NOR}, \code{GEV}, \code{GLO}, and \code{WEI} have closed-form solutions
-for the L-moments and L-moment ratios in terms of the parameters. The distributions
-\code{GNO}, \code{PE3} use rational approximations of the L-moment ratios from Hosking (1997).
+The distributions \code{"GUM"}, \code{"NOR"}, \code{"GEV"}, \code{"GLO"}, and \code{"WEI"} have
+closed-form solutions for the L-moments and L-moment ratios in terms of the parameters.
+The distributions \code{"GNO"} and \code{"PE3"} use rational approximations of the L-moment ratios
+from Hosking (1997).
 }
 \examples{
 lmom_theoretical_gev(c(0, 1, 0))
@@ -58,5 +59,5 @@ Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach b
 on L-Moments. Cambridge University Press, New York, USA.
 }
 \seealso{
-\link{lmom_fast}
+\code{\link[=lmom_fast]{lmom_fast()}}
 }

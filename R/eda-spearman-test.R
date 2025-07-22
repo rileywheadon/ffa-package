@@ -1,9 +1,8 @@
 #' Spearman Test for Autocorrelation
 #'
-#' @description
-#' Performs the Spearman rank autocorrelation test on annual maximum series 
-#' (AMS) data to check for autocorrelation at various lags. Reports the smallest 
-#' lag where the autocorrelation is not statistically significant at the given 
+#' Performs the Spearman rank serial correlation test on annual maximum series 
+#' (AMS) data to check for serial correlation at various lags. Reports the smallest 
+#' lag where the serial correlation is not statistically significant at the given 
 #' significance level.
 #'
 #' @inheritParams param-data
@@ -12,18 +11,18 @@
 #'
 #' @return A list containing the test results, including:
 #' - `data`: The `data` argument.
-#' - `rho`: Numeric vector of autocorrelation estimates for lags \eqn{1} to \eqn{n-3}.
-#' - `sig`: Logical vector indicating which lags exhibit significant autocorrelation.
-#' - `least.lag`: The smallest lag at which the autocorrelation is insignificant. 
-#' - `reject`: Logical. If `TRUE`, then `least.lag > 0`.
+#' - `rho`: Numeric vector of serial correlation estimates for lags \eqn{1} to \eqn{n-3}.
+#' - `sig`: Logical vector indicating which lags exhibit significant serial correlation
+#' - `least_lag`: The smallest lag at which the serial correlation is insignificant. 
+#' - `reject`: Logical. If `TRUE`, then `least_lag > 0`.
 #' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
 #'
 #' @details
 #' For each lag from \eqn{1} to \eqn{n - 3}, the function computes the Spearman 
-#' correlation coefficient between the AMS series and its lagged version. The 
-#' first lag with an insignificant autocorrelation coefficient returned as `least.lag`.
+#' correlation coefficient between the original AMS series and the lagged series. The 
+#' first lag with an insignificant serial correlation coefficient returned as `least_lag`.
 #'
-#' @seealso \link[stats]{cor.test}, \link{eda_bbmk_test}, \link{plot_spearman_test}
+#' @seealso [stats::cor.test()], [eda_bbmk_test()], [plot_spearman_test()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -41,7 +40,7 @@ eda_spearman_test <- function(data, alpha = 0.05, quiet = TRUE) {
 	# Assign a variable to the number of data points for convenience
 	n <- length(data)
 
-	# Compute the spearman rho-autocorrelation for a given lag
+	# Compute the spearman rho serial correlation for a given lag
 	rho_autocorrelation <- function(lag, data) {
 		data_original <- data[(lag + 1):length(data)]
 		data_lagged <- data[1:(length(data) - lag)]

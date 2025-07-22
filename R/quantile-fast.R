@@ -1,43 +1,44 @@
 #' Helper Function for Quantile Functions
 #'
-#' A helper function used by \link{quantile_methods}.
+#' A helper function used by [quantile_xxx()].
+#' This function does not validate parameters and is designed for use in other methods.
 #'
 #' @inheritParams param-p
-#' @inheritParams param-model
+#' @inheritParams param-distribution
 #' @inheritParams param-params
 #' @inheritParams param-slice
-#' @inheritParams param-trend
+#' @inheritParams param-structure
 #'
 #' @return A numeric vector of quantiles with the same length as `p`.
 #'
-#' @seealso \link{quantile_methods}
+#' @seealso [quantile_xxx()]
 #'
 #' @examples
-#' # Initialize p, params, and trend
+#' # Initialize p, params, and structure
 #' p <- runif(n = 10)
 #' params <- c(0, 1, 1, 0)
-#' trend <- list(location = FALSE, scale = TRUE)
+#' structure <- list(location = FALSE, scale = TRUE)
 #'
 #' # Compute the log-likelihood in the year 2000
-#' quantile_fast(p, "GEV", params, 2000, trend)
+#' quantile_fast(p, "GEV", params, 2000, structure)
 #'
 #' @importFrom stats qlnorm qgamma
 #' @export
 
-quantile_fast <- function(p, model, params, slice, trend) {
+quantile_fast <- function(p, distribution, params, slice, structure) {
 
 	# Get the covariate for the slice
 	covariate <- get_covariates(slice)
 
 	# Transform nonstationary parmaeters into a vector of stationary parameters
-	if (trend$location) {
+	if (structure$location) {
 		u <- params[1] + (covariate * params[2])
 	} else {
 		u <- params[1]
 	}
 
-	i <- trend$location
-	if (trend$scale) {
+	i <- structure$location
+	if (structure$scale) {
 		s <- params[2 + i] + (covariate * params[3 + i])
 	} else {
 		s <- params[2 + i]
@@ -47,7 +48,7 @@ quantile_fast <- function(p, model, params, slice, trend) {
 	k <- params[length(params)]
 
 	# The Kappa distribution uses two shape parameters and is always stationary
-	if (model == "KAP") {
+	if (distribution == "KAP") {
 		k <- params[3]
 		h <- params[4]
 	}
@@ -128,7 +129,7 @@ quantile_fast <- function(p, model, params, slice, trend) {
 
 	# Compute the result for all probabilities 
 	switch(
-		model,
+		distribution,
 		GUM = xfgum(p, u, s),
 		NOR = xfnor(p, u, s),
 		LNO = xflno(p, u, s),

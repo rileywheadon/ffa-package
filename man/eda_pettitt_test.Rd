@@ -25,7 +25,7 @@ A list containing the test results, including:
 \item \code{data}: The \code{data} argument.
 \item \code{years}: The \code{years} argument.
 \item \code{u_t}: Numeric vector of absolute U-statistics for all time indices.
-\item \code{k_statistic}: Numeric scalar.Tthe maximum absolute U-statistic.
+\item \code{k_statistic}: Numeric scalar. The maximum absolute U-statistic.
 \item \code{k_critical}: Numeric scalar. The critical K-statistic value for given \code{alpha}.
 \item \code{p_value}: Numeric scalar. Approximate p-value for the test.
 \item \code{change_index}: Integer scalar. Index of the detected change point (0 if none).
@@ -35,14 +35,13 @@ A list containing the test results, including:
 }
 }
 \description{
-Performs the nonparametric Pettitt test to detect a single change point in the
-mean of a time series, used to identify abrupt shifts in hydrological data.
+Performs the nonparametric Pettitt test to detect a single abrupt shift in the
+mean of a time series. Under the null hypothesis, there is no change point.
 }
 \details{
-The Pettitt test is a rank-based nonparametric test that evaluates the
-hypothesis of a change point in the mean of a time series. It computes the
-maximum of the absolute value of the U-statistic over all possible split
-points. The p-value is approximated using an asymptotic formula.
+The Pettitt test computes the maximum absolute value of the U-statistic
+over all possible split points. The p-value is approximated using an
+asymptotic formula.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -50,6 +49,10 @@ years <- seq(from = 1901, to = 2000)
 eda_pettitt_test(data, years)
 
 }
+\references{
+Pettitt, A.N., 1979. A Non-parametric Approach to the Change-point Problem. J.
+Royal Statist. Soc. 28 (2), 126–135. \url{http://www.jstor.org/stable/2346729}
+}
 \seealso{
-\link{plot_pettitt_test}
+\code{\link[=plot_pettitt_test]{plot_pettitt_test()}}
 }

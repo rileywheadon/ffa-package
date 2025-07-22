@@ -1,8 +1,6 @@
 ---
 title: "Change Point Detection"
-output: 
-  rmarkdown::html_document:
-    theme: readable
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Change Point Detection}
   %\VignetteEngine{knitr::rmarkdown}

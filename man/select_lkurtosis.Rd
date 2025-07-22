@@ -16,26 +16,29 @@ A list with the results of distribution selection:
 \item \code{method}: \code{"L-kurtosis"}.
 \item \code{data}: The \code{data} argument.
 \item \code{metrics}: A list of L-kurtosis metrics for each distribution.
-\item \code{recommendation}: Name of the distribution with the smallest L-kurtosis metric
+\item \code{recommendation}: Name of the distribution with the smallest L-kurtosis metric.
 }
 }
 \description{
 Selects a probability distribution by minimizing the absolute distance
 between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis
-(\eqn{t_4}). Only supports 3-parameter distributions. The  sample L-skewness
-(\eqn{t_3}) is used to determine the shape parameter.
+(\eqn{t_4}). Only supports 3-parameter distributions.
 }
 \details{
 This method computes the distance between the sample and theoretical L-kurtosis
 values at a fixed L-skewness. For three parameter distributions, the shape parameter
-that best replicates the sample L-skewness is derived using \link[stats]{optim}.
+that best replicates the sample L-skewness is determined using \code{\link[stats:optim]{stats::optim()}}.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 select_lkurtosis(data)
 
 }
+\references{
+Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based
+on L-Moments. Cambridge University Press, New York, USA.
+}
 \seealso{
-\link{lmom_sample}, \link{select_ldistance}, \link{select_zstatistic},
-\link{plot_lmom_diagram}
+\code{\link[=lmom_sample]{lmom_sample()}}, \code{\link[=select_ldistance]{select_ldistance()}}, \code{\link[=select_zstatistic]{select_zstatistic()}},
+\code{\link[=plot_lmom_diagram]{plot_lmom_diagram()}}
 }

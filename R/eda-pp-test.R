@@ -1,9 +1,9 @@
 #' Phillips–Perron Unit Root Test
 #'
 #' Applies the Phillips–Perron (PP) test to check for a unit root in annual
-#' maximum series (AMS) data. The null hypothesis is that the series contains a 
-#' unit root (and is thus nonstationary). This implementation of the PP test assumes 
-#' the time series has both stationary drift and a linear trend.
+#' maximum series (AMS) data. The null hypothesis assumes the series contains a 
+#' unit root (and thus has a stochastic trend). The alternative hypothesis is that
+#' the time series has a deterministic linear trend (and is thus trend-stationary).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
@@ -12,7 +12,7 @@
 #' @return List; the test results, consisting of:
 #' - `data`: The `data` argument.
 #' - `statistic`: The Z-statistic used to perform the test.
-#' - `p.value`: Reported p-value from the test. See notes on interpolation thresholds.
+#' - `p_value`: Reported p-value from the test. See notes on interpolation thresholds.
 #' - `reject`: Logical. If `TRUE`, the null hypothesis was rejected at `alpha`.
 #' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
 #'
@@ -23,10 +23,13 @@
 #' Therefore, a reported p-value of 0.01 indicates \eqn{p \leq 0.01}.
 #'
 #' @references
-#' Fuller, W. A. (1996). Introduction to statistical time series, second ed., Wiley, 
-#' New York.
+#' Fuller, W. A. (1976). Introduction to Statistical Time Series. New York: 
+#' John Wiley and Sons
 #'
-#' @seealso \link{eda_kpss_test}
+#' Phillips, P. C. B.; Perron, P. (1988). Testing for a Unit Root in Time Series 
+#' Regression. Biometrika, 75 (2): 335-346
+#'
+#' @seealso [eda_kpss_test()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

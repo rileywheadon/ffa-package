@@ -28,13 +28,13 @@ A list with the results of distribution selection:
 }
 }
 \description{
-Selects the best-fit distribution by computing a bias-corrected Z-statistic for
+Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
 the sample L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.
 }
 \details{
-The method performs model selection using both raw and log-transformed data. The
+The method performs distribution selection using both raw and log-transformed data. The
 distributions which use the raw AMS data are GEV, GLO, PE3, GNO, and WEI. The LP3
 distribution uses log-transformed data.
 
@@ -48,7 +48,11 @@ data <- rnorm(n = 100, mean = 100, sd = 10)
 select_zstatistic(data)
 
 }
+\references{
+Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based
+on L-Moments. Cambridge University Press, New York, USA.
+}
 \seealso{
-\link{select_ldistance}, \link{select_lkurtosis}, \link{fit_lmom_kappa},
-\link{quantile_fast}, \link{plot_lmom_diagram}
+\code{\link[=select_ldistance]{select_ldistance()}}, \code{\link[=select_lkurtosis]{select_lkurtosis()}}, \code{\link[=fit_lmom_kappa]{fit_lmom_kappa()}},
+\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=plot_lmom_diagram]{plot_lmom_diagram()}}
 }

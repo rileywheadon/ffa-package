@@ -2,8 +2,9 @@
 #'
 #' Performs the KPSS unit root test on annual maximum series (AMS) data. 
 #' The null hypothesis is that the time series is trend-stationary with a linear 
-#' trend and constant drift. The alternative hypothesis is that the time series 
-#' has a unit root and is nonstationary.
+#' trend and constant drift (and thus the time series has a deterministic linear 
+#' trend). The alternative hypothesis is that the time series has a unit root
+#' (and thus has a stochastic trend).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
@@ -23,11 +24,15 @@
 #' implies that \eqn{p \geq 0.10}. This implementation uses the Type III KPSS test,
 #' which accounts for a linear trend in the data.
 #'
-#' @seealso \link{eda_pp_test}
+#' @seealso [eda_pp_test()]
 #'
 #' @references
 #' Hobijn, B., Franses, P.H. and Ooms, M. (2004), Generalizations of the KPSS-test 
 #' for stationarity. Statistica Neerlandica, 58: 483-502. 
+#'
+#' Kwiatkowski, D.; Phillips, P. C. B.; Schmidt, P.; Shin, Y. (1992). Testing the null 
+#' hypothesis of stationarity against the alternative of a unit root. Journal of 
+#' Econometrics, 54 (1-3): 159-178.
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

@@ -11,12 +11,12 @@ lmom_sample(data)
 Must be strictly positive, finite, and not missing.}
 }
 \value{
-A numeric vector containing the first four L-moments and L-moment ratios:
+A numeric vector containing the first four sample L-moments and L-moment ratios:
 \itemize{
-\item \code{l1}: L-mean
-\item \code{l2}: L-variance
-\item \code{t3}: L-skewness
-\item \code{t4}: L-kurtosis
+\item \eqn{l_1}: L-mean
+\item \eqn{l_2}: L-variance
+\item \eqn{t_3}: L-skewness
+\item \eqn{t_4}: L-kurtosis
 }
 }
 \description{
@@ -26,8 +26,8 @@ provide robust alternatives to conventional moments, with advantages in
 parameter estimation for heavy-tailed and skewed distributions.
 }
 \details{
-Given probability weighted moments \eqn{\beta_0, \beta_1, \beta_2, \beta_3}, the
-first four sample L-moments are:
+Given probability weighted moments \eqn{\beta_0, \beta_1, \beta_2, \beta_3},
+the first four sample L-moments are:
 \itemize{
 \item \eqn{l_1 = \beta_0}
 \item \eqn{l_2 = 2\beta_1 - \beta_0}
@@ -37,11 +37,6 @@ first four sample L-moments are:
 
 Then, the sample L-skewness is \eqn{t_3 = l_3 / l_2} and the sample L-kurtosis
 is \eqn{t_4 = l_4 / l_2}.
-}
-\note{
-This function has no parameter validation because \link{uncertainty_bootstrap}
-makes many calls to it. If you are getting errors, ensure that \code{data} is a positive,
-numeric vector.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

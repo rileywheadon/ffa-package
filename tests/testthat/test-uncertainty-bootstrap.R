@@ -4,11 +4,9 @@
 # print(summaryRprof())
 
 # NOTE: Tolerance is high due to randomness in the bootstrap
-test_that("Test s-bootstrap.R on data set #1 with L-moments", {
+test_that("basic functionality is working for CRAN", {
 	set.seed(1)
-
-	# Load dataset
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	GEV <- uncertainty_bootstrap(df$max, "GEV", "L-moments")[[1]]
@@ -21,6 +19,13 @@ test_that("Test s-bootstrap.R on data set #1 with L-moments", {
 	expect_equal(GUM$ci_lower , c(1736, 2435, 2884, 3310, 3858, 4268), tol = 1e-2)
 	expect_equal(GUM$estimates, c(1892, 2684, 3208, 3711, 4361, 4849), tol = 1e-2)
 	expect_equal(GUM$ci_upper , c(2056, 2951, 3561, 4151, 4917, 5491), tol = 1e-2)
+
+	})
+
+test_that("s-bootstrap.R works with L-moments", {
+	skip_on_cran()
+	set.seed(1)
+	df <- data_local("CAN-07BE001.csv")
 
 	# Normal (NOR) Distribution
 	NOR <- uncertainty_bootstrap(df$max, "NOR", "L-moments")[[1]]
@@ -58,13 +63,8 @@ test_that("Test s-bootstrap.R on data set #1 with L-moments", {
 	expect_equal(WEI$estimates, c(1819, 2693, 3279, 3828, 4512, 5007), tol = 1e-2)
 	expect_equal(WEI$ci_upper , c(2010, 2980, 3675, 4368, 5286, 5979), tol = 1e-2)
 
-})
-
-test_that("Test s-bootstrap.R on data set #2 with L-moments", {
-	set.seed(1)
-
-	# Load dataset
-	df <- load_data("Application_2.csv")
+	# Load data from KOOTENAI RIVER (08NH021)
+	df <- data_local("CAN-08NH021.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	GEV <- uncertainty_bootstrap(df$max, "GEV", "L-moments")[[1]]
@@ -116,11 +116,10 @@ test_that("Test s-bootstrap.R on data set #2 with L-moments", {
 
 })
 
-test_that("Test s-bootstrap.R on data set #3.1 with MLE", {
+test_that("s-bootstrap.R works on BOW RIVER (05BB001) with MLE", {
+	skip_on_cran()
 	set.seed(1)
-
-	# Load dataset
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	GEV <- uncertainty_bootstrap(df$max, "GEV", "MLE", samples = 1000L)[[1]]
@@ -169,11 +168,9 @@ test_that("Test s-bootstrap.R on data set #3.1 with MLE", {
 
 })
 
-test_that("Test s-bootstrap.R on data set #1 with non-stationary MLE", {
+test_that("s-bootstrap.R works on ATHABASCA RIVER (07BE001) with non-stationary MLE", {
 	set.seed(1)
-
-	# Load dataset
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	GEV100 <- uncertainty_bootstrap(
@@ -181,7 +178,7 @@ test_that("Test s-bootstrap.R on data set #1 with non-stationary MLE", {
 		"GEV",
 		"MLE",
 		years = df$year,
-		trend = trend_10, 
+		structure = S10, 
 		slices = min(df$year),
 		samples = 2000L
 	)[[1]]
@@ -195,7 +192,7 @@ test_that("Test s-bootstrap.R on data set #1 with non-stationary MLE", {
 		"GEV",
 		"MLE",
 		years = df$year,
-		trend = trend_10, 
+		structure = S10, 
 		slices = max(df$year),
 		samples = 2000L
 	)[[1]]
@@ -206,11 +203,9 @@ test_that("Test s-bootstrap.R on data set #1 with non-stationary MLE", {
 
 })
 
-test_that("Test s-bootstrap.R on data set #1 with GMLE", {
+test_that("s-bootstrap.R works on ATHABASCA RIVER (07BE001) with GMLE", {
 	set.seed(1)
-
-	# Load dataset
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 
 	# Generalized Extreme Value (GEV) Distribution
 	GEV100 <- uncertainty_bootstrap(
@@ -219,7 +214,7 @@ test_that("Test s-bootstrap.R on data set #1 with GMLE", {
 		"MLE",
 		prior = c(6, 9),
 		years = df$year,
-		trend = trend_10, 
+		structure = S10, 
 		slices = min(df$year),
 		samples = 2000L
 	)[[1]]
@@ -234,7 +229,7 @@ test_that("Test s-bootstrap.R on data set #1 with GMLE", {
 		"MLE",
 		prior = c(6, 9),
 		years = df$year,
-		trend = trend_10, 
+		structure = S10, 
 		slices = max(df$year),
 		samples = 2000L
 	)[[1]]
@@ -245,11 +240,9 @@ test_that("Test s-bootstrap.R on data set #1 with GMLE", {
 
 })
 
-test_that("convergence errors are caught.", {
+test_that("convergence errors are caught", {
 	set.seed(1)
-
-	# Load dataset
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	df <- subset(df, year >= 1985)
 
 	expect_error(uncertainty_bootstrap(
@@ -257,9 +250,9 @@ test_that("convergence errors are caught.", {
 		"WEI",
 		"MLE",
 		years = df$year,
-		trend = trend_11, 
+		structure = S11, 
 		slices = 2000,
 		samples = 2000L
-	), "Bootstrap uncertainty quantification failed to converge.")
+	), "Bootstrap uncertainty quantification failed to converge")
 
 })

@@ -29,8 +29,9 @@ A list containing the test results, including:
 \description{
 Performs the KPSS unit root test on annual maximum series (AMS) data.
 The null hypothesis is that the time series is trend-stationary with a linear
-trend and constant drift. The alternative hypothesis is that the time series
-has a unit root and is nonstationary.
+trend and constant drift (and thus the time series has a deterministic linear
+trend). The alternative hypothesis is that the time series has a unit root
+(and thus has a stochastic trend).
 }
 \details{
 The implementation of the KPSS test is based on the \pkg{aTSA} package, which
@@ -47,7 +48,11 @@ eda_kpss_test(data)
 \references{
 Hobijn, B., Franses, P.H. and Ooms, M. (2004), Generalizations of the KPSS-test
 for stationarity. Statistica Neerlandica, 58: 483-502.
+
+Kwiatkowski, D.; Phillips, P. C. B.; Schmidt, P.; Shin, Y. (1992). Testing the null
+hypothesis of stationarity against the alternative of a unit root. Journal of
+Econometrics, 54 (1-3): 159-178.
 }
 \seealso{
-\link{eda_pp_test}
+\code{\link[=eda_pp_test]{eda_pp_test()}}
 }

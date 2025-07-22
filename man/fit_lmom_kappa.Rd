@@ -11,8 +11,11 @@ fit_lmom_kappa(data)
 Must be strictly positive, finite, and not missing.}
 }
 \value{
-A numeric vector of four parameters in the order location, scale,
-shape (1), shape (2).
+A list containing the results of parameter estimation:
+\itemize{
+\item \code{method}: \code{"L-moments"}.
+\item \code{params}: numeric vector of 4 parameters in the order location, scale, shape (2).
+}
 }
 \description{
 This functions estimates the parameters of the four-parameter Kappa distribution
@@ -21,10 +24,11 @@ the parameters in terms of the L-moments, the parameters are computed numericall
 using Newton-Raphson iteration.
 }
 \details{
-First, the sample L-moments of the data are computed using the \link{lmom_sample}
-method. Then, the \link[stats]{optim} function is used to determine the
-parameters by minimizing the \code{sumquad.tau3tau4} helper function. The implementation of
-this routine is based on the deprecated \code{homtest} package.
+First, the sample L-moments of the data are computed using the \code{\link[=lmom_sample]{lmom_sample()}}
+method. Then, the \code{\link[stats:optim]{stats::optim()}} function is used to determine the parameters
+by minimizing the euclidian distance between the sample and theoretical L-moment
+ratios. The implementation of this routine is based on the deprecated \code{homtest}
+package, formerly avilable at \url{https://CRAN.R-project.org/package=homtest}.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -36,5 +40,5 @@ Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach b
 on L-Moments. Cambridge University Press, New York, USA.
 }
 \seealso{
-\link{lmom_sample}, \link{fit_lmom_fast}, \link{fit_lmom_methods}
+\code{\link[=lmom_sample]{lmom_sample()}}, \code{\link[=fit_lmom_fast]{fit_lmom_fast()}}, \code{\link[=fit_lmom_xxx]{fit_lmom_xxx()}}
 }

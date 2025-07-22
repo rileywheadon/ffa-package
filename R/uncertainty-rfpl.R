@@ -1,15 +1,14 @@
-#' Regula-Falsi Confidence Intervals for Flood Quantile Estimates
+#' (Generalized) Regula-Falsi Confidence Intervals for Flood Quantile Estimates
 #'
-#' @description
-#' Calculates estimates and confidence intervals for return levels at standard 
-#' return periods (2, 5, 10, 20, 50, and 100 years) using the profile likelihood 
-#' and Regula-Falsi root‐finding method.
+#' Calculates return level estimates and confidence intervals at specified return
+#' periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the Regula-Falsi profile
+#' likelihood or Regula-Falsi generalized profile likelihood root‐finding methods.
 #'
 #' @inheritParams param-data
-#' @inheritParams param-model
+#' @inheritParams param-distribution
 #' @inheritParams param-prior
 #' @inheritParams param-years
-#' @inheritParams param-trend
+#' @inheritParams param-structure
 #' @inheritParams param-slices
 #' @inheritParams param-alpha
 #' @inheritParams param-periods
@@ -25,44 +24,53 @@
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
 #' - `t`: Vector of return periods `c(2, 5, 10, 20, 50, 100)` in years.
 #' - `slice`: The value of `slice` argument.
-#' - `trend`: The value of `trend` argument.
+#' - `structure`: The value of `structure` argument.
 #'
 #' @details
-#' 1. Fits the model using \link{fit_maximum_likelihood} to obtain parameter 
+#' 1. Fits the distribution using [fit_maximum_likelihood()] to obtain parameter 
 #'    estimates and log‐likelihood.  
 #' 2. Defines an objective function \eqn{f(y_p, p)} based on the chi-squared 
 #'    distribution.
-#' 3. Iteratively brackets the root by scaling initial guesses by 0.05 until 
+#' 3. Iteratively brackets the root by rescaling initial guesses by 0.05 until 
 #'    \eqn{f(y_p, p)} changes sign.  
 #' 4. Uses the Regula Falsi method to solve \eqn{f(y_p, p) = 0} for each 
 #'    return-period probability.  
 #' 5. Returns lower and upper confidence bounds at significance level `alpha` 
 #'    given the return level estimates.
 #'
-#' @note Although the more modern \link[stats]{optim} function is preferred over 
-#' \link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports infinite
+#' @note Although the more modern [stats::optim()] function is preferred over 
+#' [stats::nlminb()], we use [stats::nlminb()] because it supports infinite
 #' values of the likelihood function. 
 #'
 #' RFPL uncertainty quantification can be numerically unstable for some datasets. 
 #' If this function encounters an issue, it will return an error and recommend 
-#' using the parametric bootstrap (`uncertainty_bootstrap`) instead.
+#' using the parametric bootstrap method (`uncertainty_bootstrap`) instead.
 #'
-#' @seealso \link{quantile_fast}, \link{uncertainty_bootstrap}, 
-#'   \link{plot_sffa}, \link{plot_nsffa}
+#' @seealso [quantile_fast()], [uncertainty_bootstrap()], 
+#'   [plot_sffa()], [plot_nsffa()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' uncertainty_rfpl(data, "GLO")
+#'
+#' @references
+#' Vidrio-Sahagún, C.T., He, J. Enhanced profile likelihood method for the nonstationary 
+#' hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022). 
+#' \doi{10.1016/j.advwatres.2022.104151}
+#' 
+#' Vidrio-Sahagún, C.T., He, J. & Pietroniro, A. Multi-distribution regula-falsi profile 
+#' likelihood method for nonstationary hydrological frequency analysis. Stoch Environ Res 
+#' Risk Assess 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
 #'
 #' @importFrom stats qchisq nlminb
 #' @export
 
 uncertainty_rfpl <- function(
     data,
-    model,
+    distribution,
     prior = NULL,
     years = NULL,
-    trend = NULL,
+    structure = NULL,
     slices = 1900,
     alpha = 0.05,
     eps = 1e-2,
@@ -70,10 +78,10 @@ uncertainty_rfpl <- function(
 ) {
 
 	data <- validate_numeric("data", data, FALSE)
-	model <- validate_enum("model", model)
+	distribution <- validate_enum("distribution", distribution)
 	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
 	years <- validate_numeric("years", years, size = length(data))
-	trend <- validate_trend(trend)
+	structure <- validate_structure(structure)
 	slices <- validate_numeric("slices", slices, FALSE)
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
 	eps <- validate_float("eps", eps, bounds = c(0, 1))
@@ -83,10 +91,10 @@ uncertainty_rfpl <- function(
 	lapply(slices, function(slice) {
 		uncertainty_rfpl_helper(
 			data,
-			model,
+			distribution,
 			prior,
 			years,
-			trend,
+			structure,
 			slice,
 			alpha,
 			eps,
@@ -98,10 +106,10 @@ uncertainty_rfpl <- function(
 
 uncertainty_rfpl_helper <- function(
     data,
-    model,
+    distribution,
     prior,
     years,
-    trend,
+    structure,
     slice,
     alpha,
     eps,
@@ -115,16 +123,16 @@ uncertainty_rfpl_helper <- function(
 	profile_likelihood <- function(yp, p, initial, prior = NULL) {
 
 		# Remove the parameter we are using for reparameterization on yp
-		if (model != "WEI") {
+		if (distribution != "WEI") {
 			initial <- initial[-1]
-		} else if (model == "WEI" && !trend$location) {
+		} else if (distribution == "WEI" && !structure$location) {
 			initial <- initial[-2]
 		} else {
 			initial <- initial[-3]
 		} 
 
-		# Set the default bounds based on the trend and model
-		if (trend$location) {
+		# Set the default bounds based on the structure and distribution
+		if (structure$location) {
 			lower <- c(-Inf)
 			upper <- c( Inf)
 		} else {
@@ -132,7 +140,7 @@ uncertainty_rfpl_helper <- function(
 			upper <- numeric(0)
 		}
 
-		if (trend$scale) {
+		if (structure$scale) {
 			lower <- c(lower, 1e-8, -Inf)
 			upper <- c(upper,  Inf,  Inf)
 		} else {
@@ -141,8 +149,8 @@ uncertainty_rfpl_helper <- function(
 		}
 
 		# The Weibull distribution has different parameter bounds
-		if (model == "WEI") { 
-			if (trend$location) {
+		if (distribution == "WEI") { 
+			if (structure$location) {
 				lower <- c(-Inf, -Inf)
 				upper <- c( Inf,  Inf)
 			} else {
@@ -150,14 +158,14 @@ uncertainty_rfpl_helper <- function(
 				upper <- c( Inf)
 			}
 
-			if (trend$scale) {
+			if (structure$scale) {
 				lower <- c(lower, -Inf)
 				upper <- c(upper,  Inf)
 			}
 		} 
 
 		# Add bounds for the shape parameter if necessary
-		info <- model_info(model)
+		info <- model_info(distribution)
 		if (info$n_params == 3) {
 
 			# Set finite bounds on the shape parameter for RFGPL
@@ -174,13 +182,13 @@ uncertainty_rfpl_helper <- function(
 		objective <- function(theta) {
 
 			# Reparameterize on the location for non-Weibull distributions
-			if (model != "WEI") {
+			if (distribution != "WEI") {
 
 				# Get the quantile at probability p with location 0
-				qp <- quantile_fast(p, model, c(0, theta), slice, trend)
+				qp <- quantile_fast(p, distribution, c(0, theta), slice, structure)
 
 				# Log-transform yp, qp if necessary
-				if (model %in% c("LNO", "LP3")) {
+				if (distribution %in% c("LNO", "LP3")) {
 					yp <- log(yp)
 					qp <- log(qp)
 				}
@@ -194,8 +202,8 @@ uncertainty_rfpl_helper <- function(
 			else {
 
 				# i and j are used to shift location in the parameter vector
-				i <- trend$location
-				j <- trend$scale
+				i <- structure$location
+				j <- structure$scale
 
 				# Get the quantiles for the Wei(0, 1, shape) distribution
 				qp <- quantile_wei(p, c(0, 1, theta[2 + i + j]))
@@ -203,13 +211,13 @@ uncertainty_rfpl_helper <- function(
 				# Reparameterize on the scale parameter sigma
 				covariate <- get_covariates(slice)
 
-				if (trend$location) {
+				if (structure$location) {
 					sigma <- (yp - theta[1] - (theta[2] * covariate)) / qp
 				} else {
 					sigma <- (yp - theta[1]) / qp
 				}
 
-				if (trend$scale) {
+				if (structure$scale) {
 					sigma <- sigma - (theta[2 + i] * covariate)
 				}
 
@@ -220,9 +228,9 @@ uncertainty_rfpl_helper <- function(
 
 			# Use the correct likelihood function based on whether there is a prior
 			if (!is.null(prior)) {
-				0 - general_loglik_fast(data, model, theta, prior, years, trend)
+				0 - general_loglik_fast(data, distribution, theta, prior, years, structure)
 			} else {
-				0 - loglik_fast(data, model, theta, years, trend)
+				0 - loglik_fast(data, distribution, theta, years, structure)
 			}
 
 		} 
@@ -263,9 +271,9 @@ uncertainty_rfpl_helper <- function(
 	probabilities <- 1 - (1 / periods)
 
 	# Get the results of maximum likelihood estimation
-	mle <- fit_maximum_likelihood(data, model, prior, years, trend) 
+	mle <- fit_maximum_likelihood(data, distribution, prior, years, structure) 
 	lp_hat <- mle$mll
-	yp_hat <- quantile_fast(probabilities, model, mle$params, slice, trend)
+	yp_hat <- quantile_fast(probabilities, distribution, mle$params, slice, structure)
 
 	# We want to find the roots of the function f defined below:
 	f <- function(yp, p) {
@@ -326,7 +334,7 @@ uncertainty_rfpl_helper <- function(
 		estimates = yp_hat ,
 		ci_upper = ci_upper,
 		slice = slice,
-		trend = trend
+		structure = structure
 	)
 
 }

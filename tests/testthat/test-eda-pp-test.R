@@ -1,7 +1,7 @@
-test_that("eda-pp-test.R on data set #1", {
+test_that("eda-pp-test.R works on ATHABASCA RIVER (07BE001)", {
 
 	# Run the PP test
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	test <- eda_pp_test(df$max)
 
 	# Test the results against aTSA:pp.test
@@ -11,10 +11,10 @@ test_that("eda-pp-test.R on data set #1", {
 
 })
 
-test_that("eda-pp-test.R on data set #2", {
+test_that("eda-pp-test.R works on KOOTENAI RIVER (08NH021)", {
 
 	# Run the PP test
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	test <- eda_pp_test(df$max)
 
 	# Test the results against aTSA:pp.test
@@ -24,10 +24,10 @@ test_that("eda-pp-test.R on data set #2", {
 
 })
 
-test_that("eda-pp-test.R on data set #3.1", {
+test_that("eda-pp-test.R works on BOW RIVER (05BB001)", {
 
 	# Run the PP test
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 	test <- eda_pp_test(df$max)
 
 	# Test the results against aTSA:pp.test
@@ -36,10 +36,10 @@ test_that("eda-pp-test.R on data set #3.1", {
 
 })
 
-test_that("eda-pp-test.R on data set #3.2", {
+test_that("eda-pp-test.R works on CHILLIWACK RIVER (08MH016)", {
 
 	# Run the PP test
-	df <- load_data("Application_3.2.csv")
+	df <- data_local("CAN-08MH016.csv")
 	test <- eda_pp_test(df$max)
 
 	# Test the results against aTSA:pp.test
@@ -49,10 +49,10 @@ test_that("eda-pp-test.R on data set #3.2", {
 
 })
 
-test_that("eda-pp-test.R on data set #3.3", {
+test_that("eda-pp-test.R works on OKANAGAN RIVER (08NM050)", {
 
 	# Run the PP test
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	test <- eda_pp_test(df$max)
 
 	# Test the results against aTSA:pp.test

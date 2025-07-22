@@ -1,7 +1,7 @@
 # Helper function for getting information about distributions
-model_info <- function(model, trend = NULL) {
+model_info <- function(distribution, structure = NULL) {
 	info <- switch(
-		model,	
+		distribution,	
 		"GUM" = list(n_params = 2, log = FALSE),
 		"NOR" = list(n_params = 2, log = FALSE),
 		"LNO" = list(n_params = 2, log =  TRUE),
@@ -14,9 +14,9 @@ model_info <- function(model, trend = NULL) {
 		"KAP" = list(n_params = 4, log = FALSE),
 	)
 
-	# If optional trend parameter is given, update the number of parameters 
-	if (!is.null(trend)) {
-		info$n_params <- info$n_params + trend$location + trend$scale
+	# If optional structure parameter is given, update the number of parameters 
+	if (!is.null(structure)) {
+		info$n_params <- info$n_params + structure$location + structure$scale
 	}
 
 	info

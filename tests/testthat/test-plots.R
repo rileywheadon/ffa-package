@@ -1,6 +1,8 @@
-test_that("plot-ams-data.R on data set #2", {
+# NOTE: Skip plotting tests works on CRAN to avoid unpredictable errors with vdiffr.
+test_that("plot-ams-data.R works on KOOTENAI RIVER (08NH021)", {
+	skip_on_cran()
 
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 
 	# Test the plotting function
 	p <- plot_ams_data(df$max, df$year)
@@ -14,11 +16,12 @@ test_that("plot-ams-data.R on data set #2", {
 
 })
 
-test_that("plot-bbmk-test.R on data set #2", {
+test_that("plot-bbmk-test.R works on KOOTENAI RIVER (08NH021)", {
+	skip_on_cran()
 	set.seed(1)
 
 	# Run the BB-MK test
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	results <- eda_bbmk_test(df$max, samples = 100L)
 
 	# Test the plotting function
@@ -33,10 +36,11 @@ test_that("plot-bbmk-test.R on data set #2", {
 
 })
 
-test_that("plot-mks-test.R on data set #2", {
+test_that("plot-mks-test.R works on KOOTENAI RIVER (08NH021)", {
+	skip_on_cran()
 
 	# Run the MKS test
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	results <- eda_mks_test(df$max, df$year)
 
 	# Tests the plotting function
@@ -59,10 +63,11 @@ test_that("plot-mks-test.R on data set #2", {
 
 })
 
-test_that("plot-pettitt-test.R on data set #2", {
+test_that("plot-pettitt-test.R works on KOOTENAI RIVER (08NH021)", {
+	skip_on_cran()
 
 	# Run the Pettitt test
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	results <- eda_pettitt_test(df$max, df$year)
 
 	# Test the plotting function
@@ -85,10 +90,11 @@ test_that("plot-pettitt-test.R on data set #2", {
 
 })
 
-test_that("plot-runs-test.R on data set #3.1", {
+test_that("plot-runs-test.R works on BOW RIVER (05BB001)", {
+	skip_on_cran()
 
 	# Run the runs test
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	results <- eda_runs_test(sens)
 
@@ -104,9 +110,10 @@ test_that("plot-runs-test.R on data set #3.1", {
 
 })
 
-test_that("plot-sens-trend.R on data set #3.1", {
+test_that("plot-sens-trend.R works on BOW RIVER (05BB001)", {
+	skip_on_cran()
 
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 	results <- eda_sens_trend(df$max, df$year)
 
 	# Test the plotting function
@@ -129,11 +136,12 @@ test_that("plot-sens-trend.R on data set #3.1", {
 
 })
 
-test_that("plot-sens-trend.R on data set #3.3 with variability", {
+test_that("plot-sens-trend.R works on OKANAGAN RIVER (08NM050) with variability", {
+	skip_on_cran()
 
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	mean_trend <- eda_sens_trend(df$max, df$year)
-	mw <- ams_mw_variability(df$max, df$year)
+	mw <- data_mw_variability(df$max, df$year)
 	variability_trend <- eda_sens_trend(mw$std, mw$year)
 
 	# Trend in variability
@@ -148,9 +156,10 @@ test_that("plot-sens-trend.R on data set #3.3 with variability", {
 
 })
 
-test_that("plot-spearman-test.R on data set #1", {
+test_that("plot-spearman-test.R works on ATHABASCA RIVER (07BE001)", {
+	skip_on_cran()
 
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	results <- eda_spearman_test(df$max)
 
 	# Test the plotting function
@@ -165,10 +174,11 @@ test_that("plot-spearman-test.R on data set #1", {
 	
 })
 
-test_that("plot-lmom-diagram.R on data set #1 with L-distance", {
+test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-distance", {
+	skip_on_cran()
 
 	pdf(nullfile())
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	results <- select_ldistance(df$max)
 
 	# Test the plotting function
@@ -183,10 +193,11 @@ test_that("plot-lmom-diagram.R on data set #1 with L-distance", {
 
 })
 
-test_that("plot-lmom-diagram.R on data set #1 with L-kurtosis", {
+test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-kurtosis", {
+	skip_on_cran()
 
 	pdf(nullfile())
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	results <- select_lkurtosis(df$max)
 
 	# Test the plotting function
@@ -196,10 +207,11 @@ test_that("plot-lmom-diagram.R on data set #1 with L-kurtosis", {
 	
 })
 
-test_that("plot-lmom-diagram.R on data set #1 with Z-statistic", {
+test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with Z-statistic", {
+	skip_on_cran()
 
 	pdf(nullfile())
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	results <- select_zstatistic(df$max)
 
 	# Test the plotting function
@@ -209,10 +221,11 @@ test_that("plot-lmom-diagram.R on data set #1 with Z-statistic", {
 	
 })
 
-test_that("plot-sffa.R on data set #3.3", {
+test_that("plot-sffa.R works on OKANAGAN RIVER (08NM050)", {
+	skip_on_cran()
 	set.seed(1)
 
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	results <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
 
 	# Test plotting function
@@ -227,17 +240,18 @@ test_that("plot-sffa.R on data set #3.3", {
 
 })
 
-test_that("plot-nsffa.R on data set #3.3", {
+test_that("plot-nsffa.R works on OKANAGAN RIVER (08NM050)", {
+	skip_on_cran()
 	set.seed(1)
 
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 
 	results <- uncertainty_bootstrap(
 		df$max,
 		"GEV",
 		"MLE",
 		years = df$year,
-		trend = trend_10,
+		structure = S10,
 		slices = c(1920, 1960, 2000),
 		samples = 1000L
 	)
@@ -254,9 +268,10 @@ test_that("plot-nsffa.R on data set #3.3", {
 
 })
 
-test_that("plot-model-diagnostics.R on data set #3.3", {
+test_that("plot-model-diagnostics.R works on OKANAGAN RIVER (08NM050)", {
+	skip_on_cran()
 
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	params <- fit_maximum_likelihood(df$max, "GEV")$params
 	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "MLE", samples = 1000L)
 	assessment <- model_diagnostics(df$max, "GEV", params, uncertainty)

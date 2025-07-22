@@ -1,8 +1,6 @@
 ---
 title: "Trend Identification (Mean)"
-output: 
-  rmarkdown::html_document:
-    theme: readable
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Trend Identification (Mean)}
   %\VignetteEngine{knitr::rmarkdown}

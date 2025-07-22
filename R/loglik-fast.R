@@ -1,28 +1,28 @@
 #' Log-Likelihood Helper Function
 #'
-#' A helper function used by \link{loglik_methods}.
-#' This function does not validate parameters and is intended for internal use.
+#' A helper function used by [loglik_xxx()].
+#' This function does not validate parameters and is designed for use in other methods.
 #' 
 #' @inheritParams param-data
-#' @inheritParams param-model
+#' @inheritParams param-distribution
 #' @inheritParams param-params
 #' @inheritParams param-years
-#' @inheritParams param-trend
+#' @inheritParams param-structure
 #'
 #' @return Numeric scalar. The log-likelihood value.
 #'
-#' @seealso \link{loglik_methods}
+#' @seealso [loglik_xxx()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' params <- c(0, 1, 0)
 #' years <- seq(from = 1901, to = 2000)
-#' trend <- list(location = FALSE, scale = FALSE)
-#' loglik_fast(data, "GEV", params, years, trend)
+#' structure <- list(location = FALSE, scale = FALSE)
+#' loglik_fast(data, "GEV", params, years, structure)
 #'
 #' @export
 
-loglik_fast <- function(data, model, params, years, trend) {
+loglik_fast <- function(data, distribution, params, years, structure) {
 
 	# Generate the covariate from years 
 	covariate <- get_covariates(years)
@@ -32,14 +32,14 @@ loglik_fast <- function(data, model, params, years, trend) {
 	if (any(is.nan(data))) return (-Inf)
 
 	# Transform nonstationary parmaeters into a vector of stationary parameters
-	if (trend$location) {
+	if (structure$location) {
 		u <- params[1] + (covariate * params[2])
 	} else {
 		u <- params[1]
 	}
 
-	i <- trend$location
-	if (trend$scale) {
+	i <- structure$location
+	if (structure$scale) {
 		s <- params[2 + i] + (covariate * params[3 + i])
 	} else {
 		s <- params[2 + i]
@@ -52,7 +52,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 	if (any(s <= 0)) return (-Inf)
 
 	# Distribution functions
-	if (model == "GUM") {
+	if (distribution == "GUM") {
 		
 		# Normalize the data
 		z <- ((data - u) / s)
@@ -60,7 +60,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		# Compute the log-likelihood
 		ll <- -log(s) - z - exp(-z)
 
-	} else if (model == "NOR") {
+	} else if (distribution == "NOR") {
 
 		# Normalize the data
 		z <- ((data - u) / s)
@@ -68,7 +68,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		# Compute the log-likelihood
 		ll <- -log(s * sqrt(2 * pi)) - (z^2 / 2)
 
-	} else if (model == "LNO") {
+	} else if (distribution == "LNO") {
 
 		# Normalize log(data)
 		log_z <- ((log(data) - u) / s)
@@ -76,7 +76,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		# Subtract log(data) from ll because of the chain rule.
 		ll <- -log(s * sqrt(2 * pi)) - (log_z^2 / 2) - log(data)
 
-	} else if (model == "GEV") {
+	} else if (distribution == "GEV") {
 
 		# Get the shape-normalized data
 		t <- 1 + k * ((data - u) / s)
@@ -85,7 +85,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		if (any(t <= 0)) return (-Inf)
 		ll <- -log(s) - (1 + (1 / k)) * log(t) - t^(-1 / k)
 
-	} else if (model == "GLO") {
+	} else if (distribution == "GLO") {
 
 		# Get the shape-normalized data
 		t <- 1 - k * ((data - u) / s)
@@ -95,7 +95,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		ll <- -log(s) + ((1 / k) - 1) * log(t) - 2 * log(1 + t^(1 / k))
 	} 
 
-	else if (model == "GNO") {
+	else if (distribution == "GNO") {
 
 		# Get the shape-normalized data
 		t <- 1 - k * ((data - u) / s)
@@ -104,7 +104,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		if (any(t <= 0)) return (-Inf)
 		ll <- -log(s * sqrt(2 * pi)) - log(t) - (log(t)^2 / (2 * k^2))
 
-	} else if (model == "PE3") {
+	} else if (distribution == "PE3") {
 
 		# Reparameterize
 		a <- 4 / (k^2)
@@ -118,7 +118,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		t <- abs(data - x)
 		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a)
 
-	} else if (model == "LP3") {
+	} else if (distribution == "LP3") {
 
 		# Reparameterize
 		a <- 4 / (k^2)
@@ -132,7 +132,7 @@ loglik_fast <- function(data, model, params, years, trend) {
 		t <- abs(log(data) - x)
 		ll <- (a - 1) * log(t) - (t / b) - a * log(b) - lgamma(a) - log(data)
 
-	} else if (model == "WEI") {
+	} else if (distribution == "WEI") {
 
 		# Check for support
 		if (k <= 0 | any(data <= u)) return (-Inf) 

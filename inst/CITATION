@@ -1,0 +1,17 @@
+citHeader("Please cite this package as:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = "A practice-oriented framework for stationary and nonstationary flood frequency analysis",
+  author   = c(
+  	person("Cuauhtémoc", "Vidrio-Sahagún"),
+	person("Jake", "Ruschkowski"),
+	person("Jianxun", "He"),
+	person("Alain", "Pietroniro")
+  ),
+  journal  = "Environmental Modelling and Software",
+  year     = 2024,
+  volume   = 173,
+  number   = 105940,
+  doi      = "10.1016/j.envsoft.2024.105940"
+)

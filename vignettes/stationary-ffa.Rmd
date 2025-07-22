@@ -1,8 +1,6 @@
 ---
 title: "Stationary FFA"
-output: 
-  rmarkdown::html_document:
-    theme: readable
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Stationary FFA}
   %\VignetteEngine{knitr::rmarkdown}

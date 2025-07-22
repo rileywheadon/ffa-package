@@ -1,29 +1,29 @@
 #' Helper Function for L-moments Ratios
 #'
-#' A helper function used by \link{lmom_theoretical}.
-#' This function does not validate parameters and is intended for internal use.
+#' A helper function used by [lmom_theoretical()].
+#' This function does not validate parameters and is designed for use in other methods.
 #'
-#' @note L-moment ratios for `NOR`/`LNO` and `PE3`/`LP3` are identical since 
-#'   it L-moments for the `LNO`/`LP3` distributions are compared with the 
-#'   sample L-moments of the logarithm of the data internally. 
+#' @note This function returns identical L-moment ratios for `"NOR"`/`"LNO"` and 
+#' `"PE3"`/`"LP3"` since L-moments for the `"LNO"` and `"LP3"` distributions are 
+#' compared with the sample L-moments of log-transformed data internally. 
 #'
-#' @inheritParams param-model
+#' @inheritParams param-distribution
 #' @inheritParams param-params
 #'
-#' @return A numeric vector of length 4 containing:
+#' @return A numeric vector of with four elements:
 #' - \eqn{\lambda_1}: L-mean
 #' - \eqn{\lambda_2}: L-variance
 #' - \eqn{\tau_3}: L-skewness
 #' - \eqn{\tau_4}: L-kurtosis
 #'
-#' @seealso \link{lmom_theoretical}
+#' @seealso [lmom_theoretical()]
+#'
+#' @examples
+#' lmom_fast("GLO", c(0, 1, 0))
 #'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
 #' on L-Moments. Cambridge University Press, New York, USA.
-#'
-#' @examples
-#' lmom_fast("GLO", c(0, 1, 0))
 #'
 #' @export
 

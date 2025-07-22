@@ -1,7 +1,7 @@
 #' Plot Annual Maximum Series (AMS) Data
 #'
-#' @description
-#' Generates a plot of annual maximum series data with an optional trend line.
+#' Generates a plot of annual maximum series data with an optional line connecting
+#' the data points.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years

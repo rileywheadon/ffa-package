@@ -1,33 +1,4 @@
-# test_that("return types for qnt-functions.R are correct.", {
-
-# 	# 1 exceedance probability, stationary distribution
-# 	result <- quantile_gev(0.5, c(0, 1, 0))
-# 	expect_equal(result, -log(log(2)))
-
-# 	# 2+ exceedance proabilities, stationary distribution
-# 	result <- quantile_gev(c(0.1, 0.5, 0.9), c(0, 1, 0))
-# 	expect_equal(result, c(-0.8340, 0.3665, 2.2504), tol = 1e-4)
-# 	expect_equal(length(result), 3)
-
-# 	# 1 exceedance probability, 1 year, non-stationary distribution
-# 	result <- quantile_gev(0.5, c(0, 1, 1, 0), 1900, trend_10)
-# 	expect_equal(result, -log(log(2)))
-
-# 	# 2+ exceedance probatilities, 1 year, non-stationary distribution
-# 	result <- quantile_gev(c(0.1, 0.5, 0.9), c(0, 1, 1, 0), 1900, trend_10)
-# 	expect_equal(result, c(-0.8340, 0.3665, 2.2504), tol = 1e-4)
-# 	expect_equal(length(result), 3)
-
-# 	# 2+ exceedance probatilities, 2+ years, non-stationary distribution
-# 	result <- quantile_gev(c(0.1, 0.5, 0.9), c(0, 1, 1, 0), c(1900, 1950), trend_10)
-# 	expect_equal(result[1, ], c(-0.8340, 0.3665, 2.2504), tol = 1e-4)
-# 	expect_equal(result[2, ], c(-0.3340, 0.8665, 2.7504), tol = 1e-4)
-# 	expect_equal(nrow(result), 2)
-# 	expect_equal(ncol(result), 3)
-
-# })
-
-test_that("quantile functions produce the same results as lmom library.", {
+test_that("quantile functions produce the same results as 'lmom' package.", {
 
 	# Gumbel (GUM) Distribution
 	result <- quantile_gum(c(0.1, 0.5, 0.9), c(1, 2))

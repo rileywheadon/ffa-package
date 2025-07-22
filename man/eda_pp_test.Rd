@@ -21,16 +21,16 @@ List; the test results, consisting of:
 \itemize{
 \item \code{data}: The \code{data} argument.
 \item \code{statistic}: The Z-statistic used to perform the test.
-\item \code{p.value}: Reported p-value from the test. See notes on interpolation thresholds.
+\item \code{p_value}: Reported p-value from the test. See notes on interpolation thresholds.
 \item \code{reject}: Logical. If \code{TRUE}, the null hypothesis was rejected at \code{alpha}.
 \item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
 }
 }
 \description{
 Applies the Phillips–Perron (PP) test to check for a unit root in annual
-maximum series (AMS) data. The null hypothesis is that the series contains a
-unit root (and is thus nonstationary). This implementation of the PP test assumes
-the time series has both stationary drift and a linear trend.
+maximum series (AMS) data. The null hypothesis assumes the series contains a
+unit root (and thus has a stochastic trend). The alternative hypothesis is that
+the time series has a deterministic linear trend (and is thus trend-stationary).
 }
 \details{
 The implementation of this test is based on the \pkg{aTSA} package, which
@@ -44,9 +44,12 @@ eda_pp_test(data)
 
 }
 \references{
-Fuller, W. A. (1996). Introduction to statistical time series, second ed., Wiley,
-New York.
+Fuller, W. A. (1976). Introduction to Statistical Time Series. New York:
+John Wiley and Sons
+
+Phillips, P. C. B.; Perron, P. (1988). Testing for a Unit Root in Time Series
+Regression. Biometrika, 75 (2): 335-346
 }
 \seealso{
-\link{eda_kpss_test}
+\code{\link[=eda_kpss_test]{eda_kpss_test()}}
 }

@@ -1,6 +1,5 @@
 #' White Test for Heteroskedasticity
 #'
-#' @description
 #' Performs the White test for heteroskedasticity by regressing the squared residuals 
 #' of a linear model on the original regressors and their squared terms. The null 
 #' hypothesis is homoskedasticity.
@@ -14,7 +13,7 @@
 #' - `data`: The `data` argument.
 #' - `years`: The `years` argument.
 #' - `r_squared`: Coefficient of determination from the auxiliary regression.
-#' - `statistic`: White test statistic based on sample size and `r.squared`.
+#' - `statistic`: White test statistic based on sample size and `r_squared`.
 #' - `p_value`: The p-value derived from a Chi-squared distribution with `df = 2`.
 #' - `reject`: Logical. If `TRUE`, the null hypothesis is rejected at `alpha`.
 #' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
@@ -23,15 +22,14 @@
 #' The White test regresses the squared residuals from a primary linear model 
 #' `lm(data ~ years)` against both the original regressor and its square. 
 #' The test statistic is calculated as \eqn{nR^2}, where \eqn{R^2} is the 
-#' coefficient of determination from the auxiliary regression. Under the null hypothesis,
-#' this statistic follows a \eqn{\chi^2} distribution with 2 degrees of freedom.
-#' Rejection of the null hypothesis suggests heteroskedasticity in the residuals.
+#' coefficient of determination from the auxiliary regression. Under the null 
+#' hypothesis, the test statistic has the \eqn{\chi^2} distribution. 
 #'
-#' @references White, H. (1980). A heteroskedasticity-consistent covariance matrix 
-#' estimator and a direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 
-#' 817–838.
+#' @references 
+#' White, H. (1980). A heteroskedasticity-consistent covariance matrix estimator and 
+#' a direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 817–838.
 #'
-#' @seealso \link[stats]{lm}, \link[stats]{pchisq}
+#' @seealso [stats::lm()], [stats::pchisq()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

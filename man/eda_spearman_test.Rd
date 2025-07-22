@@ -20,23 +20,23 @@ test to the console. Default is \code{TRUE}.}
 A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
-\item \code{rho}: Numeric vector of autocorrelation estimates for lags \eqn{1} to \eqn{n-3}.
-\item \code{sig}: Logical vector indicating which lags exhibit significant autocorrelation.
-\item \code{least.lag}: The smallest lag at which the autocorrelation is insignificant.
-\item \code{reject}: Logical. If \code{TRUE}, then \code{least.lag > 0}.
+\item \code{rho}: Numeric vector of serial correlation estimates for lags \eqn{1} to \eqn{n-3}.
+\item \code{sig}: Logical vector indicating which lags exhibit significant serial correlation
+\item \code{least_lag}: The smallest lag at which the serial correlation is insignificant.
+\item \code{reject}: Logical. If \code{TRUE}, then \code{least_lag > 0}.
 \item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
 }
 }
 \description{
-Performs the Spearman rank autocorrelation test on annual maximum series
-(AMS) data to check for autocorrelation at various lags. Reports the smallest
-lag where the autocorrelation is not statistically significant at the given
+Performs the Spearman rank serial correlation test on annual maximum series
+(AMS) data to check for serial correlation at various lags. Reports the smallest
+lag where the serial correlation is not statistically significant at the given
 significance level.
 }
 \details{
 For each lag from \eqn{1} to \eqn{n - 3}, the function computes the Spearman
-correlation coefficient between the AMS series and its lagged version. The
-first lag with an insignificant autocorrelation coefficient returned as \code{least.lag}.
+correlation coefficient between the original AMS series and the lagged series. The
+first lag with an insignificant serial correlation coefficient returned as \code{least_lag}.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -44,5 +44,5 @@ eda_spearman_test(data)
 
 }
 \seealso{
-\link[stats]{cor.test}, \link{eda_bbmk_test}, \link{plot_spearman_test}
+\code{\link[stats:cor.test]{stats::cor.test()}}, \code{\link[=eda_bbmk_test]{eda_bbmk_test()}}, \code{\link[=plot_spearman_test]{plot_spearman_test()}}
 }

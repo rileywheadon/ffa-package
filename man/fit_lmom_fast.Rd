@@ -4,26 +4,26 @@
 \alias{fit_lmom_fast}
 \title{Helper Function for L-moments Parameter Estimation}
 \usage{
-fit_lmom_fast(data, model)
+fit_lmom_fast(data, distribution)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series (AMS) values.
 Must be strictly positive, finite, and not missing.}
 
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
+\item{distribution}{Character scalar. A three-character code indicating
+a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 }
 \value{
-A numeric vector of parameters:
+A list containing the results of parameter estimation:
 \itemize{
-\item If \code{model} is \code{"GUM"}, \code{"NOR"}, or \code{"LNO"}, returns a vector of length 2.
-\item Otherwise, returns a vector of length 3.
+\item \code{method}: \code{"L-moments"}.
+\item \code{params}: numeric vector of 2 or 3 parameters depending on the distribution.
 }
 }
 \description{
-A helper function used by \link{fit_lmom_methods}.
-This function does not validate parameters and is intended for internal use.
+A helper function used by \code{\link[=fit_lmom_xxx]{fit_lmom_xxx()}}.
+This function does not validate parameters and is designed for use in other methods.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -35,5 +35,5 @@ Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach b
 on L-Moments. Cambridge University Press, New York, USA.
 }
 \seealso{
-\link{lmom_sample}, \link{fit_lmom_kappa}, \link{fit_lmom_methods}
+\code{\link[=lmom_sample]{lmom_sample()}}, \code{\link[=fit_lmom_kappa]{fit_lmom_kappa()}}, \code{\link[=fit_lmom_xxx]{fit_lmom_xxx()}}
 }

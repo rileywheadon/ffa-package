@@ -1,7 +1,6 @@
 #' Z-Statistic Method for Distribution Selection
 #'
-#' @description
-#' Selects the best-fit distribution by computing a bias-corrected Z-statistic for 
+#' Selects the best-fit distribution by comparing a bias-corrected Z-statistic for 
 #' the sample L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set 
 #' of candidate distributions. The distribution with the smallest absolute Z-statistic 
 #' is selected.
@@ -22,7 +21,7 @@
 #' - `log_std_t4`: Standard deviation of the L-kurtosis from the log-AMS bootstrap.
 #'
 #' @details
-#' The method performs model selection using both raw and log-transformed data. The 
+#' The method performs distribution selection using both raw and log-transformed data. The 
 #' distributions which use the raw AMS data are GEV, GLO, PE3, GNO, and WEI. The LP3
 #' distribution uses log-transformed data. 
 #'
@@ -31,12 +30,16 @@
 #' The L-moments of these bootstrapped samples are used to estimate the Z-statistic 
 #' for each distribution.
 #'
-#' @seealso \link{select_ldistance}, \link{select_lkurtosis}, \link{fit_lmom_kappa},
-#'   \link{quantile_fast}, \link{plot_lmom_diagram}
+#' @seealso [select_ldistance()], [select_lkurtosis()], [fit_lmom_kappa()],
+#'   [quantile_fast()], [plot_lmom_diagram()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' select_zstatistic(data)
+#'
+#' @references
+#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
+#' on L-Moments. Cambridge University Press, New York, USA.
 #'
 #' @importFrom stats runif optim
 #' @export
@@ -98,10 +101,10 @@ select_zstatistic <- function(data, samples = 10000L) {
 	metrics <- list()
 
 	# Iterate through the list of three parameter distributions
-	for (model in c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
+	for (distribution in c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
 
 		# Get distribution information
-		info <- model_info(model)
+		info <- model_info(distribution)
 
 		# Get the correct bootstrap
 		if (info$log & !is.null(log_bootstrap)) {
@@ -114,7 +117,7 @@ select_zstatistic <- function(data, samples = 10000L) {
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {
-			distribution_t3 <- lmom_fast(model, c(0, 1, i))[3]
+			distribution_t3 <- lmom_fast(distribution, c(0, 1, i))[3]
 			abs(distribution_t3 - b$sample_t3)
 		}
 
@@ -128,9 +131,9 @@ select_zstatistic <- function(data, samples = 10000L) {
 		)
 
 		# Get the parameters of the fitted distribution and compute the z-score
-		distribution_t4 <- lmom_fast(model, c(0, 1, result$par))[4]
+		distribution_t4 <- lmom_fast(distribution, c(0, 1, result$par))[4]
 		z <- (distribution_t4 - b$sample_t4 + b$bias_t4) / b$std_t4
-		metrics[[model]] <- z
+		metrics[[distribution]] <- z
 
 	}
 

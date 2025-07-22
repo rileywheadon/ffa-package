@@ -25,7 +25,7 @@ A list containing the results of the White test:
 \item \code{data}: The \code{data} argument.
 \item \code{years}: The \code{years} argument.
 \item \code{r_squared}: Coefficient of determination from the auxiliary regression.
-\item \code{statistic}: White test statistic based on sample size and \code{r.squared}.
+\item \code{statistic}: White test statistic based on sample size and \code{r_squared}.
 \item \code{p_value}: The p-value derived from a Chi-squared distribution with \code{df = 2}.
 \item \code{reject}: Logical. If \code{TRUE}, the null hypothesis is rejected at \code{alpha}.
 \item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
@@ -40,9 +40,8 @@ hypothesis is homoskedasticity.
 The White test regresses the squared residuals from a primary linear model
 \code{lm(data ~ years)} against both the original regressor and its square.
 The test statistic is calculated as \eqn{nR^2}, where \eqn{R^2} is the
-coefficient of determination from the auxiliary regression. Under the null hypothesis,
-this statistic follows a \eqn{\chi^2} distribution with 2 degrees of freedom.
-Rejection of the null hypothesis suggests heteroskedasticity in the residuals.
+coefficient of determination from the auxiliary regression. Under the null
+hypothesis, the test statistic has the \eqn{\chi^2} distribution.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -51,10 +50,9 @@ eda_white_test(data, years)
 
 }
 \references{
-White, H. (1980). A heteroskedasticity-consistent covariance matrix
-estimator and a direct test for heteroskedasticity. \emph{Econometrica}, 48(4),
-817–838.
+White, H. (1980). A heteroskedasticity-consistent covariance matrix estimator and
+a direct test for heteroskedasticity. \emph{Econometrica}, 48(4), 817–838.
 }
 \seealso{
-\link[stats]{lm}, \link[stats]{pchisq}
+\code{\link[stats:lm]{stats::lm()}}, \code{\link[stats:Chisquare]{stats::pchisq()}}
 }

@@ -1,7 +1,7 @@
-test_that("Test eda-runs-test.R on means of data set #1", {
+test_that("eda-runs-test.R works on means of ATHABASCA RIVER (07BE001)", {
 
 	# Load the data and run the Runs test
-	df <- load_data("Application_1.csv")
+	df <- data_local("CAN-07BE001.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	test <- eda_runs_test(sens)
 
@@ -15,10 +15,10 @@ test_that("Test eda-runs-test.R on means of data set #1", {
 	
 })
 
-test_that("Test eda-runs-test.R on means of data set #2", {
+test_that("eda-runs-test.R works on means of KOOTENAI RIVER (08NH021)", {
 
 	# Load the data and run the Runs test
-	df <- load_data("Application_2.csv")
+	df <- data_local("CAN-08NH021.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	test <- eda_runs_test(sens)
 
@@ -32,10 +32,10 @@ test_that("Test eda-runs-test.R on means of data set #2", {
 	
 })
 
-test_that("Test eda-runs-test.R on means of data set #3.1", {
+test_that("eda-runs-test.R works on means of BOW RIVER (05BB001)", {
 
 	# Load the data and run the Runs test
-	df <- load_data("Application_3.1.csv")
+	df <- data_local("CAN-05BB001.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	test <- eda_runs_test(sens)
 
@@ -49,10 +49,10 @@ test_that("Test eda-runs-test.R on means of data set #3.1", {
 	
 })
 
-test_that("Test eda-runs-test.R on means of data set #3.2", {
+test_that("eda-runs-test.R works on means of CHILLIWACK RIVER (08MH016)", {
 
 	# Load the data and run the Runs test
-	df <- load_data("Application_3.2.csv")
+	df <- data_local("CAN-08MH016.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	test <- eda_runs_test(sens)
 
@@ -66,10 +66,10 @@ test_that("Test eda-runs-test.R on means of data set #3.2", {
 	
 })
 
-test_that("Test eda-runs-test.R on means of data set #3.3", {
+test_that("eda-runs-test.R works on means of OKANAGAN RIVER (08NM050)", {
 
 	# Load the data and run the Runs test
-	df <- load_data("Application_3.3.csv")
+	df <- data_local("CAN-08NM050.csv")
 	sens <- eda_sens_trend(df$max, df$year)
 	test <- eda_runs_test(sens)
 

@@ -25,7 +25,8 @@ Must be the same length as \code{data} and strictly increasing.}
 }
 }
 \description{
-Generates a plot of annual maximum series data with an optional trend line.
+Generates a plot of annual maximum series data with an optional line connecting
+the data points.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

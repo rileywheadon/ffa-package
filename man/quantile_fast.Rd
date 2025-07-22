@@ -4,26 +4,26 @@
 \alias{quantile_fast}
 \title{Helper Function for Quantile Functions}
 \usage{
-quantile_fast(p, model, params, slice, trend)
+quantile_fast(p, distribution, params, slice, structure)
 }
 \arguments{
 \item{p}{Numeric vector of probabilities between 0 and 1 with no missing values.}
 
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
+\item{distribution}{Character scalar. A three-character code indicating
+a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
-\code{model} and \code{trend}.}
+\code{distribution} and \code{structure}.}
 
 \item{slice}{Numeric scalar specifying the year at which to evaluate the
-quantiles of a nonstationary probability distribution.  The slice does not
-have to be an element of the \code{years} argument. Note that if \code{trend$location}
-and \code{trend$scale} are both \code{FALSE}, this argument will have  no effect the
+quantiles of a nonstationary probability distribution. The slice does not
+have to be an element of the \code{years} argument. Note that if \code{structure$location}
+and \code{structure$scale} are both \code{FALSE}, this argument will have no effect the
 output of the function.}
 
-\item{trend}{Named list indicating which distribution parameters are
+\item{structure}{Named list indicating which distribution parameters are
 modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
@@ -34,18 +34,19 @@ modeled as nonstationary. Must contain:
 A numeric vector of quantiles with the same length as \code{p}.
 }
 \description{
-A helper function used by \link{quantile_methods}.
+A helper function used by \code{\link[=quantile_xxx]{quantile_xxx()}}.
+This function does not validate parameters and is designed for use in other methods.
 }
 \examples{
-# Initialize p, params, and trend
+# Initialize p, params, and structure
 p <- runif(n = 10)
 params <- c(0, 1, 1, 0)
-trend <- list(location = FALSE, scale = TRUE)
+structure <- list(location = FALSE, scale = TRUE)
 
 # Compute the log-likelihood in the year 2000
-quantile_fast(p, "GEV", params, 2000, trend)
+quantile_fast(p, "GEV", params, 2000, structure)
 
 }
 \seealso{
-\link{quantile_methods}
+\code{\link[=quantile_xxx]{quantile_xxx()}}
 }

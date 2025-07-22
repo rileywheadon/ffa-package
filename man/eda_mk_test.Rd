@@ -45,6 +45,11 @@ data <- rnorm(n = 100, mean = 100, sd = 10)
 eda_mk_test(data)
 
 }
+\references{
+Kendall, M. (1975). Rank Correlation Methods. Griffin, London, 202 pp.
+
+Mann, H. B. (1945). Nonparametric Tests Against Trend. Econometrica, 13(3): 245-25
+}
 \seealso{
-\link{eda_bbmk_test}
+\code{\link[=eda_bbmk_test]{eda_bbmk_test()}}
 }

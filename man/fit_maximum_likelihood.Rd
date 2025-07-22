@@ -4,24 +4,30 @@
 \alias{fit_maximum_likelihood}
 \title{Maximum Likelihood Parameter Estimation}
 \usage{
-fit_maximum_likelihood(data, model, prior = NULL, years = NULL, trend = NULL)
+fit_maximum_likelihood(
+  data,
+  distribution,
+  prior = NULL,
+  years = NULL,
+  structure = NULL
+)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series (AMS) values.
 Must be strictly positive, finite, and not missing.}
 
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
+\item{distribution}{Character scalar. A three-character code indicating
+a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 
 \item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
 parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{model = "GEV"}.}
+Only used when \code{distribution = "GEV"}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{trend}{Named list indicating which distribution parameters are
+\item{structure}{Named list indicating which distribution parameters are
 modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
@@ -36,35 +42,34 @@ A list containing the results of parameter estimation:
 }
 }
 \description{
-Estimates parameters of a probability distribution with an optional trend  by
-maximizing the log‐likelihood. Initial values are obtained through L‐moment
-parameter estimation, and optimization is performed via \link[stats]{nlminb}
+Estimates parameters of a probability distribution with an optional nonstationary
+structure by  maximizing the log‐likelihood. Initial values are obtained through
+L‐moment parameter estimation, and optimization is performed via \code{\link[stats:nlminb]{stats::nlminb()}}
 with repeated perturbations if needed.
 }
 \details{
 \enumerate{
-\item Calls \link{fit_lmom_fast} on \code{data} to obtain initial parameter estimates.
+\item Calls \code{\link[=fit_lmom_fast]{fit_lmom_fast()}} on \code{data} to obtain initial parameter estimates.
 \item Initializes trend parameters to zero if necessary.
 \item For \code{WEI} models, sets the location parameter to zero to ensure support.
-\item Defines an objective function using the likelihood functions
-\link{loglik_fast} or \link{general_loglik_fast}.
-\item Runs \link[stats]{nlminb} with box constraints. Attempts optimization
+\item Defines an objective function using \code{\link[=loglik_fast]{loglik_fast()}} or \code{\link[=general_loglik_fast]{general_loglik_fast()}}.
+\item Runs \code{\link[stats:nlminb]{stats::nlminb()}} with box constraints. Attempts optimization
 up to 100 times if a maximum cannot be found.
 }
 }
 \note{
-Although the more modern \link[stats]{optim} function is preferred over
-\link[stats]{nlminb}, we use \link[stats]{nlminb} because it supports infinite
+Although the more modern \code{\link[stats:optim]{stats::optim()}} function is preferred over
+\code{\link[stats:nlminb]{stats::nlminb()}}, we use \code{\link[stats:nlminb]{stats::nlminb()}} because it supports infinite
 values of the likelihood function.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 years <- seq(from = 1901, to = 2000)
-trend <- list(location = TRUE, scale = FALSE)
-fit_maximum_likelihood(data, "GNO", NULL, years, trend)
+structure <- list(location = TRUE, scale = FALSE)
+fit_maximum_likelihood(data, "GNO", NULL, years, structure)
 
 }
 \seealso{
-\link{loglik_fast}, \link{general_loglik_fast}, \link{fit_lmom_fast},
-\link[stats]{nlminb}
+\code{\link[=loglik_fast]{loglik_fast()}}, \code{\link[=general_loglik_fast]{general_loglik_fast()}}, \code{\link[=fit_lmom_fast]{fit_lmom_fast()}},
+\code{\link[stats:nlminb]{stats::nlminb()}}
 }

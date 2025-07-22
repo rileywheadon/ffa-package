@@ -4,28 +4,28 @@
 \alias{general_loglik_fast}
 \title{Generalized Log-Likelihood Helper Function}
 \usage{
-general_loglik_fast(data, model, params, prior, years, trend)
+general_loglik_fast(data, distribution, params, prior, years, structure)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series (AMS) values.
 Must be strictly positive, finite, and not missing.}
 
-\item{model}{Character scalar. A three-character code indicating
-a distribution family. Must be one of:  \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
+\item{distribution}{Character scalar. A three-character code indicating
+a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
 \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
-\code{model} and \code{trend}.}
+\code{distribution} and \code{structure}.}
 
 \item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
 parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{model = "GEV"}.}
+Only used when \code{distribution = "GEV"}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{trend}{Named list indicating which distribution parameters are
+\item{structure}{Named list indicating which distribution parameters are
 modeled as nonstationary. Must contain:
 \itemize{
 \item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
@@ -36,21 +36,21 @@ modeled as nonstationary. Must contain:
 Numeric scalar. The generalized log-likelihood value.
 }
 \description{
-A helper function used by \link{general_loglik_gev}.
-This function does not validate parameters and is intended for internal use.
+A helper function used by \code{\link[=general_loglik_gev]{general_loglik_gev()}}.
+This function does not validate parameters and is designed for use in other methods.
 }
 \examples{
-# Initialize data, params, prior, years, and trend
+# Initialize data, params, prior, years, and structure
 data <- rnorm(n = 100, mean = 100, sd = 10)
 params <- c(0, 1, 1, 0, 0)
 prior <- c(5, 10)
 years <- seq(from = 1901, to = 2000)
-trend <- list(location = TRUE, scale = TRUE)
+structure <- list(location = TRUE, scale = TRUE)
 
 # Compute the generalized log-likelihood
-general_loglik_fast(data, "GEV", params, prior, years, trend)
+general_loglik_fast(data, "GEV", params, prior, years, structure)
 
 }
 \seealso{
-\link{general_loglik_gev}.
+\code{\link[=general_loglik_gev]{general_loglik_gev()}}.
 }

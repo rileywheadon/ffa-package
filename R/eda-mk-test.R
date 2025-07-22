@@ -24,11 +24,16 @@
 #' The test statistic \eqn{Z} is then computed based on the sign and magnitude of 
 #' \eqn{S}, and the p-value is derived from the standard normal distribution.
 #'
-#' @seealso \link{eda_bbmk_test}
+#' @seealso [eda_bbmk_test()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' eda_mk_test(data)
+#'
+#' @references
+#' Kendall, M. (1975). Rank Correlation Methods. Griffin, London, 202 pp.
+#'
+#' Mann, H. B. (1945). Nonparametric Tests Against Trend. Econometrica, 13(3): 245-25
 #'
 #' @importFrom stats pnorm
 #' @export
