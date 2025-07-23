@@ -45,7 +45,7 @@ Internally, the function does the following:
 \item If there is a trend in the location, fit Sen’s trend estimator to
 \code{data} and \code{covariate}. Then, remove the fitted linear trend.
 \item If there is a trend in the scale, compute the variability using
-\code{\link[=ams_mw_variability]{ams_mw_variability()}}, fit Sen’s trend estimator to the vector of
+\code{\link[=data_mw_variability]{data_mw_variability()}}, fit Sen’s trend estimator to the vector of
 standard deviations, and then rescale the series to remove trends
 in the scale.
 \item If necessary, shift the data so that its minimum is at least 1.

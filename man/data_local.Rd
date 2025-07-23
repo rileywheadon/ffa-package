@@ -32,7 +32,7 @@ from the package data directory.
 }
 \examples{
 # Get data for the BOW RIVER AT BANFF (05BB001)
-df <- data_local("05BB001")
+df <- data_local("CAN-05BB001.csv")
 
 }
 \seealso{

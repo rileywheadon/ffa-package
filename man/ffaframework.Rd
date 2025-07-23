@@ -10,6 +10,8 @@ ffaframework(
   splits = NULL,
   structures = NULL,
   automatic = FALSE,
+  path = NULL,
+  formats = "html",
   ...
 )
 }
@@ -31,40 +33,108 @@ in the mean/variability respectively.}
 automatically using the results of EDA (default is \code{FALSE}). This argument is ignored
 if both \code{splits} and \code{structures} are not \code{NULL}.}
 
-\item{...}{Additional arguments to be passed to the statistical tests and frequency
-analysis functions. See the details of \code{\link[=module_eda]{module_eda()}} and \code{\link[=module_ffa]{module_ffa()}} for a complete
-list.}
+\item{path}{An absolute path to a directory for storing the results (default is \code{NULL}).
+If path is \code{NULL}, images and reports will be exported to \code{tempdir()}.}
+
+\item{formats}{List of file formats to export the results (default is \code{"html"}). The
+supported formats are \code{"html"}, \code{"pdf"}, \code{"json"}, and \code{"md"} (markdown).}
+
+\item{...}{Additional arguments. See the note below for more information.}
 }
 \value{
 \code{summary}: A list containing high-level information about the results:
 \itemize{
-\item \code{splits}: The vector of years used to split the data into subperiods.
-\item \code{structures}: A list of nonstationary structure objects with size \code{length(splits) + 1}.
+\item \code{periods}: A list of length two vectors containing the start/end of the subperiods.
+\item \code{structures}: A list of nonstationary structure objects with size \code{length(periods) + 1}.
 }
 
 \code{blocks}: A list of results for each module. Each block is a list containing:
 \itemize{
 \item \code{name}: Either \code{"Change Points"}, \code{"Trend Detection"}, or \code{"Frequency Analysis"}.
-\item \code{start}: The first year of the subperiod.
-\item \code{end}: The last year of the subperiod.
-\item Additional items depending on the module.
+\item \code{period}: The two-element vector containing the start/end of the subperiod.
+\item \code{items}: A list of additional items (e.g. statistical tests) depending on the module.
 }
 }
 \description{
-Runs the entire flood frequency analysis framework using the exploratory
-data analysis (\code{\link[=module_eda]{module_eda()}}) and flood frequency analysis (\code{\link[=module_ffa]{module_ffa()}}) modules.
-Returns a comprehensive and reproducible summary of the results.
+Runs the complete flood frequency analysis framework including exploratory data
+analysis (change point detection and trend detection/classification), approach
+selection, and frequency analysis (distribution selection, parameter estimation,
+uncertainty quantification, and model assessment). Returns a comprehensive and
+reproducible summary of the results.
 }
 \details{
-The behaviour of the function when \code{automatic = FALSE} can be confusing. If either
-of \code{splits} or \code{structures} is \code{NULL}, the user will be prompted to select them. However,
-if R is running in non-interactive mode, this is not possible, so the function will return
-all the results up to the current block along with an error message.
+If \code{automatic = FALSE} and either \code{splits} and/or \code{structures} is \code{NULL}, the
+user will be prompted to choose split points and/or nonstationary structures manually.
+However, this is not possible if R is running in non-interactive mode, so the function
+will return an error instead.
 
 To avoid this issue, the user has three options:
 \enumerate{
-\item Set \code{splits} and \code{structures} manually.
-\item Run R in interactive mode (using RStudio, for example).
-\item Set \code{automatic = TRUE}.
+\item Pass \code{splits} and \code{structures} arguments to \code{\link[=ffaframework]{ffaframework()}}.
+\item Run R in interactive mode using RStudio or the R console.
+\item Use \code{automatic = TRUE}.
 }
+}
+\section{EDA Settings}{
+
+\itemize{
+\item \code{alpha = 0.05}: The numeric significance level for all statistical tests.
+\item \code{bbmk_samples = 10000L}: The number of bootstrap samples used by the Block-Bootstrap
+Mann-Kendall (BBMK) test.
+}
+}
+
+\section{FFA Settings}{
+
+
+Model Selection:
+\itemize{
+\item \code{selection = "L-distance"}: Distribution selection method. Must be one of
+\code{"L-distance"}, \code{"L-kurtosis"} or \code{"Z-statistic"}. Alternatively, set \code{selection}
+to a three-letter distribution code (eg. \code{"GUM"}) to use a specific distribution.
+\item \code{z_samples = 10000L}: Number of samples for \code{"Z-statistic"} distribution selection.
+\item \code{window_size = 10L}: The size of the moving window used to estimate the variability.
+\item \code{window_step = 5L}: The distance between moving windows for variability estimation.
+}
+
+Parameter Estimation:
+\itemize{
+\item \code{s_estimation = "L-moments"}: Parameter estimation method for S-FFA. Must be
+\code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}. Method \code{"GMLE"} requires \code{selection = "GEV"}.
+\item \code{ns_estimation = "MLE"}: Parameter estimation method for NS-FFA. Must be
+\code{"MLE"} or \code{"GMLE"}. Method \code{"GMLE"} requires \code{selection = "GEV"}.
+\item \code{gev_prior = c(6, 9)}: Parameters for the prior distribution of the shape parameter
+of the GEV distribution. Used with estimation method \code{"GMLE"}.
+}
+
+Uncertainty Quantification:
+\itemize{
+\item \code{s_uncertainty = "Bootstrap"}: Uncertainty quantification method for S-FFA.
+Must be one of \code{"Bootstrap"}, \code{"RFPL"}, or \verb{RFGPL"}. Using method \code{"RFPL"} requires
+\code{s_estimation = "MLE"} and method \code{"RFGPL"} requires \code{s_estimation = "GMLE"}.
+\item \code{ns_uncertainty = "RFPL"}: Uncertainty quantification method for NS-FFA.
+Must be one of \code{"Bootstrap"}, \code{"RFPL"}, or \verb{RFGPL"}. Method \code{"RFPL"} requires
+\code{ns_estimation = "MLE"} and method \code{"RFGPL"} requires \code{ns_estimation = "GMLE"}.
+\item \code{return_periods = c(2L, 5L, 10L, 20L, 50L, 100L)}: Integer list of return periods
+(in years) at which to estimate return levels during uncertainty quantification.
+\item \code{slices = c(1925L, 1975L, 2025L)}: Integer vector of years at which to estimate the
+return levels for nonstationary models. Slices outside of the period will be ignored.
+\item \code{sb_samples = 1000L}: Number of samples for \code{"Bootstrap"} uncertainty method.
+\item \code{rfpl_tolerance = 0.01}: Log-likelihood tolerance for \code{"RFPL"} uncertainty method.
+}
+
+Model Assessment:
+\itemize{
+\item \code{pp_formula = "Weibull"}: Plotting position formula for model assessment. Must be one
+of \code{"Weibull"}, \code{"Blom"}, \code{"Cunnane"}, \code{"Gringorten"}, or \code{"Hazen"} (see
+\href{https://rileywheadon.github.io/ffa-docs/model-assessment/}{here}).
+}
+}
+
+\examples{
+data <- rnorm(n = 100, mean = 100, sd = 10)
+years <- seq(from = 1901, to = 2000)
+structures <- list(list(location = FALSE, scale = FALSE))
+ffaframework(data, years, splits = numeric(0), structures = structures, formats = NULL)
+
 }

@@ -23,7 +23,7 @@
 #' 2. If there is a trend in the location, fit Sen’s trend estimator to 
 #'    `data` and `covariate`. Then, remove the fitted linear trend.
 #' 3. If there is a trend in the scale, compute the variability using 
-#'    [ams_mw_variability()], fit Sen’s trend estimator to the vector of
+#'    [data_mw_variability()], fit Sen’s trend estimator to the vector of
 #'    standard deviations, and then rescale the series to remove trends 
 #'    in the scale.
 #' 4. If necessary, shift the data so that its minimum is at least 1.

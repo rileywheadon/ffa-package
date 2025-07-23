@@ -27,7 +27,7 @@
 #'
 #' @export
 
-lmom_fast <- function(model, params) {
+lmom_fast <- function(distribution, params) {
 
 	# Unpack the parameters
 	u <- params[1]
@@ -35,7 +35,7 @@ lmom_fast <- function(model, params) {
 	if (length(params) == 3) k <- params[3]
 
 	# NOTE: -digamma(1) is Euler's constant (~0.5772)
-	if (model == "GUM") {
+	if (distribution == "GUM") {
 		l1 <- u - (s * digamma(1))
 		l2 <- s * log(2)
 		t3 <- log(9 / 8) / log(2)
@@ -44,28 +44,28 @@ lmom_fast <- function(model, params) {
 
 	# NOTE: We call lmom_fast("LNO", params) to compare the L-moments of log(data) 
 	# to the L-moments for NOR. We can do this because Data ~ LNO <=> log(Data) ~ NOR.
-	else if (model == "NOR" | model == "LNO") {
+	else if (distribution == "NOR" | distribution == "LNO") {
 		l1 <- u
 		l2 <- s * pi^-0.5
 		t3 <- 0
 		t4 <- (30 * pi^-1 * atan(sqrt(2))) - 9
 	}
 
-	else if (model == "GEV") {
+	else if (distribution == "GEV") {
 		l1 <- u + s * (1 - gamma(1 + k)) / k
 		l2 <- s * (1 - 2^-k) * gamma(1 + k) / k
 		t3 <- 2 * (1 - 3^-k) / (1 - 2^-k) - 3
 		t4 <- (5 * (1 - 4^-k) - 10 * (1 - 3^-k) + 6 * (1 - 2^-k)) / (1 - 2^-k)
 	}
 
-	else if (model == "GLO") {
+	else if (distribution == "GLO") {
 		l1 <- u + s * ((1 / k) - (pi / sin(k * pi)))
 		l2 <- (s * k * pi) / sin(k * pi)
 		t3 <- -k
 		t4 <- (1 + (5 * k^2)) / 6
 	}
 
-	else if (model == "GNO") {
+	else if (distribution == "GNO") {
 
 		# Constants for numerical approximation
 		Tau04 <- 0.12260172
@@ -104,7 +104,7 @@ lmom_fast <- function(model, params) {
 
 	# NOTE: We call lmom_fast("LP3", params) internally to compare the L-moments 
 	# of log(data) to the L-moments for PE3 since  Data ~ LP3 <=> log(Data) ~ PE3.
-	else if (model == "PE3" | model == "LP3") {
+	else if (distribution == "PE3" | distribution == "LP3") {
 		
 		# Coefficients used for approximation
 		A0 <-  3.2573501e-1
@@ -161,7 +161,7 @@ lmom_fast <- function(model, params) {
 
 	}
 
-	else if (model == "WEI") {
+	else if (distribution == "WEI") {
 
 		# Reparameterize
 		ug <- 0

@@ -28,15 +28,12 @@ This vignette will demonstrate how these statistical tests can be used together 
 
 This vignette will explore the Kootenai River at Porthill (08NH021) station, located on the border of British Columbia and Idaho.
 The Porthill station is also downstream of the Libby Dam, which finished construction in 1972.
-Data for this station is provided as `Application_2.csv` in the `ffaframework` package.
+Data for this station is provided as `CAN-08NH021.csv` in the `ffaframework` package.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 library(ffaframework)
 
-csv_path <- system.file("extdata", "Application_2.csv", package = "ffaframework")
-df <- read.csv(csv_path, comment.char = "#")
-df <- subset(df, !is.na(max)) # Remove missing values
-
+df <- data_local("CAN-08NH021.csv")
 head(df)
 
 plot_ams_data(df$max, df$year, title = "Kootenai River at Porthill (08NH021)")

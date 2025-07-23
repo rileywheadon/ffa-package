@@ -33,8 +33,8 @@ BugReports: https://github.com/rileywheadon/ffa-framework/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 4.4.3)
-Imports: ggplot2, patchwork, stats
+Depends: R (>= 4.4.0)
+Imports: ggplot2, patchwork, httr, rmarkdown, glue, jsonlite, stats
 Suggests: knitr, testthat, vdiffr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)

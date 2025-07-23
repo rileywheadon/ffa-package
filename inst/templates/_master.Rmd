@@ -1,0 +1,103 @@
+---
+title: "FFA Framework Report"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+  html_document:
+    toc: true
+    toc_depth: 3
+    css: styles.css
+params: 
+  summary: "[summary]"
+  blocks: "[blocks]"
+  img_dir: "[img_dir]"
+---
+
+## Summary
+
+```{r, echo = FALSE}
+summary <- params$summary
+
+if (length(summary$splits) > 0) {
+	splits <- paste0(summary$splits, collapse = ", ")
+	msg <- glue("**Split Points**: {splits}")
+} else {
+	msg <- glue("**Split Points**: None")
+}
+
+knitr::asis_output(msg)
+```
+
+**EDA Results**:
+
+```{r, echo = FALSE}
+
+# Construct each column
+period_labels <- vapply(
+	summary$periods, 
+	function(p) sprintf("%d-%d", p[1], p[2]), 
+	character(1)
+)
+
+trend_mean <- vapply(
+	summary$structures,
+	function(s) s$location, 
+	logical(1)
+)
+
+trend_scale <- vapply(
+	summary$structures,
+	function(s) s$scale,
+	logical(1)
+)
+
+# Combine into a data frame
+period_df <- data.frame(
+  Partition = period_labels,
+  `Trend in Mean` = trend_mean,
+  `Trend in Variability` = trend_scale,
+  check.names = FALSE
+)
+
+# Render the table
+knitr::kable(period_df, format = "markdown", align = "lcc")
+```
+
+```{r, echo = FALSE}
+outputs <- character()
+
+for (entry in params$blocks) {
+
+	# Determine the type of the entry
+	if ("mks" %in% names(entry$items)) {
+		header <- "Change Point Analysis"
+	} else if ("mk" %in% names(entry$items)) {
+		header <- "Trend Detection"
+	} else if ("estimation" %in% names(entry$items)) {
+		header <- "Frequency Analysis"
+	}
+
+	# Get the start and end of the period 
+	start <- entry$period[1]
+	end <- entry$period[2]
+
+	# Add a header to outputs	
+	outputs <- c(outputs, glue("\n\n## {header} ({start}-{end})\n\n"))
+
+	# Create a list with the start year, end year, and image directory
+	period <- list(start = start, end = end, img_dir = img_dir)
+
+	# Add the sub-report for each item in the entry
+	for (item in names(entry$items)) {
+		env <- new.env()
+		env$params <- c(entry$items[[item]], period)
+		report_file <- glue("{item}_report.Rmd")
+		outputs <- c(outputs, knitr::knit_child(report_file, envir = env))
+	}
+
+} 
+
+knitr::asis_output(outputs)
+```

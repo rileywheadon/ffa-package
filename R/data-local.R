@@ -21,8 +21,9 @@
 #'
 #' @examples
 #' # Get data for the BOW RIVER AT BANFF (05BB001)
-#' df <- data_local("05BB001")
+#' df <- data_local("CAN-05BB001.csv")
 #'
+#' @importFrom utils read.csv
 #' @export
 data_local <- function(csv_file) {
 

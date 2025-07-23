@@ -1,0 +1,53 @@
+### Model Assessment
+
+<!-- Model Assessment Table -->
+```{r, echo = FALSE}
+values <- c(
+	round(params$R2, 4),
+	round(params$RMSE, 4),
+	round(params$bias, 4),
+	round(params$AIC, 4), 
+	round(params$BIC, 4), 
+	round(params$MLL_AIC, 4),
+	round(params$MLL_BIC, 4), 
+	round(params$AW, 4), 
+	round(params$POC, 4),
+	round(params$CWI, 4)
+)
+
+statistics <- c(
+	"Model Validation: Coefficient of Determination",
+	"Model Validation: RMSE",
+	"Model Validation: Bias",
+	"Akaike Information Criterion",
+	"Bayesian Information Criterion",
+	"Akaike Information Criterion (MLL)",
+	"Bayesian Information Criterion (MLL)",
+	"Confidence Intervals: Average Width",
+	"Confidence Intervals: Percentage of Coverage",
+	"Confidence Intervals: Confidence Width Indicator"
+)
+
+assessment_df <- data.frame(
+	Statistic = statistics,
+	Value = values
+)
+
+knitr::kable(
+	assessment_df, 
+	format = "markdown",
+	align = "lr"
+)
+```
+
+<!-- Model Selection Plot -->
+```{r, echo = FALSE}
+img_name <- glue("assessment_{params$start}_{params$end}.png")
+knitr::include_graphics(file.path(params$img_dir, img_name))
+```
+
+
+
+
+
+

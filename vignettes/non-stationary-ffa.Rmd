@@ -29,27 +29,24 @@ The shape parameter is treated as a constant considering its difficult estimatio
 
 This vignette will explore data from the Bow River at Banff (05BB001) hydrological monitoring station.
 The remoteness of this station means that trends annual maxima are caused by changes in climate as opposed to changes in land use or cover.
-Data for this station is provided as `Application_3.1.csv` in the `ffaframework` package.
+Data for this station is provided as `CAN-05BB001.csv` in the `ffaframework` package.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 library(ffaframework)
 
-csv_path <- system.file("extdata", "Application_3.1.csv", package = "ffaframework")
-df <- read.csv(csv_path, comment.char = "#")
-df <- subset(df, !is.na(max)) # Remove missing values
-
+df <- data_local("CAN-05BB001.csv")
 head(df)
 
 plot_ams_data(df$max, df$year, title = "Bow River at Banff (05BB001)")
 ```
 
-### The `trend` List
+### The `structure` List
 
 This vignette assumes a scenario where a trend in the mean has been identified.
-To specify a trend in the time series during FFA, create a `trend` list as shown below:
+To specify a trend in the time series during FFA, create a `structure` list as shown below:
 
 ```{r}
-trend <- list(location = TRUE, scale = FALSE)
+structure <- list(location = TRUE, scale = FALSE)
 ```
 
 **Note**: For guidance on trend detection, refer to the *Trend Identification* vignette.
@@ -57,11 +54,11 @@ trend <- list(location = TRUE, scale = FALSE)
 ## Distribution Selection
 
 L-moment-based distribution selection remains applicable under nonstationarity, but requires dataset decomposition (detrending) prior to analysis.
-This is accomplished using the `ams_decomposition` function, which takes an annual maximum series (AMS), the corresponding vector of years, and the `trend` object.
+This is accomplished using the `data_decomposition` function, which takes an annual maximum series (AMS), the corresponding vector of years, and the `structure` object.
 The decomposed vector of data is then passed to the selection function.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-data_decomposed <- ams_decomposition(df$max, df$year, trend)
+data_decomposed <- data_decomposition(df$max, df$year, structure)
 
 selection <- select_ldistance(data_decomposed)
 
@@ -84,14 +81,14 @@ It has two required arguments:
 Since a nonstationary model is used, two additional arguments are required:
 
 - `years`: The corresponding vector of years for the observations in `data`.
-- `trend`: The nonstationary `trend` object described above.
+- `structure`: The nonstationary `structure` object described above.
 
 ```{r}
 fit <- fit_maximum_likelihood(
 	df$max,
 	"GNO",
 	years = df$year,
-	trend = trend
+	structure = structure
 )
 
 print(fit$params)
@@ -111,10 +108,10 @@ The `uncertainty_rfpl` method has two required arguments:
 - `data`: The annual maximum series observations. 
 - `model`: A three-letter code corresponding to a probability distribution (ex. `"GNO"`).
 
-Since the dataset has a nonstationary trend, three additional arguments are required:
+Since the dataset has a nonstationary structure, three additional arguments are required:
 
 - `years`: The corresponding vector of years for the observations in `data`.
-- `trend`: The nonstationary `trend` object described above.
+- `structure`: The nonstationary `structure` object described above.
 - `slices`: The years at which return levels are computed.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -122,7 +119,7 @@ uncertainty <- uncertainty_rfpl(
 	df$max,
 	"GNO",
 	years = df$year,
-	trend = trend,
+	structure = structure,
 	slices = c(1925, 2025)
 )
 
