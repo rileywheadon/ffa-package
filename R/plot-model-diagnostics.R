@@ -1,6 +1,6 @@
 #' Plot Model Assessment Results
 #'
-#' Creates a quantile–quantile plot comparing observed annual maximum series (AMS)
+#' Creates a quantile–quantile plot comparing observed annual maximum series
 #' data to quantile estimates from a fitted parametric model. The 1:1 line is drawn in 
 #' black and the parametric model estimates are plotted as semi‐transparent red points.
 #'
@@ -39,7 +39,7 @@ plot_model_diagnostics <- function(results, ...) {
 	args <- list(...)
 
     # Set default values, overriding if necessary
-    title <- args$title %||% "Model Assessment"
+    title <- args$title %||% "Model Diagnostics"
     xlabel <- args$xlabel %||% expression(Model ~ Quantiles ~ m^3/s)
 	ylabel <- args$ylabel %||% expression(Observed ~ Quantiles ~ m^3/s)
 

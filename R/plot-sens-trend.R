@@ -1,6 +1,6 @@
 #' Plot Sen’s Trend Estimator
 #'
-#' Produces a scatterplot of the annual maximum series (AMS) data or its variance
+#' Produces a scatterplot of the annual maximum series data or its variance
 #' against time, optionally overlaid with Sen’s trend estimator of the mean and/or
 #' variability.
 #'
@@ -11,13 +11,13 @@
 #'
 #' @param variability_trend Trend in variability estimated by [eda_sens_trend()].
 #'
-#' @param show_line If `TRUE` (default), draw a fitted line through the AMS data.
+#' @param show_line If `TRUE` (default), draw a fitted line through the data.
 #'
 #' @param ... Optional named arguments: 'title', 'xlabel', and 'ylabel'.
 #'
 #' @return `ggplot`; a plot containing:
-#' - Gray points for each year’s AMS value.
-#' - Optional gray line connecting the AMS data if `show_line = TRUE`.
+#' - Gray points for each year’s annual maximum series value.
+#' - Optional gray line connecting the data if `show_line = TRUE`.
 #' - A solid black line representing a constant mean, if `mean_trend == NULL`.
 #' - A solid blue line representing a trend in the mean, if `mean_trend != NULL`.
 #' - A dashed black line representing constant variability, if `variability_trend == NULL`.
@@ -71,7 +71,7 @@ plot_sens_trend <- function(
 	# Set labels and title 
 	title <- args$title %||% "Sen's Trend Estimator"
 	xlabel <- args$xlabel %||% "Covariate"
-	ylabel <- args$ylabel %||% expression(AMS ~ m^3/s)
+	ylabel <- args$ylabel %||% expression(Streamflow ~ m^3/s)
 
 	# Generate dataframes for the trend estimate, data
 	x <- get_covariates(years)

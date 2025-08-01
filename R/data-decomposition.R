@@ -28,7 +28,7 @@
 #'    in the scale.
 #' 4. If necessary, shift the data so that its minimum is at least 1.
 #'
-#' @return Numeric vector of decomposed AMS data with the same length as `data`.
+#' @return Numeric vector of decomposed data.
 #'
 #' @seealso [data_mw_variability()], [eda_sens_trend()]
 #'

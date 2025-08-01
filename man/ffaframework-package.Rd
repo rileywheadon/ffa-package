@@ -2,20 +2,21 @@
 % Please edit documentation in R/ffaframework-package.R
 \docType{package}
 \name{ffaframework-package}
+\alias{ffaframework}
 \alias{ffaframework-package}
 \title{Flood Frequency Analysis Framework}
 \description{
-This package provides tools for stationary and nonstationary flood frequency
-analysis (FFA) of annual maximum series (AMS) data. The package supports
+This package provides tools for stationary (S-FFA) and nonstationary (NS-FFA)
+flood frequency analysis of annual maximum series data. The package supports
 flexible workflows with the following core components:
 }
 \details{
 \enumerate{
-\item \strong{Explore} AMS data for approach selection (S-FFA or NS-FFA) using
-the \verb{eda_*} methods:
+\item \strong{Test} for evidence of nonstationarity in annual maximum series data to
+inform approach selection (S-FFA or NS-FFA) using the \verb{eda_*} methods:
 \itemize{
-\item Detect change points.
-\item Identify trends in the \emph{mean} and \emph{variance}.
+\item Detect statistically significant change points.
+\item Detect statistically significant temporal trends in the \emph{mean} and \emph{variance}.
 }
 \item \strong{Select} a suitable probability distribution using the \verb{select_* } methods.
 \item \strong{Fit} model parameters using the \verb{fit_*} methods.
@@ -26,8 +27,8 @@ the \verb{eda_*} methods:
 Additional utility functions support visualization and computation:
 \itemize{
 \item \verb{plot_*} methods produce diagnostic and summary plots.
-\item \verb{ams_*} methods transform or segment AMS time series.
-\item \verb{quantile_*}, \verb{loglik_*}, and \verb{lmom_*} implement distribution-specific computation.
+\item \verb{data_*} methods load, transform, and decompose annual maximum series data.
+\item \verb{quantile_*}, \verb{loglik_*}, and \verb{lmom_*} implement distribution-specific computations.
 }
 
 This package assumes familiarity with statistical techniques used in FFA, including

@@ -29,12 +29,12 @@ Authors@R:
 	)) 
 Maintainer: Riley Wheadon <rileywheadon@gmail.com>
 URL: https://rileywheadon.github.io/ffa-docs/
-BugReports: https://github.com/rileywheadon/ffa-framework/issues
+BugReports: https://github.com/rileywheadon/ffa-package/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.4.0)
-Imports: ggplot2, patchwork, httr, rmarkdown, glue, jsonlite, stats
+Imports: ggplot2, patchwork, httr, stats
 Suggests: knitr, testthat, vdiffr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)

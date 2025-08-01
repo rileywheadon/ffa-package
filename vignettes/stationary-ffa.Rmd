@@ -16,14 +16,12 @@ knitr::opts_chunk$set(
 
 This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis (model selection, parameter estimation, uncertainty quantification, and model performance assessment) under the assumption of stationarity.
 
-The results are expressed in terms of *return periods* and *return levels*:
-
-- The *return period* of a flood is the expected number of years between annual maximum events of equal or greater magnitude.
-- The *return level* is the magnitude of the annual maximum event, measured in $\text{m}^3/\text{s}$.
+The results are expressed in terms of *return periods* and *return levels*.
+The *return period* of a flood is the expected number of years between annual maximum events of equal or greater magnitude while the *return level* is the magnitude of the annual maximum event, measured in $\text{m}^3/\text{s}$.
 
 ## Case Study
 
-This vignette will explore data from the Athabasca River at Athabasca (07BE001) hydrological monitoring station.
+This vignette will explore data from the Athabasca River at Athabasca (07BE001), an unregulated hydrological monitoring station.
 A statistical analysis of the data from this station does not reveal any evidence of trends in the mean or variability of the data.
 Data for this station is provided as `CAN-07BE001.csv` in the `ffaframework` package.
 
@@ -72,7 +70,7 @@ params <- fit_lmom_gev(df$max)$params
 print(params)
 ```
 
-**Conclusion**: The GEV distribution with parameters `location = 1600`, `scale = 616`, and `shape = 0.12` will be used.
+**Conclusion**: The GEV distribution with `location = 1600`, `scale = 616`, and `shape = 0.12` will be used.
 
 ## Uncertainty Quantification
 
@@ -88,8 +86,6 @@ By default, return levels are computed 2-, 5-, 10-, 20-, 50-, and 100- year retu
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 uncertainty <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
-
-print(uncertainty[[1]]$estimates)
 
 plot_sffa(uncertainty)
 ```

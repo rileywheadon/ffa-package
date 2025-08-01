@@ -7,7 +7,7 @@
 eda_spearman_test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
@@ -29,13 +29,13 @@ A list containing the test results, including:
 }
 \description{
 Performs the Spearman rank serial correlation test on annual maximum series
-(AMS) data to check for serial correlation at various lags. Reports the smallest
+data to check for serial correlation at various lags. Reports the smallest
 lag where the serial correlation is not statistically significant at the given
 significance level.
 }
 \details{
 For each lag from \eqn{1} to \eqn{n - 3}, the function computes the Spearman
-correlation coefficient between the original AMS series and the lagged series. The
+correlation coefficient between the original series and the lagged series. The
 first lag with an insignificant serial correlation coefficient returned as \code{least_lag}.
 }
 \examples{

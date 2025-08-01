@@ -1,7 +1,7 @@
 #' Mann–Kendall–Sneyers Test for Change Point Detection
 #'
 #' Performs the Mann–Kendall–Sneyers (MKS) test to detect the beginning of a monotonic
-#' trend in annual maximum series (AMS) data. The test computes normalized
+#' trend in annual maximum series data. The test computes normalized
 #' progressive and regressive Mann–Kendall statistics and identifies statistically
 #' significant crossing points, indicating potential change points in the trend.
 #'
@@ -16,7 +16,7 @@
 #' - `s_progressive`: Normalized progressive Mann–Kendall-Sneyers statistics.
 #' - `s_regressive`: Normalized regressive Mann–Kendall-Sneyers statistics.
 #' - `bound`: Critical confidence bound for significance based on `alpha`.
-#' - `crossing_df`: Crossing points, including indices, years, statistics, and AMS.
+#' - `crossing_df`: Crossing points, including indices, years, and test statistics.
 #' - `change_df`: Subset of `crossing_df` with statistically significant crossings.
 #' - `p_value`: Two-sided p-value derived from the maximum crossing statistic.
 #' - `reject`: Logical. If `TRUE`, the null hypothesis of no change point is rejected.

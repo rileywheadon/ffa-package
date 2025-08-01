@@ -61,7 +61,7 @@ eda_sens_trend <- function(data, years, quiet = TRUE) {
 	intercepts <- data - (sens_slope * covariate)
 	sens_intercept <- median(intercepts, na.rm =  TRUE)
 
-	# Compute the predicted AMS values and the residuals
+	# Compute the predicted values and the residuals
 	predicted_data <- sens_intercept + (sens_slope * covariate)
 	residuals <- data - predicted_data
 

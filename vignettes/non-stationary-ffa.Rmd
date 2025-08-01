@@ -23,12 +23,12 @@ The framework supports three forms of nonstationarity, modelled as linear trends
 2. A linear trend in the variance (scale parameter).
 3. A linear trend in both the mean and variance.
 
-The shape parameter is treated as a constant considering its difficult estimation due to sample size limitations.
+The shape parameter is treated as a constant due to difficulties in estimation caused by sample size limitations.
 
 ## Case Study
 
-This vignette will explore data from the Bow River at Banff (05BB001) hydrological monitoring station.
-The remoteness of this station means that trends annual maxima are caused by changes in climate as opposed to changes in land use or cover.
+This vignette will explore data from the Bow River at Banff (05BB001), a station in the Reference Hydrometric Basin Network.
+The station is unregulated, which suggests that trends in annual maxima are caused by changes in climate as opposed to changes in land use or cover.
 Data for this station is provided as `CAN-05BB001.csv` in the `ffaframework` package.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -43,7 +43,8 @@ plot_ams_data(df$max, df$year, title = "Bow River at Banff (05BB001)")
 ### The `structure` List
 
 This vignette assumes a scenario where a trend in the mean has been identified.
-To specify a trend in the time series during FFA, create a `structure` list as shown below:
+To specify a trend in a distribution parameter, create a `structure` list containing the boolean items `location` and `scale`.
+Setting these items to `TRUE` specifies a trend in the location/scale parameter respectively. 
 
 ```{r}
 structure <- list(location = TRUE, scale = FALSE)
@@ -55,7 +56,7 @@ structure <- list(location = TRUE, scale = FALSE)
 
 L-moment-based distribution selection remains applicable under nonstationarity, but requires dataset decomposition (detrending) prior to analysis.
 This is accomplished using the `data_decomposition` function, which takes an annual maximum series (AMS), the corresponding vector of years, and the `structure` object.
-The decomposed vector of data is then passed to the selection function.
+The decomposed vector of data is then passed to the selection function (`select_ldistance` in this case).
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 data_decomposed <- data_decomposition(df$max, df$year, structure)
@@ -71,7 +72,7 @@ plot_lmom_diagram(selection)
 
 ## Parameter Estimation
 
-Because L-moments parameter estimation requires stationarity, we use maximum likelihood estimation for nonstationary models.
+Because L-moments parameter estimation requires stationarity, we will use maximum likelihood estimation for this nonstationary model.
 The `fit_maximum_likelihood` function implements maximum likelihood estimation for both stationary and nonstationary distributions.
 It has two required arguments: 
 
@@ -108,7 +109,7 @@ The `uncertainty_rfpl` method has two required arguments:
 - `data`: The annual maximum series observations. 
 - `model`: A three-letter code corresponding to a probability distribution (ex. `"GNO"`).
 
-Since the dataset has a nonstationary structure, three additional arguments are required:
+Since the model has a nonstationary structure, three additional arguments are required:
 
 - `years`: The corresponding vector of years for the observations in `data`.
 - `structure`: The nonstationary `structure` object described above.
@@ -123,12 +124,11 @@ uncertainty <- uncertainty_rfpl(
 	slices = c(1925, 2025)
 )
 
-print(uncertainty[[2]]$estimates)
-
 plot_nsffa(uncertainty)
 ```
 
-**Example Conclusion**: In the year 2025, there is a $1/20$ exceedance probability of a flood of approximately $300\text{m}^3/\text{s}$ or greater.
+**Example Conclusion**: In 2025, there is a $1/20$ exceedance probability of a flood of approximately $300\text{m}^3/\text{s}$ or greater.
+The estimated return levels have decreased by approximately $50\text{m}^3/\text{s}$ between 1925 and 2025.
 
 **Note**: Under nonstationarity, the return period reflects the probability distribution for a fixed year rather than a long-run average.
 To clarify this difference from stationary FFA, the phrase "effective return period" is used.

@@ -16,15 +16,17 @@
 #' @inheritParams param-samples
 #' @inheritParams param-periods
 #'
-#' @return A list of lists containing the return levels and confidence 
-#' intervals for each slice. Each sub-list contains: 
+#' @return A list containing the following three items:
 #' - `method`: "Bootstrap"
+#' - `structure`: The value of the `structure` argument.
+#' - `slices`: A list of lists containing the results for each slice.
+#'
+#' Each element of `slices` is a list with the following five items:
 #' - `estimates`: Estimated quantiles for each return period.
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
-#' - `t`: Vector of return periods; `c(2, 5, 10, 20, 50, 100)`.
-#' - `slice`: The value of the `slice` argument.
-#' - `structure`: The value of the `structure` argument.
+#' - `periods`: Vector of return periods; defaults to `c(2, 5, 10, 20, 50, 100)`.
+#' - `year`: The year at which the estimates were computed (nonstationary models only).
 #'
 #' @details
 #' The bootstrap procedure samples from the fitted distribution via inverse 
@@ -80,7 +82,7 @@ uncertainty_bootstrap <- function(
 	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
 
 	# Return a list of lists
-	lapply(slices, function(slice) {
+	results <- lapply(slices, function(slice) {
 		uncertainty_bootstrap_helper(
 			data,
 			distribution,
@@ -95,6 +97,11 @@ uncertainty_bootstrap <- function(
 		)
 	})
 
+	list(
+		method = "Bootstrap",
+		structure = structure,
+		slices = results
+	)
 }
 
 uncertainty_bootstrap_helper <- function(
@@ -150,13 +157,11 @@ uncertainty_bootstrap_helper <- function(
 
 	# Generate the results as a list
 	list(
-		method = "Bootstrap",
-		periods = periods,
-		ci_lower = ci[1, ],
 		estimates = estimates,
+		ci_lower = ci[1, ],
 		ci_upper = ci[2, ],
-		slice = slice,
-		structure = structure
+		periods = periods,
+		year = if (structure$location || structure$scale) slice else NULL
 	)
 
 }

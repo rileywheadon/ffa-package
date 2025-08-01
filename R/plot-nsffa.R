@@ -41,20 +41,20 @@ plot_nsffa <- function(results, ...) {
     args <- list(...)
     title  <- args$title  %||% "NS-FFA Results"
     xlabel <- args$xlabel %||% "Effective Return Period (Years)"
-    ylabel <- args$ylabel %||% expression("AMS (" * m^3/s * ")")
+    ylabel <- args$ylabel %||% expression("Streamflow (" * m^3/s * ")")
   
     # Define color palette
     palette <- c("#541352", "#3A5E8C", "#2F9AA0", "#10A53D", "#FFCF20")
   
     # Build combined data frame with an identifier for each slice
-    df_list <- lapply(seq_along(results), function(i) {
-        r <- results[[i]]
+    df_list <- lapply(seq_along(results$slices), function(i) {
+        r <- results$slices[[i]]
         data.frame(
             periods   = r$periods,
             estimates = r$estimates,
             ci_lower  = r$ci_lower,
             ci_upper  = r$ci_upper,
-            slice     = as.character(r$slice)
+            slice     = as.character(r$year)
         )
     })
   

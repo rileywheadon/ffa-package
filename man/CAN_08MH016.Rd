@@ -20,12 +20,13 @@ station 08MH016, CHILLIWACK RIVER AT CHILLIWACK LAKE in British Columbia, Canada
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: Integer; the corresponding year.
 }
 }
-\section{Features}{
+\section{Additional Information}{
 
+This is an \emph{unregulated} station in the RHBN network. Other notable features include:
 \itemize{
 \item The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 \item Trend detection finds evidence of an increasing trend in the variability.

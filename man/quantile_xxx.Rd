@@ -48,10 +48,10 @@ and \code{structure$scale} are both \code{FALSE}, this argument will have no eff
 output of the function.}
 
 \item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain:
+modeled as nonstationary. Must contain two logical scalars:
 \itemize{
-\item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
-\item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
 }}
 }
 \value{

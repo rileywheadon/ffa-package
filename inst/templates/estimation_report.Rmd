@@ -1,5 +1,0 @@
-### '`r params$method`' Parameter Estimation
-
-**Estimated Parameters**: `r round(params$params, 4)`
-
-

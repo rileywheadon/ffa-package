@@ -20,14 +20,15 @@ station 05BA001, BOW RIVER AT LAKE LOUISE in Alberta, Canada.
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: Integer; the corresponding year.
 }
 }
-\section{Features}{
+\section{Additional Information}{
 
+This is an \emph{unregulated} station that is not in the RHBN network. Other notable features include:
 \itemize{
-\item There are no observations from 1919-1965, making this dataset an interesting edge case.
+\item There are no observations from 1919-1965. Missing data should be handled carefully.
 \item The MKS/Pettitt tests do not find evidence of change points at the 0.05 significance level.
 \item Trend detection finds evidence of a trend in variability.
 \item If nonstationarity is assumed, RFPL uncertainty quantification fails on this dataset.

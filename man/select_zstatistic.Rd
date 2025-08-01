@@ -7,7 +7,7 @@
 select_zstatistic(data, samples = 10000L)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{samples}{Integer scalar. The number of bootstrap samples. Default is 10000.}
@@ -19,12 +19,12 @@ A list with the results of distribution selection:
 \item \code{data}: The \code{data} argument.
 \item \code{metrics}: List of computed Z-statistics for each candidate distribution.
 \item \code{recommendation}: Name of the distribution with the smallest Z-statistic.
-\item \code{reg_params}: Kappa distribution parameters for the AMS data.
-\item \code{reg_bias_t4}: Bias of the L-kurtosis from the AMS bootstrap.
-\item \code{reg_std_t4}: Standard deviation of the L-kurtosis from the AMS bootstrap.
-\item \code{log_params}: Kappa distribution parameters for the log-AMS data.
-\item \code{log_bias_t4}: Bias of the L-kurtosis from the log-AMS bootstrap.
-\item \code{log_std_t4}: Standard deviation of the L-kurtosis from the log-AMS bootstrap.
+\item \code{reg_params}: Kappa distribution parameters for the data.
+\item \code{reg_bias_t4}: Bias of the L-kurtosis from the bootstrap.
+\item \code{reg_std_t4}: Standard deviation of the L-kurtosis from the bootstrap.
+\item \code{log_params}: Kappa distribution parameters for the log-transformed data.
+\item \code{log_bias_t4}: Bias of the L-kurtosis from the bootstrap (using \code{log_params}).
+\item \code{log_std_t4}: Standard deviation of the L-kurtosis from the bootstrap (using \code{log_params}).
 }
 }
 \description{
@@ -35,8 +35,8 @@ is selected.
 }
 \details{
 The method performs distribution selection using both raw and log-transformed data. The
-distributions which use the raw AMS data are GEV, GLO, PE3, GNO, and WEI. The LP3
-distribution uses log-transformed data.
+distributions which use the raw data are GEV, GLO, PE3, GNO, and WEI. The LP3 distribution
+uses the log-transformed data.
 
 The Z-statistic is determined by fitting a four-parameter Kappa distribution to the
 raw and log-transformed data. Then, bootstrapped samples from this Kappa distribution

@@ -3,21 +3,22 @@
 #' A dataframe of annual maximum series observations for 
 #' station 05BB001, BOW RIVER AT BANFF in Alberta, Canada. 
 #'
-#' @section Features:
-#' - Whitfield & Pomeroy (2016) found that floods are caused separately by both rain *and* snow.
-#'   Therefore, practitioners should use *extreme caution* when performing FFA on this station.
-#' - Minimal human intervention in the basin means there is little evidence of change points. 
-#' - Trend detection finds evidence of a decreasing trend in the mean.
+#' @section Additional Information:
+#' This is an *unregulated* station in the RHBN network. Whitfield & Pomeroy (2016) found that 
+#' floods may be caused by rain, snow, or a combination of both. Therefore, practitioners should 
+#' be careful when interpreting the results of FFA on this station. Minimal human intervention in 
+#' the basin means there is little justification for change points. Trend detection finds 
+#' evidence of a decreasing trend in the mean.
 #'
 #' This dataset is used as a test case for comparison with the MATLAB implementation of the 
-#' FFA framework. It is also an excellent introduction to nonstationary FFA for students.
+#' FFA framework. It is also an excellent introductory example to nonstationary FFA.
 #'
 #' @format A dateframe with 110 rows and 2 columns spanning the period 1909-2018.
 #'
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'
 #' @details Variables:
-#' - `max`: Numeric; the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+#' - `max`: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
 #' - `year`: Integer; the corresponding year.
 #'
 #' @references

@@ -19,7 +19,7 @@ plot_model_diagnostics(results, ...)
 }
 }
 \description{
-Creates a quantile–quantile plot comparing observed annual maximum series (AMS)
+Creates a quantile–quantile plot comparing observed annual maximum series
 data to quantile estimates from a fitted parametric model. The 1:1 line is drawn in
 black and the parametric model estimates are plotted as semi‐transparent red points.
 }

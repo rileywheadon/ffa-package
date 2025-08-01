@@ -2,18 +2,18 @@
 % Please edit documentation in R/plot-ams-data.R
 \name{plot_ams_data}
 \alias{plot_ams_data}
-\title{Plot Annual Maximum Series (AMS) Data}
+\title{Plot Annual Maximum Series Data}
 \usage{
 plot_ams_data(data, years, show_line = TRUE, ...)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{show_line}{If \code{TRUE} (default), draw a line through the AMS data.}
+\item{show_line}{If \code{TRUE} (default), draw a line through the data.}
 
 \item{...}{Optional named arguments: 'title', 'xlabel', and 'ylabel'.}
 }

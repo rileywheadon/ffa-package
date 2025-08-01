@@ -7,7 +7,7 @@
 data_mw_variability(data, years, size = 10L, step = 5L)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
@@ -29,10 +29,10 @@ A list with two entries:
 }
 \description{
 Generates a time series of standard deviations using a moving window algorithm,
-which can be used to explore potential evidence of nonstationarity in the AMS
-variability. It returns a list that pairs each window’s mean year with its window
-standard deviation. The hyperparameters \code{size} and \code{step} control the behaviour
-of the moving window. Following the simulation findings from Vidrio-Sahagún
+which can be used to explore potential evidence of nonstationarity in the
+variability of a dataset. It returns a list that pairs each window’s mean year with
+its window standard deviation. The hyperparameters \code{size} and \code{step} control the
+behaviour of the moving window. Following the simulation findings from Vidrio-Sahagún
 and He (2022), the default window size and step are set to 10 and 5 years
 respectively. However, these can be changed by the user.
 }

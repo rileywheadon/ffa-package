@@ -1,7 +1,7 @@
 #' Block-Bootstrap Mann-Kendall Test for Trend Detection
 #'
 #' Performs a bootstrapped version of the Mann-Kendall trend test to account
-#' for serial correlation in annual maximum series (AMS) data. The procedure
+#' for serial correlation in annual maximum series data. The procedure
 #' uses Spearman’s serial correlation test to estimate the least insignificant lag, 
 #' then applies a bootstrap procedure to obtain the empirical p-value and confidence 
 #' bounds for the Mann-Kendall S-statistic.

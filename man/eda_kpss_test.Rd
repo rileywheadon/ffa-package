@@ -7,7 +7,7 @@
 eda_kpss_test(data, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
@@ -27,11 +27,11 @@ A list containing the test results, including:
 }
 }
 \description{
-Performs the KPSS unit root test on annual maximum series (AMS) data.
+Performs the KPSS unit root test on annual maximum series data.
 The null hypothesis is that the time series is trend-stationary with a linear
-trend and constant drift (and thus the time series has a deterministic linear
-trend). The alternative hypothesis is that the time series has a unit root
-(and thus has a stochastic trend).
+trend and constant drift (and thus has a deterministic linear trend). The
+alternative hypothesis is that the time series has a unit root (and thus
+has a stochastic trend).
 }
 \details{
 The implementation of the KPSS test is based on the \pkg{aTSA} package, which

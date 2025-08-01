@@ -20,14 +20,14 @@ data_local(csv_file)
 }}
 }
 \value{
-A dataframe of AMS data with two columns:
+A dataframe with two columns:
 \itemize{
-\item \code{max}: A float, the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: A float, the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: An integer, the corresponding year.
 }
 }
 \description{
-Fetch annual maximum series (AMS) data for a hydrological monitoring station
+Fetch annual maximum series data for a hydrological monitoring station
 from the package data directory.
 }
 \examples{

@@ -7,7 +7,7 @@
 eda_sens_trend(data, years, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.

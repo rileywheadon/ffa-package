@@ -32,7 +32,7 @@ loglik_lp3(data, params, years = NULL, structure = NULL)
 loglik_wei(data, params, years = NULL, structure = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
@@ -43,10 +43,10 @@ scale, shape). The length must be between 2 and 5, depending on the specified
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain:
+modeled as nonstationary. Must contain two logical scalars:
 \itemize{
-\item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
-\item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
 }}
 }
 \value{

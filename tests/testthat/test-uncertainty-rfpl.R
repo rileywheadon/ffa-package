@@ -19,7 +19,7 @@ validate_rfpl <- function(
 		years = df$year,
 		structure = structure,
 		slices = slices
-	)[[1]]
+	)$slices[[1]]
 
 	# NOTE: We check the estimates in test-mle-estimation.R
 	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
@@ -45,7 +45,7 @@ validate_rfgpl <- function(
 		df$year,
 		structure, 
 		slices = slices
-	)[[1]]
+	)$slices[[1]]
 
 	# NOTE: We check the estimates in test-mle-estimation.R
 	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)

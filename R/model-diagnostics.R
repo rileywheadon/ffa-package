@@ -80,8 +80,7 @@ model_diagnostics <- function(
 	if (!structure$location && !structure$scale) {
 
 		# Get the first and only slice of the uncertainty object for SFFA
-		uncertainty <- uncertainty[[1]]
-		slice <- uncertainty$slice
+		uncertainty <- uncertainty$slices[[1]]
 		
 		# Sort the data vector
 		data_sorted <- data[order(data, decreasing = TRUE)]
@@ -100,7 +99,7 @@ model_diagnostics <- function(
 		returns <- 1 / p_empirical               
 
 		# Compute the estimates using the appropriate quantile function
-		estimates <- quantile_fast(1 - p_empirical, distribution, params, slice, structure)
+		estimates <- quantile_fast(1 - p_empirical, distribution, params, 1900, structure)
 
 		# Run linear regression against the sorted data
 		R2 <- summary(lm(estimates ~ data_sorted))$r.squared

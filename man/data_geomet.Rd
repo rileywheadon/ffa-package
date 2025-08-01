@@ -12,14 +12,14 @@ You can search for station IDs by name, province, drainage basin, and location
 \href{https://wateroffice.ec.gc.ca/search/real_time_e.html}{here}.}
 }
 \value{
-A dataframe of AMS data with two columns:
+A dataframe with two columns:
 \itemize{
-\item \code{max}: A float, the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: A float, the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: An integer, the corresponding year.
 }
 }
 \description{
-Gets annual maximum series (AMS) data for a hydrological monitoring
+Gets annual maximum series data for a hydrological monitoring
 station from the MSC GeoMet API.
 }
 \examples{

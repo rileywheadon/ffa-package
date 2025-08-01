@@ -51,15 +51,15 @@
 <text x='476.48' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>50</text>
 <text x='559.99' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='20.02px' lengthAdjust='spacingAndGlyphs'>100</text>
 <text x='324.34' y='567.70' text-anchor='middle' style='font-size: 16.00px; font-family: sans;' textLength='155.64px' lengthAdjust='spacingAndGlyphs'>Return Period (Years)</text>
-<text transform='translate(30.80,326.23) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='44.46px' lengthAdjust='spacingAndGlyphs'>AMS (</text>
-<text transform='translate(30.80,281.77) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='13.33px' lengthAdjust='spacingAndGlyphs'>m</text>
-<text transform='translate(22.77,268.44) rotate(-90)' style='font-size: 11.20px; font-family: sans;' textLength='6.23px' lengthAdjust='spacingAndGlyphs'>3</text>
-<polyline points='33.11,260.09 17.48,255.86 ' style='stroke-width: 0.75;' />
-<text transform='translate(30.80,253.75) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>s</text>
-<text transform='translate(30.80,245.74) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='5.33px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text transform='translate(30.80,348.90) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='89.81px' lengthAdjust='spacingAndGlyphs'>Streamflow (</text>
+<text transform='translate(30.80,259.09) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='13.33px' lengthAdjust='spacingAndGlyphs'>m</text>
+<text transform='translate(22.77,245.76) rotate(-90)' style='font-size: 11.20px; font-family: sans;' textLength='6.23px' lengthAdjust='spacingAndGlyphs'>3</text>
+<polyline points='33.11,237.42 17.48,233.19 ' style='stroke-width: 0.75;' />
+<text transform='translate(30.80,231.07) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>s</text>
+<text transform='translate(30.80,223.07) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='5.33px' lengthAdjust='spacingAndGlyphs'>)</text>
 <rect x='594.51' y='252.89' width='110.54' height='60.85' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <rect x='594.51' y='252.89' width='110.54' height='60.85' style='stroke-width: 1.07; fill: #FFFFFF;' />
-<text x='649.78' y='267.09' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='29.96px' lengthAdjust='spacingAndGlyphs'>colour</text>
+<text x='649.78' y='267.09' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='36.71px' lengthAdjust='spacingAndGlyphs'>Legend</text>
 <line x1='601.72' y1='282.35' x2='615.55' y2='282.35' style='stroke-width: 2.13; stroke-linecap: butt;' />
 <rect x='599.99' y='290.99' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: #7F7F7F; stroke-linecap: butt; stroke-linejoin: miter; fill: #333333; fill-opacity: 0.20;' />
 <text x='622.75' y='285.38' style='font-size: 8.80px; font-family: sans;' textLength='38.64px' lengthAdjust='spacingAndGlyphs'>Estimates</text>

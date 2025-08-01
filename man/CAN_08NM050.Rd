@@ -20,19 +20,25 @@ station 08NM050, OKANAGAN RIVER AT PENTICTON in British Columbia, Canada.
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: Integer; the corresponding year.
 }
 }
-\section{Features}{
+\section{Additional Information}{
 
-The streamflow at this station is heavily regulated by the Penticton dam.
-Therefore, the results of flood frequency analysis are \strong{NOT} meaningful.
+This is a \emph{regulated} station that is not part of the RHBN. Other notable features include:
+\itemize{
+\item The Okanagan River upstream of the station has been regulated since 1914 due to the
+construction of the first dam, followed by a second dam in 1920, and a regulation system
+in the early 1950s, consisting of four dams and 38 km of engineered channel.
+\item Rapid human settlement, development, and agricultural activity have occurred in the watershed.
+}
 
 This dataset is used as a test case for comparison with the MATLAB implementation of the
 FFA framework. It is also useful for demonstrating how the framework detects and handles
-serial correlation, trends in the mean, and trends in the variability. Since the station
-is highly regulated, \emph{this dataset should only be used as a teaching tool}.
+serial correlation, trends in the mean, and trends in the variability. As noted above,
+this dataset is heavily influenced by reservoir operations and is intended for teaching
+purposes—not for design flood estimation.
 }
 
 \keyword{datasets}

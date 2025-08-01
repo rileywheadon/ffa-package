@@ -1,9 +1,9 @@
 #' Phillips–Perron Unit Root Test
 #'
 #' Applies the Phillips–Perron (PP) test to check for a unit root in annual
-#' maximum series (AMS) data. The null hypothesis assumes the series contains a 
+#' maximum series data. The null hypothesis assumes the time series contains a 
 #' unit root (and thus has a stochastic trend). The alternative hypothesis is that
-#' the time series has a deterministic linear trend (and is thus trend-stationary).
+#' the time series is trend-stationary (and thus has a deterministic linear trend).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha

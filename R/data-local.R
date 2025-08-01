@@ -1,6 +1,6 @@
 #' Fetch Local Package Data
 #'
-#' Fetch annual maximum series (AMS) data for a hydrological monitoring station
+#' Fetch annual maximum series data for a hydrological monitoring station
 #' from the package data directory.
 #'
 #' @param csv_file A character scalar containing the file name of a local dataset in 
@@ -13,8 +13,8 @@
 #' - `"CAN-08NM050.csv"`: OKANAGAN RIVER AT PENTICTON
 #' - `"CAN-08NM116.csv"`: MISSION CREEK NEAR EAST KELOWNA
 #'
-#' @return A dataframe of AMS data with two columns:
-#' - `max`: A float, the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+#' @return A dataframe with two columns:
+#' - `max`: A float, the annual maximum series observation, in m\eqn{^3}{^3}/s.
 #' - `year`: An integer, the corresponding year.
 #'
 #' @seealso [data_geomet()]

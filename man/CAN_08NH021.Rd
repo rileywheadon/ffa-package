@@ -20,18 +20,19 @@ station 08NH021, KOOTENAI RIVER AT PORTHILL in British Columbia, Canada.
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: Integer; the corresponding year.
 }
 }
-\section{Features}{
+\section{Additional Information}{
 
+This is a \emph{regulated} station that is not in the RHBN network. Other notable features include:
 \itemize{
 \item The Libby dam was constructed upstream of this station in 1972.
 \item The Pettitt test found evidence of a change point in 1972 at the 0.05 significance level.
 \item The MKS test found evidence of change points in 1960 & 1985 at the 0.05 significance level.
-\item After splitting the data in 1972, trend detection finds evidence of an increasing trend
-in the mean for both subperiods.
+\item After splitting the data in 1972, trend detection finds evidence of an increasing,
+deterministic, and linear trend in the mean for both subperiods.
 }
 
 This dataset is used as a test case for comparison with the MATLAB implementation of the

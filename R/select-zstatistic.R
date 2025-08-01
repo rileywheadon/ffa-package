@@ -13,17 +13,17 @@
 #' - `data`: The `data` argument.
 #' - `metrics`: List of computed Z-statistics for each candidate distribution.
 #' - `recommendation`: Name of the distribution with the smallest Z-statistic.
-#' - `reg_params`: Kappa distribution parameters for the AMS data.
-#' - `reg_bias_t4`: Bias of the L-kurtosis from the AMS bootstrap.
-#' - `reg_std_t4`: Standard deviation of the L-kurtosis from the AMS bootstrap.
-#' - `log_params`: Kappa distribution parameters for the log-AMS data.
-#' - `log_bias_t4`: Bias of the L-kurtosis from the log-AMS bootstrap.
-#' - `log_std_t4`: Standard deviation of the L-kurtosis from the log-AMS bootstrap.
+#' - `reg_params`: Kappa distribution parameters for the data.
+#' - `reg_bias_t4`: Bias of the L-kurtosis from the bootstrap.
+#' - `reg_std_t4`: Standard deviation of the L-kurtosis from the bootstrap.
+#' - `log_params`: Kappa distribution parameters for the log-transformed data.
+#' - `log_bias_t4`: Bias of the L-kurtosis from the bootstrap (using `log_params`).
+#' - `log_std_t4`: Standard deviation of the L-kurtosis from the bootstrap (using `log_params`).
 #'
 #' @details
 #' The method performs distribution selection using both raw and log-transformed data. The 
-#' distributions which use the raw AMS data are GEV, GLO, PE3, GNO, and WEI. The LP3
-#' distribution uses log-transformed data. 
+#' distributions which use the raw data are GEV, GLO, PE3, GNO, and WEI. The LP3 distribution 
+#' uses the log-transformed data. 
 #'
 #' The Z-statistic is determined by fitting a four-parameter Kappa distribution to the 
 #' raw and log-transformed data. Then, bootstrapped samples from this Kappa distribution

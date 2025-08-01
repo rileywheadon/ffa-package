@@ -203,6 +203,6 @@
 <text transform='translate(22.77,211.57) rotate(-90)' style='font-size: 11.20px; font-family: sans;' textLength='6.23px' lengthAdjust='spacingAndGlyphs'>3</text>
 <polyline points='33.11,203.22 17.48,198.99 ' style='stroke-width: 0.75;' />
 <text transform='translate(30.80,196.88) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>s</text>
-<text x='381.61' y='18.75' text-anchor='middle' style='font-size: 20.00px; font-family: sans;' textLength='169.01px' lengthAdjust='spacingAndGlyphs'>Model Assessment</text>
+<text x='381.61' y='18.75' text-anchor='middle' style='font-size: 20.00px; font-family: sans;' textLength='163.44px' lengthAdjust='spacingAndGlyphs'>Model Diagnostics</text>
 </g>
 </svg>

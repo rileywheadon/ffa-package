@@ -1,7 +1,0 @@
-### Phillips-Perron Test
-
-For more information, see [here](https://rileywheadon.github.io/ffa-docs/eda-trend-ams-mean/#phillips-perron-test). 
-
-`r params$msg`
-
-

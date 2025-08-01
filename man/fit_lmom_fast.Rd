@@ -7,7 +7,7 @@
 fit_lmom_fast(data, distribution)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{distribution}{Character scalar. A three-character code indicating

@@ -18,7 +18,7 @@ uncertainty_bootstrap(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{distribution}{Character scalar. A three-character code indicating
@@ -36,10 +36,10 @@ Only used when \code{distribution = "GEV"}.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain:
+modeled as nonstationary. Must contain two logical scalars:
 \itemize{
-\item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
-\item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
 }}
 
 \item{slices}{Numeric vector specifying the years at which to evaluate the
@@ -55,16 +55,20 @@ level for confidence intervals or hypothesis tests. Default is 0.05.}
 All entries must be greater than or equal to 1.}
 }
 \value{
-A list of lists containing the return levels and confidence
-intervals for each slice. Each sub-list contains:
+A list containing the following three items:
 \itemize{
 \item \code{method}: "Bootstrap"
+\item \code{structure}: The value of the \code{structure} argument.
+\item \code{slices}: A list of lists containing the results for each slice.
+}
+
+Each element of \code{slices} is a list with the following five items:
+\itemize{
 \item \code{estimates}: Estimated quantiles for each return period.
 \item \code{ci_lower}: Lower bound of the confidence interval for each return period.
 \item \code{ci_upper}: Upper bound of the confidence interval for each return period.
-\item \code{t}: Vector of return periods; \code{c(2, 5, 10, 20, 50, 100)}.
-\item \code{slice}: The value of the \code{slice} argument.
-\item \code{structure}: The value of the \code{structure} argument.
+\item \code{periods}: Vector of return periods; defaults to \code{c(2, 5, 10, 20, 50, 100)}.
+\item \code{year}: The year at which the estimates were computed (nonstationary models only).
 }
 }
 \description{

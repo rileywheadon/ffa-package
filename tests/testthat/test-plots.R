@@ -177,7 +177,6 @@ test_that("plot-spearman-test.R works on ATHABASCA RIVER (07BE001)", {
 test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-distance", {
 	skip_on_cran()
 
-	pdf(nullfile())
 	df <- data_local("CAN-07BE001.csv")
 	results <- select_ldistance(df$max)
 
@@ -196,7 +195,6 @@ test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-distanc
 test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-kurtosis", {
 	skip_on_cran()
 
-	pdf(nullfile())
 	df <- data_local("CAN-07BE001.csv")
 	results <- select_lkurtosis(df$max)
 
@@ -210,7 +208,6 @@ test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-kurtosi
 test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with Z-statistic", {
 	skip_on_cran()
 
-	pdf(nullfile())
 	df <- data_local("CAN-07BE001.csv")
 	results <- select_zstatistic(df$max)
 

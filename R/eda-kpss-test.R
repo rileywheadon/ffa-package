@@ -1,10 +1,10 @@
 #' Kwiatkowski–Phillips–Schmidt–Shin (KPSS) Unit Root Test
 #'
-#' Performs the KPSS unit root test on annual maximum series (AMS) data. 
+#' Performs the KPSS unit root test on annual maximum series data. 
 #' The null hypothesis is that the time series is trend-stationary with a linear 
-#' trend and constant drift (and thus the time series has a deterministic linear 
-#' trend). The alternative hypothesis is that the time series has a unit root
-#' (and thus has a stochastic trend).
+#' trend and constant drift (and thus has a deterministic linear trend). The 
+#' alternative hypothesis is that the time series has a unit root (and thus 
+#' has a stochastic trend).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha

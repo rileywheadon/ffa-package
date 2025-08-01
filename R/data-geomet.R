@@ -1,14 +1,14 @@
 #' Fetch Data from MSC GeoMet API
 #'
-#' Gets annual maximum series (AMS) data for a hydrological monitoring 
+#' Gets annual maximum series data for a hydrological monitoring 
 #' station from the MSC GeoMet API.
 #'
 #' @param station_id A character scalar containing the ID of a hydrological monitoring station.
 #' You can search for station IDs by name, province, drainage basin, and location 
 #' \href{https://wateroffice.ec.gc.ca/search/real_time_e.html}{here}.
 #'
-#' @return A dataframe of AMS data with two columns:
-#' - `max`: A float, the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+#' @return A dataframe with two columns:
+#' - `max`: A float, the annual maximum series observation, in m\eqn{^3}{^3}/s.
 #' - `year`: An integer, the corresponding year.
 #'
 #' @seealso [data_local()]
@@ -38,7 +38,7 @@ data_geomet <- function(station_id) {
 		stop(sprintf("No data exists for station with ID '%s'", station_id))
 	}
 
-	# Helper function for extracting AMS	
+	# Helper function for extracting data from API response
 	extract_ams <- function(x) {
 		value <- x$properties$MAX_VALUE
 		if (is.null(value)) NA_real_ else value

@@ -1,10 +1,10 @@
 #' Estimate Variance for Annual Maximum Series Data 
 #'
 #' Generates a time series of standard deviations using a moving window algorithm,
-#' which can be used to explore potential evidence of nonstationarity in the AMS 
-#' variability. It returns a list that pairs each window’s mean year with its window 
-#' standard deviation. The hyperparameters `size` and `step` control the behaviour 
-#' of the moving window. Following the simulation findings from Vidrio-Sahagún 
+#' which can be used to explore potential evidence of nonstationarity in the 
+#' variability of a dataset. It returns a list that pairs each window’s mean year with 
+#' its window standard deviation. The hyperparameters `size` and `step` control the 
+#' behaviour of the moving window. Following the simulation findings from Vidrio-Sahagún 
 #' and He (2022), the default window size and step are set to 10 and 5 years
 #' respectively. However, these can be changed by the user.
 #'

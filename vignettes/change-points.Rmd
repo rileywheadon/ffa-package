@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-A change point is an abrupt shift or a temporal pattern switch (e.g., beginning of a trend) in the time series.
+A change point is an abrupt shift or a temporal pattern switch (e.g., beginning of a trend) in a time series.
 In FFA, change points indicate inhomogeneous periods, meaning a single model may not represent the entire record adequately.
 Instead, piecewise analysis should be applied to each homogeneous sub-period.
 The FFA framework provides two statistical tests for change point detection: 
@@ -22,12 +22,12 @@ The FFA framework provides two statistical tests for change point detection:
 - The Pettitt test, for sudden changes in the mean.
 - The Mann-Kendall-Sneyers (MKS) test, for detecting changes in trend.
 
-This vignette will demonstrate how these statistical tests can be used together to robustly identify change points in the data.
+This vignette will demonstrate how these statistical tests can be used together to robustly identify change points.
 
 ## Case Study
 
 This vignette will explore the Kootenai River at Porthill (08NH021) station, located on the border of British Columbia and Idaho.
-The Porthill station is also downstream of the Libby Dam, which finished construction in 1972.
+The station is located downstream of the Libby Dam, which finished construction in 1972.
 Data for this station is provided as `CAN-08NH021.csv` in the `ffaframework` package.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -43,8 +43,8 @@ plot_ams_data(df$max, df$year, title = "Kootenai River at Porthill (08NH021)")
 
 This rank-based test detects a single abrupt change in the median of a time series.
 The null hypothesis assumes no change point.
-
-Use the `eda_pettitt_test` function to perform the test. It requires two arguments: 
+Use the `eda_pettitt_test` function to perform the test.
+It requires two arguments: 
 
 - `data`: the annual maximum series (AMS)
 - `years`: corresponding numeric vector of years
@@ -87,6 +87,6 @@ In this example, the Pettitt and MKS tests both suggest structural changes in th
 
 Consider the following guidelines when choosing where to split the data:
 
-1. **Incorporate domain knowledge and case-specific understanding**. For example, if we knew that a water regulation structure was built in 1972 (the Libby dam, for this dataset), this would support the Pettitt test result.
-2. **Avoid overpartitioning**. The Pettitt and MKS tests operate independently and may detect multiple change points. To reduce sample size issues and uncertainty, retain only significant change points with physical justification.
+1. **Incorporate domain knowledge and case-specific understanding**. In this example, we know that a water regulation structure was built in 1972 (the Libby dam). This supports the results of the Pettitt test.
+2. **Avoid overpartitioning**. The Pettitt and MKS tests operate independently and may detect multiple change points. To minimize sample size issues and reduce uncertainty, retain only significant change points with physical justification.
 3. **Prioritize based on p-value**. Lower p-values indicate stronger evidence and should be given more weight.

@@ -7,21 +7,21 @@
 data_decomposition(data, years, structure)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain:
+modeled as nonstationary. Must contain two logical scalars:
 \itemize{
-\item \code{location}: Logical scalar. If \code{TRUE}, the location parameter has a trend.
-\item \code{scale}: Logical scalar. If \code{TRUE}, the scale parameter has a trend.
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
 }}
 }
 \value{
-Numeric vector of decomposed AMS data with the same length as \code{data}.
+Numeric vector of decomposed data.
 }
 \description{
 Decomposes the annual maxima series to derive its stationary stochastic component,

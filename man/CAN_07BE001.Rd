@@ -20,19 +20,20 @@ station 07BE001, ATHABASCA RIVER AT ATHABASCA in Alberta, Canada.
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series (AMS) observation, in m\eqn{^3}{^3}/s.
+\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
 \item \code{year}: Integer; the corresponding year.
 }
 }
-\section{Features}{
+\section{Additional Information}{
 
+This is an \emph{unregulated} station that is not in the RHBN network. Other notable features include:
 \itemize{
 \item The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 \item Trend detection finds no evidence of trends in the mean or variability.
 }
 
 This dataset is used as a test case for comparison with the MATLAB implementation of the
-FFA framework. It is also an excellent introduction to stationary FFA for students.
+FFA framework. It is also an excellent introductory example to stationary FFA.
 }
 
 \keyword{datasets}

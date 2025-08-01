@@ -1,4 +1,4 @@
-#' Plot Annual Maximum Series (AMS) Data
+#' Plot Annual Maximum Series Data
 #'
 #' Generates a plot of annual maximum series data with an optional line connecting
 #' the data points.
@@ -6,7 +6,7 @@
 #' @inheritParams param-data
 #' @inheritParams param-years
 #'
-#' @param show_line If `TRUE` (default), draw a line through the AMS data.
+#' @param show_line If `TRUE` (default), draw a line through the data.
 #'
 #' @param ... Optional named arguments: 'title', 'xlabel', and 'ylabel'.
 #'
@@ -27,9 +27,9 @@ plot_ams_data <- function(data, years, show_line = TRUE, ...) {
 	args <- list(...)
 
 	# Set labels and title
-	title <- args$title %||% "Annual Maximum Series (AMS)"
+	title <- args$title %||% "Annual Maximum Series Data"
 	xlabel <- args$xlabel %||% "Years"
-	ylabel <- args$ylabel %||% expression(AMS ~ m^3/s)
+	ylabel <- args$ylabel %||% expression(Streamflow ~ m^3/s)
 
 	# Generate dataframe for the data
 	df <- data.frame(x = years, y = data)

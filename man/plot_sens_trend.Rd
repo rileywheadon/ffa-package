@@ -14,7 +14,7 @@ plot_sens_trend(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
@@ -24,15 +24,15 @@ Must be the same length as \code{data} and strictly increasing.}
 
 \item{variability_trend}{Trend in variability estimated by \code{\link[=eda_sens_trend]{eda_sens_trend()}}.}
 
-\item{show_line}{If \code{TRUE} (default), draw a fitted line through the AMS data.}
+\item{show_line}{If \code{TRUE} (default), draw a fitted line through the data.}
 
 \item{...}{Optional named arguments: 'title', 'xlabel', and 'ylabel'.}
 }
 \value{
 \code{ggplot}; a plot containing:
 \itemize{
-\item Gray points for each year’s AMS value.
-\item Optional gray line connecting the AMS data if \code{show_line = TRUE}.
+\item Gray points for each year’s annual maximum series value.
+\item Optional gray line connecting the data if \code{show_line = TRUE}.
 \item A solid black line representing a constant mean, if \code{mean_trend == NULL}.
 \item A solid blue line representing a trend in the mean, if \code{mean_trend != NULL}.
 \item A dashed black line representing constant variability, if \code{variability_trend == NULL}.
@@ -41,7 +41,7 @@ Must be the same length as \code{data} and strictly increasing.}
 }
 }
 \description{
-Produces a scatterplot of the annual maximum series (AMS) data or its variance
+Produces a scatterplot of the annual maximum series data or its variance
 against time, optionally overlaid with Sen’s trend estimator of the mean and/or
 variability.
 }

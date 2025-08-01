@@ -24,7 +24,7 @@ This vignette demonstrates how to use the `ffaframework` to check for evidence o
 | Function            | Purpose                                                       |
 |---------------------|---------------------------------------------------------------|
 | `eda_mk_test`       | Tests for a monotonic trend (Mann-Kendall test).                   |
-| `eda_bbmk_test`     | Tests for a monotonic trend under serial correlation (block-bootstrap MK test). |
+| `eda_bbmk_test`     | Tests for a monotonic trend under serial correlation (BBMK test). |
 
  **Stationarity Tests**
 
@@ -38,15 +38,15 @@ This vignette demonstrates how to use the `ffaframework` to check for evidence o
 
 | Function            | Purpose                                                       |
 |---------------------|---------------------------------------------------------------|
-| MW-MK Test           | Tests for a trend in the variability (moving-window MK test)                            |
+| MW-MK Test           | Tests for a trend in the variability (MWMK test)                            |
 | `eda_white_test`    | Tests for time-dependence in the variability (White test).   |
 
-**Trend Estimation (Mean and Variability)**
+**Trend Estimation (Mean & Variability)**
 
 | Function            | Purpose                                                       |
 |---------------------|---------------------------------------------------------------|
-| `eda_sens_trend`    | Estimates slope and intercept of a linear trend (Sen's slope estimator).|
-| `eda_runs_test`     | Evaluates residuals' structure under linear model assumptions (Wald-Wolfowitz runs test).  |
+| `eda_sens_trend`    | Estimates slope and intercept of a linear trend (Sen's trend estimator).|
+| `eda_runs_test`     | Evaluates residuals' structure under linear model assumptions (runs test).  |
 
 ## Case Study 
 
@@ -65,7 +65,7 @@ plot_ams_data(df$max, df$year, title = "Mission Creek near East Kelowna (08NM116
 
 ## Assessing Trends in the Variance 
 
-### Moving-Window Mann-Kendall (MWMK) Test
+### MWMK Test
 
 The MWMK test is used to detect trends in the variability of a time series.
 First, a moving-window algorithm is used to estimate the variability of the AMS data.
@@ -115,7 +115,7 @@ plot_sens_trend(df$max, df$year, variability_trend = variability_trend)
 ### Runs Test
 
 Sen's trend estimator assumed that the nonstationarity is linear.
-The Wald-Wolfowitz runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
+The runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
 If the residuals are random (the null hypothesis), there is evidence that the underlying trend is linear.
 The `eda_runs_test()` function takes the output of `eda_sens_trend()` as an argument.
 

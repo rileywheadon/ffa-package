@@ -23,8 +23,7 @@ plot_lmom_diagram(results, ...)
 \description{
 Generates a plot of L-moment ratios with the L-skewness on the x-axis and L-kurtosis
 on the y-axis. Plots the sample and log-sample L-moment ratios alongside the
-theoretical L-moment ratios for a set of candidate distributions. If the selection
-method is \code{\link[=select_ldistance]{select_ldistance()}} or \code{\link[=select_lkurtosis]{select_lkurtosis()}}, the plot will include
+theoretical L-moment ratios for a set of candidate distributions. Also includes
 a small inset around the L-moment ratios of the recommended distribution.
 }
 \examples{

@@ -16,21 +16,23 @@
 #' @param eps Numeric scalar. The log-likelihood tolerance for the Regula-Falsi 
 #' convergence (default is 0.01).
 #'
-#' @return A list of lists containing the return levels and confidence 
-#' intervals for each slice. Each sub-list contains: 
-#' - `method`: Either "RFPL" or "RFGPL"
+#' @return A list containing the following three items:
+#' - `method`: "Bootstrap"
+#' - `structure`: The value of the `structure` argument.
+#' - `slices`: A list of lists containing the results for each slice.
+#'
+#' Each element of `slices` is a list with the following five items:
 #' - `estimates`: Estimated quantiles for each return period.
 #' - `ci_lower`: Lower bound of the confidence interval for each return period.
 #' - `ci_upper`: Upper bound of the confidence interval for each return period.
-#' - `t`: Vector of return periods `c(2, 5, 10, 20, 50, 100)` in years.
-#' - `slice`: The value of `slice` argument.
-#' - `structure`: The value of `structure` argument.
+#' - `periods`: Vector of return periods; defaults to `c(2, 5, 10, 20, 50, 100)`.
+#' - `year`: The year at which the estimates were computed (nonstationary models only).
 #'
 #' @details
 #' 1. Fits the distribution using [fit_maximum_likelihood()] to obtain parameter 
 #'    estimates and log‐likelihood.  
-#' 2. Defines an objective function \eqn{f(y_p, p)} based on the chi-squared 
-#'    distribution.
+#' 2. Defines an objective function \eqn{f(y_p, p)} using the reparameterized
+#'    log-likelihood function.
 #' 3. Iteratively brackets the root by rescaling initial guesses by 0.05 until 
 #'    \eqn{f(y_p, p)} changes sign.  
 #' 4. Uses the Regula Falsi method to solve \eqn{f(y_p, p) = 0} for each 
@@ -88,7 +90,7 @@ uncertainty_rfpl <- function(
 	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
 
 	# Return a list of lists
-	lapply(slices, function(slice) {
+	results <- lapply(slices, function(slice) {
 		uncertainty_rfpl_helper(
 			data,
 			distribution,
@@ -102,6 +104,11 @@ uncertainty_rfpl <- function(
 		)
 	})
 
+	list(
+		method = if (is.null(prior)) "RFPL" else "RFGPL",
+		structure = structure,
+		slices = results
+	)
 }
 
 uncertainty_rfpl_helper <- function(
@@ -328,13 +335,11 @@ uncertainty_rfpl_helper <- function(
 	}
 
 	list(
-		method = if (is.null(prior)) "RFPL" else "RFGPL",
-		periods = periods,
-		ci_lower = ci_lower,
 		estimates = yp_hat ,
+		ci_lower = ci_lower,
 		ci_upper = ci_upper,
-		slice = slice,
-		structure = structure
+		periods = periods,
+		year = if (structure$location || structure$scale) slice else NULL
 	)
 
 }

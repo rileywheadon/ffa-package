@@ -7,7 +7,7 @@
 eda_mks_test(data, years, alpha = 0.05, quiet = TRUE)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series (AMS) values.
+\item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
@@ -27,7 +27,7 @@ A list containing the test results, including:
 \item \code{s_progressive}: Normalized progressive Mann–Kendall-Sneyers statistics.
 \item \code{s_regressive}: Normalized regressive Mann–Kendall-Sneyers statistics.
 \item \code{bound}: Critical confidence bound for significance based on \code{alpha}.
-\item \code{crossing_df}: Crossing points, including indices, years, statistics, and AMS.
+\item \code{crossing_df}: Crossing points, including indices, years, and test statistics.
 \item \code{change_df}: Subset of \code{crossing_df} with statistically significant crossings.
 \item \code{p_value}: Two-sided p-value derived from the maximum crossing statistic.
 \item \code{reject}: Logical. If \code{TRUE}, the null hypothesis of no change point is rejected.
@@ -36,7 +36,7 @@ A list containing the test results, including:
 }
 \description{
 Performs the Mann–Kendall–Sneyers (MKS) test to detect the beginning of a monotonic
-trend in annual maximum series (AMS) data. The test computes normalized
+trend in annual maximum series data. The test computes normalized
 progressive and regressive Mann–Kendall statistics and identifies statistically
 significant crossing points, indicating potential change points in the trend.
 }

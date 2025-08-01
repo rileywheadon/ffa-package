@@ -21,7 +21,7 @@ plot_runs_test(results, ...)
 }
 \description{
 Generates a residual plot of Sen’s estimator applied to annual maximum series
-(AMS) data (or the variability of AMS data) with a horizontal dashed line at
+data (or the variability of the data) with a horizontal dashed line at
 zero and an annotation indicating the p-value of the Runs test.
 }
 \examples{
