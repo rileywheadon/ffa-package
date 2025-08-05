@@ -16,11 +16,11 @@ Prior to performing FFA, it is necessary to choose between a stationary (S-FFA) 
 When using S-FFA, it is assumed that the time series is independent and identically distributed. 
 Evidence of *change point(s)* and/or *time dependence* violates the assumptions of stationarity and indicates that NS-FFA may be necessary.
 
-![Overview of stationary and nonstationary FFA.](img/ffa-overview.png)
+![Overview of stationary and nonstationary FFA.](../man/figures/ffa-overview.png)
 
 ## The EDA Workflow
 
-![Diagram showing current EDA framework.](img/eda-overview.png)
+![Diagram showing current EDA framework.](../man/figures/eda-overview.png)
 
 ### Identifying Change Points
 

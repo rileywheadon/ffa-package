@@ -33,7 +33,7 @@ FFA results are typically visualized with return period on the $x$-axis and floo
 2. Estimate *return period* for a given flood magnitude.
    For example, A streamflow of $50\ \text{m}^3/\text{s}$ is expected to occur roughly every 4 years.
 
-![An example of flood frequency estimates.](img/plot-s-uncertainty.svg)
+![An example of flood frequency estimates.](../man/figures/plot-s-uncertainty.svg)
 
 **Note**: For an explanation of the confidence bounds in this plot, see [Uncertainty Quantification](uncertainty-quantification.md).
 
@@ -49,5 +49,5 @@ The plot below illustrates *effective return levels* for the years 1920, 1960, a
 Remember, a 100-year effective return level does *not* imply that such a flood is expected to occur once in the next 100 years.
 Instead, it means that *in a given year*, the probability of exceeding the effective return level is 1 in 100.
 
-![Example of effective return periods in 2017.](img/plot-ns-uncertainty.svg)
+![Example of effective return periods in 2017.](../man/figures/plot-ns-uncertainty.svg)
 

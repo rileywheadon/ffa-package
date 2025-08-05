@@ -26,7 +26,7 @@ To conduct the BB-MK test, we rely on the results of the MK test and the Spearma
 
 ### Example Plot
 
-![](img/plot-bbmk.svg)
+![](../man/figures/plot-bbmk.svg)
 
 ---
 
@@ -224,7 +224,7 @@ If the Runs test identifies non-randomness in the residuals, it is a strong indi
 
 ### Example Plot
 
-![](img/plot-runs.svg)
+![](../man/figures/plot-runs.svg)
 
 ---
 
@@ -246,7 +246,7 @@ Unlike [Least Squares](https://en.wikipedia.org/wiki/Least_squares), Sen's trend
 
 ### Example Plot
 
-![](img/plot-sens.svg)
+![](../man/figures/plot-sens.svg)
 
 ---
 
@@ -273,5 +273,5 @@ For more information, see the Wikipedia pages on [Autocorrelation](https://en.wi
 
 ### Example Plot
 
-![](img/plot-spearman.svg)
+![](../man/figures/plot-spearman.svg)
 

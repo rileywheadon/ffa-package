@@ -68,7 +68,7 @@ Shown below are the L-moment curves of the GEV, GLO, GNO, PE3/LP3, and WEI distr
 This L-moment diagram depicts the "L-distance" selection metric, which compares the euclidian distance between the sample and theoretical L-moment ratios.
 The inset shows that the GEV distribution (yellow line) has the closest L-moments to the data.
 
-![](img/plot-lmom.svg)
+![](../man/figures/plot-lmom.svg)
 
 ## Selection Metrics
 

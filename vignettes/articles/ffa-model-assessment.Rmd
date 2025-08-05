@@ -33,7 +33,7 @@ Higher is better.
 
 The plot below shows the deviation of the estimated quantiles (red dots), from the data (black line).
 
-![](img/plot-assessment.svg)
+![](../man/figures/plot-assessment.svg)
 
 ### RMSE - Root-Mean Squared Error
 

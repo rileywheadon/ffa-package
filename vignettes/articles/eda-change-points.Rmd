@@ -1,3 +1,7 @@
+---
+title: "Change Point Detection"
+---
+
 # Change Point Detection
 
 The EDA module of the FFA Framework includes two statistical tests for detecting change points in annual maximum series data: the **Mann-Kendall-Sneyers (MKS) test** and the **Pettitt test**.
@@ -46,7 +50,7 @@ A crossing point between $UF_{t}$ and $UB_{t}$ that lies outside the confidence 
 
 ### Example Plot
 
-![](img/plot-mks.svg)
+![](../man/figures/plot-mks.svg)
 
 ---
 
@@ -75,4 +79,4 @@ If the p-value is less than the significance level $\alpha$, we reject the null 
 
 ### Example Plot
 
-![](img/plot-pettitt.svg)
+![](../man/figures/plot-pettitt.svg)
