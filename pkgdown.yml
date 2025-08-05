@@ -1,0 +1,24 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  change-points: change-points.html
+  articles/eda-change-points: eda-change-points.html
+  articles/eda-introduction: eda-introduction.html
+  articles/eda-trend-ams-mean: eda-trend-ams-mean.html
+  articles/eda-trend-ams-variability: eda-trend-ams-variability.html
+  articles/ffa-introduction: ffa-introduction.html
+  articles/matlab-version: matlab-version.html
+  articles/model-assessment: model-assessment.html
+  articles/model-selection: model-selection.html
+  non-stationary-ffa: non-stationary-ffa.html
+  articles/parameter-estimation: parameter-estimation.html
+  articles/probability-distributions: probability-distributions.html
+  stationary-ffa: stationary-ffa.html
+  trend-mean: trend-mean.html
+  trend-variability: trend-variability.html
+  articles/uncertainty-quantification: uncertainty-quantification.html
+last_built: 2025-08-05T21:48Z
+urls:
+  reference: https://rileywheadon.github.io/ffa-package/reference
+  article: https://rileywheadon.github.io/ffa-package/articles
