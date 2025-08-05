@@ -8,17 +8,17 @@ articles:
   articles/eda-trend-ams-mean: eda-trend-ams-mean.html
   articles/eda-trend-ams-variability: eda-trend-ams-variability.html
   articles/ffa-introduction: ffa-introduction.html
+  articles/ffa-model-assessment: ffa-model-assessment.html
+  articles/ffa-model-selection: ffa-model-selection.html
+  articles/ffa-parameter-estimation: ffa-parameter-estimation.html
+  articles/ffa-probability-distributions: ffa-probability-distributions.html
+  articles/ffa-uncertainty-quantification: ffa-uncertainty-quantification.html
   articles/matlab-version: matlab-version.html
-  articles/model-assessment: model-assessment.html
-  articles/model-selection: model-selection.html
   non-stationary-ffa: non-stationary-ffa.html
-  articles/parameter-estimation: parameter-estimation.html
-  articles/probability-distributions: probability-distributions.html
   stationary-ffa: stationary-ffa.html
   trend-mean: trend-mean.html
   trend-variability: trend-variability.html
-  articles/uncertainty-quantification: uncertainty-quantification.html
-last_built: 2025-08-05T21:48Z
+last_built: 2025-08-05T22:12Z
 urls:
   reference: https://rileywheadon.github.io/ffa-package/reference
   article: https://rileywheadon.github.io/ffa-package/articles
