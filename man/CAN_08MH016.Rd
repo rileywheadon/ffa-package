@@ -26,7 +26,7 @@ Variables:
 }
 \section{Additional Information}{
 
-This is an \emph{unregulated} station in the RHBN network. Other notable features include:
+This is an \emph{unregulated} station in the RHBN. Other notable features include:
 \itemize{
 \item The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 \item Trend detection finds evidence of an increasing trend in the variability.

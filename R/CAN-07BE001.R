@@ -4,7 +4,7 @@
 #' station 07BE001, ATHABASCA RIVER AT ATHABASCA in Alberta, Canada. 
 #'
 #' @section Additional Information:
-#' This is an *unregulated* station that is not in the RHBN network. Other notable features include:
+#' This is an *unregulated* station that is not in the RHBN. Other notable features include:
 #' - The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 #' - Trend detection finds no evidence of trends in the mean or variability.
 #' 

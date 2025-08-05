@@ -26,7 +26,7 @@ Variables:
 }
 \section{Additional Information}{
 
-This is an \emph{unregulated} station that is not in the RHBN network. Other notable features include:
+This is an \emph{unregulated} station that is not in the RHBN. Other notable features include:
 \itemize{
 \item There are no observations from 1919-1965. Missing data should be handled carefully.
 \item The MKS/Pettitt tests do not find evidence of change points at the 0.05 significance level.

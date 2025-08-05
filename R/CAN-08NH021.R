@@ -4,7 +4,7 @@
 #' station 08NH021, KOOTENAI RIVER AT PORTHILL in British Columbia, Canada. 
 #'
 #' @section Additional Information:
-#' This is a *regulated* station that is not in the RHBN network. Other notable features include:
+#' This is a *regulated* station that is not in the RHBN. Other notable features include:
 #' - The Libby dam was constructed upstream of this station in 1972.
 #' - The Pettitt test found evidence of a change point in 1972 at the 0.05 significance level.
 #' - The MKS test found evidence of change points in 1960 & 1985 at the 0.05 significance level.

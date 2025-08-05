@@ -7,28 +7,44 @@
 \title{Flood Frequency Analysis Framework}
 \description{
 This package provides tools for stationary (S-FFA) and nonstationary (NS-FFA)
-flood frequency analysis of annual maximum series data. The package supports
-flexible workflows with the following core components:
-}
-\details{
+flood flood frequency analysis of annual maximum series data. Methods with the
+\verb{framework_*} prefix orchestrate the EDA and/or FFA modules from
+\href{doi:10.1016/j.envsoft.2024.105940}{Vidrio-Sahagún et al. (2024)} and generate
+reports. Users who wish to develop customized workflows may use methods with
+the following prefixes:
 \enumerate{
-\item \strong{Test} for evidence of nonstationarity in annual maximum series data to
-inform approach selection (S-FFA or NS-FFA) using the \verb{eda_*} methods:
+\item \verb{eda_*}: Explore annual maximum series data for evidence of nonstationarity to
+inform approach selection (S-FFA or NS-FFA):
 \itemize{
 \item Detect statistically significant change points.
-\item Detect statistically significant temporal trends in the \emph{mean} and \emph{variance}.
+\item Detect statistically significant temporal trends in the \emph{mean} and \emph{variability}.
 }
-\item \strong{Select} a suitable probability distribution using the \verb{select_* } methods.
-\item \strong{Fit} model parameters using the \verb{fit_*} methods.
-\item \strong{Quantify} uncertainty using the \verb{uncertainty_*} methods.
-\item \strong{Evaluate} model performance using \code{model_diagnostics()}.
+\item \verb{select_*}: Select a suitable probability distribution using the L-moments.
+\item \verb{fit_*}: Fit parameters given a distribution and approach (S-FFA or NS-FFA).
+\item \verb{uncertainty_*}: Compute return level estimates and confidence intervals.
+\item \code{\link[=model_assessment]{model_assessment()}} evaluates model performance for using a variety of metrics.
 }
 
-Additional utility functions support visualization and computation:
+Additional utility functions for visualization and computation are also available:
 \itemize{
-\item \verb{plot_*} methods produce diagnostic and summary plots.
 \item \verb{data_*} methods load, transform, and decompose annual maximum series data.
+\item \verb{plot_*} methods produce diagnostic and summary plots.
 \item \verb{quantile_*}, \verb{loglik_*}, and \verb{lmom_*} implement distribution-specific computations.
+}
+
+Datasets from five hydrometric stations in Canada are provided as representative
+use cases (other datasets in \verb{/inst/extdata} are for testing purposes only):
+\itemize{
+\item Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
+statistical evidence of trends or change points (S-FFA recommended).
+\item Kootenai Kiver at Porthill (CAN-08NH21): A regulated station outside with
+evidence of an abrupt change in mean in 1972 (piecewise NS-FFA recommended).
+\item Bow River at Banff (CAN-05BB001). An unregulated station with statistical
+evidence of a trend in the mean (NS-FFA recommended).
+\item Chilliwack River at Chilliwack Lake (CAN-08MH016): An unregulated station
+with statistical evidence of a linear trend in variability (NS-FFA recommended).
+\item Okanagan River at Penticton (CAN-08NM050): A regulated station with statistical
+evidence of a linear trend in both the mean and variability (NS-FFA recommended).
 }
 
 This package assumes familiarity with statistical techniques used in FFA, including
@@ -42,7 +58,8 @@ analysis.
 Useful links:
 \itemize{
   \item \url{https://rileywheadon.github.io/ffa-docs/}
-  \item Report bugs at \url{https://github.com/rileywheadon/ffa-framework/issues}
+  \item \url{https://rileywheadon.github.io/ffa-package/}
+  \item Report bugs at \url{https://github.com/rileywheadon/ffa-package/issues}
 }
 
 }

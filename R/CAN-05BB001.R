@@ -4,7 +4,7 @@
 #' station 05BB001, BOW RIVER AT BANFF in Alberta, Canada. 
 #'
 #' @section Additional Information:
-#' This is an *unregulated* station in the RHBN network. Whitfield & Pomeroy (2016) found that 
+#' This is an *unregulated* station in the RHBN. Whitfield & Pomeroy (2016) found that 
 #' floods may be caused by rain, snow, or a combination of both. Therefore, practitioners should 
 #' be careful when interpreting the results of FFA on this station. Minimal human intervention in 
 #' the basin means there is little justification for change points. Trend detection finds 

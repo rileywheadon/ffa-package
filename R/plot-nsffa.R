@@ -70,8 +70,8 @@ plot_nsffa <- function(results, ...) {
 			aes(y = .data$estimates, color = .data$slice), 
 			linewidth = 1
 		) +
-        scale_color_manual(values = palette[seq_along(results)]) +
-        scale_fill_manual(values = palette[seq_along(results)]) +
+        scale_color_manual(values = palette[seq_along(results$slices)]) +
+        scale_fill_manual(values = palette[seq_along(results$slices)]) +
         scale_x_log10(breaks = unique(df_all$periods)) +
         labs(title = title, x = xlabel, y = ylabel, color = "Return Levels") +
   		guides(fill = "none")

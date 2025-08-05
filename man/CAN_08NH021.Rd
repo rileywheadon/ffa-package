@@ -26,7 +26,7 @@ Variables:
 }
 \section{Additional Information}{
 
-This is a \emph{regulated} station that is not in the RHBN network. Other notable features include:
+This is a \emph{regulated} station that is not in the RHBN. Other notable features include:
 \itemize{
 \item The Libby dam was constructed upstream of this station in 1972.
 \item The Pettitt test found evidence of a change point in 1972 at the 0.05 significance level.

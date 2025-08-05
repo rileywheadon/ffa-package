@@ -1,0 +1,61 @@
+url: "https://rileywheadon.github.io/ffa-package"
+template:
+  light-switch: true
+  bootstrap: 5
+  math-rendering: mathjax
+navbar:
+  structure:
+    left:
+      - home
+      - reference
+      - articles
+      - wiki
+      - matlab
+      - license
+  components:
+    articles:
+      text: "Articles"
+      menu:
+      - text: "EDA"
+      - text: "Change Points"
+        href: "articles/change-points.html"
+      - text: "Trends in AMS Mean"
+        href: "articles/trend-mean.html"
+      - text: "Trends in AMS Variability"
+        href: "articles/trend-variability.html"
+      - text: "---"
+      - text: "FFA"
+      - text: "Stationary FFA"
+        href: "articles/stationary-ffa.html"
+      - text: "Nonstationary FFA"
+        href: "articles/non-stationary-ffa.html"
+    wiki:
+      text: "Wiki"
+      menu: 
+      - text: "EDA"
+      - text: "Introduction"
+        href: "articles/eda-introduction.html"
+      - text: "Change Points"
+        href: "articles/eda-change-points.html"
+      - text: "Trends in AMS Mean"
+        href: "articles/eda-trend-ams-mean.html"
+      - text: "Trends in AMS Variability"
+        href: "articles/eda-trend-ams-variability.html"
+      - text: "---"
+      - text: "FFA"
+      - text: "FFA Introduction"
+        href: "articles/ffa-introduction.html"
+      - text: "Probability Distributions"
+        href: "articles/probability-distributions.html"
+      - text: "Model Selection"
+        href: "articles/model-selection.html"
+      - text: "Parameter Estimation"
+        href: "articles/parameter-estimation.html"
+      - text: "Uncertainty Quantification"
+        href: "articles/uncertainty-quantification.html"
+      - text: "Model Assessment"
+        href: "articles/model-assessment.html"
+    matlab:
+      text: "MATLAB Version"
+      href: "articles/matlab-version.html"
+

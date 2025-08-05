@@ -4,7 +4,7 @@
 #' station 08MH016, CHILLIWACK RIVER AT CHILLIWACK LAKE in British Columbia, Canada. 
 #'
 #' @section Additional Information:
-#' This is an *unregulated* station in the RHBN network. Other notable features include:
+#' This is an *unregulated* station in the RHBN. Other notable features include:
 #' - The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 #' - Trend detection finds evidence of an increasing trend in the variability.
 #' 

@@ -1,7 +1,7 @@
 Package: ffaframework
 Title: Flood Frequency Analysis Framework
 Description: Tools to support systematic and reproducible workflows for both stationary and nonstationary flood frequency analysis, with applications extending to other hydroclimate extremes such as precipitation frequency analysis. This package implements the FFA framework proposed by Vidrio-Sahagún et al. (2024) <doi:10.1016/j.envsoft.2024.105940>, originally developed in MATLAB, now adapted for the R environment. 
-Version: 0.2.1
+Version: 0.1.0
 Authors@R: 
     c(person(
         "Riley",
@@ -27,8 +27,7 @@ Authors@R:
 		email = "jianhe@ucalgary.ca",
 		role = "aut"
 	)) 
-Maintainer: Riley Wheadon <rileywheadon@gmail.com>
-URL: https://rileywheadon.github.io/ffa-docs/
+URL: https://rileywheadon.github.io/ffa-docs/, https://rileywheadon.github.io/ffa-package/
 BugReports: https://github.com/rileywheadon/ffa-package/issues
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -39,4 +38,4 @@ Suggests: knitr, testthat, vdiffr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-
+Config/Needs/website: rmarkdown

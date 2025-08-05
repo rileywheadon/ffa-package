@@ -4,7 +4,7 @@
 #' station 05BA001, BOW RIVER AT LAKE LOUISE in Alberta, Canada. 
 #'
 #' @section Additional Information:
-#' This is an *unregulated* station that is not in the RHBN network. Other notable features include:
+#' This is an *unregulated* station that is not in the RHBN. Other notable features include:
 #' - There are no observations from 1919-1965. Missing data should be handled carefully.
 #' - The MKS/Pettitt tests do not find evidence of change points at the 0.05 significance level. 
 #' - Trend detection finds evidence of a trend in variability.
