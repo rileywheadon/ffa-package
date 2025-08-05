@@ -1,7 +1,13 @@
 url: "https://rileywheadon.github.io/ffa-package"
 template:
-  light-switch: true
   bootstrap: 5
+  bslib:
+    bg: "#f8f9fa"
+    fg: "#212529"
+    primary: "#0d6efd"
+    base_font: {google: "Roboto"}
+    heading_font: {google: "Roboto Slab"}
+    code_font: {google: "JetBrains Mono"}
   math-rendering: mathjax
 navbar:
   structure:
@@ -43,18 +49,18 @@ navbar:
         href: "articles/eda-trend-ams-variability.html"
       - text: "---"
       - text: "FFA"
-      - text: "FFA Introduction"
+      - text: "Introduction"
         href: "articles/ffa-introduction.html"
       - text: "Probability Distributions"
-        href: "articles/probability-distributions.html"
+        href: "articles/ffa-probability-distributions.html"
       - text: "Model Selection"
-        href: "articles/model-selection.html"
+        href: "articles/ffa-model-selection.html"
       - text: "Parameter Estimation"
         href: "articles/parameter-estimation.html"
       - text: "Uncertainty Quantification"
-        href: "articles/uncertainty-quantification.html"
+        href: "articles/ffa-uncertainty-quantification.html"
       - text: "Model Assessment"
-        href: "articles/model-assessment.html"
+        href: "articles/ffa-model-assessment.html"
     matlab:
       text: "MATLAB Version"
       href: "articles/matlab-version.html"
