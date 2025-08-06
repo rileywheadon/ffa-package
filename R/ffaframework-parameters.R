@@ -144,3 +144,12 @@ NULL
 #' @keywords internal
 NULL
 
+#' Parameter 'tolerance'
+#' 
+#' @param tolerance The log-likelihood tolerance for Regula-Falsi convergence 
+#' (default is 0.01).
+#'
+#' @name param-tolerance
+#'
+#' @keywords internal
+NULL

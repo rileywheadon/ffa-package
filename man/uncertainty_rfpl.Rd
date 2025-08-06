@@ -2,18 +2,17 @@
 % Please edit documentation in R/uncertainty-rfpl.R
 \name{uncertainty_rfpl}
 \alias{uncertainty_rfpl}
-\title{(Generalized) Regula-Falsi Confidence Intervals for Flood Quantile Estimates}
+\title{Regula-Falsi Profile Likelihood Uncertainty Quantification}
 \usage{
 uncertainty_rfpl(
   data,
   distribution,
-  prior = NULL,
-  years = NULL,
-  structure = NULL,
-  slices = 1900,
+  ns_years = NULL,
+  ns_structure = NULL,
+  ns_slices = NULL,
   alpha = 0.05,
-  eps = 0.01,
-  periods = c(2, 5, 10, 20, 50, 100)
+  periods = c(2, 5, 10, 20, 50, 100),
+  tolerance = 0.01
 )
 }
 \arguments{
@@ -24,65 +23,72 @@ Must be strictly positive, finite, and not missing.}
 Must be \code{"GUM"}, \code{"NOR"}, \code{"LNO"}, \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"},
 or \code{"WEI"}.}
 
-\item{prior}{Numeric vector of length 2. Specifies the parameters of the
-Beta prior for the shape parameter \eqn{\kappa}.}
+\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{years}{Numeric vector of observation years corresponding to \code{data}.
-Must be the same length as \code{data} and strictly increasing.}
+\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:
+\itemize{
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
+}}
+
+\item{ns_slices}{NS-FFA only. Numeric vector specifying the years at which to evaluate
+the return levels confidence intervals of a nonstationary probability distribution.
+\code{ns_slices} do not have to be elements of the \code{ns_years} argument.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
 
-\item{eps}{Numeric scalar. The log-likelihood tolerance for the Regula-Falsi
-convergence (default is 0.01).}
-
 \item{periods}{Numeric vector used to set the return periods for FFA.
 All entries must be greater than or equal to 1.}
+
+\item{tolerance}{The log-likelihood tolerance for Regula-Falsi convergence
+(default is 0.01).}
 }
 \value{
-A list containing the following three items:
+A list containing the following four items:
 \itemize{
-\item \code{method}: "Bootstrap"
-\item \code{structure}: The value of the \code{structure} argument.
-\item \code{slices}: A list of lists containing the results for each slice.
+\item \code{method}: "RFPL"
+\item \code{ns_structure}: The \code{ns_structure} argument, if given.
+\item \code{ns_slices}: The \code{ns_slices} argument, if given.
+\item \code{results}: A dataframe (S-FFA) or list of dataframes (NS-FFA).
 }
 
-Each element of \code{slices} is a list with the following five items:
+Each dataframe within \code{results} has four columns:
 \itemize{
 \item \code{estimates}: Estimated quantiles for each return period.
 \item \code{ci_lower}: Lower bound of the confidence interval for each return period.
 \item \code{ci_upper}: Upper bound of the confidence interval for each return period.
-\item \code{periods}: Vector of return periods; defaults to \code{c(2, 5, 10, 20, 50, 100)}.
-\item \code{year}: The year at which the estimates were computed (nonstationary models only).
+\item \code{periods}: The \code{periods} argument.
 }
 }
 \description{
 Calculates return level estimates and confidence intervals at specified return
-periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the Regula-Falsi profile
-likelihood or Regula-Falsi generalized profile likelihood root‐finding methods.
+periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the regula-falsi profile
+likelihood root‐finding method.
+
+\strong{NS-FFA}: To perform uncertainty quantification for a nonstationary model,
+include the observation years (\code{ns_years}), the nonstationary model structure
+(\code{ns_structure}), and a list of years at which to compute the return level estimates
+and confidence intervals (\code{ns_slices}).
 }
 \details{
 \enumerate{
-\item Fits the distribution using \code{\link[=fit_maximum_likelihood]{fit_maximum_likelihood()}} to obtain parameter
-estimates and log‐likelihood.
-\item Defines an objective function \eqn{f(y_p, p)} using the reparameterized
-log-likelihood function.
+\item Uses \code{\link[=fit_mle]{fit_mle()}} to obtain the maximum log‐likelihood.
+\item Defines an objective function \eqn{f(y_p, p)} by reparameterizing the
+log-likelihood.
 \item Iteratively brackets the root by rescaling initial guesses by 0.05 until
 \eqn{f(y_p, p)} changes sign.
-\item Uses the Regula Falsi method to solve \eqn{f(y_p, p) = 0} for each
-return-period probability.
-\item Returns lower and upper confidence bounds at significance level \code{alpha}
-given the return level estimates.
+\item Uses the regula-falsi method to solve \eqn{f(y_p, p) = 0} for each
+return period probability.
+\item Returns lower and upper confidence bounds at significance level \code{alpha}.
 }
 }
 \note{
-Although the more modern \code{\link[stats:optim]{stats::optim()}} function is preferred over
-\code{\link[stats:nlminb]{stats::nlminb()}}, we use \code{\link[stats:nlminb]{stats::nlminb()}} because it supports infinite
-values of the likelihood function.
-
 RFPL uncertainty quantification can be numerically unstable for some datasets.
 If this function encounters an issue, it will return an error and recommend
-using the parametric bootstrap method (\code{uncertainty_bootstrap}) instead.
+using the parametric bootstrap method \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}} instead.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -99,6 +105,5 @@ likelihood method for nonstationary hydrological frequency analysis. Stoch Envir
 Risk Assess 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
 }
 \seealso{
-\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}},
-\code{\link[=plot_sffa]{plot_sffa()}}, \code{\link[=plot_nsffa]{plot_nsffa()}}
+\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=plot_sffa]{plot_sffa()}}, \code{\link[=plot_nsffa]{plot_nsffa()}}
 }
