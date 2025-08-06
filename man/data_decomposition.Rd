@@ -4,17 +4,17 @@
 \alias{data_decomposition}
 \title{Decompose Annual Maximum Series}
 \usage{
-data_decomposition(data, years, structure)
+data_decomposition(data, ns_years, ns_structure)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
-\item{years}{Numeric vector of observation years corresponding to \code{data}.
-Must be the same length as \code{data} and strictly increasing.}
+\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain two logical scalars:
+\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
 \item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
@@ -24,38 +24,28 @@ modeled as nonstationary. Must contain two logical scalars:
 Numeric vector of decomposed data.
 }
 \description{
-Decomposes the annual maxima series to derive its stationary stochastic component,
-which can be used to identify a best-fit distribution using conventional stationary
-methods. The decomposition procedure follows that proposed by Vidrio-Sahagún and He
-(2022), which relies on the statistical representation of nonstationary stochastic
+Decomposes a nonstationary annual maxima series to derive its stationary stochastic
+component, which can be used to identify a best-fit distribution using conventional
+stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún
+and He (2022), which relies on the statistical representation of nonstationary stochastic
 processes.
 }
 \details{
-Four scenarios are supported:
-\enumerate{
-\item No trend (the data is returned unmodified).
-\item Linear trend in the mean only.
-\item Linear trend in the standard deviation only.
-\item Linear trends in both the mean and the standard deviation.
-}
-
 Internally, the function does the following:
 \enumerate{
-\item Compute \code{covariate = (years - 1900) / 100}.
-\item If there is a trend in the location, fit Sen’s trend estimator to
-\code{data} and \code{covariate}. Then, remove the fitted linear trend.
-\item If there is a trend in the scale, compute the variability using
-\code{\link[=data_mw_variability]{data_mw_variability()}}, fit Sen’s trend estimator to the vector of
-standard deviations, and then rescale the series to remove trends
-in the scale.
+\item If there is a trend in the location, fit Sen’s trend estimator and subtract
+away the fitted trend.
+\item If there is a trend in the scale, estimate the variability of the data
+with \code{\link[=data_mw_variability]{data_mw_variability()}}, fit Sen’s trend estimator to the variability
+vector, and rescale the data to remove the trend.
 \item If necessary, shift the data so that its minimum is at least 1.
 }
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
-years <- seq(from = 1901, to = 2000)
-structure <- list(location = TRUE, scale = FALSE)
-data_decomposition(data, years, structure)
+ns_years <- seq(from = 1901, to = 2000)
+ns_structure <- list(location = TRUE, scale = FALSE)
+data_decomposition(data, ns_years, ns_structure)
 
 }
 \references{

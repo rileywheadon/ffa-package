@@ -1,14 +1,22 @@
 #' L-Kurtosis Method for Distribution Selection
 #'
+#' @description
 #' Selects a probability distribution by minimizing the absolute distance
 #' between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis 
 #' (\eqn{t_4}). Only supports 3-parameter distributions. 
 #'
+#' **NS-FFA**: To select a distribution for a nonstationary model, include the observation
+#' years (`ns_years`) and the nonstationary model structure (`ns_structure`). Then, this 
+#' method will detrend the data internally using the [data_decomposition()] function prior 
+#' to distribution selection.
+#'
 #' @inheritParams param-data
+#' @inheritParams param-ns-years
+#' @inheritParams param-ns-structure
 #'
 #' @return A list with the results of distribution selection:
 #' - `method`: `"L-kurtosis"`.
-#' - `data`: The `data` argument.
+#' - `data`: The `data` argument (S-FFA) or the detrended dataset (NS-FFA).
 #' - `metrics`: A list of L-kurtosis metrics for each distribution.
 #' - `recommendation`: Name of the distribution with the smallest L-kurtosis metric.
 #'
@@ -31,9 +39,15 @@
 #' @importFrom stats optim
 #' @export
 
-select_lkurtosis <- function(data) {
+select_lkurtosis <- function(data, ns_years = NULL, ns_structure = NULL) {
 
 	data <- validate_numeric("data", data, optional = FALSE)
+
+	if (!is.null(ns_years) && !is.null(ns_structure)) {
+		ns_years <- validate_numeric("ns_years", ns_years, size = length(data))
+		ns_structure <- validate_structure(ns_structure)
+		data <- data_decomposition(data, ns_years, ns_structure)
+	}
 
 	# Get the sample L-moments for data and log(data)
 	reg_t3_t4 <- lmom_sample(data)[3:4]
@@ -43,16 +57,13 @@ select_lkurtosis <- function(data) {
 	metrics <- list()
 
 	# Iterate through the list of distributions
-	for (distribution in c("GUM", "NOR", "LNO", "GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
+	for (distribution in c("GEV", "GLO", "GNO", "PE3", "LP3", "WEI")) {
 
 		# Get distribution information
 		info <- model_info(distribution)
 
 		# Determine the sample L-moments (regular or log)
 		t3_t4 <- if (info$log) log_t3_t4 else reg_t3_t4
-
-		# Skip two-parameter distributions 
-		if (info$n_params == 2) next
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {

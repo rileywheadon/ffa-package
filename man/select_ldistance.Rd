@@ -4,17 +4,27 @@
 \alias{select_ldistance}
 \title{L-Distance Method for Distribution Selection}
 \usage{
-select_ldistance(data)
+select_ldistance(data, ns_years = NULL, ns_structure = NULL)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
+
+\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+to \code{data}. Must be the same length as \code{data} and strictly increasing.}
+
+\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:
+\itemize{
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
+}}
 }
 \value{
 A list with the results of distribution selection:
 \itemize{
 \item \code{method}: \code{"L-distance"}.
-\item \code{data}: The \code{data} argument.
+\item \code{data}: The \code{data} argument (S-FFA) or the detrended dataset (NS-FFA).
 \item \code{metrics}: A list of L-distance metrics for each candidate distribution.
 \item \code{recommendation}: The name of the distribution with the smallest L-distance.
 }
@@ -23,9 +33,14 @@ A list with the results of distribution selection:
 Selects a distribution from a set of candidate distributions by minimizing the
 Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)}
 and the sample L-moment ratios \eqn{(t_3, t_4)}.
+
+\strong{NS-FFA}: To select a distribution for a nonstationary model, include the observation
+years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}). Then, this
+method will detrend the data internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior
+to distribution selection.
 }
 \details{
-For each candidate distribution, the method computes the Euclidean distance between
+For each candidate distribution, this method computes the Euclidean distance between
 sample L-moment ratios (\eqn{\tau_3}, \eqn{\tau_4}) and the closest point on the
 theoretical distribution's L-moment curve. For two-parameter distributions (Gumbel,
 Normal, Log-Normal), the theoretical L-moment ratios are compared directly with

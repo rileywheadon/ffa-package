@@ -1,19 +1,27 @@
 #' L-Distance Method for Distribution Selection
 #'
+#' @description
 #' Selects a distribution from a set of candidate distributions by minimizing the 
 #' Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)} 
 #' and the sample L-moment ratios \eqn{(t_3, t_4)}.
 #'
+#' **NS-FFA**: To select a distribution for a nonstationary model, include the observation
+#' years (`ns_years`) and the nonstationary model structure (`ns_structure`). Then, this 
+#' method will detrend the data internally using the [data_decomposition()] function prior 
+#' to distribution selection.
+#'
 #' @inheritParams param-data
+#' @inheritParams param-ns-years
+#' @inheritParams param-ns-structure
 #'
 #' @return A list with the results of distribution selection:
 #' - `method`: `"L-distance"`.
-#' - `data`: The `data` argument.
+#' - `data`: The `data` argument (S-FFA) or the detrended dataset (NS-FFA).
 #' - `metrics`: A list of L-distance metrics for each candidate distribution.
 #' - `recommendation`: The name of the distribution with the smallest L-distance.
 #'
 #' @details
-#' For each candidate distribution, the method computes the Euclidean distance between
+#' For each candidate distribution, this method computes the Euclidean distance between
 #' sample L-moment ratios (\eqn{\tau_3}, \eqn{\tau_4}) and the closest point on the
 #' theoretical distribution's L-moment curve. For two-parameter distributions (Gumbel,
 #' Normal, Log-Normal), the theoretical L-moment ratios are compared directly with
@@ -35,9 +43,15 @@
 #' @importFrom stats optim
 #' @export
 
-select_ldistance <- function(data) {
+select_ldistance <- function(data, ns_years = NULL, ns_structure = NULL) {
 
 	data <- validate_numeric("data", data, optional = FALSE)
+
+	if (!is.null(ns_years) && !is.null(ns_structure)) {
+		ns_years <- validate_numeric("ns_years", ns_years, size = length(data))
+		ns_structure <- validate_structure(ns_structure)
+		data <- data_decomposition(data, ns_years, ns_structure)
+	} 
 
 	# Get the sample L-moments for data and log(data)
 	reg_t3_t4 <- lmom_sample(data)[3:4]

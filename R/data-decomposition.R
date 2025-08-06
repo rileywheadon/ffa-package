@@ -1,32 +1,24 @@
 #' Decompose Annual Maximum Series
 #'
-#' Decomposes the annual maxima series to derive its stationary stochastic component,
-#' which can be used to identify a best-fit distribution using conventional stationary 
-#' methods. The decomposition procedure follows that proposed by Vidrio-Sahagún and He 
-#' (2022), which relies on the statistical representation of nonstationary stochastic 
+#' @description
+#' Decomposes a nonstationary annual maxima series to derive its stationary stochastic 
+#' component, which can be used to identify a best-fit distribution using conventional 
+#' stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún 
+#' and He (2022), which relies on the statistical representation of nonstationary stochastic 
 #' processes.
 #' 
-#' Four scenarios are supported:
-#'
-#' 1. No trend (the data is returned unmodified).
-#' 2. Linear trend in the mean only.
-#' 3. Linear trend in the standard deviation only.
-#' 4. Linear trends in both the mean and the standard deviation.
-#' 
 #' @inheritParams param-data
-#' @inheritParams param-years
-#' @inheritParams param-structure
+#' @inheritParams param-ns-years
+#' @inheritParams param-ns-structure
 #'
 #' @details
 #' Internally, the function does the following:
-#' 1. Compute `covariate = (years - 1900) / 100`.
-#' 2. If there is a trend in the location, fit Sen’s trend estimator to 
-#'    `data` and `covariate`. Then, remove the fitted linear trend.
-#' 3. If there is a trend in the scale, compute the variability using 
-#'    [data_mw_variability()], fit Sen’s trend estimator to the vector of
-#'    standard deviations, and then rescale the series to remove trends 
-#'    in the scale.
-#' 4. If necessary, shift the data so that its minimum is at least 1.
+#' 1. If there is a trend in the location, fit Sen’s trend estimator and subtract
+#'    away the fitted trend.
+#' 2. If there is a trend in the scale, estimate the variability of the data 
+#'    with [data_mw_variability()], fit Sen’s trend estimator to the variability 
+#'    vector, and rescale the data to remove the trend.
+#' 3. If necessary, shift the data so that its minimum is at least 1.
 #'
 #' @return Numeric vector of decomposed data.
 #'
@@ -34,9 +26,9 @@
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' years <- seq(from = 1901, to = 2000)
-#' structure <- list(location = TRUE, scale = FALSE)
-#' data_decomposition(data, years, structure)
+#' ns_years <- seq(from = 1901, to = 2000)
+#' ns_structure <- list(location = TRUE, scale = FALSE)
+#' data_decomposition(data, ns_years, ns_structure)
 #'
 #' @references
 #' Vidrio-Sahagún, C. T., and He, J. (2022). The decomposition-based nonstationary 
@@ -45,23 +37,23 @@
 #'
 #' @export
 
-data_decomposition <- function(data, years, structure) {
+data_decomposition <- function(data, ns_years, ns_structure) {
 
 	data <- validate_numeric("data", data)
-	years <- validate_numeric("years", years, size = length(data))
-	structure <- validate_structure(structure)
+	ns_years <- validate_numeric("years", ns_years, size = length(data))
+	ns_structure <- validate_structure(ns_structure)
 
-	covariate <- get_covariates(years)
+	covariate <- get_covariates(ns_years)
 	decomposed <- data
 
 	# Remove trends in location first to get rid of excess variance
-	if (structure$location) {
-		sens <- eda_sens_trend(data, years)
+	if (ns_structure$location) {
+		sens <- eda_sens_trend(data, ns_years)
 		decomposed <- data - (covariate * sens$slope)
 	}
 
-	if (structure$scale) {
-		variance <- data_mw_variability(decomposed, years)
+	if (ns_structure$scale) {
+		variance <- data_mw_variability(decomposed, ns_years)
         sens <- eda_sens_trend(variance$std, variance$year)
         gt <- ((sens$slope * covariate) + sens$intercept) / sens$intercept
 		mu <- mean(decomposed, na.rm = TRUE)

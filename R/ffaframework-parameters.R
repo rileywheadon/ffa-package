@@ -70,38 +70,47 @@ NULL
 #' @keywords internal
 NULL
 
-#' Parameter 'structure'
+#' Parameter 'ns_years'
 #'
-#' @param structure Named list indicating which distribution parameters are 
-#' modeled as nonstationary. Must contain two logical scalars:
-#' - `location`: If `TRUE`, the location parameter has a linear temporal trend.
-#' - `scale`: If `TRUE`, the scale parameter has a linear temporal trend.
+#' @param ns_years NS-FFA only. Numeric vector of observation years corresponding 
+#' to `data`. Must be the same length as `data` and strictly increasing. 
 #'
-#' @name param-structure
+#' @name param-ns-years
 #'
 #' @keywords internal
 NULL
 
-#' Parameter 'slice'
+
+#' Parameter 'ns_structure'
 #'
-#' @param slice Numeric scalar specifying the year at which to evaluate the 
-#' quantiles of a nonstationary probability distribution. The slice does not 
-#' have to be an element of the `years` argument. Note that if `structure$location` 
-#' and `structure$scale` are both `FALSE`, this argument will have no effect the 
-#' output of the function.
+#' @param ns_structure NS-FFA only. Named list indicating which distribution 
+#' parameters are modeled as nonstationary. Must contain two logical scalars:
+#' - `location`: If `TRUE`, the location parameter has a linear temporal trend.
+#' - `scale`: If `TRUE`, the scale parameter has a linear temporal trend.
 #'
-#' @name param-slice
+#' @name param-ns-structure
+#'
+#' @keywords internal
+NULL
+
+#' Parameter 'ns_slice'
+#'
+#' @param ns_slice NS-FFA only. Numeric scalar specifying the year at which to evaluate 
+#' the quantiles of a nonstationary probability distribution. `ns_slice` does not have 
+#' to be an element of the `ns_years` argument. 
+#'
+#' @name param-ns-slice
 #'
 #' @keywords internal
 NULL 
 
-#' Parameter 'slices'
+#' Parameter 'ns_slices'
 #'
-#' @param slices Numeric vector specifying the years at which to evaluate the 
-#' return levels confidence intervals of a nonstationary probability distribution. 
-#' The slices do not have to be elements of the `years` argument. 
+#' @param ns_slices NS-FFA only. Numeric vector specifying the years at which to evaluate 
+#' the return levels confidence intervals of a nonstationary probability distribution. 
+#' `ns_slices` do not have to be elements of the `ns_years` argument. 
 #'
-#' @name param-slices
+#' @name param-ns-slices
 #'
 #' @keywords internal
 NULL 

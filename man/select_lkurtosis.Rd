@@ -4,17 +4,27 @@
 \alias{select_lkurtosis}
 \title{L-Kurtosis Method for Distribution Selection}
 \usage{
-select_lkurtosis(data)
+select_lkurtosis(data, ns_years = NULL, ns_structure = NULL)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
+
+\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+to \code{data}. Must be the same length as \code{data} and strictly increasing.}
+
+\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:
+\itemize{
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
+}}
 }
 \value{
 A list with the results of distribution selection:
 \itemize{
 \item \code{method}: \code{"L-kurtosis"}.
-\item \code{data}: The \code{data} argument.
+\item \code{data}: The \code{data} argument (S-FFA) or the detrended dataset (NS-FFA).
 \item \code{metrics}: A list of L-kurtosis metrics for each distribution.
 \item \code{recommendation}: Name of the distribution with the smallest L-kurtosis metric.
 }
@@ -23,6 +33,11 @@ A list with the results of distribution selection:
 Selects a probability distribution by minimizing the absolute distance
 between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis
 (\eqn{t_4}). Only supports 3-parameter distributions.
+
+\strong{NS-FFA}: To select a distribution for a nonstationary model, include the observation
+years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}). Then, this
+method will detrend the data internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior
+to distribution selection.
 }
 \details{
 This method computes the distance between the sample and theoretical L-kurtosis

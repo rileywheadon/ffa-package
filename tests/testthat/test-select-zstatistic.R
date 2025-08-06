@@ -41,8 +41,8 @@ test_that("select-zstatistic.R works on KOOTENAI RIVER (08NH021)", {
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$reg_params[3],     0.5351, tol = 1e-3)
-	expect_equal(results$reg_params[4],     0.9253, tol = 1e-3)
+	expect_equal(results$reg_params[3], 0.5351, tol = 1e-3)
+	expect_equal(results$reg_params[4], 0.9253, tol = 1e-3)
 	expect_equal(results$log_params[3], 0.7347, tol = 1e-3)
 	expect_equal(results$log_params[4], 0.5134, tol = 1e-3)
 
@@ -74,8 +74,8 @@ test_that("select-zstatistic.R works on BOW RIVER (05BB001)", {
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$reg_params[3],     0.1065, tol = 1e-3)
-	expect_equal(results$reg_params[4],     0.2881, tol = 1e-3)
+	expect_equal(results$reg_params[3], 0.1065, tol = 1e-3)
+	expect_equal(results$reg_params[4], 0.2881, tol = 1e-3)
 	expect_equal(results$log_params[3], 0.2875, tol = 1e-3)
 	expect_equal(results$log_params[4], 0.1371, tol = 1e-3)
 
@@ -107,8 +107,8 @@ test_that("select-zstatistic.R works on CHILLIWACK RIVER (08MH016)", {
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$reg_params[3],      0.0001, tol = 1e-3)
-	expect_equal(results$reg_params[4],      0.0747, tol = 1e-3) 
+	expect_equal(results$reg_params[3],  0.0001, tol = 1e-3)
+	expect_equal(results$reg_params[4],  0.0747, tol = 1e-3) 
 	expect_equal(results$log_params[3],  0.1569, tol = 1e-3)
 	expect_equal(results$log_params[4], -0.1367, tol = 1e-3) 
 
@@ -140,8 +140,8 @@ test_that("select-zstatistic.R works on OKANAGAN RIVER (08NM050)", {
 	results <- select_zstatistic(df$max, samples = 25000L)
 
 	# Check the Kappa distribution parameters (only k and h)
-	expect_equal(results$reg_params[3],     0.6732, tol = 1e-3)
-	expect_equal(results$reg_params[4],     1.1215, tol = 1e-3)
+	expect_equal(results$reg_params[3], 0.6732, tol = 1e-3)
+	expect_equal(results$reg_params[4], 1.1215, tol = 1e-3)
 	expect_equal(results$log_params[3], 0.7486, tol = 1e-3)
 	expect_equal(results$log_params[4], 0.4114, tol = 1e-3)
 
@@ -163,3 +163,37 @@ test_that("select-zstatistic.R works on OKANAGAN RIVER (08NM050)", {
 	expect_equal(results$recommendation, "LP3") 
 
 })
+
+test_that("Nonstationary select-zstatistic.R works on BOW RIVER (05BB001)", {
+	skip_on_cran()
+	set.seed(1)
+
+	# Load dataset and run L-distance selection
+	df <- data_local("CAN-05BB001.csv")
+	results <- select_zstatistic(df$max, df$year, S10, samples = 25000L)
+
+	# Check the Kappa distribution parameters (only k and h)
+	expect_equal(results$reg_params[3],  0.0114, tol = 1e-3)
+	expect_equal(results$reg_params[4],  0.0529, tol = 1e-3)
+	expect_equal(results$log_params[3],  0.1621, tol = 1e-3)
+	expect_equal(results$log_params[4], -0.0606, tol = 1e-3)
+
+	# Check the bootstrap summary statistics
+	expect_equal(results$reg_bias_t4, -0.0004, tol = 1e-2)
+	expect_equal(results$reg_std_t4 ,  0.0359, tol = 1e-2)
+	expect_equal(results$log_bias_t4,  0.0003, tol = 1e-2)
+	expect_equal(results$log_std_t4 ,  0.0294, tol = 1e-2)
+
+	# Check the metrics
+	expect_equal(results$metrics$GEV,  0.1036, tol = 1e-2) 
+	expect_equal(results$metrics$GLO,  1.2197, tol = 1e-2) 
+	expect_equal(results$metrics$PE3, -0.4306, tol = 1e-2) 
+	expect_equal(results$metrics$LP3,  0.0727, tol = 1e-2) 
+	expect_equal(results$metrics$GNO, -0.0453, tol = 1e-2) 
+	expect_equal(results$metrics$WEI, -0.9588, tol = 1e-2) 
+
+	# Check the recommendation
+	expect_equal(results$recommendation, "GNO") 
+
+})
+

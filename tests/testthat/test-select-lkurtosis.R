@@ -96,3 +96,23 @@ test_that("select-lkurtosis.R works on OKANAGAN RIVER (08NM050)", {
 	expect_equal(results$recommendation, "LP3") 
 
 })
+
+test_that("Nonstationary select-lkurtosis.R works on BOW RIVER (05BB001)", {
+
+	# Load dataset and run L-distance selection
+	df <- data_local("CAN-05BB001.csv")
+	results <- select_lkurtosis(df$max, df$year, S10)
+
+	# Check the distances
+	expect_equal(results$metrics$GEV, 0.0041, tol = 1e-3) 
+	expect_equal(results$metrics$GLO, 0.0442, tol = 1e-3) 
+	expect_equal(results$metrics$PE3, 0.0150, tol = 1e-3) 
+	expect_equal(results$metrics$LP3, 0.0018, tol = 1e-3) 
+	expect_equal(results$metrics$GNO, 0.0012, tol = 1e-3) 
+	expect_equal(results$metrics$WEI, 0.0340, tol = 1e-3) 
+
+	# Check the recommendation
+	expect_equal(results$recommendation, "GNO") 
+
+})
+

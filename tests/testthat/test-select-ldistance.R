@@ -107,3 +107,26 @@ test_that("select-ldistance.R works on OKANAGAN RIVER (08NM050)", {
 	expect_equal(results$recommendation, "LP3") 
 
 })
+
+test_that("Nonstationary select-ldistance.R works on BOW RIVER (05BB001)", {
+
+	# Load dataset and run L-distance selection
+	df <- data_local("CAN-05BB001.csv")
+	results <- select_ldistance(df$max, df$year, S10)
+
+	# Check the distances
+	expect_equal(results$metrics$GEV, 0.0039, tol = 1e-3) 
+	expect_equal(results$metrics$GUM, 0.0040, tol = 1e-3) 
+	expect_equal(results$metrics$NOR, 0.1741, tol = 1e-3) 
+	expect_equal(results$metrics$LNO, 0.0560, tol = 1e-3) 
+	expect_equal(results$metrics$GLO, 0.0426, tol = 1e-3) 
+	expect_equal(results$metrics$PE3, 0.0149, tol = 1e-3) 
+	expect_equal(results$metrics$LP3, 0.0018, tol = 1e-3) 
+	expect_equal(results$metrics$GNO, 0.0012, tol = 1e-3) 
+	expect_equal(results$metrics$WEI, 0.0334, tol = 1e-3) 
+
+	# Check the recommendation
+	expect_equal(results$recommendation, "GNO") 
+
+})
+

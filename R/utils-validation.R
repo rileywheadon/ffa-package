@@ -119,13 +119,13 @@ validate_structure <- function(x) {
 
 	# Validate the location option
 	location <- x$location
-	if (is.null(location)) stop("'structure' requires item 'location'")
-	validate_logical('structure$location', x$location)
+	if (is.null(location)) stop("'ns_structure' requires item 'location'")
+	validate_logical('ns_structure$location', x$location)
 
 	# Validate the scale option
 	scale <- x$scale
-	if (is.null(scale)) stop("'structure' requires item 'scale'")
-	validate_logical('structure$scale', x$scale)
+	if (is.null(scale)) stop("'ns_structure' requires item 'scale'")
+	validate_logical('ns_structure$scale', x$scale)
 
 	return (x)
 

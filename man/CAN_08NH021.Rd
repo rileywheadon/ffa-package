@@ -26,18 +26,14 @@ Variables:
 }
 \section{Additional Information}{
 
-This is a \emph{regulated} station that is not in the RHBN. Other notable features include:
+This is a regulated station that is not in the RHBN. Additionally,
 \itemize{
 \item The Libby dam was constructed upstream of this station in 1972.
-\item The Pettitt test found evidence of a change point in 1972 at the 0.05 significance level.
-\item The MKS test found evidence of change points in 1960 & 1985 at the 0.05 significance level.
-\item After splitting the data in 1972, trend detection finds evidence of an increasing,
-deterministic, and linear trend in the mean for both subperiods.
+\item The Pettitt test finds evidence of a change point in 1972 at the 0.05 significance level.
+\item The MKS test finds evidence of change points in 1960 & 1985 at the 0.05 significance level.
 }
 
-This dataset is used as a test case for comparison with the MATLAB implementation of the
-FFA framework. It is also useful for demonstrating how the framework detects and handles
-change points in a time series.
+This dataset is an excellent introduction to change point detection and piecewise NS-FFA.
 }
 
 \keyword{datasets}

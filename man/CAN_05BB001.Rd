@@ -26,14 +26,11 @@ Variables:
 }
 \section{Additional Information}{
 
-This is an \emph{unregulated} station in the RHBN. Whitfield & Pomeroy (2016) found that
+This is an unregulated station in the RHBN. Whitfield & Pomeroy (2016) found that
 floods may be caused by rain, snow, or a combination of both. Therefore, practitioners should
-be careful when interpreting the results of FFA on this station. Minimal human intervention in
-the basin means there is little justification for change points. Trend detection finds
-evidence of a decreasing trend in the mean.
-
-This dataset is used as a test case for comparison with the MATLAB implementation of the
-FFA framework. It is also an excellent introductory example to nonstationary FFA.
+be careful when interpreting the results of FFA. Minimal human intervention in the basin
+means there is little justification for change points. EDA finds evidence of a decreasing
+trend in the mean.
 }
 
 \references{

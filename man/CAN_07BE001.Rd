@@ -26,14 +26,13 @@ Variables:
 }
 \section{Additional Information}{
 
-This is an \emph{unregulated} station that is not in the RHBN. Other notable features include:
+This is an unregulated station that is not in the RHBN. Additionally,
 \itemize{
 \item The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 \item Trend detection finds no evidence of trends in the mean or variability.
 }
 
-This dataset is used as a test case for comparison with the MATLAB implementation of the
-FFA framework. It is also an excellent introductory example to stationary FFA.
+This dataset is an excellent introductory example to stationary FFA.
 }
 
 \keyword{datasets}

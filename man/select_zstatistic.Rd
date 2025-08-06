@@ -4,11 +4,21 @@
 \alias{select_zstatistic}
 \title{Z-Statistic Method for Distribution Selection}
 \usage{
-select_zstatistic(data, samples = 10000L)
+select_zstatistic(data, ns_years = NULL, ns_structure = NULL, samples = 10000L)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
+
+\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+to \code{data}. Must be the same length as \code{data} and strictly increasing.}
+
+\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:
+\itemize{
+\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
+\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
+}}
 
 \item{samples}{Integer scalar. The number of bootstrap samples. Default is 10000.}
 }
@@ -16,15 +26,15 @@ Must be strictly positive, finite, and not missing.}
 A list with the results of distribution selection:
 \itemize{
 \item \code{method}: \code{"Z-selection"}.
-\item \code{data}: The \code{data} argument.
+\item \code{data}: The \code{data} argument (S-FFA) or the detrended dataset (NS-FFA).
 \item \code{metrics}: List of computed Z-statistics for each candidate distribution.
 \item \code{recommendation}: Name of the distribution with the smallest Z-statistic.
 \item \code{reg_params}: Kappa distribution parameters for the data.
 \item \code{reg_bias_t4}: Bias of the L-kurtosis from the bootstrap.
 \item \code{reg_std_t4}: Standard deviation of the L-kurtosis from the bootstrap.
 \item \code{log_params}: Kappa distribution parameters for the log-transformed data.
-\item \code{log_bias_t4}: Bias of the L-kurtosis from the bootstrap (using \code{log_params}).
-\item \code{log_std_t4}: Standard deviation of the L-kurtosis from the bootstrap (using \code{log_params}).
+\item \code{log_bias_t4}: Bias of the L-kurtosis from the bootstrap using \code{log_params}.
+\item \code{log_std_t4}: Standard deviation of the L-kurtosis from the bootstrap using \code{log_params}.
 }
 }
 \description{
@@ -32,16 +42,17 @@ Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
 the sample L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.
+
+\strong{NS-FFA}: To select a distribution for a nonstationary model, include the observation
+years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}). Then, this
+method will detrend the data internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior
+to distribution selection.
 }
 \details{
-The method performs distribution selection using both raw and log-transformed data. The
-distributions which use the raw data are GEV, GLO, PE3, GNO, and WEI. The LP3 distribution
-uses the log-transformed data.
-
-The Z-statistic is determined by fitting a four-parameter Kappa distribution to the
-raw and log-transformed data. Then, bootstrapped samples from this Kappa distribution
-The L-moments of these bootstrapped samples are used to estimate the Z-statistic
-for each distribution.
+First, this method fits a four-parameter Kappa distribution to both the original and
+log-transformed data. Then, bootstrapping is used to estimate the bias and
+variance of the L-kurtosis. These values, along with the difference between the sample
+and theoretical L-kurtosis, are used to compute the Z-statistic for each distribution.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

@@ -1,34 +1,38 @@
 #' Z-Statistic Method for Distribution Selection
 #'
+#' @description
 #' Selects the best-fit distribution by comparing a bias-corrected Z-statistic for 
 #' the sample L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set 
 #' of candidate distributions. The distribution with the smallest absolute Z-statistic 
 #' is selected.
 #'
+#' **NS-FFA**: To select a distribution for a nonstationary model, include the observation
+#' years (`ns_years`) and the nonstationary model structure (`ns_structure`). Then, this 
+#' method will detrend the data internally using the [data_decomposition()] function prior 
+#' to distribution selection.
+#'
 #' @inheritParams param-data
+#' @inheritParams param-ns-years
+#' @inheritParams param-ns-structure
 #' @inheritParams param-samples
 #'
 #' @return A list with the results of distribution selection:
 #' - `method`: `"Z-selection"`.
-#' - `data`: The `data` argument.
+#' - `data`: The `data` argument (S-FFA) or the detrended dataset (NS-FFA).
 #' - `metrics`: List of computed Z-statistics for each candidate distribution.
 #' - `recommendation`: Name of the distribution with the smallest Z-statistic.
 #' - `reg_params`: Kappa distribution parameters for the data.
 #' - `reg_bias_t4`: Bias of the L-kurtosis from the bootstrap.
 #' - `reg_std_t4`: Standard deviation of the L-kurtosis from the bootstrap.
 #' - `log_params`: Kappa distribution parameters for the log-transformed data.
-#' - `log_bias_t4`: Bias of the L-kurtosis from the bootstrap (using `log_params`).
-#' - `log_std_t4`: Standard deviation of the L-kurtosis from the bootstrap (using `log_params`).
+#' - `log_bias_t4`: Bias of the L-kurtosis from the bootstrap using `log_params`.
+#' - `log_std_t4`: Standard deviation of the L-kurtosis from the bootstrap using `log_params`.
 #'
 #' @details
-#' The method performs distribution selection using both raw and log-transformed data. The 
-#' distributions which use the raw data are GEV, GLO, PE3, GNO, and WEI. The LP3 distribution 
-#' uses the log-transformed data. 
-#'
-#' The Z-statistic is determined by fitting a four-parameter Kappa distribution to the 
-#' raw and log-transformed data. Then, bootstrapped samples from this Kappa distribution
-#' The L-moments of these bootstrapped samples are used to estimate the Z-statistic 
-#' for each distribution.
+#' First, this method fits a four-parameter Kappa distribution to both the original and 
+#' log-transformed data. Then, bootstrapping is used to estimate the bias and 
+#' variance of the L-kurtosis. These values, along with the difference between the sample 
+#' and theoretical L-kurtosis, are used to compute the Z-statistic for each distribution.
 #'
 #' @seealso [select_ldistance()], [select_lkurtosis()], [fit_lmom_kappa()],
 #'   [quantile_fast()], [plot_lmom_diagram()]
@@ -44,10 +48,16 @@
 #' @importFrom stats runif optim
 #' @export
 
-select_zstatistic <- function(data, samples = 10000L) {
+select_zstatistic <- function(data, ns_years = NULL, ns_structure = NULL, samples = 10000L) {
 
 	data <- validate_numeric("data", data, optional = FALSE)
 	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
+
+	if (!is.null(ns_years) && !is.null(ns_structure)) {
+		ns_years <- validate_numeric("ns_years", ns_years, size = length(data))
+		ns_structure <- validate_structure(ns_structure)
+		data <- data_decomposition(data, ns_years, ns_structure)
+	}
 
 	# Helper function that attempts to fit a Kappa distribution and draw a bootstrap
 	get_bootstrap <- function(data) {

@@ -40,19 +40,6 @@ quantile_kap(p, params, slice = 1900, structure = NULL)
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
 \code{distribution} and \code{structure}.}
-
-\item{slice}{Numeric scalar specifying the year at which to evaluate the
-quantiles of a nonstationary probability distribution. The slice does not
-have to be an element of the \code{years} argument. Note that if \code{structure$location}
-and \code{structure$scale} are both \code{FALSE}, this argument will have no effect the
-output of the function.}
-
-\item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain two logical scalars:
-\itemize{
-\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
-\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
-}}
 }
 \value{
 A numeric vector of quantiles with the same length as \code{p}.

@@ -20,13 +20,6 @@ Only used when \code{distribution = "GEV"}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
-
-\item{structure}{Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain two logical scalars:
-\itemize{
-\item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
-\item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
-}}
 }
 \value{
 Numeric scalar. The generalized log-likelihood value.
