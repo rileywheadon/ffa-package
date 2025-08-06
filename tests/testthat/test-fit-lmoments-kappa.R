@@ -1,60 +1,60 @@
-test_that("fit_lmom_kappa works on ATHABASCA RIVER (07BE001)", {
+test_that("fit_lmoments_kappa works on ATHABASCA RIVER (07BE001)", {
 
 	# Load dataset and run L-moments estimation
 	df <- data_local("CAN-07BE001.csv")
-	KAP <- fit_lmom_kappa(df$max)$params
-	expect_equal(KAP[1], 1656.6531, tol = 1e-3)
-	expect_equal(KAP[2],  567.3419, tol = 1e-3)
-	expect_equal(KAP[3],   -0.1544, tol = 1e-3)
-	expect_equal(KAP[4],   -0.1704, tol = 1e-3)
+	result <- fit_lmoments_kappa(df$max)$params
+	expect_equal(result[1], 1656.6531, tol = 1e-3)
+	expect_equal(result[2],  567.3419, tol = 1e-3)
+	expect_equal(result[3],   -0.1544, tol = 1e-3)
+	expect_equal(result[4],   -0.1704, tol = 1e-3)
 
 })
 
-test_that("fit_lmom_kappa works on KOOTENAI RIVER (08NH021)", {
+test_that("fit_lmoments_kappa works on KOOTENAI RIVER (08NH021)", {
 
 	# Load dataset and run L-moments estimation
 	df <- data_local("CAN-08NH021.csv")
-	KAP <- fit_lmom_kappa(df$max)$params
-	expect_equal(KAP[1],  744.3404, tol = 1e-3)
-	expect_equal(KAP[2], 1479.1514, tol = 1e-3)
-	expect_equal(KAP[3],    0.5351, tol = 1e-3)
-	expect_equal(KAP[4],    0.9253, tol = 1e-3)
+	result <- fit_lmoments_kappa(df$max)$params
+	expect_equal(result[1],  744.3404, tol = 1e-3)
+	expect_equal(result[2], 1479.1514, tol = 1e-3)
+	expect_equal(result[3],    0.5351, tol = 1e-3)
+	expect_equal(result[4],    0.9253, tol = 1e-3)
 
 })
 
-test_that("fit_lmom_kappa works on BOW RIVER (05BB001)", {
+test_that("fit_lmoments_kappa works on BOW RIVER (05BB001)", {
 
 	# Load dataset and run L-moments estimation
 	df <- data_local("CAN-05BB001.csv")
-	KAP <- fit_lmom_kappa(df$max)$params
-	expect_equal(KAP[1], 174.3491, tol = 1e-3)
-	expect_equal(KAP[2],  60.5105, tol = 1e-3)
-	expect_equal(KAP[3],   0.1064, tol = 1e-3)
-	expect_equal(KAP[4],   0.2880, tol = 1e-3)
+	result <- fit_lmoments_kappa(df$max)$params
+	expect_equal(result[1], 174.3491, tol = 1e-3)
+	expect_equal(result[2],  60.5105, tol = 1e-3)
+	expect_equal(result[3],   0.1064, tol = 1e-3)
+	expect_equal(result[4],   0.2880, tol = 1e-3)
 
 })
 
-test_that("fit_lmom_kappa works on CHILLIWACK RIVER (08MH016)", {
+test_that("fit_lmoments_kappa works on CHILLIWACK RIVER (08MH016)", {
 
 	# Load dataset and run L-moments estimation
 	df <- data_local("CAN-08MH016.csv")
-	KAP <- fit_lmom_kappa(df$max)$params
-	expect_equal(KAP[1], 61.7462, tol = 1e-3)
-	expect_equal(KAP[2], 17.7799, tol = 1e-3)
-	expect_equal(KAP[3],  0.0001, tol = 1e-3)
-	expect_equal(KAP[4],  0.0747, tol = 1e-3)
+	result <- fit_lmoments_kappa(df$max)$params
+	expect_equal(result[1], 61.7462, tol = 1e-3)
+	expect_equal(result[2], 17.7799, tol = 1e-3)
+	expect_equal(result[3],  0.0001, tol = 1e-3)
+	expect_equal(result[4],  0.0747, tol = 1e-3)
 
 })
 
-test_that("fit_lmom_kappa works on OKANAGAN RIVER (08NM050)", {
+test_that("fit_lmoments_kappa works on OKANAGAN RIVER (08NM050)", {
 
 	# Load dataset and run L-moments estimation
 	df <- data_local("CAN-08NM050.csv")
-	KAP <- fit_lmom_kappa(df$max)$params
-	expect_equal(KAP[1],  5.8948, tol = 1e-3)
-	expect_equal(KAP[2], 51.3148, tol = 1e-3)
-	expect_equal(KAP[3],  0.6732, tol = 1e-3)
-	expect_equal(KAP[4],  1.1215, tol = 1e-3)
+	result <- fit_lmoments_kappa(df$max)$params
+	expect_equal(result[1],  5.8948, tol = 1e-3)
+	expect_equal(result[2], 51.3148, tol = 1e-3)
+	expect_equal(result[3],  0.6732, tol = 1e-3)
+	expect_equal(result[4],  1.1215, tol = 1e-3)
 
 })
 

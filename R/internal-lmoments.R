@@ -1,27 +1,5 @@
-#' Helper Function for L-moments Parameter Estimation
-#'
-#' A helper function used by [fit_lmom_xxx()]. 
-#' This function does not validate parameters and is designed for use in other methods.
-#'
-#' @inheritParams param-data
-#' @inheritParams param-distribution
-#'
-#' @return A list containing the results of parameter estimation:
-#' - `method`: `"L-moments"`.
-#' - `params`: numeric vector of 2 or 3 parameters depending on the distribution.
-#'
-#' @seealso [lmom_sample()], [fit_lmom_kappa()], [fit_lmom_xxx()]
-#'
-#' @examples
-#' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' fit_lmom_fast(data, "PE3")
-#'
-#' @references
-#' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
-#' on L-Moments. Cambridge University Press, New York, USA.
-#'
-#' @export
-fit_lmom_fast <- function(data, distribution) {
+# Helper function for L-moment fitting without parameter validation
+fit_lmoments_fast <- function(data, distribution) {
 
 	# Get the correct L-moments based on the distribution
 	moments <- if (distribution == "LP3") {

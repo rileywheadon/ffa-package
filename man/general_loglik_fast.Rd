@@ -10,17 +10,16 @@ general_loglik_fast(data, distribution, params, prior, years, structure)
 \item{data}{Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
-\item{distribution}{Character scalar. A three-character code indicating
-a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
-\code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
+\item{distribution}{A three-character code indicating the distribution family.
+Must be \code{"GUM"}, \code{"NOR"}, \code{"LNO"}, \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"},
+or \code{"WEI"}.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
 \code{distribution} and \code{structure}.}
 
-\item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
-parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{distribution = "GEV"}.}
+\item{prior}{Numeric vector of length 2. Specifies the parameters of the
+Beta prior for the shape parameter \eqn{\kappa}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}

@@ -4,9 +4,8 @@
 \alias{param-prior}
 \title{Parameter 'prior'}
 \arguments{
-\item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
-parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{distribution = "GEV"}.}
+\item{prior}{Numeric vector of length 2. Specifies the parameters of the
+Beta prior for the shape parameter \eqn{\kappa}.}
 }
 \description{
 Parameter 'prior'

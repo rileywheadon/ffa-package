@@ -1,61 +1,14 @@
-#' Maximum Likelihood Parameter Estimation
-#'
-#' Estimates parameters of a probability distribution with an optional nonstationary 
-#' structure by  maximizing the log‐likelihood. Initial values are obtained through 
-#' L‐moment parameter estimation, and optimization is performed via [stats::nlminb()] 
-#' with repeated perturbations if needed.
-#'
-#' @inheritParams param-data
-#' @inheritParams param-years
-#' @inheritParams param-prior
-#' @inheritParams param-distribution
-#' @inheritParams param-structure
-#'
-#' @return A list containing the results of parameter estimation:
-#' - `params`: Numeric vector of estimated parameters.
-#' - `mll`: Maximum log‐likelihood value.
-#'
-#' @details
-#' 1. Calls [fit_lmom_fast()] on `data` to obtain initial parameter estimates.
-#' 2. Initializes trend parameters to zero if necessary.  
-#' 3. For `WEI` models, sets the location parameter to zero to ensure support.  
-#' 4. Defines an objective function using [loglik_fast()] or [general_loglik_fast()].  
-#' 5. Runs [stats::nlminb()] with box constraints. Attempts optimization
-#'    up to 100 times if a maximum cannot be found.  
-#'
-#' @note 
-#' Although the more modern [stats::optim()] function is preferred over 
-#' [stats::nlminb()], we use [stats::nlminb()] because it supports infinite
-#' values of the likelihood function. 
-#'
-#' @seealso [loglik_fast()], [general_loglik_fast()], [fit_lmom_fast()],
-#'   [stats::nlminb()]
-#'
-#' @examples
-#' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' years <- seq(from = 1901, to = 2000)
-#' structure <- list(location = TRUE, scale = FALSE)
-#' fit_maximum_likelihood(data, "GNO", NULL, years, structure)
-#' 
-#' @importFrom stats rnorm nlminb
-#' @export
-
+# Helper function used by fit_mle and fit_gmle
 fit_maximum_likelihood <- function(
 	data,
 	distribution,
-	prior = NULL,
-	years = NULL,
-	structure = NULL
+	prior,
+	years,
+	structure
 ) {
-
-	data <- validate_numeric("data", data, optional = FALSE)
-	distribution <- validate_enum("distribution", distribution)
-	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
-	years <- validate_numeric("years", years, size = length(data))
-	structure <- validate_structure(structure)
-	
+		
 	# Assume stationarity. Determine the initial parameters using L-moments.
-	p <- fit_lmom_fast(data, distribution)$params
+	p <- fit_lmoments_fast(data, distribution)$params
 
 	# Set the bounds and initial values for the location parameter(s)
 	if (structure$location) {
@@ -132,7 +85,20 @@ fit_maximum_likelihood <- function(
 	}
 
 	# Return the optimal parameters and maximum log-likelihood
+	if (structure$location || structure$scale) {
+		ns_years <- years
+		ns_structure <- structure
+	} else {
+		ns_years <- NULL
+		ns_structure <- NULL
+	}
+
 	list(
+		data = data,
+		distribution = distribution,
+		ns_years = ns_years,
+		ns_structure = ns_structure,
+		prior = prior,
 		method = if (is.null(prior)) "MLE" else "GMLE",
 		params = result$par,
 		mll = -result$objective

@@ -14,9 +14,8 @@ Must be strictly positive, finite, and not missing.}
 scale, shape). The length must be between 2 and 5, depending on the specified
 \code{distribution} and \code{structure}.}
 
-\item{prior}{Numeric vector of length 2. Specifies the Beta prior shape
-parameters \eqn{(p, q)} for the shape parameter \eqn{\kappa}.
-Only used when \code{distribution = "GEV"}.}
+\item{prior}{Numeric vector of length 2. Specifies the parameters of the
+Beta prior for the shape parameter \eqn{\kappa}.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}

@@ -1,20 +1,22 @@
 #' L-Moments Parameter Estimation for the Kappa Distribution
 #'
-#' This functions estimates the parameters of the four-parameter Kappa distribution 
-#' using the method of L-moments. Since there is no known closed form solution for 
-#' the parameters in terms of the L-moments, the parameters are computed numerically 
+#' This function estimates the parameters of the four-parameter Kappa distribution 
+#' using the method of L-moments. Since no closed-form solution for the parameters 
+#' in terms of the L-moments is known, the parameters are estimated numerically 
 #' using Newton-Raphson iteration.
 #'
 #' @inheritParams param-data
 #'
 #' @details 
-#' First, the sample L-moments of the data are computed using the [lmom_sample()]
-#' method. Then, the [stats::optim()] function is used to determine the parameters 
+#' First, the sample L-moments of the data are computed using [lmom_sample()].
+#' Then, the [stats::optim()] function is used to determine the parameters 
 #' by minimizing the euclidian distance between the sample and theoretical L-moment
 #' ratios. The implementation of this routine is based on the deprecated `homtest` 
 #' package, formerly avilable at \url{https://CRAN.R-project.org/package=homtest}.
 #'
 #' @return A list containing the results of parameter estimation:
+#' - `data`: The `data` argument.
+#' - `distribution`: `"KAP"`.
 #' - `method`: `"L-moments"`.
 #' - `params`: numeric vector of 4 parameters in the order location, scale, shape (2).
 #'
@@ -29,7 +31,7 @@
 #' on L-Moments. Cambridge University Press, New York, USA.
 #'
 #' @export
-fit_lmom_kappa <- function(data) {
+fit_lmoments_kappa <- function(data) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 
@@ -50,7 +52,12 @@ fit_lmom_kappa <- function(data) {
         sigma <- params$sigma
     }
 
-	list(method = "L-moments", params = c(mu, sigma, k, h))
+	list(
+		data = data,
+		distribution = "KAP", 
+		method = "L-moments",
+		params = c(mu, sigma, k, h)
+	)
 
 }
 

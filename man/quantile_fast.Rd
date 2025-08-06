@@ -9,9 +9,9 @@ quantile_fast(p, distribution, params, slice, structure)
 \arguments{
 \item{p}{Numeric vector of probabilities between 0 and 1 with no missing values.}
 
-\item{distribution}{Character scalar. A three-character code indicating
-a distribution family. Must be one of: \code{"GUM"}, \code{"NOR"}, \code{"LNO"},
-\code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"}, or \code{"WEI"}.}
+\item{distribution}{A three-character code indicating the distribution family.
+Must be \code{"GUM"}, \code{"NOR"}, \code{"LNO"}, \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"},
+or \code{"WEI"}.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
 scale, shape). The length must be between 2 and 5, depending on the specified
