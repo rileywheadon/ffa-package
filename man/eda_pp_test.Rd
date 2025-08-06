@@ -4,7 +4,7 @@
 \alias{eda_pp_test}
 \title{Phillips–Perron Unit Root Test}
 \usage{
-eda_pp_test(data, alpha = 0.05, quiet = TRUE)
+eda_pp_test(data, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -12,31 +12,30 @@ Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
-List; the test results, consisting of:
+A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
-\item \code{statistic}: The Z-statistic used to perform the test.
-\item \code{p_value}: Reported p-value from the test. See notes on interpolation thresholds.
-\item \code{reject}: Logical. If \code{TRUE}, the null hypothesis was rejected at \code{alpha}.
-\item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
+\item \code{statistic}: The PP test statistic.
+\item \code{p_value}: Reported p-value from the test. See the details for more information.
+\item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
 }
 \description{
 Applies the Phillips–Perron (PP) test to check for a unit root in annual
 maximum series data. The null hypothesis assumes the time series contains a
-unit root (and thus has a stochastic trend). The alternative hypothesis is that
-the time series is trend-stationary (and thus has a deterministic linear trend).
+unit root (also known as a stochastic trend). The alternative hypothesis is that
+the time series is trend-stationary with a deterministic linear trend.
 }
 \details{
 The implementation of this test is based on the \pkg{aTSA} package, which
-interpolates p-values from a table of critical values presented in Fuller W. A.
-(1996). The critical values are only available for \eqn{\alpha \geq 0.01}.
-Therefore, a reported p-value of 0.01 indicates \eqn{p \leq 0.01}.
+interpolates p-values from the table of critical values presented in Fuller W.
+A. (1996). The critical values are only available for \eqn{\alpha \geq 0.01}.
+Therefore, a reported p-value of 0.01 indicates that \eqn{p \leq 0.01}.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

@@ -4,7 +4,7 @@
 \alias{eda_white_test}
 \title{White Test for Heteroskedasticity}
 \usage{
-eda_white_test(data, years, alpha = 0.05, quiet = TRUE)
+eda_white_test(data, years, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -15,20 +15,18 @@ Must be the same length as \code{data} and strictly increasing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the results of the White test:
 \itemize{
 \item \code{data}: The \code{data} argument.
 \item \code{years}: The \code{years} argument.
-\item \code{r_squared}: Coefficient of determination from the auxiliary regression.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
 \item \code{statistic}: White test statistic based on sample size and \code{r_squared}.
 \item \code{p_value}: The p-value derived from a Chi-squared distribution with \code{df = 2}.
-\item \code{reject}: Logical. If \code{TRUE}, the null hypothesis is rejected at \code{alpha}.
-\item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
+\item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
 }
 \description{
@@ -40,8 +38,9 @@ hypothesis is homoskedasticity.
 The White test regresses the squared residuals from a primary linear model
 \code{lm(data ~ years)} against both the original regressor and its square.
 The test statistic is calculated as \eqn{nR^2}, where \eqn{R^2} is the
-coefficient of determination from the auxiliary regression. Under the null
-hypothesis, the test statistic has the \eqn{\chi^2} distribution.
+coefficient of determination from the auxiliary regression and \eqn{n} is
+the number of elements in the time series. Under the null hypothesis, the
+test statistic has the \eqn{\chi^2} distribution with 2 degrees of freedom.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

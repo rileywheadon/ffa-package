@@ -1,25 +1,26 @@
 #' Mann–Kendall Trend Test
 #'
 #' Performs the Mann–Kendall trend test on a numeric vector to detect the presence 
-#' of a monotonic trend (increasing or decreasing) over time. The test is 
+#' of an increasing or decreasing monotonic trend over time. The test is 
 #' nonparametric and accounts for tied observations in the data. The null
 #' hypothesis assumes there is no monotonic trend.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the test results, including:
 #' - `data`: The `data` argument.
-#' - `s_statistic`: The Mann–Kendall test statistic \eqn{S}.
-#' - `s_variance`: The variance of the test statistic under the null hypothesis.
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
+#' - `statistic`: The Mann–Kendall test statistic.
+#' - `variance`: The variance of the test statistic under the null hypothesis.
 #' - `p_value`: The p-value associated with the two-sided hypothesis test.
 #' - `reject`: Logical. If `TRUE`, the null hypothesis is rejected at `alpha`.
-#' - `msg`: A character string summarizing the result, printed if `quiet = FALSE`.
 #'
 #' @details
-#' The statistic \eqn{S} is computed as the sum over all pairs \eqn{i < j} of the 
-#' sign of the difference \eqn{x_j - x_i}. Ties are explicitly accounted for when 
+#' The test statistic \eqn{S} is the sum over all pairs \eqn{i < j} of *the sign 
+#' of the difference* \eqn{x_j - x_i}. Ties are explicitly accounted for when 
 #' calculating the variance of \eqn{S}, using grouped frequencies of tied observations. 
 #' The test statistic \eqn{Z} is then computed based on the sign and magnitude of 
 #' \eqn{S}, and the p-value is derived from the standard normal distribution.
@@ -38,11 +39,10 @@
 #' @importFrom stats pnorm
 #' @export
 
-eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
+eda_mk_test <- function(data, alpha = 0.05) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	quiet <- validate_logical("quiet", quiet)
 
 	n <- length(data)
 
@@ -78,24 +78,15 @@ eda_mk_test <- function(data, alpha = 0.05, quiet = TRUE) {
 
 	reject <- (p_value <= alpha)
 
-	msg <- stats_message(
-		"Mann-Kendall",
-		reject,
-		p_value,
-		alpha,
-		"NO evidence of a monotonic trend",
-		"evidence of a monotonic trend"
-	)
-
-	if (!quiet) message(msg)
-
 	list(
 		data = data,
-		s_statistic = s,
-		s_variance = s_variance,
+		alpha = alpha,
+		null_hypothesis = "There is no monotonic trend in the data.",
+		alternative_hypothesis = "There is a monotonic trend in the data.",
+		statistic = s,
+		variance = s_variance,
 		p_value = p_value,
-		reject = reject,
-		msg = msg
+		reject = reject
 	)
 
 }

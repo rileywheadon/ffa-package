@@ -4,7 +4,7 @@
 \alias{eda_sens_trend}
 \title{Sen's Trend Estimator}
 \usage{
-eda_sens_trend(data, years, quiet = TRUE)
+eda_sens_trend(data, years)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -12,23 +12,21 @@ Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the estimated trend:
 \itemize{
 \item \code{data}: The \code{data} argument.
 \item \code{years}: The \code{years} argument.
-\item \code{slope}: Median slope of all pairwise data-year combinations.
-\item \code{intercept}: Median intercept estimate of the fitted line.
-\item \code{residuals}: Vector of residuals between observed and fitted values.
-\item \code{msg}: Character string summarizing the results.
+\item \code{slope}: The estimated slope.
+\item \code{intercept}: The estimated y-intercept.
+\item \code{residuals}: Vector of differences between the predicted and observed values.
 }
 }
 \description{
-Computes Sen's linear trend estimator for a univariate time series.
+Computes Sen's linear trend estimator for a univariate time series. The estimated
+slope and y-intercept are given in terms of the data and the \emph{covariate}, which
+is derived from the years using the formula \eqn{(\text{Years} - 1900) / 100}.
 }
 \details{
 Sen's slope estimator is a robust, nonparametric trend estimator based on the

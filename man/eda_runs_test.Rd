@@ -4,41 +4,33 @@
 \alias{eda_runs_test}
 \title{Wald–Wolfowitz Runs Test for Randomness}
 \usage{
-eda_runs_test(results, alpha = 0.05, quiet = TRUE)
+eda_runs_test(values, alpha = 0.05)
 }
 \arguments{
-\item{results}{A fitted linear model produced by \code{\link[=eda_sens_trend]{eda_sens_trend()}}.}
+\item{values}{A numeric vector of values to check for randomness.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the test results, including:
 \itemize{
-\item \code{residuals}: Numeric vector of residual values from a fitted linear model.
-\item \code{n}: The length of the residuals vector after removing the median.
-\item \code{n_plus}: The number of residuals above the median.
-\item \code{n_minus}: The number of residuals below the median.
+\item \code{values}: The \code{values} argument.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
+\item \code{n}: The length of the input vector after removing the median.
 \item \code{runs}: The number of runs in the transformed sequence of residuals.
-\item \code{statistic}: The runs test statistic, computed using \code{runs}.
-\item \code{p_value}: P-value from the Wald–Wolfowitz runs test applied to residuals.
-\item \code{reject}: Logical. If TRUE, the null hypothesis of random residuals is rejected.
-\item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
+\item \code{statistic}: The runs test statistic, computed using \code{runs} and \code{n}.
+\item \code{p_value}: The p-value derived from the normally distributed test statistic.
+\item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
 }
 \description{
-Applies the Wald–Wolfowitz runs test to a numeric vector of residuals in
-order to assess whether they behave as a random sequence. The test statistic’s
-p-value is compared to the significance level \code{alpha}, and a decision is
-returned along with a human-readable summary message.
-}
-\details{
-The Wald–Wolfowitz runs test examines the sequence of residuals to test for
-randomness around the median. A small p-value suggests nonrandom clustering,
-which may indicate that a linear model is inappropriate for the data.
+Applies the Wald–Wolfowitz runs test to a numeric vector in order to assess
+whether they behave as a random sequence. The test statistic and p-value
+is computed using the number of runs (sequences of values above or below the
+median). Under the null hypothesis, the data is random.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

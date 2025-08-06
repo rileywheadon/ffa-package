@@ -4,7 +4,7 @@
 \alias{eda_pettitt_test}
 \title{Pettitt Test for Abrupt Changes in the Mean of a Time Series}
 \usage{
-eda_pettitt_test(data, years, alpha = 0.05, quiet = TRUE)
+eda_pettitt_test(data, years, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -15,33 +15,30 @@ Must be the same length as \code{data} and strictly increasing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
 \item \code{years}: The \code{years} argument.
-\item \code{u_t}: Numeric vector of absolute U-statistics for all time indices.
-\item \code{k_statistic}: Numeric scalar. The maximum absolute U-statistic.
-\item \code{k_critical}: Numeric scalar. The critical K-statistic value for given \code{alpha}.
-\item \code{p_value}: Numeric scalar. Approximate p-value for the test.
-\item \code{change_index}: Integer scalar. Index of the detected change point (0 if none).
-\item \code{change_year}: Integer scalar. Year of the detected change point (0 if none).
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
+\item \code{u_series}: Numeric vector of absolute U-statistics for all years.
+\item \code{statistic}: The test statistic and maximum absolute U-statistic.
+\item \code{bound}: The critical value of the test statistic based on \code{alpha}.
+\item \code{change_points}: A list containing the potential change point.
+\item \code{p_value}: An asymptotic approximation of the  p-value for the test.
 \item \code{reject}: Logical scalar. If \code{TRUE}, the null hypothesis was rejected.
-\item \code{msg}: Character scalar. A formatted summary message describing the test result.
 }
+
+\code{change_points} contains the years, test statistics, and p-values of each
+potential change point. If no change points were identified, \code{change_points}
+is empty.
 }
 \description{
-Performs the nonparametric Pettitt test to detect a single abrupt shift in the
+Performs the nonparametric Pettitt test to detect a single abrupt change in the
 mean of a time series. Under the null hypothesis, there is no change point.
-}
-\details{
-The Pettitt test computes the maximum absolute value of the U-statistic
-over all possible split points. The p-value is approximated using an
-asymptotic formula.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -54,5 +51,5 @@ Pettitt, A.N., 1979. A Non-parametric Approach to the Change-point Problem. J.
 Royal Statist. Soc. 28 (2), 126–135. \url{http://www.jstor.org/stable/2346729}
 }
 \seealso{
-\code{\link[=plot_pettitt_test]{plot_pettitt_test()}}
+\code{\link[=plot_pettitt_test]{plot_pettitt_test()}}, \code{\link[=eda_mks_test]{eda_mks_test()}}
 }

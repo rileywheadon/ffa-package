@@ -1,35 +1,40 @@
 #' Mann–Kendall–Sneyers Test for Change Point Detection
 #'
-#' Performs the Mann–Kendall–Sneyers (MKS) test to detect the beginning of a monotonic
-#' trend in annual maximum series data. The test computes normalized
-#' progressive and regressive Mann–Kendall statistics and identifies statistically
-#' significant crossing points, indicating potential change points in the trend.
+#' Performs the Mann–Kendall–Sneyers (MKS) test to detect a trend change in annual 
+#' maximum series data. The test computes normalized progressive and regressive 
+#' Mann–Kendall statistics and identifies statistically significant crossing points, 
+#' indicating potential change points. Under the null hypothesis, there are no trend
+#' changes.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the test results, including:
 #' - `data`: The `data` argument.
 #' - `years`: The `years` argument.
-#' - `s_progressive`: Normalized progressive Mann–Kendall-Sneyers statistics.
-#' - `s_regressive`: Normalized regressive Mann–Kendall-Sneyers statistics.
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
+#' - `progressive_series`: Normalized progressive Mann–Kendall-Sneyers statistics.
+#' - `regressive_series`: Normalized regressive Mann–Kendall-Sneyers statistics.
 #' - `bound`: Critical confidence bound for significance based on `alpha`.
-#' - `crossing_df`: Crossing points, including indices, years, and test statistics.
-#' - `change_df`: Subset of `crossing_df` with statistically significant crossings.
-#' - `p_value`: Two-sided p-value derived from the maximum crossing statistic.
-#' - `reject`: Logical. If `TRUE`, the null hypothesis of no change point is rejected.
-#' - `msg`: Character string summarizing the test result (printed if `quiet = FALSE`).
+#' - `change_points`: A list of potential change points.
+#' - `p_value`: Two-sided p-value of the most significant crossing point.
+#' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
+#'
+#' `change_points` contains the years, test statistics, and p-values of each
+#' potential change point. If no change points were identified, `change_points`
+#' is empty.
 #'
 #' @details
-#' The function computes progressive and regressive Mann–Kendall statistics \eqn{S_t},
+#' This function computes progressive and regressive Mann–Kendall-Sneyers statistics,
 #' normalized by their expected values and variances under the null hypothesis. The 
-#' crossing points where the difference between these normalized statistics changes 
-#' sign are identified using linear interpolation. The significance of detected 
-#' crossings is assessed using quantiles of the normal distribution.
+#' crossing points occur when the difference between the progressive and regressive 
+#' statistics swiches sign. The significance of detected crossing points is assessed 
+#' using the quantiles of the normal distribution.
 #'
-#' @seealso [plot_mks_test()]
+#' @seealso [plot_mks_test()], [eda_pettitt_test()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -43,12 +48,11 @@
 #' @importFrom stats pnorm qnorm lm coef
 #' @export
 
-eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
+eda_mks_test <- function(data, years, alpha = 0.05) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	years <- validate_numeric("years", years, size = length(data))
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	quiet <- validate_logical("quiet", quiet)
 
 	# Compute number of elements such that data[i] > data[j] for all j < i < t for all t.
 	s_statistic <- function(vt, data) {
@@ -87,7 +91,7 @@ eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	s_sign <- sign(s_prog - s_regr)
 	cross <- which(s_sign[-1] != s_sign[-length(s_sign)]) + 1
 
-	# Compute the location of each crossing using linear interpolation
+	# Compute the test statistic of each crossing using linear interpolation
 	get_crossings <- function(i) {
 
 		# Fit linear models 
@@ -108,54 +112,35 @@ eda_mks_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	}
 
 	# Get crossing locations
-	locations <- if (length(cross) == 0) numeric() else sapply(cross, get_crossings)
+	statistics <- if (length(cross) == 0) numeric() else sapply(cross, get_crossings)
 
 	# Create a dataframe of all crossings
 	crossing_df <- data.frame(
-		cross = cross,
+		index = cross,
 		year = years[cross],
-		statistic = locations,
-		max = data[cross]
+		value = data[cross],
+		statistic = statistics,
+		p_value = 2 * (1 - pnorm(abs(statistics)))
 	)
 
-	# Compute the p-value of the test and the statistically significant crossings
-	if (nrow(crossing_df) > 0) {
-		p_value <- 2 * (1 - pnorm(max(abs(crossing_df$statistic))))
-		change_df <- crossing_df[which(abs(crossing_df$statistic) > bound), ]
-	} else {
-		p_value <- 1
-		change_df <- crossing_df
-	}
-
-	# Determine whether we reject or fail to reject based on p_value and alpha
+	# Get the the statistically significant crossings
+	change_df <- crossing_df[which(abs(crossing_df$statistic) > bound), ]
+	p_value <- if (nrow(crossing_df) > 0) min(crossing_df$p_value) else 1
 	reject <- (p_value <= alpha)
-
-	# Print the results of the test
-	years_text <- paste(as.integer(change_df$year), collapse  = ", ")
-
-	msg <- stats_message(
-		"Mann-Kendall-Sneyers",
-		reject,
-		p_value,
-		alpha,
-		"NO evidence of change point(s)",
-		sprintf("evidence of change point(s) at %s", years_text)
-	)
-
-	if (!quiet) message(msg)
 
 	# Return a list of values results from the test
 	list(
 		data = data,
 		years = years,
-		s_progressive = s_prog,
-		s_regressive = s_regr,
+		alpha = alpha,
+		null_hypothesis = "There are trend changes in the data.",
+		alternative_hypothesis = "There is at least one trend change in the data.",
+		progressive_series = s_prog,
+		regressive_series = s_regr,
 		bound = bound,
-		crossing_df = crossing_df,
-		change_df = change_df,
+		change_points = apply(change_df, 1, as.list),
 		p_value = p_value,
-		reject = reject,
-		msg = msg
+		reject = reject
 	)
 	
 }

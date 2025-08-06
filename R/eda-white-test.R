@@ -7,23 +7,24 @@
 #' @inheritParams param-data
 #' @inheritParams param-years
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the results of the White test:
 #' - `data`: The `data` argument.
 #' - `years`: The `years` argument.
-#' - `r_squared`: Coefficient of determination from the auxiliary regression.
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
 #' - `statistic`: White test statistic based on sample size and `r_squared`.
 #' - `p_value`: The p-value derived from a Chi-squared distribution with `df = 2`.
-#' - `reject`: Logical. If `TRUE`, the null hypothesis is rejected at `alpha`.
-#' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
+#' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
 #'
 #' @details
 #' The White test regresses the squared residuals from a primary linear model 
 #' `lm(data ~ years)` against both the original regressor and its square. 
 #' The test statistic is calculated as \eqn{nR^2}, where \eqn{R^2} is the 
-#' coefficient of determination from the auxiliary regression. Under the null 
-#' hypothesis, the test statistic has the \eqn{\chi^2} distribution. 
+#' coefficient of determination from the auxiliary regression and \eqn{n} is
+#' the number of elements in the time series. Under the null hypothesis, the 
+#' test statistic has the \eqn{\chi^2} distribution with 2 degrees of freedom.
 #'
 #' @references 
 #' White, H. (1980). A heteroskedasticity-consistent covariance matrix estimator and 
@@ -39,12 +40,11 @@
 #' @importFrom stats lm pchisq resid
 #' @export
 
-eda_white_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
+eda_white_test <- function(data, years, alpha = 0.05) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	years <- validate_numeric("years", years, size = length(data))
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	quiet <- validate_logical("quiet", quiet)
 
 	# Do a linear regression of data against years, get the squared residuals
 	primary_model <- lm(data ~ years)
@@ -61,27 +61,16 @@ eda_white_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	# Determine whether we reject or fail to reject based on p_value and alpha
 	reject <- (p_value <= alpha)
 
-	# Print the results of the test
-	msg <- stats_message(
-		"White",
-		reject,
-		p_value,
-		alpha,
-		"NO evidence of heteroskedasticity",
-		"evidence of heteroskedasticity"
-	)
-	
-	if (!quiet) message(msg)
-
 	# Return the results of the test
 	list(
 		data = data,
 		years = years,
-		r_squared = r_squared,
+		alpha = alpha,
+		null_hypothesis = "The data is homoskedastic.",
+		alternative_hypothesis = "The data is heteroskedastic.",
 		statistic = statistic,
 		p_value = p_value,
-		reject = reject,
-		msg = msg
+		reject = reject
 	)
 
 }

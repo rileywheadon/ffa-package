@@ -1,31 +1,30 @@
 #' Pettitt Test for Abrupt Changes in the Mean of a Time Series
 #'
-#' Performs the nonparametric Pettitt test to detect a single abrupt shift in the
+#' Performs the nonparametric Pettitt test to detect a single abrupt change in the
 #' mean of a time series. Under the null hypothesis, there is no change point.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the test results, including:
 #' - `data`: The `data` argument.
 #' - `years`: The `years` argument.
-#' - `u_t`: Numeric vector of absolute U-statistics for all time indices.
-#' - `k_statistic`: Numeric scalar. The maximum absolute U-statistic.
-#' - `k_critical`: Numeric scalar. The critical K-statistic value for given `alpha`.
-#' - `p_value`: Numeric scalar. Approximate p-value for the test.
-#' - `change_index`: Integer scalar. Index of the detected change point (0 if none).
-#' - `change_year`: Integer scalar. Year of the detected change point (0 if none).
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
+#' - `u_series`: Numeric vector of absolute U-statistics for all years.
+#' - `statistic`: The test statistic and maximum absolute U-statistic.
+#' - `bound`: The critical value of the test statistic based on `alpha`.
+#' - `change_points`: A list containing the potential change point.
+#' - `p_value`: An asymptotic approximation of the  p-value for the test.
 #' - `reject`: Logical scalar. If `TRUE`, the null hypothesis was rejected.
-#' - `msg`: Character scalar. A formatted summary message describing the test result.
 #'
-#' @details
-#' The Pettitt test computes the maximum absolute value of the U-statistic 
-#' over all possible split points. The p-value is approximated using an 
-#' asymptotic formula.
+#' `change_points` contains the years, test statistics, and p-values of each
+#' potential change point. If no change points were identified, `change_points`
+#' is empty.
 #'
-#' @seealso [plot_pettitt_test()]
+#' @seealso [plot_pettitt_test()], [eda_mks_test()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -38,12 +37,11 @@
 #'
 #' @export
  
-eda_pettitt_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
+eda_pettitt_test <- function(data, years, alpha = 0.05) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	years <- validate_numeric("years", years, size = length(data))
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	quiet <- validate_logical("quiet", quiet)
 
 	n <- length(data)
 	u_t <- numeric(n)
@@ -65,34 +63,29 @@ eda_pettitt_test <- function(data, years, alpha = 0.05, quiet = TRUE) {
 	k_statistic <- max(u_t)
 	k_critical <- (-log(alpha) * ((n^3) + (n^2)) / 6)^0.5;
 	p_value <- round(exp((-6 * k_statistic^2) / (n^3 + n^2)), 3)
-
-	# The Pettitt test identifies either 0 or 1 change points
 	reject <- (p_value <= alpha)
-	change_index <- ifelse(reject, which.max(u_t), 0)
-	change_year <- ifelse(reject, years[change_index], 0)
 
-	msg <- stats_message(
-		"Pettitt",
-		reject,
-		p_value,
-		alpha,
-		"NO evidence of a change point",
-		sprintf("evidence of a change point in %d", as.integer(change_year))
+	# Store the candidate change point in a list
+	change_points <- list(
+		index = which.max(u_t),
+		year = years[which.max(u_t)],
+		value = data[which.max(u_t)],
+		statistic = k_statistic,
+		p_value = p_value
 	)
-
-	if (!quiet) message(msg)
 
 	list(
 		data = data,
 		years = years,
-		u_t = u_t,
-		k_statistic = k_statistic,
-		k_critical = k_critical,
+		alpha = alpha,
+		null_hypothesis = "There are no abrupt changes in the mean of the data.",
+		alternative_hypothesis = "There is one abrupt change in the mean of the data.",
+		u_series = u_t,
+		statistic = k_statistic,
+		bound = k_critical,
 		p_value = p_value,
-		change_index = change_index,
-		change_year = change_year,
-		reject = reject,
-		msg = msg
+		change_points = if (reject) change_points else list(),
+		reject = reject
 	)
 
 }

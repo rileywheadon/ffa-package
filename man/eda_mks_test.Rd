@@ -4,7 +4,7 @@
 \alias{eda_mks_test}
 \title{Mann–Kendall–Sneyers Test for Change Point Detection}
 \usage{
-eda_mks_test(data, years, alpha = 0.05, quiet = TRUE)
+eda_mks_test(data, years, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -15,37 +15,40 @@ Must be the same length as \code{data} and strictly increasing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
 \item \code{years}: The \code{years} argument.
-\item \code{s_progressive}: Normalized progressive Mann–Kendall-Sneyers statistics.
-\item \code{s_regressive}: Normalized regressive Mann–Kendall-Sneyers statistics.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
+\item \code{progressive_series}: Normalized progressive Mann–Kendall-Sneyers statistics.
+\item \code{regressive_series}: Normalized regressive Mann–Kendall-Sneyers statistics.
 \item \code{bound}: Critical confidence bound for significance based on \code{alpha}.
-\item \code{crossing_df}: Crossing points, including indices, years, and test statistics.
-\item \code{change_df}: Subset of \code{crossing_df} with statistically significant crossings.
-\item \code{p_value}: Two-sided p-value derived from the maximum crossing statistic.
-\item \code{reject}: Logical. If \code{TRUE}, the null hypothesis of no change point is rejected.
-\item \code{msg}: Character string summarizing the test result (printed if \code{quiet = FALSE}).
+\item \code{change_points}: A list of potential change points.
+\item \code{p_value}: Two-sided p-value of the most significant crossing point.
+\item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
+
+\code{change_points} contains the years, test statistics, and p-values of each
+potential change point. If no change points were identified, \code{change_points}
+is empty.
 }
 \description{
-Performs the Mann–Kendall–Sneyers (MKS) test to detect the beginning of a monotonic
-trend in annual maximum series data. The test computes normalized
-progressive and regressive Mann–Kendall statistics and identifies statistically
-significant crossing points, indicating potential change points in the trend.
+Performs the Mann–Kendall–Sneyers (MKS) test to detect a trend change in annual
+maximum series data. The test computes normalized progressive and regressive
+Mann–Kendall statistics and identifies statistically significant crossing points,
+indicating potential change points. Under the null hypothesis, there are no trend
+changes.
 }
 \details{
-The function computes progressive and regressive Mann–Kendall statistics \eqn{S_t},
+This function computes progressive and regressive Mann–Kendall-Sneyers statistics,
 normalized by their expected values and variances under the null hypothesis. The
-crossing points where the difference between these normalized statistics changes
-sign are identified using linear interpolation. The significance of detected
-crossings is assessed using quantiles of the normal distribution.
+crossing points occur when the difference between the progressive and regressive
+statistics swiches sign. The significance of detected crossing points is assessed
+using the quantiles of the normal distribution.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -58,5 +61,5 @@ Sneyers, R. (1990). On the statistical analysis of series of observations.
 Technical note No. 143, World Meteorological Organization, Geneva.
 }
 \seealso{
-\code{\link[=plot_mks_test]{plot_mks_test()}}
+\code{\link[=plot_mks_test]{plot_mks_test()}}, \code{\link[=eda_pettitt_test]{eda_pettitt_test()}}
 }

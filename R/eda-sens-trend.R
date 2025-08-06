@@ -1,18 +1,18 @@
 #' Sen's Trend Estimator
 #'
-#' Computes Sen's linear trend estimator for a univariate time series.
+#' Computes Sen's linear trend estimator for a univariate time series. The estimated 
+#' slope and y-intercept are given in terms of the data and the *covariate*, which 
+#' is derived from the years using the formula \eqn{(\text{Years} - 1900) / 100}.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the estimated trend:
 #' - `data`: The `data` argument.
 #' - `years`: The `years` argument.
-#' - `slope`: Median slope of all pairwise data-year combinations.
-#' - `intercept`: Median intercept estimate of the fitted line.
-#' - `residuals`: Vector of residuals between observed and fitted values.
-#' - `msg`: Character string summarizing the results.
+#' - `slope`: The estimated slope.
+#' - `intercept`: The estimated y-intercept.
+#' - `residuals`: Vector of differences between the predicted and observed values.
 #'
 #' @details
 #' Sen's slope estimator is a robust, nonparametric trend estimator based on the 
@@ -33,11 +33,10 @@
 #' @importFrom stats median
 #' @export
 
-eda_sens_trend <- function(data, years, quiet = TRUE) {
+eda_sens_trend <- function(data, years) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	years <- validate_numeric("years", years, size = length(data))
-	quiet <- validate_logical("quiet", quiet)
 
 	# Get the length of data for convenience
 	n <- length(data)
@@ -65,20 +64,13 @@ eda_sens_trend <- function(data, years, quiet = TRUE) {
 	predicted_data <- sens_intercept + (sens_slope * covariate)
 	residuals <- data - predicted_data
 
-	# Print the results of Sen's trend estimator
-	m <- round(sens_slope, 3)
-	b <- round(sens_intercept, 2)
-	msg <- sprintf("Estimated trend: y = %.3fx + %.2f.", m, b)
-	if (!quiet) message(msg)
-
 	# Return the results as a list
 	list(
 		data = data,
 		years = years,
 		slope = sens_slope,
 		intercept = sens_intercept,
-		residuals = residuals,
-		msg = msg
+		residuals = residuals
 	)
 
 }

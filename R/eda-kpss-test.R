@@ -2,27 +2,26 @@
 #'
 #' Performs the KPSS unit root test on annual maximum series data. 
 #' The null hypothesis is that the time series is trend-stationary with a linear 
-#' trend and constant drift (and thus has a deterministic linear trend). The 
-#' alternative hypothesis is that the time series has a unit root (and thus 
-#' has a stochastic trend).
+#' deterministic trend and constant drift. The alternative hypothesis is that the 
+#' time series has a unit root (also known as a stochastic trend).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the test results, including:
 #' - `data`: The `data` argument.
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
 #' - `statistic`: The KPSS test statistic.
-#' - `p_value`: The interpolated p-value. See note regarding discrete thresholds.
-#' - `reject`: Logical scalar. If, TRUE the null hypothesis is rejected at `alpha`.
-#' - `msg`: Character string summarizing the test outcome, printed if `quiet = FALSE`.
+#' - `p_value`: The interpolated p-value. See the details for more information.
+#' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
 #'
 #' @details
 #' The implementation of the KPSS test is based on the \pkg{aTSA} package, which 
 #' interpolates a significance table from Hobjin et al. (2004). Therefore, a result 
 #' of \eqn{p = 0.01} implies that \eqn{p \leq 0.01} and a result of \eqn{p = 0.10} 
-#' implies that \eqn{p \geq 0.10}. This implementation uses the Type III KPSS test,
-#' which accounts for a linear trend in the data.
+#' implies that \eqn{p \geq 0.10}. 
 #'
 #' @seealso [eda_pp_test()]
 #'
@@ -41,11 +40,10 @@
 #' @importFrom stats embed
 #' @export
 
-eda_kpss_test <- function(data, alpha = 0.05, quiet = TRUE) {
+eda_kpss_test <- function(data, alpha = 0.05) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	quiet <- validate_logical("quiet", quiet)
 
 	# Construct time series yt/yt1 for fitting the autoregressive model 
 	z <- embed(data, 2)
@@ -92,23 +90,14 @@ eda_kpss_test <- function(data, alpha = 0.05, quiet = TRUE) {
 		round(p_value, 3)
 	}
 
-	msg <- stats_message(
-		"KPSS",
-		reject,
-		p_value,
-		alpha,
-		"NO evidence of a unit root.",
-		"evidence of a unit root."
-	)
-
-	if (!quiet) message(msg)
-
 	list(
 		data = data,
+		alpha = alpha,
+		null_hypothesis = "The time series is trend-stationary.",
+		alternative_hypothesis = "The time series has a unit root (stochastic trend).",
 		statistic = statistic,
 		p_value = p_value,
-		reject = reject,
-		msg = msg
+		reject = reject
 	)
 
 }

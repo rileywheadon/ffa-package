@@ -126,16 +126,6 @@ NULL
 #' @keywords internal
 NULL
 
-#' Parameter 'quiet'
-#' 
-#' @param quiet Logical scalar. If `FALSE`, prints a summary of of the statistical
-#' test to the console. Default is `TRUE`.
-#'
-#' @name param-quiet
-#'
-#' @keywords internal
-NULL
-
 #' Parameter 'periods'
 #' 
 #' @param periods Numeric vector used to set the return periods for FFA.

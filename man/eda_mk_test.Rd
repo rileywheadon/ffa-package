@@ -4,7 +4,7 @@
 \alias{eda_mk_test}
 \title{Mann–Kendall Trend Test}
 \usage{
-eda_mk_test(data, alpha = 0.05, quiet = TRUE)
+eda_mk_test(data, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -12,30 +12,29 @@ Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
-\item \code{s_statistic}: The Mann–Kendall test statistic \eqn{S}.
-\item \code{s_variance}: The variance of the test statistic under the null hypothesis.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
+\item \code{statistic}: The Mann–Kendall test statistic.
+\item \code{variance}: The variance of the test statistic under the null hypothesis.
 \item \code{p_value}: The p-value associated with the two-sided hypothesis test.
 \item \code{reject}: Logical. If \code{TRUE}, the null hypothesis is rejected at \code{alpha}.
-\item \code{msg}: A character string summarizing the result, printed if \code{quiet = FALSE}.
 }
 }
 \description{
 Performs the Mann–Kendall trend test on a numeric vector to detect the presence
-of a monotonic trend (increasing or decreasing) over time. The test is
+of an increasing or decreasing monotonic trend over time. The test is
 nonparametric and accounts for tied observations in the data. The null
 hypothesis assumes there is no monotonic trend.
 }
 \details{
-The statistic \eqn{S} is computed as the sum over all pairs \eqn{i < j} of the
-sign of the difference \eqn{x_j - x_i}. Ties are explicitly accounted for when
+The test statistic \eqn{S} is the sum over all pairs \eqn{i < j} of \emph{the sign
+of the difference} \eqn{x_j - x_i}. Ties are explicitly accounted for when
 calculating the variance of \eqn{S}, using grouped frequencies of tied observations.
 The test statistic \eqn{Z} is then computed based on the sign and magnitude of
 \eqn{S}, and the p-value is derived from the standard normal distribution.

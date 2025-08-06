@@ -4,7 +4,7 @@
 \alias{eda_kpss_test}
 \title{Kwiatkowski–Phillips–Schmidt–Shin (KPSS) Unit Root Test}
 \usage{
-eda_kpss_test(data, alpha = 0.05, quiet = TRUE)
+eda_kpss_test(data, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -12,33 +12,30 @@ Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
 \item \code{statistic}: The KPSS test statistic.
-\item \code{p_value}: The interpolated p-value. See note regarding discrete thresholds.
-\item \code{reject}: Logical scalar. If, TRUE the null hypothesis is rejected at \code{alpha}.
-\item \code{msg}: Character string summarizing the test outcome, printed if \code{quiet = FALSE}.
+\item \code{p_value}: The interpolated p-value. See the details for more information.
+\item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
 }
 \description{
 Performs the KPSS unit root test on annual maximum series data.
 The null hypothesis is that the time series is trend-stationary with a linear
-trend and constant drift (and thus has a deterministic linear trend). The
-alternative hypothesis is that the time series has a unit root (and thus
-has a stochastic trend).
+deterministic trend and constant drift. The alternative hypothesis is that the
+time series has a unit root (also known as a stochastic trend).
 }
 \details{
 The implementation of the KPSS test is based on the \pkg{aTSA} package, which
 interpolates a significance table from Hobjin et al. (2004). Therefore, a result
 of \eqn{p = 0.01} implies that \eqn{p \leq 0.01} and a result of \eqn{p = 0.10}
-implies that \eqn{p \geq 0.10}. This implementation uses the Type III KPSS test,
-which accounts for a linear trend in the data.
+implies that \eqn{p \geq 0.10}.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

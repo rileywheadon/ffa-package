@@ -2,25 +2,26 @@
 #'
 #' Applies the Phillips–Perron (PP) test to check for a unit root in annual
 #' maximum series data. The null hypothesis assumes the time series contains a 
-#' unit root (and thus has a stochastic trend). The alternative hypothesis is that
-#' the time series is trend-stationary (and thus has a deterministic linear trend).
+#' unit root (also known as a stochastic trend). The alternative hypothesis is that
+#' the time series is trend-stationary with a deterministic linear trend.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
-#' @return List; the test results, consisting of:
+#' @return A list containing the test results, including:
 #' - `data`: The `data` argument.
-#' - `statistic`: The Z-statistic used to perform the test.
-#' - `p_value`: Reported p-value from the test. See notes on interpolation thresholds.
-#' - `reject`: Logical. If `TRUE`, the null hypothesis was rejected at `alpha`.
-#' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
+#' - `statistic`: The PP test statistic.
+#' - `p_value`: Reported p-value from the test. See the details for more information.
+#' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
 #'
 #' @details
 #' The implementation of this test is based on the \pkg{aTSA} package, which 
-#' interpolates p-values from a table of critical values presented in Fuller W. A. 
-#' (1996). The critical values are only available for \eqn{\alpha \geq 0.01}. 
-#' Therefore, a reported p-value of 0.01 indicates \eqn{p \leq 0.01}.
+#' interpolates p-values from the table of critical values presented in Fuller W. 
+#' A. (1996). The critical values are only available for \eqn{\alpha \geq 0.01}. 
+#' Therefore, a reported p-value of 0.01 indicates that \eqn{p \leq 0.01}.
 #'
 #' @references
 #' Fuller, W. A. (1976). Introduction to Statistical Time Series. New York: 
@@ -38,7 +39,7 @@
 #' @importFrom stats embed
 #' @export
 
-eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
+eda_pp_test <- function(data, alpha = 0.05) {
 
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
@@ -111,25 +112,15 @@ eda_pp_test <- function(data, alpha = 0.05, quiet = TRUE) {
 		round(p_value, 3)
 	}
 
-	# Print the results of the test
-	msg <- stats_message(
-		"Phillips-Perron",
-		reject,
-		p_value,
-		alpha,
-		"evidence of a unit root.",
-		"NO evidence of a unit root."
-	)
-	
-	if (!quiet) message(msg)
-
 	# Return the results as a list
 	list(
 		data = data,
+		alpha = alpha,
+		null_hypothesis = "The time series has a unit root (stochastic trend).",
+		alternative_hypothesis = "The time series is trend-stationary.",
 		statistic = z_rho,
 		p_value = p_value,
-		reject = reject,
-		msg = msg
+		reject = reject
 	)
 
 }

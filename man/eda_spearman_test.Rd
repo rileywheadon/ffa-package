@@ -4,7 +4,7 @@
 \alias{eda_spearman_test}
 \title{Spearman Test for Autocorrelation}
 \usage{
-eda_spearman_test(data, alpha = 0.05, quiet = TRUE)
+eda_spearman_test(data, alpha = 0.05)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -12,31 +12,24 @@ Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
-
-\item{quiet}{Logical scalar. If \code{FALSE}, prints a summary of of the statistical
-test to the console. Default is \code{TRUE}.}
 }
 \value{
 A list containing the test results, including:
 \itemize{
 \item \code{data}: The \code{data} argument.
+\item \code{alpha}: The significance level as specified in the \code{alpha} argument.
+\item \code{null_hypothesis}: A string describing the null hypothesis.
+\item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
 \item \code{rho}: Numeric vector of serial correlation estimates for lags \eqn{1} to \eqn{n-3}.
-\item \code{sig}: Logical vector indicating which lags exhibit significant serial correlation
 \item \code{least_lag}: The smallest lag at which the serial correlation is insignificant.
-\item \code{reject}: Logical. If \code{TRUE}, then \code{least_lag > 0}.
-\item \code{msg}: Character string summarizing the test result, printed if \code{quiet = FALSE}.
+\item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
 }
 \description{
-Performs the Spearman rank serial correlation test on annual maximum series
-data to check for serial correlation at various lags. Reports the smallest
-lag where the serial correlation is not statistically significant at the given
-significance level.
-}
-\details{
-For each lag from \eqn{1} to \eqn{n - 3}, the function computes the Spearman
-correlation coefficient between the original series and the lagged series. The
-first lag with an insignificant serial correlation coefficient returned as \code{least_lag}.
+Performs the Spearman serial correlation test on annual maximum series data
+to check for serial correlation at various lags. Reports the smallest lag
+where the serial correlation is not statistically significant at the given
+significance level (the \emph{least insignificant lag}).
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

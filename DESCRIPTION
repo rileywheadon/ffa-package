@@ -27,7 +27,7 @@ Authors@R:
 		email = "jianhe@ucalgary.ca",
 		role = "aut"
 	)) 
-URL: https://rileywheadon.github.io/ffa-docs/, https://rileywheadon.github.io/ffa-package/
+URL: https://rileywheadon.github.io/ffa-package/
 BugReports: https://github.com/rileywheadon/ffa-package/issues
 License: AGPL (>= 3)
 Encoding: UTF-8

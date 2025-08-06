@@ -1,30 +1,23 @@
 #' Wald–Wolfowitz Runs Test for Randomness
 #'
-#' Applies the Wald–Wolfowitz runs test to a numeric vector of residuals in 
-#' order to assess whether they behave as a random sequence. The test statistic’s 
-#' p-value is compared to the significance level `alpha`, and a decision is 
-#' returned along with a human-readable summary message.
-#'
-#' @param results A fitted linear model produced by [eda_sens_trend()].
-#'
+#' Applies the Wald–Wolfowitz runs test to a numeric vector in order to assess 
+#' whether they behave as a random sequence. The test statistic and p-value 
+#' is computed using the number of runs (sequences of values above or below the
+#' median). Under the null hypothesis, the data is random.
+#' 
+#' @param values A numeric vector of values to check for randomness. 
 #' @inheritParams param-alpha
-#' @inheritParams param-quiet
 #'
 #' @return A list containing the test results, including:
-#' - `residuals`: Numeric vector of residual values from a fitted linear model.
-#' - `n`: The length of the residuals vector after removing the median.
-#' - `n_plus`: The number of residuals above the median.
-#' - `n_minus`: The number of residuals below the median.
+#' - `values`: The `values` argument.
+#' - `alpha`: The significance level as specified in the `alpha` argument.
+#' - `null_hypothesis`: A string describing the null hypothesis.
+#' - `alternative_hypothesis`: A string describing the alternative hypothesis.
+#' - `n`: The length of the input vector after removing the median.
 #' - `runs`: The number of runs in the transformed sequence of residuals.
-#' - `statistic`: The runs test statistic, computed using `runs`.
-#' - `p_value`: P-value from the Wald–Wolfowitz runs test applied to residuals.
-#' - `reject`: Logical. If TRUE, the null hypothesis of random residuals is rejected.
-#' - `msg`: Character string summarizing the test result, printed if `quiet = FALSE`.
-#'
-#' @details
-#' The Wald–Wolfowitz runs test examines the sequence of residuals to test for
-#' randomness around the median. A small p-value suggests nonrandom clustering, 
-#' which may indicate that a linear model is inappropriate for the data.
+#' - `statistic`: The runs test statistic, computed using `runs` and `n`.
+#' - `p_value`: The p-value derived from the normally distributed test statistic.
+#' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
 #'
 #' @references
 #' Wald, A. and Wolfowitz, J. (1940). On a test whether two samples are from the 
@@ -40,25 +33,24 @@
 #'
 #' @export
 
-eda_runs_test <- function(results, alpha = 0.05, quiet = TRUE) {
+eda_runs_test <- function(values, alpha = 0.05) {
 
-	residuals <- validate_numeric('results$residuals', results$residuals)
+	values <- validate_numeric('values', values)
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	quiet <- validate_logical("quiet", quiet)
 
-	# Remove values from the residuals that are equal to the median
-	filtered_residuals <- residuals[residuals != median(residuals)]
+	# Remove values that are equal to the median
+	filtered_values <- values[values != median(values)]
 
-	# Transform the residuals into a boolean vector (TRUE if >median, FALSE if <median)	
-	boolean_residuals <- (filtered_residuals > median(filtered_residuals))
+	# Transform the values into a boolean vector (TRUE if >median, FALSE if <median)	
+	boolean_values <- (filtered_values > median(filtered_values))
 
 	# Count the number of data points in each category
-	n <- length(boolean_residuals)
-	np <- sum(boolean_residuals == TRUE)
-	nm <- sum(boolean_residuals == FALSE)
+	n <- length(boolean_values)
+	np <- sum(boolean_values == TRUE)
+	nm <- sum(boolean_values == FALSE)
 
 	# Determine the number of "runs" (contiguous blocks of + or -) in the data
-	runs <- length(rle(boolean_residuals)$values)
+	runs <- length(rle(boolean_values)$values)
 	
 	# Compute the distribution parameters under the null hypothesis
 	mu <- (2 * np * nm / n) + 1
@@ -71,30 +63,17 @@ eda_runs_test <- function(results, alpha = 0.05, quiet = TRUE) {
 	# Determine whether we reject or fail to reject based on p_value and alpha
 	reject <- (p_value <= alpha)
 
-	# Print the results of the test
-	msg <- stats_message(
-		"runs",
-		reject,
-		p_value,
-		alpha,
-		"NO evidence that a linear model is inappropriate",
-		"evidence that a linear model is inappropriate"
-	)
-
-	if (!quiet) message(msg)
-
 	# Return the results as a list
 	list(
-		years = results$years,
-		residuals = residuals,
+		values = values,
+		alpha = alpha,
+		null_hypothesis = "The input vector is random.",
+		alternative_hypothesis = "The input vector is not random.",
 		n = n,
-		n_plus = np,
-		n_minus = nm,
 		runs = runs,
 		statistic = z,
 		p_value = p_value,
-		reject = reject,
-		msg = msg
+		reject = reject
 	)
 
 }

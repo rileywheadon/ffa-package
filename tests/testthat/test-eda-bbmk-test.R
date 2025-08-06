@@ -7,7 +7,9 @@ test_that("eda-bbmk-test.R works on KOOTENAI RIVER (08NH021)", {
 	test <- eda_bbmk_test(df$max)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$p_value, 0.2, samples = 100)
+	expect_false(test$reject)
+	expect_equal(test$p_value, 0.2, tol = 1e-2)
+	expect_equal(test$statistic, -1398, tol = 1e-2)
 	expect_equal(unname(test$bounds), c(-1862, 1698), tol = 1e-2)
 	
 })
@@ -20,7 +22,9 @@ test_that("eda-bbmk-test.R works on OKANAGAN RIVER (08NM050)", {
 	test <- eda_bbmk_test(df$max)
 
 	# Ensure the test results are the same as MATLAB
-	expect_equal(test$p_value, 0, samples = 100)
+	expect_true(test$reject)
+	expect_equal(test$p_value, 0, tol = 1e-2)
+	expect_equal(test$statistic, 1822, tol = 1e-2)
 	expect_equal(unname(test$bounds), c(-892, 874), tol = 1e-2)
 	
 })
