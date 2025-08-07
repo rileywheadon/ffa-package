@@ -9,6 +9,11 @@ template:
     heading_font: {google: "Roboto Slab"}
     code_font: {google: "JetBrains Mono"}
   math-rendering: mathjax
+figures:
+  dev: grDevices::png
+  dpi: 200
+  fig.width: 10
+  fig.height: 8
 navbar:
   structure:
     left:
