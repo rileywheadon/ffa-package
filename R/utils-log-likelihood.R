@@ -19,12 +19,12 @@
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' params <- c(1, 1, 1, 1)
+#' params <- c(100, 1, 10)
 #' ns_years <- seq(from = 1901, to = 2000)
 #' ns_structure <- list(location = TRUE, scale = FALSE)
 #'
 #' # Compute the log-likelihood
-#' utils_log_likelihood(data, "GNO", params, ns_years, ns_structure)
+#' utils_log_likelihood(data, "NOR", params, ns_years, ns_structure)
 #'
 #' @export
 utils_log_likelihood <- function(

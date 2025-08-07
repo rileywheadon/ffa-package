@@ -53,13 +53,11 @@ the prior is: \deqn{\log \pi(\kappa) = (p-1) \log(0.5-\kappa) + (q-1) \log(0.5+\
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
-params <- c(1, 1, 1, 1)
-prior <- c(5, 10)
-ns_years <- seq(from = 1901, to = 2000)
-ns_structure <- list(location = TRUE, scale = FALSE)
+params <- c(100, 10, 0.1)
+prior <- c(1, 1)
 
 # Compute the generalized log-likelihood
-utils_generalized_likelihood(data, params, prior, ns_years, ns_structure)
+utils_generalized_likelihood(data, params, prior)
 
 }
 \references{
