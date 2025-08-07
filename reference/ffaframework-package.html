@@ -25,7 +25,7 @@ model_assessment() evaluates model performance for using a variety of metrics.
 Additional utility functions for visualization and computation are also available:
 data_* methods load, transform, and decompose annual maximum series data.
 plot_* methods produce diagnostic and summary plots.
-quantile_*, loglik_*, and lmom_* implement distribution-specific computations.
+utils_* methods implement distribution-specific computations.
 
 
 Datasets from five hydrometric stations in Canada are provided as representative
@@ -67,7 +67,7 @@ model_assessment() evaluates model performance for using a variety of metrics.
 Additional utility functions for visualization and computation are also available:
 data_* methods load, transform, and decompose annual maximum series data.
 plot_* methods produce diagnostic and summary plots.
-quantile_*, loglik_*, and lmom_* implement distribution-specific computations.
+utils_* methods implement distribution-specific computations.
 
 
 Datasets from five hydrometric stations in Canada are provided as representative
@@ -166,7 +166,7 @@ inform approach selection (S-FFA or NS-FFA):</p><ul><li><p>Detect statistically 
 <li><p><code><a href="model_assessment.html">model_assessment()</a></code> evaluates model performance for using a variety of metrics.</p></li>
 </ol><p>Additional utility functions for visualization and computation are also available:</p><ul><li><p><code>data_*</code> methods load, transform, and decompose annual maximum series data.</p></li>
 <li><p><code>plot_*</code> methods produce diagnostic and summary plots.</p></li>
-<li><p><code>quantile_*</code>, <code>loglik_*</code>, and <code>lmom_*</code> implement distribution-specific computations.</p></li>
+<li><p><code>utils_*</code> methods implement distribution-specific computations.</p></li>
 </ul><p>Datasets from five hydrometric stations in Canada are provided as representative
 use cases (other datasets in <code>/inst/extdata</code> are for testing purposes only):</p><ul><li><p>Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
 statistical evidence of trends or change points (S-FFA recommended).</p></li>
@@ -181,7 +181,7 @@ evidence of a linear trend in both the mean and variability (NS-FFA recommended)
 </ul><p>This package assumes familiarity with statistical techniques used in FFA, including
 L-moments, maximum likelihood estimation, and parametric bootstrap.
 For an explanation of these methods, see the
-<a href="https://rileywheadon.github.io/ffa-docs/" class="external-link">FFA Framework wiki</a>.
+<a href="https://rileywheadon.github.io/ffa-framework/" class="external-link">FFA Framework wiki</a>.
 For examples, see the vignettes on exploratory data analysis and flood frequency
 analysis.</p>
     </div>

@@ -122,25 +122,25 @@ parameters are modeled as nonstationary. Must contain two logical scalars:</p><u
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">utils_quantiles</span><span class="op">(</span><span class="va">p</span>, <span class="st">"GEV"</span>, <span class="va">params</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  0.90287503  1.25133683  3.26406638  1.17388889  0.99072515 -1.41229746</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [7] -0.46683505  1.04387896  2.32610708  1.30750670  0.12333376  0.68928581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [13]  0.35947517 -0.19900579  0.08026637  0.18538955  1.03307935 -0.42077023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [19] -0.91324564 -1.16420401  0.42143644  3.07340999 -0.29235503  0.69195019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [25]  0.20717061  1.84805853  0.26978712  1.73183484  1.58463632  0.41230524</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  1.20629030  0.70868657 -1.75826006  1.17189610  1.07705253 -0.33641397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [37]  0.29054284 -0.15184243 -0.43592617 -0.95893732 -0.41557793 -0.02149417</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] -1.20762902 -0.53329041  0.41237733  0.50745928  2.40011084  0.27848776</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [49] -1.21763381  0.27557550  2.01454446  0.66474823 -0.14393968 -0.49081212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [55]  3.85608935  0.81204611 -0.08313228  0.77680317  1.42389453  0.35191056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] -0.41790688 -0.19594937 -0.49172035 -0.83419590  0.32854102  0.24563560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [67]  2.94342599 -0.77920030  0.25142949  0.16690915  3.68633734 -0.19820451</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [73] -0.06434615  0.10101678  1.77977770 -0.06475094  0.65049125 -0.36510008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [79]  0.17576545 -0.46011969  0.32580414 -0.62608574  0.97463001 -0.03395770</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  0.28250578  1.87656141  2.54000127  0.65386897  3.33902292  0.36043039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91] -0.50790824 -0.35828696 -0.28485790  0.49760815  0.14835837 -0.10383544</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [97] -0.33839157  2.50034970 -0.38749960 -0.06384954</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  2.4666847  3.4950121 26.1556802  3.2345470  2.6931867  0.2435830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [7]  0.6269835  2.8402128 10.2380081  3.6969446  1.1312619  1.9922922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13]  1.4325774  0.8195452  1.0835757  1.2036872  2.8097046  0.6565409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [19]  0.4012199  0.3121710  1.5241493 21.6154858  0.7465035  1.9976075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25]  1.2301924  6.3474841  1.3096856  5.6510131  4.8775172  1.5102954</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  3.3410673  2.0313215  0.1723445  3.2281077  2.9360130  0.7143273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37]  1.3371532  0.8591236  0.6466655  0.3833000  0.6599588  0.9787352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  0.2989051  0.5866714  1.5104043  1.6610655 11.0243983  1.3211304</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49]  0.2959296  1.3172886  7.4973113  1.9440010  0.8659400  0.6121291</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [55] 47.2800933  2.2525122  0.9202294  2.1745096  4.1532640  1.4217814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61]  0.6584235  0.8220539  0.6115734  0.4342235  1.3889402  1.2784336</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [67] 18.9807630  0.4587727  1.2858622  1.1816469 39.8984444  0.8202021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73]  0.9376804  1.1062952  5.9285384  0.9373009  1.9164821  0.6941272</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [79]  1.1921584  0.6312081  1.3851441  0.5346806  2.6501865  0.9666124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  1.3264494  6.5310088 12.6796871  1.9229663 28.1915678  1.4339464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  0.6017530  0.6988725  0.7521211  1.6447825  1.1599285  0.9013736</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97]  0.7129161 12.1867549  0.6787519  0.9381461</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
