@@ -4,7 +4,7 @@ title: "Flood Frequency Analysis Framework"
 
 # FFA Framework Wiki
 
-The **FFA Framework** is an open-source tool for flood frequency analysis (FFA) designed to support [systematic and repeatable workflows](goals.md) for stationary and nonstationary analysis.
+The **FFA Framework** is an open-source tool for flood frequency analysis (FFA) designed to support systematic and repeatable workflows for stationary and nonstationary analysis.
 Development is ongoing at the University of Calgary and the University of Saskatchewan in Canada.
 
 The most recent version of the framework is freely available as an **R package**.
