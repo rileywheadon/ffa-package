@@ -202,26 +202,26 @@ test).</td>
 <div class="section level2">
 <h2 id="case-study">Case Study<a class="anchor" aria-label="anchor" href="#case-study"></a>
 </h2>
-<p>This vignette will explore data from the Mission Creek near East
-Kelowna (08NM116) hydrological monitoring station. The remoteness of
-this station means that trends annual maxima are caused by changes in
-climate as opposed to changes in land use or cover. Data for this
-station is provided as <code>CAN-08NM116.csv</code> in the
+<p>This vignette will explore data from the Chilliwack River at
+Chilliwack Lake (08MH016) hydrological monitoring station. The
+remoteness of this station means that trends annual maxima are caused by
+changes in climate as opposed to changes in land use or cover. Data for
+this station is provided as <code>CAN-08MH016.csv</code> in the
 <code>ffaframework</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rileywheadon.github.io/ffa-docs/" class="external-link">ffaframework</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rileywheadon.github.io/ffa-package/">ffaframework</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_local.html">data_local</a></span><span class="op">(</span><span class="st">"CAN-08NM116.csv"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_local.html">data_local</a></span><span class="op">(</span><span class="st">"CAN-08MH016.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   year  max</span></span>
-<span><span class="co">#&gt; 1 1949 49.3</span></span>
-<span><span class="co">#&gt; 2 1950 52.1</span></span>
-<span><span class="co">#&gt; 3 1951 49.3</span></span>
-<span><span class="co">#&gt; 4 1952 50.7</span></span>
-<span><span class="co">#&gt; 5 1953 62.3</span></span>
-<span><span class="co">#&gt; 6 1954 36.2</span></span>
+<span><span class="co">#&gt; 1 1922 62.9</span></span>
+<span><span class="co">#&gt; 2 1923 74.5</span></span>
+<span><span class="co">#&gt; 3 1924 79.0</span></span>
+<span><span class="co">#&gt; 4 1925 35.1</span></span>
+<span><span class="co">#&gt; 5 1926 62.3</span></span>
+<span><span class="co">#&gt; 6 1927 65.7</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_ams_data.html">plot_ams_data</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span>, title <span class="op">=</span> <span class="st">"Mission Creek near East Kelowna (08NM116)"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_ams_data.html">plot_ams_data</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span>, title <span class="op">=</span> <span class="st">"Chilliwack River at Chilliwack Lake (08MH016)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="trend-variability_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -241,10 +241,10 @@ the Mann-Kendall test.</p>
 <code class="sourceCode R"><span><span class="va">mw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_mw_variability.html">data_mw_variability</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
 <span><span class="va">mwmk_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_mk_test.html">eda_mk_test</a></span><span class="op">(</span><span class="va">mw</span><span class="op">$</span><span class="va">std</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mwmk_test</span><span class="op">$</span><span class="va">p_value</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.01600616</span></span></code></pre></div>
-<p><strong>Conclusion</strong>: At a p-value of 0.016, we
-<em>reject</em> the null hypothesis. There is evidence of a linear trend
-in the variability in the data.</p>
+<span><span class="co">#&gt; [1] 0.001463998</span></span></code></pre></div>
+<p><strong>Conclusion</strong>: At a p-value of <span class="math inline">\(0.0015\)</span>, we <em>reject</em> the null
+hypothesis. There is evidence of a linear trend in the variability in
+the data.</p>
 </div>
 <div class="section level3">
 <h3 id="white-test">White Test<a class="anchor" aria-label="anchor" href="#white-test"></a>
@@ -255,9 +255,9 @@ time-dependence in the variability. The null hypothesis is
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">white_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_white_test.html">eda_white_test</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">white_test</span><span class="op">$</span><span class="va">p_value</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.00125362</span></span></code></pre></div>
-<p><strong>Conclusion</strong>: At a p-value of 0.0012, we
-<em>reject</em> the null hypothesis. There is statistical evidence of
+<span><span class="co">#&gt; [1] 0.1175955</span></span></code></pre></div>
+<p><strong>Conclusion</strong>: At a p-value of <span class="math inline">\(0.1176\)</span>, we <em>fail to reject</em> the
+null hypothesis. There is no statistical evidence of
 heteroskedasticity.</p>
 </div>
 <div class="section level3">
@@ -269,15 +269,21 @@ trend. We can estimate the monotonic trend using Sen’s trend estimator,
 which uses a nonparametric approach that is robust to outliers.</p>
 <p><code><a href="../reference/eda_sens_trend.html">eda_sens_trend()</a></code> takes two arguments: the data (either
 an annual maximum series or vector of standard deviations) and the
-corresponding vector of years. Then, <code><a href="../reference/plot_sens_trend.html">plot_sens_trend()</a></code> can
-be used to generate a plot of the results. It requires the AMS data and
-corresponding vector of years. It also takes an optional trend in the
-mean (<code>mean_trend</code>), or a trend in the variability
-(<code>variability_trend</code>).</p>
+corresponding vector of years. Then, <code><a href="../reference/plot_ams_data.html">plot_ams_data()</a></code> can be
+used to generate a plot of the results. It requires the AMS data and
+corresponding vector of years. It also takes an optional arguments
+<code>plot_mean</code> and <code>plot_variability</code> for plotting a
+trend in the mean or variability respectively.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">variability_trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_sens_trend.html">eda_sens_trend</a></span><span class="op">(</span><span class="va">mw</span><span class="op">$</span><span class="va">std</span>, <span class="va">mw</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sens_trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_sens_trend.html">eda_sens_trend</a></span><span class="op">(</span><span class="va">mw</span><span class="op">$</span><span class="va">std</span>, <span class="va">mw</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_sens_trend.html">plot_sens_trend</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span>, variability_trend <span class="op">=</span> <span class="va">variability_trend</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_ams_data.html">plot_ams_data</a></span><span class="op">(</span></span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">max</span>,</span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
+<span>    plot_mean <span class="op">=</span> <span class="st">"Constant"</span>,</span>
+<span>    plot_variability <span class="op">=</span> <span class="st">"Trend"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Sen's Trend Estimator (AMS Variability)"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="trend-variability_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Note</strong>: The covariate is computed using the formula
 <span class="math inline">\((\text{years} - 1900) / 100\)</span>.</p>
@@ -289,17 +295,18 @@ mean (<code>mean_trend</code>), or a trend in the variability
 runs test assess the feasibility of the linearity assumption by checking
 the residuals for randomness. If the residuals are random (the null
 hypothesis), there is evidence that the underlying trend is linear. The
-<code><a href="../reference/eda_runs_test.html">eda_runs_test()</a></code> function takes the output of
-<code><a href="../reference/eda_sens_trend.html">eda_sens_trend()</a></code> as an argument.</p>
+<code><a href="../reference/eda_runs_test.html">eda_runs_test()</a></code> function takes the residuals from
+<code><a href="../reference/eda_sens_trend.html">eda_sens_trend()</a></code> as the first argument and the observation
+years as the second argument.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">runs_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_runs_test.html">eda_runs_test</a></span><span class="op">(</span><span class="va">variability_trend</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">runs_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_runs_test.html">eda_runs_test</a></span><span class="op">(</span><span class="va">sens_trend</span><span class="op">$</span><span class="va">residuals</span>, <span class="va">mw</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">runs_test</span><span class="op">$</span><span class="va">p_value</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.2658385</span></span>
+<span><span class="co">#&gt; [1] 0.3311375</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/plot_runs_test.html">plot_runs_test</a></span><span class="op">(</span><span class="va">runs_test</span>, title <span class="op">=</span> <span class="st">"Runs Test (AMS Variability)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="trend-variability_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p><strong>Conclusion</strong>: At a p-value of <span class="math inline">\(0.266\)</span>, we <em>fail to reject</em> the
+<p><strong>Conclusion</strong>: At a p-value of <span class="math inline">\(0.3311\)</span>, we <em>fail to reject</em> the
 null hypothesis. There is evidence that the residuals are random and a
 linear trend is suitable for the data.</p>
 </div>

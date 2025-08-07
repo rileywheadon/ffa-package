@@ -5,15 +5,15 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Block-Bootstrap Mann-Kendall Test for Trend Detection — eda_bbmk_test"><meta name="description" content="Performs a bootstrapped version of the Mann-Kendall trend test to account
-for serial correlation in annual maximum series data. The procedure
-uses Spearman’s serial correlation test to estimate the least insignificant lag,
-then applies a bootstrap procedure to obtain the empirical p-value and confidence
-bounds for the Mann-Kendall S-statistic."><meta property="og:description" content="Performs a bootstrapped version of the Mann-Kendall trend test to account
-for serial correlation in annual maximum series data. The procedure
-uses Spearman’s serial correlation test to estimate the least insignificant lag,
-then applies a bootstrap procedure to obtain the empirical p-value and confidence
-bounds for the Mann-Kendall S-statistic."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Block-Bootstrap Mann-Kendall Test for Trend Detection — eda_bbmk_test"><meta name="description" content="Performs a bootstrapped version of the Mann-Kendall trend test to adjust
+for serial correlation in annual maximum series data. The BBMK test uses
+Spearman’s serial correlation test to identify the least insignificant lag,
+then applies a shuffling procedure to obtain the empirical p-value and confidence
+bounds for the Mann-Kendall test statistic."><meta property="og:description" content="Performs a bootstrapped version of the Mann-Kendall trend test to adjust
+for serial correlation in annual maximum series data. The BBMK test uses
+Spearman’s serial correlation test to identify the least insignificant lag,
+then applies a shuffling procedure to obtain the empirical p-value and confidence
+bounds for the Mann-Kendall test statistic."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -75,16 +75,16 @@ bounds for the Mann-Kendall S-statistic."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p>Performs a bootstrapped version of the Mann-Kendall trend test to account
-for serial correlation in annual maximum series data. The procedure
-uses Spearman’s serial correlation test to estimate the least insignificant lag,
-then applies a bootstrap procedure to obtain the empirical p-value and confidence
-bounds for the Mann-Kendall S-statistic.</p>
+    <p>Performs a bootstrapped version of the Mann-Kendall trend test to adjust
+for serial correlation in annual maximum series data. The BBMK test uses
+Spearman’s serial correlation test to identify the least insignificant lag,
+then applies a shuffling procedure to obtain the empirical p-value and confidence
+bounds for the Mann-Kendall test statistic.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eda_bbmk_test</span><span class="op">(</span><span class="va">data</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, samples <span class="op">=</span> <span class="fl">10000L</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eda_bbmk_test</span><span class="op">(</span><span class="va">data</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, samples <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -104,40 +104,37 @@ level for confidence intervals or hypothesis tests. Default is 0.05.</p></dd>
 <dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
 <dd><p>Integer scalar. The number of bootstrap samples. Default is 10000.</p></dd>
 
-
-<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
-<dd><p>Logical scalar. If <code>FALSE</code>, prints a summary of of the statistical
-test to the console. Default is <code>TRUE</code>.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List; the results of the test, including:</p><ul><li><p><code>data</code>: The <code>data</code> argument.</p></li>
-<li><p><code>s_bootstrap</code>: Vector of bootstrapped Mann-Kendall S-statistics.</p></li>
-<li><p><code>s_statistic</code>: The Mann-Kendall S-statistic computed on the original series.</p></li>
+    <p>A list containing the test results, including:</p><ul><li><p><code>data</code>: The <code>data</code> argument.</p></li>
+<li><p><code>alpha</code>: The significance level as specified in the <code>alpha</code> argument.</p></li>
+<li><p><code>null_hypothesis</code>: A string describing the null hypothesis.</p></li>
+<li><p><code>alternative_hypothesis</code>: A string describing the alternative hypothesis.</p></li>
+<li><p><code>statistic</code>: The Mann-Kendall S-statistic computed on the original series.</p></li>
+<li><p><code>bootstrap</code>: Vector of bootstrapped Mann-Kendall test statistics.</p></li>
 <li><p><code>p_value</code>: Empirical two-sided p-value derived from the bootstrap distribution.</p></li>
-<li><p><code>bounds</code>: Confidence interval bounds for the null distribution of the statistic.</p></li>
-<li><p><code>reject</code>: Logical. If <code>TRUE</code>, the null hypothesis was rejected at <code>alpha</code>.</p></li>
-<li><p><code>msg</code>: Character string summarizing the test result (printed if <code>quiet = FALSE</code>).</p></li>
+<li><p><code>bounds</code>: Empirical confidence interval bounds from the bootstrap distribution.</p></li>
+<li><p><code>reject</code>: If <code>TRUE</code>, the null hypothesis was rejected at significance <code>alpha</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The block size for the bootstrap is selected as <code>least_lag + 1</code>, where <code>least_lag</code>
-is estimated using <code><a href="eda_spearman_test.html">eda_spearman_test()</a></code>. Bootstrap samples are generated by
-resampling blocks of the original data without replacement and computing the
-Mann-Kendall S-statistic. This procedure removes serial correlation from the data.</p>
+    <p>The block size for reshuffling is equal to the <code>least_lag</code> as estimated in
+<code><a href="eda_spearman_test.html">eda_spearman_test()</a></code>. Bootstrap samples are generated by resampling blocks
+of the original data <em>without replacement</em>. This procedure effectively removes
+serial correlation from the data.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Bayazit, M., 2015. Nonstationarity of hydrological records and recent trends in trend
-analysis: a state-of-the-art review. Environ. Processes 2 (3), 527–542.
+analysis: a state-of-the-art review. Environmental Processes 2 (3), 527–542.
 <a href="https://doi.org/10.1007/s40710-015-0081-7" class="external-link">doi:10.1007/s40710-015-0081-7</a></p>
 <p>Khaliq, M.N., Ouarda, T.B.M.J., Gachon, P., Sushama, L., St-Hilaire, A., 2009.
 Identification of hydrological trends in the presence of serial and cross correlations:
 a review of selected methods and their application to annual flow regimes of Canadian
-rivers. J. Hydrol. 368 (1–4), 117–130. <a href="https://doi.org/10.1016/j.jhydrol.2009.01.035" class="external-link">doi:10.1016/j.jhydrol.2009.01.035</a></p>
+rivers. Journal Hydrolology 368 (1–4), 117–130. <a href="https://doi.org/10.1016/j.jhydrol.2009.01.035" class="external-link">doi:10.1016/j.jhydrol.2009.01.035</a></p>
 <p>Sonali, P., Nagesh Kumar, D., 2013. Review of trend detection methods and their
-application to detect temperature changes in India. J. Hydrol. 476, 212–227.
+application to detect temperature changes in India. Journal Hydrology 476, 212–227.
 <a href="https://doi.org/10.1016/j.jhydrol.2012.10.034" class="external-link">doi:10.1016/j.jhydrol.2012.10.034</a></p>
     </div>
     <div class="section level2">
@@ -166,7 +163,19 @@ application to detect temperature changes in India. J. Hydrol. 476, 212–227.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  85.83976 108.76777 106.24132 121.12277  96.43876  89.35536 110.77117</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 111.81576 101.98392</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $s_bootstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $alpha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $null_hypothesis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "There is no monotonic trend in the data."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $alternative_hypothesis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "There is a monotonic trend in the data."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $bootstrap</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [1] -410 -276 -322 -136  538 1006  116  200  -44   80  148  234  -86   32</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [15]  360  146 -152  -28 -142   86 -134  550 -104 -148  166 -118  494 -124</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [29] -186  206  294 -338  262  270  148 -280 -174  522  342  106    2   78</span>
@@ -240,9 +249,6 @@ application to detect temperature changes in India. J. Hydrol. 476, 212–227.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [981]   82  158  484 -404 -584  406  -48 -268   12 -194 -364  626 -430 -416</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [995]  478  340 -180 -428  172  -98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $s_statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 472</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.172</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -252,9 +258,6 @@ application to detect temperature changes in India. J. Hydrol. 476, 212–227.
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reject</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $msg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "\n - The BBMK test had a p-value of 0.172.\n - At a significance level of 0.05, we fail to reject the null hypothesis.\n - Therefore, there is NO evidence of a trend given the serial correlation."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

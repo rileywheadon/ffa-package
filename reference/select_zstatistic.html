@@ -8,10 +8,18 @@
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Z-Statistic Method for Distribution Selection — select_zstatistic"><meta name="description" content="Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
 the sample L-kurtosis (\(\tau_4\)) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
-is selected."><meta property="og:description" content="Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
+is selected.
+NS-FFA: To select a distribution for a nonstationary model, include the observation
+years (ns_years) and the nonstationary model structure (ns_structure). Then, this
+method will detrend the data internally using the data_decomposition() function prior
+to distribution selection."><meta property="og:description" content="Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
 the sample L-kurtosis (\(\tau_4\)) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
-is selected."></head><body>
+is selected.
+NS-FFA: To select a distribution for a nonstationary model, include the observation
+years (ns_years) and the nonstationary model structure (ns_structure). Then, this
+method will detrend the data internally using the data_decomposition() function prior
+to distribution selection."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -77,11 +85,15 @@ is selected."></head><body>
 the sample L-kurtosis (\(\tau_4\)) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.</p>
+<p><strong>NS-FFA</strong>: To select a distribution for a nonstationary model, include the observation
+years (<code>ns_years</code>) and the nonstationary model structure (<code>ns_structure</code>). Then, this
+method will detrend the data internally using the <code><a href="data_decomposition.html">data_decomposition()</a></code> function prior
+to distribution selection.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select_zstatistic</span><span class="op">(</span><span class="va">data</span>, samples <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select_zstatistic</span><span class="op">(</span><span class="va">data</span>, ns_years <span class="op">=</span> <span class="cn">NULL</span>, ns_structure <span class="op">=</span> <span class="cn">NULL</span>, samples <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -93,6 +105,18 @@ is selected.</p>
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
+<dt id="arg-ns-years">ns_years<a class="anchor" aria-label="anchor" href="#arg-ns-years"></a></dt>
+<dd><p>NS-FFA only. Numeric vector of observation years corresponding
+to <code>data</code>. Must be the same length as <code>data</code> and strictly increasing.</p></dd>
+
+
+<dt id="arg-ns-structure">ns_structure<a class="anchor" aria-label="anchor" href="#arg-ns-structure"></a></dt>
+<dd><p>NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
+<li><p><code>scale</code>: If <code>TRUE</code>, the scale parameter has a linear temporal trend.</p></li>
+</ul></dd>
+
+
 <dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
 <dd><p>Integer scalar. The number of bootstrap samples. Default is 10000.</p></dd>
 
@@ -100,25 +124,22 @@ Must be strictly positive, finite, and not missing.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with the results of distribution selection:</p><ul><li><p><code>method</code>: <code>"Z-selection"</code>.</p></li>
-<li><p><code>data</code>: The <code>data</code> argument.</p></li>
+<li><p><code>data</code>: The <code>data</code> argument (S-FFA) or the detrended dataset (NS-FFA).</p></li>
 <li><p><code>metrics</code>: List of computed Z-statistics for each candidate distribution.</p></li>
 <li><p><code>recommendation</code>: Name of the distribution with the smallest Z-statistic.</p></li>
 <li><p><code>reg_params</code>: Kappa distribution parameters for the data.</p></li>
 <li><p><code>reg_bias_t4</code>: Bias of the L-kurtosis from the bootstrap.</p></li>
 <li><p><code>reg_std_t4</code>: Standard deviation of the L-kurtosis from the bootstrap.</p></li>
 <li><p><code>log_params</code>: Kappa distribution parameters for the log-transformed data.</p></li>
-<li><p><code>log_bias_t4</code>: Bias of the L-kurtosis from the bootstrap (using <code>log_params</code>).</p></li>
-<li><p><code>log_std_t4</code>: Standard deviation of the L-kurtosis from the bootstrap (using <code>log_params</code>).</p></li>
+<li><p><code>log_bias_t4</code>: Bias of the L-kurtosis from the bootstrap using <code>log_params</code>.</p></li>
+<li><p><code>log_std_t4</code>: Standard deviation of the L-kurtosis from the bootstrap using <code>log_params</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The method performs distribution selection using both raw and log-transformed data. The
-distributions which use the raw data are GEV, GLO, PE3, GNO, and WEI. The LP3 distribution
-uses the log-transformed data.</p>
-<p>The Z-statistic is determined by fitting a four-parameter Kappa distribution to the
-raw and log-transformed data. Then, bootstrapped samples from this Kappa distribution
-The L-moments of these bootstrapped samples are used to estimate the Z-statistic
-for each distribution.</p>
+    <p>First, this method fits a four-parameter Kappa distribution to both the original and
+log-transformed data. Then, bootstrapping is used to estimate the bias and
+variance of the L-kurtosis. These values, along with the difference between the sample
+and theoretical L-kurtosis, are used to compute the Z-statistic for each distribution.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -127,8 +148,8 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="select_ldistance.html">select_ldistance()</a></code>, <code><a href="select_lkurtosis.html">select_lkurtosis()</a></code>, <code><a href="fit_lmom_kappa.html">fit_lmom_kappa()</a></code>,
-<code><a href="quantile_fast.html">quantile_fast()</a></code>, <code><a href="plot_lmom_diagram.html">plot_lmom_diagram()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="select_ldistance.html">select_ldistance()</a></code>, <code><a href="select_lkurtosis.html">select_lkurtosis()</a></code>, <code><a href="fit_lmoments_kappa.html">fit_lmoments_kappa()</a></code>,
+<code><a href="utils_quantiles.html">utils_quantiles()</a></code>, <code><a href="plot_lmom_diagram.html">plot_lmom_diagram()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -139,62 +160,62 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Z-statistic"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  98.71231  87.44428 113.74320  98.59197 100.22562 109.20876 103.82194</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  81.06874 104.76641  84.67994  95.87834 111.43625 105.54843  90.80927</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 100.60267  93.03966  76.63447  77.61610 101.04823  92.22512 100.13588</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  94.33938 101.96622 102.67541  94.12358 118.53351  91.66731 100.00403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  87.55059  95.38149  92.23427 111.40751  90.37736  69.82771 111.86987</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 100.98394 117.22366  94.35362  87.27311  97.95392  96.64070  84.96178</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 105.77021  89.38498  98.61668  85.87479 103.87733 101.01316 103.84718</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 101.98688  77.39291 100.08806 102.84134  87.52278 104.09981 116.37956</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 108.31126 103.36415 106.11138 102.76687  86.39754 116.50380  90.10366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  97.54708  99.30036 105.50950 110.84722 111.69896 102.70129 108.29034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  77.88446  93.68704 113.97375  91.05490  82.25543 112.07571  98.65243</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 106.26876 104.31282 103.00279 104.16331 106.77664 101.68825 110.02731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 106.10248  86.36331 130.44276  87.90837  89.36656  96.92901 105.06571</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  94.63129  98.64158  99.61956 103.15962  91.79914 109.98052 106.22324</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  95.16031 117.26171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  93.66981  90.95956  99.19026  98.71915 101.79338 101.32694 102.04820</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 110.98209  99.65298  89.94651  96.69792 108.31218  85.88962 100.37866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  92.39855 102.35374  87.37552  98.86392 107.48181 105.12639 104.11626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 107.28600  91.54723 118.06782 106.62263  99.94238 105.10995  89.14286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 108.08411 104.66837  87.61050 104.62507 112.93330  92.95327  89.89847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 123.78929 102.61699  85.61433 105.39715 116.24928  91.03303  95.75079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 108.26474  94.86348  87.87594  94.51921  83.97493  99.74286  85.59272</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  94.79051 112.23648  94.56373 105.61505  99.81454 101.83150  97.17795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 103.62006  91.39505  94.13403 113.16686 103.50459 115.87438 108.12959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  97.86323 107.14469  82.71510  98.38532  94.02230 103.65213  88.34442</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 101.53695  83.04860  89.29452 104.70286 100.49462  96.85461  91.09270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  95.05623 108.05659 100.52742 107.24436  82.70252 101.30351 103.20557</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 106.39076 109.81046 105.96192  92.45432 102.68295  83.69302 102.26561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 101.81147 104.23127  93.39594  87.95513  83.76912 104.15148 102.00870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 110.92091  93.29045</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GEV</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.178528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3596903</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GLO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6907137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.511239</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GNO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.5772312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9741756</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$PE3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.6128178</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9674902</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$LP3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.6499557</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.065967</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$WEI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.8519829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5156712</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $recommendation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GNO"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GEV"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reg_params</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 98.1165044  7.7447346  0.1816291 -0.4521360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 95.82679505  9.75557803  0.36785260  0.09312144</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reg_bias_t4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.0002260735</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0004975979</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reg_std_t4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.03484813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.02868038</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $log_params</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  4.58713119  0.07839819  0.24553311 -0.48295119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.56228252 0.10236845 0.44564137 0.08956027</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $log_bias_t4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0001351028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.001001428</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $log_std_t4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.03832123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.02914515</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

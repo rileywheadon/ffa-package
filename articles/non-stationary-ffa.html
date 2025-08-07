@@ -100,15 +100,15 @@
     
     
 <p>This vignette demonstrates how to use the <code>ffaframework</code>
-package to perform flood frequency analysis (FFA) under the assumption
-of nonstationarity. Readers unfamiliar with stationary FFA workflows
-should first consult the <em>Stationary FFA</em> vignette.</p>
-<p>The framework supports three forms of nonstationarity, modelled as
+package to perform flood frequency analysis under the assumption of
+nonstationarity (NS-FFA). Readers unfamiliar with stationary FFA
+workflows should first consult the <em>Stationary FFA</em> vignette.</p>
+<p>The framework supports three forms of nonstationarity, modeled as
 linear trends in the distribution parameters:</p>
 <ol style="list-style-type: decimal">
-<li>A linear trend in the mean (location parameter).</li>
-<li>A linear trend in the variance (scale parameter).</li>
-<li>A linear trend in both the mean and variance.</li>
+<li>A linear trend in the location parameter.</li>
+<li>A linear trend in the scale parameter.</li>
+<li>A linear trend in both the location and scale parameters.</li>
 </ol>
 <p>The shape parameter is treated as a constant due to difficulties in
 estimation caused by sample size limitations.</p>
@@ -122,7 +122,7 @@ caused by changes in climate as opposed to changes in land use or cover.
 Data for this station is provided as <code>CAN-05BB001.csv</code> in the
 <code>ffaframework</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rileywheadon.github.io/ffa-docs/" class="external-link">ffaframework</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rileywheadon.github.io/ffa-package/">ffaframework</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_local.html">data_local</a></span><span class="op">(</span><span class="st">"CAN-05BB001.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -137,16 +137,16 @@ Data for this station is provided as <code>CAN-05BB001.csv</code> in the
 <span><span class="fu"><a href="../reference/plot_ams_data.html">plot_ams_data</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span>, title <span class="op">=</span> <span class="st">"Bow River at Banff (05BB001)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="non-stationary-ffa_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="section level3">
-<h3 id="the-structure-list">The <code>structure</code> List<a class="anchor" aria-label="anchor" href="#the-structure-list"></a>
+<h3 id="the-ns_structure-list">The <code>ns_structure</code> List<a class="anchor" aria-label="anchor" href="#the-ns_structure-list"></a>
 </h3>
 <p>This vignette assumes a scenario where a trend in the mean has been
-identified. To specify a trend in a distribution parameter, create a
-<code>structure</code> list containing the boolean items
-<code>location</code> and <code>scale</code>. Setting these items to
-<code>TRUE</code> specifies a trend in the location/scale parameter
-respectively.</p>
+identified. To specify a trend in one or more distribution parameters,
+create a <code>ns_structure</code> (nonstationary model structure) list
+containing the boolean items <code>location</code> and
+<code>scale</code>. Setting these items to <code>TRUE</code> adds a
+trend to the location/scale parameter respectively.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">structure</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>location <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ns_structure</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>location <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Note</strong>: For guidance on trend detection, refer to the
 <em>Trend Identification</em> vignette.</p>
 </div>
@@ -156,22 +156,24 @@ respectively.</p>
 </h2>
 <p>L-moment-based distribution selection remains applicable under
 nonstationarity, but requires dataset decomposition (detrending) prior
-to analysis. This is accomplished using the
-<code>data_decomposition</code> function, which takes an annual maximum
-series (AMS), the corresponding vector of years, and the
-<code>structure</code> object. The decomposed vector of data is then
-passed to the selection function (<code>select_ldistance</code> in this
-case).</p>
+to analysis. The <code>select_*</code> methods do this automatically
+(using the <code>data_decomposition</code> method) if the
+<code>ns_years</code> and <code>ns_structure</code> arguments are
+supplied.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_decomposed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_decomposition.html">data_decomposition</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span>, <span class="va">structure</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">selection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_ldistance.html">select_ldistance</a></span><span class="op">(</span><span class="va">data_decomposed</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">selection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_ldistance.html">select_ldistance</a></span><span class="op">(</span></span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">max</span>,</span>
+<span>    ns_years <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
+<span>    ns_structure <span class="op">=</span> <span class="va">ns_structure</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">selection</span><span class="op">$</span><span class="va">recommendation</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "GNO"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/plot_lmom_diagram.html">plot_lmom_diagram</a></span><span class="op">(</span><span class="va">selection</span><span class="op">)</span></span></code></pre></div>
 <p><img src="non-stationary-ffa_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><strong>Note</strong>: The sample and log-sample points on the
+L-moment diagram are based on the detrended data.</p>
 <p><strong>Conclusion</strong>: The generalized normal (GNO)
 distribution is the best-fit distribution for the sample.</p>
 </div>
@@ -180,9 +182,9 @@ distribution is the best-fit distribution for the sample.</p>
 </h2>
 <p>Because L-moments parameter estimation requires stationarity, we will
 use maximum likelihood estimation for this nonstationary model. The
-<code>fit_maximum_likelihood</code> function implements maximum
-likelihood estimation for both stationary and nonstationary
-distributions. It has two required arguments:</p>
+<code>fit_mle</code> function implements maximum likelihood estimation
+for both stationary and nonstationary distributions. It has two required
+arguments:</p>
 <ul>
 <li>
 <code>data</code>: The annual maximum series observations.</li>
@@ -194,25 +196,28 @@ probability distribution (ex. <code>"GNO"</code>).</li>
 required:</p>
 <ul>
 <li>
-<code>years</code>: The corresponding vector of years for the
+<code>ns_years</code>: The corresponding vector of years for the
 observations in <code>data</code>.</li>
 <li>
-<code>structure</code>: The nonstationary <code>structure</code>
+<code>ns_structure</code>: The nonstationary <code>structure</code>
 object described above.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_maximum_likelihood.html">fit_maximum_likelihood</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_mle.html">fit_mle</a></span><span class="op">(</span></span>
 <span>    <span class="va">df</span><span class="op">$</span><span class="va">max</span>,</span>
 <span>    <span class="st">"GNO"</span>,</span>
-<span>    years <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
-<span>    structure <span class="op">=</span> <span class="va">structure</span></span>
+<span>    ns_years <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
+<span>    ns_structure <span class="op">=</span> <span class="va">ns_structure</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">params</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 224.0496619 -35.5153685  54.6324886  -0.3689085</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">mll</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -590.7329</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -590.7329</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_nsffa_fit.html">plot_nsffa_fit</a></span><span class="op">(</span><span class="va">fit</span>, slices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1915</span>, <span class="fl">2015</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="non-stationary-ffa_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Note</strong>: The fitted parameters are: <span class="math inline">\((\mu_0, \mu_1, \sigma, \kappa)\)</span>, where the
 time-dependent location is modeled as <span class="math inline">\(\mu(t)
 = \mu_0 + \mu_1 t\)</span>. The covariate <span class="math inline">\(t\)</span> is a linear function of the years:
@@ -221,11 +226,10 @@ time-dependent location is modeled as <span class="math inline">\(\mu(t)
 <div class="section level2">
 <h2 id="uncertainty-quantification">Uncertainty Quantification<a class="anchor" aria-label="anchor" href="#uncertainty-quantification"></a>
 </h2>
-<p>Uncertainty quantification is also essential for nonstationary
-probability distributions. In addition to the parametric bootstrap, the
-framework implements the regula-falsi profile likelihood (RFPL) method
-for MLE. The <code>uncertainty_rfpl</code> method has two required
-arguments:</p>
+<p>Uncertainty quantification is an important step in NS-FFA as well as
+S-FFA. In addition to the parametric bootstrap, the framework implements
+the regula-falsi profile likelihood (RFPL) method for MLE. The
+<code>uncertainty_rfpl</code> method has two required arguments:</p>
 <ul>
 <li>
 <code>data</code>: The annual maximum series observations.</li>
@@ -233,29 +237,29 @@ arguments:</p>
 <code>model</code>: A three-letter code corresponding to a
 probability distribution (ex. <code>"GNO"</code>).</li>
 </ul>
-<p>Since the model has a nonstationary structure, three additional
+<p>Since our model has a nonstationary structure, three additional
 arguments are required:</p>
 <ul>
 <li>
-<code>years</code>: The corresponding vector of years for the
+<code>ns_years</code>: The corresponding vector of years for the
 observations in <code>data</code>.</li>
 <li>
-<code>structure</code>: The nonstationary <code>structure</code>
+<code>ns_structure</code>: The nonstationary <code>structure</code>
 object described above.</li>
 <li>
-<code>slices</code>: The years at which return levels are
+<code>ns_slices</code>: The years at which return levels are
 computed.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">uncertainty</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/uncertainty_rfpl.html">uncertainty_rfpl</a></span><span class="op">(</span></span>
 <span>    <span class="va">df</span><span class="op">$</span><span class="va">max</span>,</span>
 <span>    <span class="st">"GNO"</span>,</span>
-<span>    years <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
-<span>    structure <span class="op">=</span> <span class="va">structure</span>,</span>
-<span>    slices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1925</span>, <span class="fl">2025</span><span class="op">)</span></span>
+<span>    ns_years <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
+<span>    ns_structure <span class="op">=</span> <span class="va">ns_structure</span>,</span>
+<span>    ns_slices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1915</span>, <span class="fl">2015</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_nsffa.html">plot_nsffa</a></span><span class="op">(</span><span class="va">uncertainty</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_nsffa_estimates.html">plot_nsffa_estimates</a></span><span class="op">(</span><span class="va">fit</span>, ci_list <span class="op">=</span> <span class="va">uncertainty</span><span class="op">$</span><span class="va">ci_list</span><span class="op">)</span></span></code></pre></div>
 <p><img src="non-stationary-ffa_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Example Conclusion</strong>: In 2025, there is a <span class="math inline">\(1/20\)</span> exceedance probability of a flood of
 approximately <span class="math inline">\(300\text{m}^3/\text{s}\)</span> or greater. The

@@ -118,7 +118,7 @@ trends in the mean or variability of the data. Data for this station is
 provided as <code>CAN-07BE001.csv</code> in the
 <code>ffaframework</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rileywheadon.github.io/ffa-docs/" class="external-link">ffaframework</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rileywheadon.github.io/ffa-package/">ffaframework</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_local.html">data_local</a></span><span class="op">(</span><span class="st">"CAN-07BE001.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -176,17 +176,21 @@ parameter estimation. See <a href="https://rileywheadon.github.io/ffa-docs/param
 for more information.</p>
 <ul>
 <li>
-<code>fit_lmom_*</code>: L-moments parameter estimation for each
-distribution.</li>
+<code>fit_lmoments</code>: L-moments parameter estimation.</li>
 <li>
-<code>fit_maximum_likelihood</code>: Maximum likelihood and
-generalized maximum likelihood.</li>
+<code>fit_mle</code>: Maximum likelihood parameter estimation.</li>
+<li>
+<code>fit_gmle</code>: Generalized maximum likelihood parameter
+estimation.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_lmom_xxx.html">fit_lmom_gev</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span><span class="op">)</span><span class="op">$</span><span class="va">params</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_lmoments.html">fit_lmoments</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="st">"GEV"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1600.219872  616.666030    0.120747</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">params</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1600.219872  616.666030    0.120747</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_sffa_fit.html">plot_sffa_fit</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p><img src="stationary-ffa_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Conclusion</strong>: The GEV distribution with
 <code>location = 1600</code>, <code>scale = 616</code>, and
 <code>shape = 0.12</code> will be used.</p>
@@ -216,7 +220,7 @@ distribution (ex. <code>"GEV"</code>).</li>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">uncertainty</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/uncertainty_bootstrap.html">uncertainty_bootstrap</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="st">"GEV"</span>, <span class="st">"L-moments"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_sffa.html">plot_sffa</a></span><span class="op">(</span><span class="va">uncertainty</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_sffa_estimates.html">plot_sffa_estimates</a></span><span class="op">(</span><span class="va">fit</span>, ci <span class="op">=</span> <span class="va">uncertainty</span><span class="op">$</span><span class="va">ci</span><span class="op">)</span></span></code></pre></div>
 <p><img src="stationary-ffa_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Example Conclusion</strong>: Every 10 years, we can expect a
 flood of roughly <span class="math inline">\(3{\small,}200\text{m}^3/\text{s}\)</span> or
@@ -225,16 +229,16 @@ greater.</p>
 <div class="section level2">
 <h2 id="model-assessment">Model Assessment<a class="anchor" aria-label="anchor" href="#model-assessment"></a>
 </h2>
-<p>Model performance is assessed using <code>model_diagnostics</code>,
+<p>Model performance is assessed using <code>model_assessment</code>,
 which reports a collection of assessment statistics about the flood
-frequency analysis. <code>plot_model_diagnostics</code> compares the
+frequency analysis. <code>plot_model_assessment</code> compares the
 empirical plotting positions (“Observed Quantiles”) and the predictions
 of the parametric model (“Model Quantiles”). The black line represents a
 perfect 1:1 correspondence between the model and the data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">diagnostics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_diagnostics.html">model_diagnostics</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="st">"GEV"</span>, <span class="va">params</span>, <span class="va">uncertainty</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">assessment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_assessment.html">model_assessment</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="st">"GEV"</span>, <span class="va">fit</span><span class="op">$</span><span class="va">params</span>, ci <span class="op">=</span> <span class="va">uncertainty</span><span class="op">$</span><span class="va">ci</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_model_diagnostics.html">plot_model_diagnostics</a></span><span class="op">(</span><span class="va">diagnostics</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_model_assessment.html">plot_model_assessment</a></span><span class="op">(</span><span class="va">assessment</span><span class="op">)</span></span></code></pre></div>
 <p><img src="stationary-ffa_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Conclusion</strong>: The parametric model generally matches
 the plotting positions. There is a small positive bias from <span class="math inline">\(3{\small,}500\text{m}^3/\text{s}\)</span> to <span class="math inline">\(5{\small,}000\text{m}^3/\text{s}\)</span>.</p>

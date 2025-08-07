@@ -7,9 +7,17 @@
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="L-Distance Method for Distribution Selection — select_ldistance"><meta name="description" content="Selects a distribution from a set of candidate distributions by minimizing the
 Euclidean distance between the theoretical L-moment ratios \((\tau_3, \tau_4)\)
-and the sample L-moment ratios \((t_3, t_4)\)."><meta property="og:description" content="Selects a distribution from a set of candidate distributions by minimizing the
+and the sample L-moment ratios \((t_3, t_4)\).
+NS-FFA: To select a distribution for a nonstationary model, include the observation
+years (ns_years) and the nonstationary model structure (ns_structure). Then, this
+method will detrend the data internally using the data_decomposition() function prior
+to distribution selection."><meta property="og:description" content="Selects a distribution from a set of candidate distributions by minimizing the
 Euclidean distance between the theoretical L-moment ratios \((\tau_3, \tau_4)\)
-and the sample L-moment ratios \((t_3, t_4)\)."></head><body>
+and the sample L-moment ratios \((t_3, t_4)\).
+NS-FFA: To select a distribution for a nonstationary model, include the observation
+years (ns_years) and the nonstationary model structure (ns_structure). Then, this
+method will detrend the data internally using the data_decomposition() function prior
+to distribution selection."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -74,11 +82,15 @@ and the sample L-moment ratios \((t_3, t_4)\)."></head><body>
     <p>Selects a distribution from a set of candidate distributions by minimizing the
 Euclidean distance between the theoretical L-moment ratios \((\tau_3, \tau_4)\)
 and the sample L-moment ratios \((t_3, t_4)\).</p>
+<p><strong>NS-FFA</strong>: To select a distribution for a nonstationary model, include the observation
+years (<code>ns_years</code>) and the nonstationary model structure (<code>ns_structure</code>). Then, this
+method will detrend the data internally using the <code><a href="data_decomposition.html">data_decomposition()</a></code> function prior
+to distribution selection.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select_ldistance</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select_ldistance</span><span class="op">(</span><span class="va">data</span>, ns_years <span class="op">=</span> <span class="cn">NULL</span>, ns_structure <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -89,17 +101,29 @@ and the sample L-moment ratios \((t_3, t_4)\).</p>
 <dd><p>Numeric vector of annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
+
+<dt id="arg-ns-years">ns_years<a class="anchor" aria-label="anchor" href="#arg-ns-years"></a></dt>
+<dd><p>NS-FFA only. Numeric vector of observation years corresponding
+to <code>data</code>. Must be the same length as <code>data</code> and strictly increasing.</p></dd>
+
+
+<dt id="arg-ns-structure">ns_structure<a class="anchor" aria-label="anchor" href="#arg-ns-structure"></a></dt>
+<dd><p>NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
+<li><p><code>scale</code>: If <code>TRUE</code>, the scale parameter has a linear temporal trend.</p></li>
+</ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with the results of distribution selection:</p><ul><li><p><code>method</code>: <code>"L-distance"</code>.</p></li>
-<li><p><code>data</code>: The <code>data</code> argument.</p></li>
+<li><p><code>data</code>: The <code>data</code> argument (S-FFA) or the detrended dataset (NS-FFA).</p></li>
 <li><p><code>metrics</code>: A list of L-distance metrics for each candidate distribution.</p></li>
 <li><p><code>recommendation</code>: The name of the distribution with the smallest L-distance.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>For each candidate distribution, the method computes the Euclidean distance between
+    <p>For each candidate distribution, this method computes the Euclidean distance between
 sample L-moment ratios (\(\tau_3\), \(\tau_4\)) and the closest point on the
 theoretical distribution's L-moment curve. For two-parameter distributions (Gumbel,
 Normal, Log-Normal), the theoretical L-moment ratios are compared directly with
@@ -114,7 +138,7 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="lmom_sample.html">lmom_sample()</a></code>, <code><a href="select_lkurtosis.html">select_lkurtosis()</a></code>, <code><a href="select_zstatistic.html">select_zstatistic()</a></code>,
+    <div class="dont-index"><p><code><a href="utils_sample_lmoments.html">utils_sample_lmoments()</a></code>, <code><a href="select_lkurtosis.html">select_lkurtosis()</a></code>, <code><a href="select_zstatistic.html">select_zstatistic()</a></code>,
 <code><a href="plot_lmom_diagram.html">plot_lmom_diagram()</a></code></p></div>
     </div>
 
@@ -126,53 +150,53 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L-distance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 105.50888  95.11776 108.97312  81.70875 103.55607 111.35757 108.24657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  92.00188  85.72684  95.36425  85.03508  85.35188  89.46015  94.55967</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 105.16984 104.29304 106.06805  91.04149 108.23841 104.48857 104.34418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  91.08970  93.56836 114.11590  88.27081  89.45632 104.03920 104.79253</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 116.49868  98.45517 141.44174 107.19363 105.30876  95.07604 102.71694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  93.16386 113.56993 115.54153 101.96406  96.39743 113.18202  99.75882</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 105.89203 102.38840  98.76708 100.50590  96.98711  95.43674  96.38334</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  95.18110  94.10146  90.65543 114.77908 118.29996  90.75872  97.29535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  99.32922  90.32297  82.05011 103.88287  81.25267  86.52339  95.95108</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 100.33890  95.51435  96.20210 100.56687 107.18240  98.69194  83.38249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 126.97296 104.12097  93.21544  98.72096 109.38441 117.33438 103.91108</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 102.22118 108.38415 101.01798 116.86989  94.62226  91.73635 104.95056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 103.69007  99.91300  93.53077  86.69027 114.98008  92.02169 105.61363</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 108.22062 107.05678 101.79175 107.80714  74.17870  85.06983 110.84752</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 123.70490  86.89288</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 112.36210  90.96671  88.81809 105.49874 101.44455  91.36199 108.24594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 101.76501  92.67487 100.88402  94.50747 110.45014  87.42728 112.88892</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 105.50069 113.28995 103.00665 118.53577 102.97076  98.57930 112.89908</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  97.18895 111.13498 109.83232 109.55026  96.96021  97.91620  87.01459</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  99.28443  93.81179  97.34613  93.89084 103.55019 109.96499  79.31277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  93.83550  91.45473 109.03163 115.78444 105.72620  92.92973 107.96002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  93.29243  94.34594  99.73184  90.12823  92.97532 109.12187  85.51126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  97.94028 100.59896  91.66640 106.53450  99.54317 109.12172  99.03369</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 122.21154 109.30758  98.84861 109.11931  89.31727 107.16006  87.92649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  97.34781  94.12382 102.02802  95.21949 107.10338 108.55868 111.70885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  88.50561 113.18589  92.41219 115.19096  91.95496 115.27030  86.47308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  95.39673 117.46465  98.83503  91.59992 113.50751  90.05050  92.04249</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  99.44339 110.29035 100.57330 103.17333  93.53476  82.46938  83.48580</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 102.76144  93.08456  99.57173 109.96268 104.46125 102.70581 117.61106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  86.70633  92.06702</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GUM</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1205486</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1743756</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$NOR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05605174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.08134432</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$LNO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.02155606</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.07437066</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GEV</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.03361533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0636822</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GLO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0195169</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1204359</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$GNO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.02452334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.07637753</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$PE3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0257812</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.07601018</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$LP3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.02057492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.07391115</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metrics$WEI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.04542831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05763824</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $recommendation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GLO"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WEI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

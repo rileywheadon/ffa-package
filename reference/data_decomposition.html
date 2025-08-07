@@ -5,14 +5,14 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Decompose Annual Maximum Series — data_decomposition"><meta name="description" content="Decomposes the annual maxima series to derive its stationary stochastic component,
-which can be used to identify a best-fit distribution using conventional stationary
-methods. The decomposition procedure follows that proposed by Vidrio-Sahagún and He
-(2022), which relies on the statistical representation of nonstationary stochastic
-processes."><meta property="og:description" content="Decomposes the annual maxima series to derive its stationary stochastic component,
-which can be used to identify a best-fit distribution using conventional stationary
-methods. The decomposition procedure follows that proposed by Vidrio-Sahagún and He
-(2022), which relies on the statistical representation of nonstationary stochastic
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Decompose Annual Maximum Series — data_decomposition"><meta name="description" content="Decomposes a nonstationary annual maxima series to derive its stationary stochastic
+component, which can be used to identify a best-fit distribution using conventional
+stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún
+and He (2022), which relies on the statistical representation of nonstationary stochastic
+processes."><meta property="og:description" content="Decomposes a nonstationary annual maxima series to derive its stationary stochastic
+component, which can be used to identify a best-fit distribution using conventional
+stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún
+and He (2022), which relies on the statistical representation of nonstationary stochastic
 processes."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -75,16 +75,16 @@ processes."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p>Decomposes the annual maxima series to derive its stationary stochastic component,
-which can be used to identify a best-fit distribution using conventional stationary
-methods. The decomposition procedure follows that proposed by Vidrio-Sahagún and He
-(2022), which relies on the statistical representation of nonstationary stochastic
+    <p>Decomposes a nonstationary annual maxima series to derive its stationary stochastic
+component, which can be used to identify a best-fit distribution using conventional
+stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún
+and He (2022), which relies on the statistical representation of nonstationary stochastic
 processes.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_decomposition</span><span class="op">(</span><span class="va">data</span>, <span class="va">years</span>, <span class="va">structure</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_decomposition</span><span class="op">(</span><span class="va">data</span>, <span class="va">ns_years</span>, <span class="va">ns_structure</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -96,14 +96,14 @@ processes.</p>
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
-<dt id="arg-years">years<a class="anchor" aria-label="anchor" href="#arg-years"></a></dt>
-<dd><p>Numeric vector of observation years corresponding to <code>data</code>.
-Must be the same length as <code>data</code> and strictly increasing.</p></dd>
+<dt id="arg-ns-years">ns_years<a class="anchor" aria-label="anchor" href="#arg-ns-years"></a></dt>
+<dd><p>NS-FFA only. Numeric vector of observation years corresponding
+to <code>data</code>. Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
-<dt id="arg-structure">structure<a class="anchor" aria-label="anchor" href="#arg-structure"></a></dt>
-<dd><p>Named list indicating which distribution parameters are
-modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
+<dt id="arg-ns-structure">ns_structure<a class="anchor" aria-label="anchor" href="#arg-ns-structure"></a></dt>
+<dd><p>NS-FFA only. Named list indicating which distribution
+parameters are modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
 <li><p><code>scale</code>: If <code>TRUE</code>, the scale parameter has a linear temporal trend.</p></li>
 </ul></dd>
 
@@ -114,17 +114,11 @@ modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Four scenarios are supported:</p><ol><li><p>No trend (the data is returned unmodified).</p></li>
-<li><p>Linear trend in the mean only.</p></li>
-<li><p>Linear trend in the standard deviation only.</p></li>
-<li><p>Linear trends in both the mean and the standard deviation.</p></li>
-</ol><p>Internally, the function does the following:</p><ol><li><p>Compute <code>covariate = (years - 1900) / 100</code>.</p></li>
-<li><p>If there is a trend in the location, fit Sen’s trend estimator to
-<code>data</code> and <code>covariate</code>. Then, remove the fitted linear trend.</p></li>
-<li><p>If there is a trend in the scale, compute the variability using
-<code><a href="data_mw_variability.html">data_mw_variability()</a></code>, fit Sen’s trend estimator to the vector of
-standard deviations, and then rescale the series to remove trends
-in the scale.</p></li>
+    <p>Internally, the function does the following:</p><ol><li><p>If there is a trend in the location, fit Sen's trend estimator and subtract
+away the fitted trend.</p></li>
+<li><p>If there is a trend in the scale, estimate the variability of the data
+with <code><a href="data_mw_variability.html">data_mw_variability()</a></code>, fit Sen's trend estimator to the variability
+vector, and rescale the data to remove the trend.</p></li>
 <li><p>If necessary, shift the data so that its minimum is at least 1.</p></li>
 </ol></div>
     <div class="section level2">
@@ -141,9 +135,9 @@ flood frequency analysis. Journal of Hydrology, 612 (September 2022), 128186.
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1901</span>, to <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">structure</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>location <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">data_decomposition</span><span class="op">(</span><span class="va">data</span>, <span class="va">years</span>, <span class="va">structure</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ns_years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1901</span>, to <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ns_structure</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>location <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">data_decomposition</span><span class="op">(</span><span class="va">data</span>, <span class="va">ns_years</span>, <span class="va">ns_structure</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 102.48618  75.49338  99.74332 105.94756 111.14916  81.37988  97.05781</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  97.02208  96.57003  93.79310 105.55292 119.84636  82.81923 104.18640</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  80.36503  93.70802  98.33514 104.22413  89.58643 103.34173 102.22271</span>
