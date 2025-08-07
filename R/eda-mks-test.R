@@ -19,7 +19,7 @@
 #' - `progressive_series`: Normalized progressive Mann–Kendall-Sneyers statistics.
 #' - `regressive_series`: Normalized regressive Mann–Kendall-Sneyers statistics.
 #' - `bound`: Critical confidence bound for significance based on `alpha`.
-#' - `change_points`: A list of potential change points.
+#' - `change_points`: A dataframe of potential change points.
 #' - `p_value`: Two-sided p-value of the most significant crossing point.
 #' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
 #'
@@ -31,7 +31,7 @@
 #' This function computes progressive and regressive Mann–Kendall-Sneyers statistics,
 #' normalized by their expected values and variances under the null hypothesis. The 
 #' crossing points occur when the difference between the progressive and regressive 
-#' statistics swiches sign. The significance of detected crossing points is assessed 
+#' statistics switches sign. The significance of detected crossing points is assessed 
 #' using the quantiles of the normal distribution.
 #'
 #' @seealso [plot_mks_test()], [eda_pettitt_test()]
@@ -138,7 +138,7 @@ eda_mks_test <- function(data, years, alpha = 0.05) {
 		progressive_series = s_prog,
 		regressive_series = s_regr,
 		bound = bound,
-		change_points = apply(change_df, 1, as.list),
+		change_points = change_df,
 		p_value = p_value,
 		reject = reject
 	)

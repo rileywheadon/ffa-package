@@ -540,6 +540,6 @@ However, $\tau_{3}$ and $\tau_{4}$ can be computed in terms of $\kappa$ and $h$ 
 
 ## Sources
 
-[^1]: Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an aproach based on L-Moments. Cambridge University Press, New York, USA.
+[^1]: Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based on L-Moments. Cambridge University Press, New York, USA.
 
 [^2]: Hosking, J.R.M., Wallis, J.R., & Wood, E.F., 1985. Estimation of the generalized extreme-value distribution by the method of probability-weighted moments. Technometrics, 27, 251-61.

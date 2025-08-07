@@ -33,10 +33,10 @@ processes.
 \details{
 Internally, the function does the following:
 \enumerate{
-\item If there is a trend in the location, fit Sen’s trend estimator and subtract
+\item If there is a trend in the location, fit Sen's trend estimator and subtract
 away the fitted trend.
 \item If there is a trend in the scale, estimate the variability of the data
-with \code{\link[=data_mw_variability]{data_mw_variability()}}, fit Sen’s trend estimator to the variability
+with \code{\link[=data_mw_variability]{data_mw_variability()}}, fit Sen's trend estimator to the variability
 vector, and rescale the data to remove the trend.
 \item If necessary, shift the data so that its minimum is at least 1.
 }

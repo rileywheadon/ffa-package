@@ -23,7 +23,7 @@
 #' Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau.
 #' \emph{Journal of the American Statistical Association}, 63(324), 1379–1389. 
 #'
-#' @seealso [eda_runs_test()], [plot_sens_trend()]
+#' @seealso [eda_runs_test()], [plot_ams_data()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)

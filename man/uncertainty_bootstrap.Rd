@@ -54,19 +54,20 @@ level for confidence intervals or hypothesis tests. Default is 0.05.}
 All entries must be greater than or equal to 1.}
 }
 \value{
-A list containing the following three items:
+A list containing the following four items:
 \itemize{
 \item \code{method}: "Bootstrap"
 \item \code{ns_structure}: The \code{ns_structure} argument, if given.
 \item \code{ns_slices}: The \code{ns_slices} argument, if given.
-\item \code{results}: A dataframe (S-FFA) or list of dataframes (NS-FFA).
+\item \code{ci}: A dataframe containing confidence intervals (S-FFA only)
+\item \code{ci_list}: A list of dataframes containing confidence intervals (NS-FFA only).
 }
 
-Each dataframe within \code{results} has four columns:
+The dataframe(s) in \code{ci} and \code{ci_list} have four columns:
 \itemize{
 \item \code{estimates}: Estimated quantiles for each return period.
-\item \code{ci_lower}: Lower bound of the confidence interval for each return period.
-\item \code{ci_upper}: Upper bound of the confidence interval for each return period.
+\item \code{lower}: Lower bound of the confidence interval for each return period.
+\item \code{upper}: Upper bound of the confidence interval for each return period.
 \item \code{periods}: The \code{periods} argument.
 }
 }
@@ -95,7 +96,6 @@ and recommend \code{\link[=uncertainty_rfpl]{uncertainty_rfpl()}} or \code{\link
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
-years <- seq(from = 1901, to = 2000)
 uncertainty_bootstrap(data, "WEI", "L-moments")
 
 }
@@ -105,6 +105,6 @@ hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022).
 \doi{10.1016/j.advwatres.2022.104151}
 }
 \seealso{
-\code{\link[=fit_lmom_fast]{fit_lmom_fast()}}, \code{\link[=fit_maximum_likelihood]{fit_maximum_likelihood()}}, \code{\link[=lmom_sample]{lmom_sample()}},
-\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=plot_sffa]{plot_sffa()}}, \code{\link[=plot_nsffa]{plot_nsffa()}}
+\code{\link[=fit_lmoments]{fit_lmoments()}}, \code{\link[=fit_mle]{fit_mle()}}, \code{\link[=fit_gmle]{fit_gmle()}}, \code{\link[=utils_sample_lmoments]{utils_sample_lmoments()}}
+\code{\link[=utils_quantiles]{utils_quantiles()}}, \code{\link[=plot_sffa_estimates]{plot_sffa_estimates()}}, \code{\link[=plot_nsffa_estimates]{plot_nsffa_estimates()}}
 }

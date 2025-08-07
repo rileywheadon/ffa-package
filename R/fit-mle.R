@@ -23,13 +23,13 @@
 #' - `mll`: The maximum value of the log‐likelihood.
 #'
 #' @details
-#' 1. Calls [fit_lmom_fast()] on `data` to obtain initial parameter estimates.
+#' 1. Calls [fit_lmoments()] on `data` to obtain initial parameter estimates.
 #' 2. Initializes trend parameters to zero if necessary. 
 #' 3. For `WEI` models, sets the location parameter to zero to ensure support. 
-#' 4. Defines an objective function using [loglik_fast()]. 
+#' 4. Defines an objective function using [utils_log_likelihood()]. 
 #' 5. Runs [stats::nlminb()] with box constraints. Attempts minimization up to 100 times.
 #'
-#' @seealso [loglik_fast()], [general_loglik_fast()], [fit_lmom_fast()], [stats::nlminb()]
+#' @seealso [utils_log_likelihood()], [fit_lmoments()], [stats::nlminb()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -48,7 +48,7 @@ fit_mle <- function(
 ) {
 	data <- validate_numeric("data", data, optional = FALSE)
 	distribution <- validate_enum("distribution", distribution)
-	ns_years <- validate_numeric("ns_years", ns_years, size = length(data))
+	ns_years <- validate_numeric("ns_years", ns_years, TRUE, size = length(data))
 	ns_structure <- validate_structure(ns_structure)
 	fit_maximum_likelihood(data, distribution, NULL, ns_years, ns_structure)
 }

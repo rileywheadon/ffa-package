@@ -17,15 +17,15 @@ validate_rfgpl <- function(
 		ns_years = df$year,
 		ns_structure = structure, 
 		ns_slices = slices
-	)$results
+	)
 
-	if (!is.data.frame(results)) {
-		results <- results[[1]]
+	if (is.null(structure)) {
+		expect_equal(results$ci$lower, ci_lower, tol = 1e-2)
+		expect_equal(results$ci$upper, ci_upper, tol = 1e-2)
+	} else {
+		expect_equal(results$ci_list[[1]]$lower, ci_lower, tol = 1e-2)
+		expect_equal(results$ci_list[[1]]$upper, ci_upper, tol = 1e-2)
 	}
-
-	# NOTE: We check the estimates in test-mle-estimation.R
-	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
-	expect_equal(results$ci_upper, ci_upper, tol = 1e-2)
 
 }
 
@@ -36,7 +36,7 @@ test_that("basic functionality is working for CRAN", {
 
 	# Generalized Extreme Value (GEV) Distribution with RFGPL
 	validate_rfgpl(
-		df, S00,
+		df, NULL,
 		c(1702.9263, 2442.3196, 2969.9533, 3518.5173, 4290.0510, 4908.4944),
 		c(2019.0482, 2963.9259, 3668.3303, 4419.4717, 5497.4190, 6391.6196),
 	)

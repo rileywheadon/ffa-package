@@ -4,10 +4,13 @@
 \alias{eda_runs_test}
 \title{Wald–Wolfowitz Runs Test for Randomness}
 \usage{
-eda_runs_test(values, alpha = 0.05)
+eda_runs_test(values, years, alpha = 0.05)
 }
 \arguments{
 \item{values}{A numeric vector of values to check for randomness.}
+
+\item{years}{Numeric vector of observation years corresponding to \code{data}.
+Must be the same length as \code{data} and strictly increasing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -16,6 +19,7 @@ level for confidence intervals or hypothesis tests. Default is 0.05.}
 A list containing the test results, including:
 \itemize{
 \item \code{values}: The \code{values} argument.
+\item \code{years}: The \code{years} argument.
 \item \code{alpha}: The significance level as specified in the \code{alpha} argument.
 \item \code{null_hypothesis}: A string describing the null hypothesis.
 \item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
@@ -35,8 +39,8 @@ median). Under the null hypothesis, the data is random.
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 years <- seq(from = 1901, to = 2000)
-sens <- eda_sens_trend(data, years)
-eda_runs_test(sens)
+sens_trend <- eda_sens_trend(data, years)
+eda_runs_test(sens_trend$residuals, years)
 
 }
 \references{

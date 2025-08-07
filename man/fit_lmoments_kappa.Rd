@@ -26,15 +26,15 @@ in terms of the L-moments is known, the parameters are estimated numerically
 using Newton-Raphson iteration.
 }
 \details{
-First, the sample L-moments of the data are computed using \code{\link[=lmom_sample]{lmom_sample()}}.
+First, the sample L-moments of the data are computed using \code{\link[=utils_sample_lmoments]{utils_sample_lmoments()}}.
 Then, the \code{\link[stats:optim]{stats::optim()}} function is used to determine the parameters
 by minimizing the euclidian distance between the sample and theoretical L-moment
 ratios. The implementation of this routine is based on the deprecated \code{homtest}
-package, formerly avilable at \url{https://CRAN.R-project.org/package=homtest}.
+package, formerly available at \url{https://CRAN.R-project.org/package=homtest}.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
-fit_lmom_kappa(data)
+fit_lmoments_kappa(data)
 
 }
 \references{
@@ -42,5 +42,5 @@ Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach b
 on L-Moments. Cambridge University Press, New York, USA.
 }
 \seealso{
-\code{\link[=lmom_sample]{lmom_sample()}}, \code{\link[=fit_lmom_fast]{fit_lmom_fast()}}, \code{\link[=fit_lmom_xxx]{fit_lmom_xxx()}}
+\code{\link[=utils_sample_lmoments]{utils_sample_lmoments()}}, \code{\link[=fit_lmoments]{fit_lmoments()}}
 }

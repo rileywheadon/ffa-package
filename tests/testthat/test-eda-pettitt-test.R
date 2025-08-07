@@ -9,7 +9,6 @@ test_that("pettitt-test.R works on ATHABASCA RIVER (07BE001)", {
   	expect_equal(result$statistic, 372)
 	expect_equal(result$bound, 731.467, tol = 1e-4)
 	expect_equal(result$p_value, 0.461, tol = 1e-4)
-	expect_equal(result$change_points, list())
 
 })
 
@@ -56,7 +55,6 @@ test_that("pettitt-test.R works on CHILLIWACK RIVER (08MH016)", {
   	expect_equal(result$statistic, 561)
 	expect_equal(result$bound, 596.605, tol = 1e-4)
 	expect_equal(result$p_value, 0.071, tol = 1e-4)
-	expect_equal(result$change_points, list())
 
 })
 

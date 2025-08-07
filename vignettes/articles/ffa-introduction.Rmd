@@ -5,7 +5,7 @@
 **Flood Frequency Analysis (FFA)** uses a _probability distribution_ fitted to extreme streamflow observations (e.g., annual maxima) to estimate the _recurrence likelihood_ of floods. To perform FFA, we require a [probability model](model-selection.md) and corresponding [parameter estimates](parameter-estimation.md) based on the data.
 
 FFA relates flood peak magnitudes $Q$ to their expected frequency of occurrence, expressed as a *return period*.
-For example, a flood with a 10-year return period—commonly referred to as a *10-year flood*—has a 1-in-10 chance of being equalled or exceeded in any given year.
+For example, a flood with a 10-year return period—commonly referred to as a *10-year flood*—has a 1-in-10 chance of being equaled or exceeded in any given year.
 This corresponds to an *annual exceedance probability* of $p_e = 0.1$.
 Since the FFA Framework uses annual maxima data, this equates to the 90th percentile (i.e., the $0.90$ quantile) of the fitted probability distribution.
 

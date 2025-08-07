@@ -32,12 +32,12 @@ plot_lmom_diagram <- function(results, ...) {
 	method <- results$method
 
 	# Create dataframes for the sample L-moments
-	reg_moments = lmom_sample(results$data)
+	reg_moments = utils_sample_lmoments(results$data)
 	reg_sample_t3 = reg_moments[3]
 	reg_sample_t4 = reg_moments[4]
 	reg_lm <- data.frame(x = reg_sample_t3, y = reg_sample_t4)
 
-	log_moments = lmom_sample(log(results$data))
+	log_moments = utils_sample_lmoments(log(results$data))
 	log_sample_t3 = log_moments[3]
 	log_sample_t4 = log_moments[4]
 	log_lm <- data.frame(x = log_sample_t4, y = log_sample_t4)
@@ -50,7 +50,7 @@ plot_lmom_diagram <- function(results, ...) {
 		info <- model_info(distribution)
 
 		if (info$n_params == 2) {
-			dm <- lmom_fast(distribution, c(0, 1))
+			dm <- theoretical_lmoments_fast(distribution, c(0, 1))
 			dlm[[distribution]] = data.frame(x = dm[3], y = dm[4])
 		}
 
@@ -61,8 +61,9 @@ plot_lmom_diagram <- function(results, ...) {
 			params <- lapply(k_seq, function(i) c(0, 1, i))
 
 			# Get a matrix of likelihood moment ratios for each parameter set in params
-			lmr <- lapply(params, function(p) suppressWarnings(lmom_fast(distribution, p)))
-			lmr <- do.call(rbind, lmr)
+			lmr <- do.call(rbind, lapply(params, function(p) { 
+				suppressWarnings(theoretical_lmoments_fast(distribution, p))
+			}))
 
 			# Return the t3 and t4 values as a dataframe
 			df = data.frame(x = lmr[, 3], y = lmr[, 4]) 
@@ -163,14 +164,18 @@ plot_lmom_diagram <- function(results, ...) {
 	p2_grob <- ggplotGrob(p2)
 
 	# Place inset on main plot using annotation_custom()
-	p1 + annotation_custom(
-		grob = p2_grob,
-		xmin = -0.25, 
-		xmax = 0.25,
-		ymin = 0.35, 
-		ymax = 0.60
-	) + 
-	coord_fixed(ratio = 2, xlim = c(-0.7, 0.7), ylim = c(0, 0.7)) +
-	labs(x = xlabel, y = ylabel, color = "Legend", title = title)
+	p1 <- p1 + 
+		annotation_custom(
+			grob = p2_grob,
+			xmin = -0.25, 
+			xmax = 0.25,
+			ymin = 0.35, 
+			ymax = 0.60
+		) + 
+		coord_fixed(ratio = 2, xlim = c(-0.7, 0.7), ylim = c(0, 0.7)) +
+		labs(x = xlabel, y = ylabel, color = "Legend", title = title)
+
+	# Return the plot
+	p1
 
 }

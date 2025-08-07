@@ -11,7 +11,7 @@
 #' 
 #' This dataset is an excellent introduction to change point detection and piecewise NS-FFA.
 #'
-#' @format A dateframe with 91 rows and 2 columns spanning the period 1928-2018.
+#' @format A dataframe with 91 rows and 2 columns spanning the period 1928-2018.
 #'
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'

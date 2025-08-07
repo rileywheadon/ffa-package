@@ -5,7 +5,7 @@
 \alias{CAN_05BB001}
 \title{CAN-05BB001}
 \format{
-A dateframe with 110 rows and 2 columns spanning the period 1909-2018.
+A dataframe with 110 rows and 2 columns spanning the period 1909-2018.
 }
 \source{
 Meteorological Service of Canada (MSC) GeoMet Platform
@@ -36,6 +36,6 @@ trend in the mean.
 \references{
 Whitfield P. H., and Pomeroy J. W. (2016) Changes to flood peaks of a mountain river:
 implications for analysis of the 2013 flood in the Upper Bow River, Canada,
-Hydrol. Process., 30: 4657–4673. \doi{10.1002/hyp.10957}.
+Hydrological Processes, 30: 4657–4673. \doi{10.1002/hyp.10957}.
 }
 \keyword{datasets}

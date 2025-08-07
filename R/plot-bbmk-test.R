@@ -33,7 +33,7 @@ plot_bbmk_test <- function(results, ...) {
 	# Generate the plot
 	p1 <- ggplot() +
 		geom_histogram(
-			aes(x = results$s_bootstrap, color = "gray"), 
+			aes(x = results$bootstrap, color = "gray"), 
 			fill = "lightgray",
 			bins = 30
 		)  +
@@ -42,7 +42,7 @@ plot_bbmk_test <- function(results, ...) {
 			linewidth = 1.2
 		) + 
 		geom_vline(
-			aes(xintercept = results$s_statistic, color = "black"),
+			aes(xintercept = results$statistic, color = "black"),
 			linewidth = 1.2
 		) + 
 		labs(

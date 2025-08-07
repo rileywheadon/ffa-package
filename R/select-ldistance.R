@@ -29,7 +29,7 @@
 #' If a distribution is fit to log-transformed data (Log-Normal or Log-Pearson Type 
 #' III), the L-moment ratios for the log-transformed sample are used instead.
 #'
-#' @seealso [lmom_sample()], [select_lkurtosis()], [select_zstatistic()], 
+#' @seealso [utils_sample_lmoments()], [select_lkurtosis()], [select_zstatistic()], 
 #'   [plot_lmom_diagram()]
 #'
 #' @examples
@@ -54,8 +54,8 @@ select_ldistance <- function(data, ns_years = NULL, ns_structure = NULL) {
 	} 
 
 	# Get the sample L-moments for data and log(data)
-	reg_t3_t4 <- lmom_sample(data)[3:4]
-	log_t3_t4 <- lmom_sample(log(data))[3:4]
+	reg_t3_t4 <- utils_sample_lmoments(data)[3:4]
+	log_t3_t4 <- utils_sample_lmoments(log(data))[3:4]
 
 	# Helper function to get distance between two points
 	distance <- function(p1, p2) sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2)
@@ -74,14 +74,14 @@ select_ldistance <- function(data, ns_years = NULL, ns_structure = NULL) {
 
 		# Compute the L-distance metric directly for two-parameter distributions
 		if (info$n_params == 2) {
-			tau3_tau4 <- lmom_fast(model, c(0, 1))[3:4]
+			tau3_tau4 <- theoretical_lmoments_fast(model, c(0, 1))[3:4]
 			metrics[[model]] <- distance(tau3_tau4, t3_t4)
 			next
 		}
 
 		# Define objective function for three parameter distributions
 		objective <- function(i) {
-			tau3_tau4 <- lmom_fast(model, c(0, 1, i))[3:4]
+			tau3_tau4 <- theoretical_lmoments_fast(model, c(0, 1, i))[3:4]
 			distance(tau3_tau4, t3_t4)
 		}
 

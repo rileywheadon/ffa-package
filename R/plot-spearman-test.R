@@ -25,7 +25,7 @@ plot_spearman_test <- function(results, ...) {
 	rho_df <- data.frame(
 		lag = 1:length(results$rho),
 		rho = results$rho,
-		sig = results$sig
+		significant = results$significant
 	)
 
 	# Capture optional arguments
@@ -42,7 +42,7 @@ plot_spearman_test <- function(results, ...) {
 			aes(x = .data$lag, xend = .data$lag, y = 0, yend = .data$rho)
 		) +
 		geom_point(
-			aes(fill = .data$sig),
+			aes(fill = .data$significant),
 			shape = 21,
 			size = 3,
 			stroke = 1.2

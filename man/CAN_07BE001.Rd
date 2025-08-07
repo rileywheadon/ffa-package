@@ -5,7 +5,7 @@
 \alias{CAN_07BE001}
 \title{CAN-07BE001}
 \format{
-A dateframe with 108 rows and 2 columns spanning the period 1913-2020.
+A dataframe with 108 rows and 2 columns spanning the period 1913-2020.
 }
 \source{
 Meteorological Service of Canada (MSC) GeoMet Platform

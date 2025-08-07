@@ -48,7 +48,7 @@ years (\code{ns_years}) and the nonstationary model structure (\code{ns_structur
 \enumerate{
 \item Calls \code{\link[=fit_lmoments]{fit_lmoments()}} on the data to obtain initial parameter estimates.
 \item Initializes trend parameters to zero if necessary.
-\item Defines an objective function using \code{\link[=general_loglik_fast]{general_loglik_fast()}}.
+\item Defines an objective function using \code{\link[=utils_generalized_likelihood]{utils_generalized_likelihood()}}.
 \item Runs \code{\link[stats:nlminb]{stats::nlminb()}} with box constraints. Attempts minimization up to 100 times.
 }
 }
@@ -61,14 +61,14 @@ fit_gmle(data, prior, ns_years, ns_structure)
 
 }
 \references{
-El Adlouni, S., Ouarda, T.B.M.J., Zhang, X., Roy, R., Bob´ee, B., 2007. Generalized
+El Adlouni, S., Ouarda, T.B.M.J., Zhang, X., Roy, R., Bobee, B., 2007. Generalized
 maximum likelihood estimators for the nonstationary generalized extreme value
-model. Water Resour. Res. 43 (3), 1–13. \doi{10.1029/2005WR004545}
+model. Water Resources Research 43 (3), 1–13. \doi{10.1029/2005WR004545}
 
 Martins, E. S., and Stedinger, J. R. (2000). Generalized maximum-likelihood generalized
 extreme-value quantile estimators for hydrologic data. Water Resources Research, 36(3),
 737–744. \doi{10.1029/1999WR900330}
 }
 \seealso{
-\code{\link[=general_loglik_fast]{general_loglik_fast()}}, \code{\link[=fit_lmoments]{fit_lmoments()}}, \code{\link[stats:nlminb]{stats::nlminb()}}
+\code{\link[=utils_generalized_likelihood]{utils_generalized_likelihood()}}, \code{\link[=fit_lmoments]{fit_lmoments()}}, \code{\link[stats:nlminb]{stats::nlminb()}}
 }

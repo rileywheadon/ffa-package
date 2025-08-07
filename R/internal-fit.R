@@ -3,9 +3,9 @@ fit_lmoments_fast <- function(data, distribution) {
 
 	# Get the correct L-moments based on the distribution
 	moments <- if (distribution == "LP3") {
-		lmom_sample(log(data))
+		utils_sample_lmoments(log(data))
 	} else {
-		lmom_sample(data)
+		utils_sample_lmoments(data)
 	}
 
 	# Unpack the L-moments
@@ -124,7 +124,12 @@ fit_lmoments_fast <- function(data, distribution) {
 	} 
 
 	# Return results as a list
-	list(method = "L-moments", params = c(u, s, k))
+	list(
+		data = data,
+		distribution = distribution,
+		method = "L-moments",
+		params = c(u, s, k)
+	)
 
 }
 
@@ -184,9 +189,9 @@ fit_maximum_likelihood <- function(
 	# Maximize the log-likelihood by minimizing the negative log-likelihood
 	objective <- function(theta) {
 		if (!is.null(prior)) {
-			0 - general_loglik_fast(data, distribution, theta, prior, years, structure)
+			0 - generalized_likelihood_fast(data, theta, prior, years, structure)
 		} else {
-			0 - loglik_fast(data, distribution, theta, years, structure) 
+			0 - log_likelihood_fast(data, distribution, theta, years, structure) 
 		}
 	} 
 

@@ -8,7 +8,7 @@
 #' - The MKS/Pettitt tests find no evidence of change points at the 0.05 significance level.
 #' - Trend detection finds evidence of an increasing trend in the variability.
 #'
-#' @format A dateframe with 95 rows and 2 columns spanning the period 1922-2016.
+#' @format A dataframe with 95 rows and 2 columns spanning the period 1922-2016.
 #'
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'

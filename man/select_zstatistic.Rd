@@ -64,6 +64,6 @@ Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach b
 on L-Moments. Cambridge University Press, New York, USA.
 }
 \seealso{
-\code{\link[=select_ldistance]{select_ldistance()}}, \code{\link[=select_lkurtosis]{select_lkurtosis()}}, \code{\link[=fit_lmom_kappa]{fit_lmom_kappa()}},
-\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=plot_lmom_diagram]{plot_lmom_diagram()}}
+\code{\link[=select_ldistance]{select_ldistance()}}, \code{\link[=select_lkurtosis]{select_lkurtosis()}}, \code{\link[=fit_lmoments_kappa]{fit_lmoments_kappa()}},
+\code{\link[=utils_quantiles]{utils_quantiles()}}, \code{\link[=plot_lmom_diagram]{plot_lmom_diagram()}}
 }

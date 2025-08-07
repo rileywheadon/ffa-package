@@ -23,12 +23,13 @@
 #' - `method`: "RFPL"
 #' - `ns_structure`: The `ns_structure` argument, if given.
 #' - `ns_slices`: The `ns_slices` argument, if given.
-#' - `results`: A dataframe (S-FFA) or list of dataframes (NS-FFA).
+#' - `ci`: A dataframe containing confidence intervals (S-FFA only)
+#' - `ci_list`: A list of dataframes containing confidence intervals (NS-FFA only).
 #'
-#' Each dataframe within `results` has four columns:
+#' The dataframe(s) in `ci` and `ci_list` have four columns:
 #' - `estimates`: Estimated quantiles for each return period.
-#' - `ci_lower`: Lower bound of the confidence interval for each return period.
-#' - `ci_upper`: Upper bound of the confidence interval for each return period.
+#' - `lower`: Lower bound of the confidence interval for each return period.
+#' - `upper`: Upper bound of the confidence interval for each return period.
 #' - `periods`: The `periods` argument. 
 #'
 #' @details
@@ -45,7 +46,8 @@
 #' If this function encounters an issue, it will return an error and recommend 
 #' using the parametric bootstrap method [uncertainty_bootstrap()] instead.
 #'
-#' @seealso [quantile_fast()], [uncertainty_bootstrap()], [plot_sffa()], [plot_nsffa()]
+#' @seealso [utils_quantiles()], [uncertainty_bootstrap()], [uncertainty_rfgpl()],
+#' [plot_sffa_estimates()], [plot_nsffa_estimates()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -57,8 +59,8 @@
 #' \doi{10.1016/j.advwatres.2022.104151}
 #' 
 #' Vidrio-Sahagún, C.T., He, J. & Pietroniro, A. Multi-distribution regula-falsi profile 
-#' likelihood method for nonstationary hydrological frequency analysis. Stoch Environ Res 
-#' Risk Assess 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
+#' likelihood method for nonstationary hydrological frequency analysis. Stochastic Environmental 
+#' Research and Risk Assessment 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
 #'
 #' @importFrom stats qchisq nlminb
 #' @export
@@ -76,11 +78,11 @@ uncertainty_rfpl <- function(
 
 	data <- validate_numeric("data", data)
 	distribution <- validate_enum("distribution", distribution)
-	years <- validate_numeric("ns_years", ns_years, size = length(data))
+	years <- validate_numeric("ns_years", ns_years, TRUE, size = length(data))
 	structure <- validate_structure(ns_structure)
-	slices <- validate_numeric("ns_slices", ns_slices)
+	slices <- validate_numeric("ns_slices", ns_slices, TRUE)
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
-	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
+	periods <- validate_numeric("periods", periods, bounds = c(1, Inf))
 	tolerance <- validate_float("tolerance", tolerance, bounds = c(0, 1))
 
 	# Call the general helper method
@@ -96,12 +98,21 @@ uncertainty_rfpl <- function(
 		tolerance
 	)
 
-	list(
+	# Initialize the output
+	output <- list(
 		method = "RFPL",
 		ns_structure = ns_structure,
-		ns_slices = ns_slices,
-		results = results
+		ns_slices = ns_slices
 	)
 
+	# Add the confidence interval list or confidence interval dataframe
+	if (structure$location || structure$scale) {
+		output$ci_list <- results
+	} else {
+		output$ci <- results
+	}
+
+	# Return results
+	output	
 }
 

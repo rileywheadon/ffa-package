@@ -18,19 +18,21 @@ validate_rfpl <- function(
 		ns_years = df$year,
 		ns_structure = structure,
 		ns_slices = slices
-	)$results
+	)
 
-	if (!is.data.frame(results)) {
-		results <- results[[1]]
+	if (is.null(structure)) {
+		expect_equal(results$ci$lower, ci_lower, tol = 1e-2)
+		expect_equal(results$ci$upper, ci_upper, tol = 1e-2)
+	} else {
+		expect_equal(results$ci_list[[1]]$lower, ci_lower, tol = 1e-2)
+		expect_equal(results$ci_list[[1]]$upper, ci_upper, tol = 1e-2)
 	}
-
-	# NOTE: We check the estimates in test-mle-estimation.R
-	expect_equal(results$ci_lower, ci_lower, tol = 1e-2)
-	expect_equal(results$ci_upper, ci_upper, tol = 1e-2)
 
 }
 
+
 test_that("basic functionality is working for CRAN", { 
+	set.seed(1)
 
 	# Load dataset and run FFPL uncertainty quantification
 	df <- data_local("CAN-07BE001.csv")
@@ -54,7 +56,7 @@ test_that("basic functionality is working for CRAN", {
 
 	# Weibull (WEI) Distribution
 	validate_rfpl(
-		df, "WEI", S00,
+		df, "WEI", NULL,
 		c(1755, 2570, 3013, 3381, 3792, 4065),
 		c(2132, 3059, 3620, 4118, 4710, 5124)
 	)
@@ -130,49 +132,49 @@ test_that("RFPL uncertainty works on ATHABASCA RIVER (07BE001)", {
 
 	# Gumbel (GUM) Distribution
 	validate_rfpl(
-		df, "GUM", S00,
+		df, "GUM", NULL,
 		c(1741, 2426, 2867, 3286, 3826, 4229),
 		c(2045, 2895, 3470, 4025, 4747, 5289)
 	)
 
 	# Normal (NOR) Distribution
 	validate_rfpl(
-		df, "NOR", S00,
+		df, "NOR", NULL,
 		c(1860, 2613, 2988, 3292, 3631, 3854),
 		c(2218, 3030, 3472, 3842, 4262, 4544)
 	)
 
 	# Log-Normal (LNO) Distribution
 	validate_rfpl(
-		df, "LNO", S00,
+		df, "LNO", NULL,
 		c(1709, 2441, 2915, 3366, 3951, 4392),
 		c(2024, 2973, 3664, 4366, 5328, 6088)
 	)
 
 	# Generalized Extreme Value (GEV) Distribution
 	validate_rfpl(
-		df, "GEV", S00,
+		df, "GEV", NULL,
 		c(1718, 2426, 2884, 3318, 3850, 4236),
 		c(2032, 2920, 3628, 4403, 5543, 6565)
 	)
 
 	# Generalized Logistic (GLO) Distribution
 	validate_rfpl(
-		df, "GLO", S00,
+		df, "GLO", NULL,
 		c(1708, 2346, 2786, 3239, 3885, 4422),
 		c(2008, 2856, 3564, 4401, 5787, 7115)
 	)
 
 	# Generalized Normal (GNO) Distribution
 	validate_rfpl(
-		df, "GNO", S00,
+		df, "GNO", NULL,
 		c(1729, 2448, 2893, 3299, 3800, 4163),
 		c(2052, 2948, 3592, 4242, 5130, 5830)
 	)
 
 	# Pearson Type III (PE3) Distribution
 	validate_rfpl(
-		df, "PE3", S00,
+		df, "PE3", NULL,
 		c(1754, 2486, 2917, 3299, 3757, 4081),
 		c(2084, 2969, 3551, 4100, 4793, 5301)
 	)
@@ -209,7 +211,7 @@ test_that("RFPL uncertainty works on ATHABASCA RIVER (07BE001)", {
 
 	# Log-Pearson Type III (LP3) Distribution
 	validate_rfpl(
-		df, "LP3", S00,
+		df, "LP3", NULL,
 		c(1718, 2450, 2911, 3330, 3838, 4195),
 		c(2051, 2966, 3631, 4322, 5295, 6086)
 	)

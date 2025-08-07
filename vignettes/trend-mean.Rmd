@@ -112,13 +112,18 @@ While the Mann-Kendall identified a significant monotonic trend, it did not esti
 We can estimate the monotonic trend using Sen's trend estimator, which uses a non-parametric approach that is robust to outliers.
 
 `eda_sens_trend()` takes two arguments: the annual maximum series and the corresponding vector of years.
-Then, `plot_sens_trend()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
-It also takes an optional trend in the mean (`mean_trend`), or a trend in the variability (`variability_trend`).
+Then, `plot_ams_data()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
+It also takes an optional arguments `plot_mean` and `plot_variability` for plotting a trend in the mean and variability respectively.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-mean_trend <- eda_sens_trend(df$max, df$year)
+sens_trend <- eda_sens_trend(df$max, df$year)
 
-plot_sens_trend(df$max, df$year, mean_trend = mean_trend)
+plot_ams_data(
+	df$max,
+	df$year,
+	plot_mean = "Trend",
+	title = "Sen's Trend Estimator (AMS Mean)"
+)
 ```
 
 **Note**: The covariate is computed using the formula $(\text{years} - 1900) / 100$.
@@ -128,14 +133,14 @@ plot_sens_trend(df$max, df$year, mean_trend = mean_trend)
 The previous statistical tests have assumed the nonstationarity is linear.
 The runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
 If the residuals are random (the null hypothesis), there is evidence that the underlying trend is linear.
-The `eda_runs_test()` function takes the output of `eda_sens_trend()` as an argument.
+The `eda_runs_test()` function takes the residuals from `eda_sens_trend()` as the first argument and the observation years as the second argument.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-runs_test <- eda_runs_test(mean_trend)
+runs_test <- eda_runs_test(sens_trend$residuals, df$year)
 
 print(runs_test$p_value)
 
-plot_runs_test(runs_test, "Runs Test (AMS Mean)")
+plot_runs_test(runs_test, title = "Runs Test (AMS Mean)")
 ```
 
 **Conclusion**: At a p-value of $0.682$, there is evidence that a linear trend is suitable for the data.

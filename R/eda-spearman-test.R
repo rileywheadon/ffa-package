@@ -15,6 +15,7 @@
 #' - `alternative_hypothesis`: A string describing the alternative hypothesis.
 #' - `rho`: Numeric vector of serial correlation estimates for lags \eqn{1} to \eqn{n-3}.
 #' - `least_lag`: The smallest lag at which the serial correlation is insignificant. 
+#' - `significant`: Indicates whether the serial correlation is significant at each lag.
 #' - `reject`: If `TRUE`, the null hypothesis was rejected at significance `alpha`.
 #'
 #' @seealso [stats::cor.test()], [eda_bbmk_test()], [plot_spearman_test()]
@@ -54,7 +55,7 @@ eda_spearman_test <- function(data, alpha = 0.05) {
 	least_lag <- which(p_values > alpha)[1]
 
 	# Get a series of booleans for whether the serial correlation is significant
-	sig <- (p_values <= alpha)
+	significant <- (p_values <= alpha)
 	reject <- (least_lag > 1)
 
 	# Return the results as a list
@@ -65,6 +66,7 @@ eda_spearman_test <- function(data, alpha = 0.05) {
 		alternative_hypothesis = "The least insignificant lag is greater than 1." ,
 		rho = rho,
 		least_lag = least_lag,
+		significant = significant,
 		reject = reject
 	)
 

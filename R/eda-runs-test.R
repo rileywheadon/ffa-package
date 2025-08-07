@@ -6,10 +6,12 @@
 #' median). Under the null hypothesis, the data is random.
 #' 
 #' @param values A numeric vector of values to check for randomness. 
+#' @inheritParams param-years
 #' @inheritParams param-alpha
 #'
 #' @return A list containing the test results, including:
 #' - `values`: The `values` argument.
+#' - `years`: The `years` argument.
 #' - `alpha`: The significance level as specified in the `alpha` argument.
 #' - `null_hypothesis`: A string describing the null hypothesis.
 #' - `alternative_hypothesis`: A string describing the alternative hypothesis.
@@ -28,12 +30,12 @@
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
-#' sens <- eda_sens_trend(data, years)
-#' eda_runs_test(sens)
+#' sens_trend <- eda_sens_trend(data, years)
+#' eda_runs_test(sens_trend$residuals, years)
 #'
 #' @export
 
-eda_runs_test <- function(values, alpha = 0.05) {
+eda_runs_test <- function(values, years, alpha = 0.05) {
 
 	values <- validate_numeric('values', values)
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
@@ -66,6 +68,7 @@ eda_runs_test <- function(values, alpha = 0.05) {
 	# Return the results as a list
 	list(
 		values = values,
+		years = years,
 		alpha = alpha,
 		null_hypothesis = "The input vector is random.",
 		alternative_hypothesis = "The input vector is not random.",

@@ -35,8 +35,8 @@ plot_mks_test <- function(results, show_line = TRUE, ...) {
 	df <- data.frame(
 		max = results$data,
 		year = results$years,
-		s_progressive = results$s_progressive,
-		s_regressive = results$s_regressive
+		progressive = results$progressive_series,
+		regressive = results$regressive_series
 	)
 
 	# Capture optional arguments
@@ -51,8 +51,8 @@ plot_mks_test <- function(results, show_line = TRUE, ...) {
 
 	# Plot the normalized trend statistics and confidence bands
 	p1 <- ggplot(df, aes(x = .data$year)) +
-		geom_line(aes(color = "black", y = .data$s_progressive), linewidth = 1.2) +
-		geom_line(aes(color = "gray",  y = .data$s_regressive), linewidth = 1.2) +
+		geom_line(aes(color = "black", y = .data$progressive), linewidth = 1.2) +
+		geom_line(aes(color = "gray",  y = .data$regressive), linewidth = 1.2) +
 		geom_hline(
 			data = bound_df,
 			aes(yintercept = .data$y, color = "red"),
@@ -60,7 +60,7 @@ plot_mks_test <- function(results, show_line = TRUE, ...) {
 			linetype = "dashed",
 		) +
 		geom_point(
-			data = results$change_df,
+			data = results$change_points,
 			aes(x =.data$year, y = .data$statistic, color = "blue"), 
 			size = 4
 		) +
@@ -81,8 +81,8 @@ plot_mks_test <- function(results, show_line = TRUE, ...) {
 		geom_point(aes(color = "dimgray"), size = 2.25) +
 		(if (show_line) geom_line(color = "dimgray", linewidth = 1) else NULL) +
 		geom_point(
-			data = results$change_df,
-			aes(x = .data$year, y = .data$max, color = "blue"), 
+			data = results$change_points,
+			aes(x = .data$year, y = .data$value, color = "blue"), 
 			size = 4
 		) +
 		labs(x = bottom_xlabel, y = bottom_ylabel, color = "Legend") +
@@ -93,6 +93,7 @@ plot_mks_test <- function(results, show_line = TRUE, ...) {
 		)	
 
 	# Stack plots on top of each other and return
-	add_theme(add_scales(p1)) / add_theme(add_scales(p2))
+	(add_theme(add_scales(p1)) / add_theme(add_scales(p2))) + plot_annotation(title = "")
+
 	
 }

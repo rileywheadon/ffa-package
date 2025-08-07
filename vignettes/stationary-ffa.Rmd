@@ -61,13 +61,16 @@ You can find more information about the probability distributions supported by t
 The `ffaframework` package provides three methods for parameter estimation.
 See [here](https://rileywheadon.github.io/ffa-docs/parameter-estimation/) for more information.
 
-- `fit_lmom_*`: L-moments parameter estimation for each distribution.
-- `fit_maximum_likelihood`: Maximum likelihood and generalized maximum likelihood.
+- `fit_lmoments`: L-moments parameter estimation.
+- `fit_mle`: Maximum likelihood parameter estimation. 
+- `fit_gmle`: Generalized maximum likelihood parameter estimation.
 
-```{r}
-params <- fit_lmom_gev(df$max)$params
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+fit <- fit_lmoments(df$max, "GEV")
 
-print(params)
+print(fit$params)
+
+plot_sffa_fit(fit)
 ```
 
 **Conclusion**: The GEV distribution with `location = 1600`, `scale = 616`, and `shape = 0.12` will be used.
@@ -87,21 +90,21 @@ By default, return levels are computed 2-, 5-, 10-, 20-, 50-, and 100- year retu
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 uncertainty <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
 
-plot_sffa(uncertainty)
+plot_sffa_estimates(fit, ci = uncertainty$ci)
 ```
 
 **Example Conclusion**: Every 10 years, we can expect a flood of roughly $3{\small,}200\text{m}^3/\text{s}$ or greater.
 
 ## Model Assessment
 
-Model performance is assessed using `model_diagnostics`, which reports a collection of assessment statistics about the flood frequency analysis.
-`plot_model_diagnostics` compares the empirical plotting positions ("Observed Quantiles") and the predictions of the parametric model ("Model Quantiles"). 
+Model performance is assessed using `model_assessment`, which reports a collection of assessment statistics about the flood frequency analysis.
+`plot_model_assessment` compares the empirical plotting positions ("Observed Quantiles") and the predictions of the parametric model ("Model Quantiles"). 
 The black line represents a perfect 1:1 correspondence between the model and the data.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-diagnostics <- model_diagnostics(df$max, "GEV", params, uncertainty)
+assessment <- model_assessment(df$max, "GEV", fit$params, ci = uncertainty$ci)
 
-plot_model_diagnostics(diagnostics)
+plot_model_assessment(assessment)
 ```
 
 **Conclusion**: The parametric model generally matches the plotting positions.

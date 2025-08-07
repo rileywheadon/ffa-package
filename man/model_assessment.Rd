@@ -89,10 +89,10 @@ data <- rnorm(n = 100, mean = 100, sd = 10)
 params <- c(100, 10)
 
 # Perform uncertainty analysis
-uncertainty <- uncertainty_bootstrap(data, "NOR", "L-moments")
+ci <- uncertainty_bootstrap(data, "NOR", "L-moments")$results
 
 # Evaluate model diagnostics
-model_diagnostics(data, "NOR", params, uncertainty)
+model_assessment(data, "NOR", params, ci = ci)
 
 }
 \seealso{

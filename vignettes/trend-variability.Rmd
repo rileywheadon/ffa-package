@@ -50,17 +50,17 @@ This vignette demonstrates how to use the `ffaframework` to check for evidence o
 
 ## Case Study 
 
-This vignette will explore data from the Mission Creek near East Kelowna (08NM116) hydrological monitoring station.
+This vignette will explore data from the Chilliwack River at Chilliwack Lake (08MH016) hydrological monitoring station.
 The remoteness of this station means that trends annual maxima are caused by changes in climate as opposed to changes in land use or cover.
-Data for this station is provided as `CAN-08NM116.csv` in the `ffaframework` package.
+Data for this station is provided as `CAN-08MH016.csv` in the `ffaframework` package.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 library(ffaframework)
 
-df <- data_local("CAN-08NM116.csv")
+df <- data_local("CAN-08MH016.csv")
 head(df)
 
-plot_ams_data(df$max, df$year, title = "Mission Creek near East Kelowna (08NM116)")
+plot_ams_data(df$max, df$year, title = "Chilliwack River at Chilliwack Lake (08MH016)")
 ```
 
 ## Assessing Trends in the Variance 
@@ -79,7 +79,7 @@ mwmk_test <- eda_mk_test(mw$std)
 print(mwmk_test$p_value)
 ```
 
-**Conclusion**: At a p-value of 0.016, we *reject* the null hypothesis. 
+**Conclusion**: At a p-value of $0.0015$, we *reject* the null hypothesis. 
 There is evidence of a linear trend in the variability in the data.
 
 ### White Test
@@ -92,8 +92,8 @@ white_test <- eda_white_test(df$max, df$year)
 print(white_test$p_value)
 ```
 
-**Conclusion**: At a p-value of 0.0012, we *reject* the null hypothesis.
-There is statistical evidence of heteroskedasticity. 
+**Conclusion**: At a p-value of $0.1176$, we *fail to reject* the null hypothesis.
+There is no statistical evidence of heteroskedasticity. 
 
 ### Sen's Trend Estimator
 
@@ -101,13 +101,19 @@ While the previous tests provide evidence for a monotonic trend in the variabili
 We can estimate the monotonic trend using Sen's trend estimator, which uses a nonparametric approach that is robust to outliers.
 
 `eda_sens_trend()` takes two arguments: the data (either an annual maximum series or vector of standard deviations) and the corresponding vector of years.
-Then, `plot_sens_trend()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
-It also takes an optional trend in the mean (`mean_trend`), or a trend in the variability (`variability_trend`).
+Then, `plot_ams_data()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
+It also takes an optional arguments `plot_mean` and `plot_variability` for plotting a trend in the mean or variability respectively. 
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-variability_trend <- eda_sens_trend(mw$std, mw$year)
+sens_trend <- eda_sens_trend(mw$std, mw$year)
 
-plot_sens_trend(df$max, df$year, variability_trend = variability_trend)
+plot_ams_data(
+	df$max,
+	df$year,
+	plot_mean = "Constant",
+	plot_variability = "Trend",
+	title = "Sen's Trend Estimator (AMS Variability)"
+)
 ```
 
 **Note**: The covariate is computed using the formula $(\text{years} - 1900) / 100$.
@@ -117,17 +123,17 @@ plot_sens_trend(df$max, df$year, variability_trend = variability_trend)
 Sen's trend estimator assumed that the nonstationarity is linear.
 The runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
 If the residuals are random (the null hypothesis), there is evidence that the underlying trend is linear.
-The `eda_runs_test()` function takes the output of `eda_sens_trend()` as an argument.
+The `eda_runs_test()` function takes the residuals from `eda_sens_trend()` as the first argument and the observation years as the second argument.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-runs_test <- eda_runs_test(variability_trend)
+runs_test <- eda_runs_test(sens_trend$residuals, mw$year)
 
 print(runs_test$p_value)
 
 plot_runs_test(runs_test, title = "Runs Test (AMS Variability)")
 ```
 
-**Conclusion**: At a p-value of $0.266$, we *fail to reject* the null hypothesis.
+**Conclusion**: At a p-value of $0.3311$, we *fail to reject* the null hypothesis.
 There is evidence that the residuals are random and a linear trend is suitable for the data.
 
 ## Conclusion

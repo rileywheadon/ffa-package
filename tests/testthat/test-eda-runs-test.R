@@ -3,7 +3,7 @@ test_that("eda-runs-test.R works on means of ATHABASCA RIVER (07BE001)", {
 	# Load the data and run the Runs test
 	df <- data_local("CAN-07BE001.csv")
 	sens <- eda_sens_trend(df$max, df$year)
-	test <- eda_runs_test(sens$residuals)
+	test <- eda_runs_test(sens$residuals, df$year)
 
 	# Ensure the test results are the same as the runs.testimplementation in randtests
   	expect_equal(test$n, 102)
@@ -18,7 +18,7 @@ test_that("eda-runs-test.R works on means of KOOTENAI RIVER (08NH021)", {
 	# Load the data and run the Runs test
 	df <- data_local("CAN-08NH021.csv")
 	sens <- eda_sens_trend(df$max, df$year)
-	test <- eda_runs_test(sens$residuals)
+	test <- eda_runs_test(sens$residuals, df$year)
 
 	# Ensure the test results are the same as the runs.testimplementation in randtests
   	expect_equal(test$n, 90)
@@ -33,7 +33,7 @@ test_that("eda-runs-test.R works on means of BOW RIVER (05BB001)", {
 	# Load the data and run the Runs test
 	df <- data_local("CAN-05BB001.csv")
 	sens <- eda_sens_trend(df$max, df$year)
-	test <- eda_runs_test(sens$residuals)
+	test <- eda_runs_test(sens$residuals, df$year)
 
 	# Ensure the test results are the same as the runs.testimplementation in randtests
   	expect_equal(test$n, 108)
@@ -48,7 +48,7 @@ test_that("eda-runs-test.R works on means of CHILLIWACK RIVER (08MH016)", {
 	# Load the data and run the Runs test
 	df <- data_local("CAN-08MH016.csv")
 	sens <- eda_sens_trend(df$max, df$year)
-	test <- eda_runs_test(sens$residuals)
+	test <- eda_runs_test(sens$residuals, df$year)
 
 	# Ensure the test results are the same as the runs.testimplementation in randtests
   	expect_equal(test$n, 88)
@@ -63,7 +63,7 @@ test_that("eda-runs-test.R works on means of OKANAGAN RIVER (08NM050)", {
 	# Load the data and run the Runs test
 	df <- data_local("CAN-08NM050.csv")
 	sens <- eda_sens_trend(df$max, df$year)
-	test <- eda_runs_test(sens$residuals)
+	test <- eda_runs_test(sens$residuals, df$year)
 
 	# Ensure the test results are the same as the runs.testimplementation in randtests
   	expect_equal(test$n, 96)

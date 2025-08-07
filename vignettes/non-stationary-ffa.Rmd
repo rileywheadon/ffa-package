@@ -14,14 +14,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis (FFA) under the assumption of nonstationarity.
+This vignette demonstrates how to use the `ffaframework` package to perform flood frequency analysis under the assumption of nonstationarity (NS-FFA).
 Readers unfamiliar with stationary FFA workflows should first consult the *Stationary FFA* vignette.
 
-The framework supports three forms of nonstationarity, modelled as linear trends in the distribution parameters:
+The framework supports three forms of nonstationarity, modeled as linear trends in the distribution parameters:
 
-1. A linear trend in the mean (location parameter).
-2. A linear trend in the variance (scale parameter).
-3. A linear trend in both the mean and variance.
+1. A linear trend in the location parameter.
+2. A linear trend in the scale parameter.
+3. A linear trend in both the location and scale parameters.
 
 The shape parameter is treated as a constant due to difficulties in estimation caused by sample size limitations.
 
@@ -40,14 +40,14 @@ head(df)
 plot_ams_data(df$max, df$year, title = "Bow River at Banff (05BB001)")
 ```
 
-### The `structure` List
+### The `ns_structure` List
 
 This vignette assumes a scenario where a trend in the mean has been identified.
-To specify a trend in a distribution parameter, create a `structure` list containing the boolean items `location` and `scale`.
-Setting these items to `TRUE` specifies a trend in the location/scale parameter respectively. 
+To specify a trend in one or more distribution parameters, create a `ns_structure` (nonstationary model structure) list containing the boolean items `location` and `scale`.
+Setting these items to `TRUE` adds a trend to the location/scale parameter respectively. 
 
 ```{r}
-structure <- list(location = TRUE, scale = FALSE)
+ns_structure <- list(location = TRUE, scale = FALSE)
 ```
 
 **Note**: For guidance on trend detection, refer to the *Trend Identification* vignette.
@@ -55,25 +55,28 @@ structure <- list(location = TRUE, scale = FALSE)
 ## Distribution Selection
 
 L-moment-based distribution selection remains applicable under nonstationarity, but requires dataset decomposition (detrending) prior to analysis.
-This is accomplished using the `data_decomposition` function, which takes an annual maximum series (AMS), the corresponding vector of years, and the `structure` object.
-The decomposed vector of data is then passed to the selection function (`select_ldistance` in this case).
+The `select_*` methods do this automatically (using the `data_decomposition` method) if the `ns_years` and `ns_structure` arguments are supplied.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-data_decomposed <- data_decomposition(df$max, df$year, structure)
-
-selection <- select_ldistance(data_decomposed)
+selection <- select_ldistance(
+	df$max,
+	ns_years = df$year,
+	ns_structure = ns_structure
+)
 
 print(selection$recommendation)
 
 plot_lmom_diagram(selection)
 ```
 
+**Note**: The sample and log-sample points on the L-moment diagram are based on the detrended data.
+
 **Conclusion**: The generalized normal (GNO) distribution is the best-fit distribution for the sample.
 
 ## Parameter Estimation
 
 Because L-moments parameter estimation requires stationarity, we will use maximum likelihood estimation for this nonstationary model.
-The `fit_maximum_likelihood` function implements maximum likelihood estimation for both stationary and nonstationary distributions.
+The `fit_mle` function implements maximum likelihood estimation for both stationary and nonstationary distributions.
 It has two required arguments: 
 
 - `data`: The annual maximum series observations. 
@@ -81,20 +84,22 @@ It has two required arguments:
 
 Since a nonstationary model is used, two additional arguments are required:
 
-- `years`: The corresponding vector of years for the observations in `data`.
-- `structure`: The nonstationary `structure` object described above.
+- `ns_years`: The corresponding vector of years for the observations in `data`.
+- `ns_structure`: The nonstationary `structure` object described above.
 
-```{r}
-fit <- fit_maximum_likelihood(
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+fit <- fit_mle(
 	df$max,
 	"GNO",
-	years = df$year,
-	structure = structure
+	ns_years = df$year,
+	ns_structure = ns_structure
 )
 
 print(fit$params)
 
 print(fit$mll)
+
+plot_nsffa_fit(fit, slices = c(1915, 2015))
 ```
 
 **Note**: The fitted parameters are: $(\mu_0, \mu_1, \sigma, \kappa)$, where the time-dependent location is modeled as $\mu(t) = \mu_0 + \mu_1 t$.
@@ -102,29 +107,29 @@ The covariate $t$ is a linear function of the years: $(\text{years} - 1900) / 10
 
 ## Uncertainty Quantification
 
-Uncertainty quantification is also essential for nonstationary probability distributions.
+Uncertainty quantification is an important step in NS-FFA as well as S-FFA.
 In addition to the parametric bootstrap, the framework implements the regula-falsi profile likelihood (RFPL) method for MLE.
 The `uncertainty_rfpl` method has two required arguments:
 
 - `data`: The annual maximum series observations. 
 - `model`: A three-letter code corresponding to a probability distribution (ex. `"GNO"`).
 
-Since the model has a nonstationary structure, three additional arguments are required:
+Since our model has a nonstationary structure, three additional arguments are required:
 
-- `years`: The corresponding vector of years for the observations in `data`.
-- `structure`: The nonstationary `structure` object described above.
-- `slices`: The years at which return levels are computed.
+- `ns_years`: The corresponding vector of years for the observations in `data`.
+- `ns_structure`: The nonstationary `structure` object described above.
+- `ns_slices`: The years at which return levels are computed.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
 uncertainty <- uncertainty_rfpl(
 	df$max,
 	"GNO",
-	years = df$year,
-	structure = structure,
-	slices = c(1925, 2025)
+	ns_years = df$year,
+	ns_structure = ns_structure,
+	ns_slices = c(1915, 2015)
 )
 
-plot_nsffa(uncertainty)
+plot_nsffa_estimates(fit, ci_list = uncertainty$ci_list)
 ```
 
 **Example Conclusion**: In 2025, there is a $1/20$ exceedance probability of a flood of approximately $300\text{m}^3/\text{s}$ or greater.

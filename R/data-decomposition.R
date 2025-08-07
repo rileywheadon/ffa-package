@@ -13,10 +13,10 @@
 #'
 #' @details
 #' Internally, the function does the following:
-#' 1. If there is a trend in the location, fit Sen’s trend estimator and subtract
+#' 1. If there is a trend in the location, fit Sen's trend estimator and subtract
 #'    away the fitted trend.
 #' 2. If there is a trend in the scale, estimate the variability of the data 
-#'    with [data_mw_variability()], fit Sen’s trend estimator to the variability 
+#'    with [data_mw_variability()], fit Sen's trend estimator to the variability 
 #'    vector, and rescale the data to remove the trend.
 #' 3. If necessary, shift the data so that its minimum is at least 1.
 #'

@@ -46,10 +46,10 @@ years (\code{ns_years}) and the nonstationary model structure (\code{ns_structur
 }
 \details{
 \enumerate{
-\item Calls \code{\link[=fit_lmom_fast]{fit_lmom_fast()}} on \code{data} to obtain initial parameter estimates.
+\item Calls \code{\link[=fit_lmoments]{fit_lmoments()}} on \code{data} to obtain initial parameter estimates.
 \item Initializes trend parameters to zero if necessary.
 \item For \code{WEI} models, sets the location parameter to zero to ensure support.
-\item Defines an objective function using \code{\link[=loglik_fast]{loglik_fast()}}.
+\item Defines an objective function using \code{\link[=utils_log_likelihood]{utils_log_likelihood()}}.
 \item Runs \code{\link[stats:nlminb]{stats::nlminb()}} with box constraints. Attempts minimization up to 100 times.
 }
 }
@@ -61,5 +61,5 @@ fit_mle(data, "GNO", ns_years, ns_structure)
 
 }
 \seealso{
-\code{\link[=loglik_fast]{loglik_fast()}}, \code{\link[=general_loglik_fast]{general_loglik_fast()}}, \code{\link[=fit_lmom_fast]{fit_lmom_fast()}}, \code{\link[stats:nlminb]{stats::nlminb()}}
+\code{\link[=utils_log_likelihood]{utils_log_likelihood()}}, \code{\link[=fit_lmoments]{fit_lmoments()}}, \code{\link[stats:nlminb]{stats::nlminb()}}
 }

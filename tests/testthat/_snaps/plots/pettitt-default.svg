@@ -250,8 +250,8 @@
 <circle cx='533.11' cy='467.06' r='2.76' style='stroke-width: 0.71; stroke: #696969; fill: #696969;' />
 <circle cx='538.00' cy='466.41' r='2.76' style='stroke-width: 0.71; stroke: #696969; fill: #696969;' />
 <polyline points='98.27,400.71 103.15,444.30 108.04,441.04 112.93,457.96 117.81,411.12 122.70,381.85 127.58,389.01 132.47,425.43 137.36,443.65 142.24,453.40 147.13,385.75 152.01,459.26 156.90,452.75 161.79,482.02 166.67,402.67 171.56,428.03 176.44,492.24 181.33,439.09 186.21,400.06 191.10,385.75 195.99,323.31 200.87,393.56 205.76,385.10 210.64,390.31 215.53,422.18 220.42,407.87 225.30,365.59 230.19,390.31 235.07,343.47 239.96,402.02 244.85,403.97 249.73,381.85 254.62,411.12 259.50,338.27 264.39,436.49 269.27,435.84 274.16,381.85 279.05,414.37 283.93,392.91 288.82,372.74 293.70,415.02 298.59,385.10 303.48,432.59 308.36,387.70 313.25,443.00 318.13,500.89 323.02,452.10 327.91,480.07 332.79,471.62 337.68,508.63 342.56,499.59 347.45,504.01 352.34,485.28 357.22,471.62 362.11,470.32 366.99,493.93 371.88,507.33 376.76,486.58 381.65,488.92 386.54,494.45 391.42,504.92 396.31,491.52 401.19,482.02 406.08,454.70 410.97,501.99 415.85,501.28 420.74,505.51 425.62,472.92 430.51,450.15 435.40,440.39 440.28,467.06 445.17,462.51 450.05,486.58 454.94,522.81 459.83,461.21 464.71,489.31 469.60,496.86 474.48,492.04 479.37,437.79 484.25,485.93 489.14,448.20 494.03,485.93 498.91,465.76 503.80,458.61 508.68,442.35 513.57,452.10 518.46,463.81 523.34,479.42 528.23,474.87 533.11,467.06 538.00,466.41 ' style='stroke-width: 2.35; stroke: #696969; stroke-linecap: butt;' />
-<line x1='98.27' y1='409.61' x2='313.25' y2='409.61' style='stroke-width: 2.56; stroke: #008B00; stroke-linecap: butt;' />
-<line x1='313.25' y1='478.09' x2='538.00' y2='478.09' style='stroke-width: 2.56; stroke: #008B00; stroke-linecap: butt;' />
+<line x1='98.27' y1='409.61' x2='313.25' y2='409.61' style='stroke-width: 2.56; stroke-linecap: butt;' />
+<line x1='313.25' y1='478.09' x2='538.00' y2='478.09' style='stroke-width: 2.56; stroke-linecap: butt;' />
 <circle cx='313.25' cy='443.00' r='4.62' style='stroke-width: 0.71; stroke: #0000FF; fill: #0000FF;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
@@ -292,7 +292,7 @@
 <rect x='573.39' y='383.99' width='123.74' height='78.13' style='stroke-width: 1.07; fill: #FFFFFF;' />
 <text x='635.26' y='398.18' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='36.71px' lengthAdjust='spacingAndGlyphs'>Legend</text>
 <circle cx='587.51' cy='413.44' r='2.76' style='stroke-width: 0.71; stroke: #696969; fill: #696969;' />
-<line x1='580.60' y1='430.72' x2='594.42' y2='430.72' style='stroke-width: 2.56; stroke: #008B00; stroke-linecap: butt;' />
+<line x1='580.60' y1='430.72' x2='594.42' y2='430.72' style='stroke-width: 2.56; stroke-linecap: butt;' />
 <circle cx='587.51' cy='448.00' r='4.62' style='stroke-width: 0.71; stroke: #0000FF; fill: #0000FF;' />
 <text x='601.63' y='417.17' style='font-size: 8.80px; font-family: sans;' textLength='5.87px' lengthAdjust='spacingAndGlyphs'>S</text>
 <text x='607.50' y='417.17' style='font-size: 8.80px; font-family: sans;' textLength='2.44px' lengthAdjust='spacingAndGlyphs'>t</text>
@@ -311,6 +311,5 @@
 <text x='663.26' y='417.17' style='font-size: 8.80px; font-family: sans;' textLength='4.40px' lengthAdjust='spacingAndGlyphs'>s</text>
 <text x='601.63' y='433.75' style='font-size: 8.80px; font-family: sans;' textLength='69.95px' lengthAdjust='spacingAndGlyphs'>Segment Mean(s)</text>
 <text x='601.63' y='451.03' style='font-size: 8.80px; font-family: sans;' textLength='90.02px' lengthAdjust='spacingAndGlyphs'>Potential Change Point</text>
-<text x='20.42' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='76.31px' lengthAdjust='spacingAndGlyphs'>pettitt-default</text>
 </g>
 </svg>

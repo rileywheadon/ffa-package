@@ -10,7 +10,7 @@
 #' 
 #' This dataset is an excellent introductory example to stationary FFA.
 #'
-#' @format A dateframe with 108 rows and 2 columns spanning the period 1913-2020.
+#' @format A dataframe with 108 rows and 2 columns spanning the period 1913-2020.
 #'
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'

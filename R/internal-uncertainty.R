@@ -82,7 +82,7 @@ uncertainty_regula_falsi <- function(
 				if (distribution != "WEI") {
 
 					# Get the quantile at probability p with location 0
-					qp <- quantile_fast(p, distribution, c(0, theta), slice, structure)
+					qp <- quantiles_fast(p, distribution, c(0, theta), slice, structure)
 
 					# Log-transform yp, qp if necessary
 					if (distribution %in% c("LNO", "LP3")) {
@@ -103,7 +103,7 @@ uncertainty_regula_falsi <- function(
 					j <- structure$scale
 
 					# Get the quantiles for the Wei(0, 1, shape) distribution
-					qp <- quantile_wei(p, c(0, 1, theta[2 + i + j]))
+					qp <- utils_quantiles(p, "WEI", c(0, 1, theta[2 + i + j]))
 
 					# Reparameterize on the scale parameter sigma
 					covariate <- get_covariates(slice)
@@ -125,9 +125,9 @@ uncertainty_regula_falsi <- function(
 
 				# Use the correct likelihood function based on whether there is a prior
 				if (!is.null(prior)) {
-					0 - general_loglik_fast(data, distribution, theta, prior, years, structure)
+					0 - generalized_likelihood_fast(data, theta, prior, years, structure)
 				} else {
-					0 - loglik_fast(data, distribution, theta, years, structure)
+					0 - log_likelihood_fast(data, distribution, theta, years, structure)
 				}
 
 			} 
@@ -170,7 +170,7 @@ uncertainty_regula_falsi <- function(
 		# Get the results of maximum likelihood estimation
 		mle <- fit_maximum_likelihood(data, distribution, prior, years, structure) 
 		lp_hat <- mle$mll
-		yp_hat <- quantile_fast(probabilities, distribution, mle$params, slice, structure)
+		yp_hat <- quantiles_fast(probabilities, distribution, mle$params, slice, structure)
 
 		# We want to find the roots of the function f defined below:
 		f <- function(yp, p) {
@@ -227,8 +227,8 @@ uncertainty_regula_falsi <- function(
 		data.frame(
 			periods = periods,
 			estimates = yp_hat,
-			ci_lower = ci_lower,
-			ci_upper = ci_upper
+			lower = ci_lower,
+			upper = ci_upper
 		)
 
 	}

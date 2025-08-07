@@ -19,7 +19,7 @@
 #'
 #' @details
 #' The implementation of the KPSS test is based on the \pkg{aTSA} package, which 
-#' interpolates a significance table from Hobjin et al. (2004). Therefore, a result 
+#' interpolates a significance table from Hobijn et al. (2004). Therefore, a result 
 #' of \eqn{p = 0.01} implies that \eqn{p \leq 0.01} and a result of \eqn{p = 0.10} 
 #' implies that \eqn{p \geq 0.10}. 
 #'
@@ -73,7 +73,7 @@ eda_kpss_test <- function(data, alpha = 0.05) {
 	lambda_hat <- gamma[1] + 2 * sum((1 - 1:q/(q + 1))*gamma[-1])
 	statistic <- sum(Sk) / (lambda_hat * n^2)
 
-	# Table of quantiles and test statistic values from Hobjin et al. (2004)
+	# Table of quantiles and test statistic values from Hobijn et al. (2004)
 	quantiles <- c(0.10, 0.05, 0.025, 0.01)
     table <- c(0.119, 0.146, 0.176, 0.216)
 

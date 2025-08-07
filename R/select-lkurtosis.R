@@ -25,7 +25,7 @@
 #' values at a fixed L-skewness. For three parameter distributions, the shape parameter 
 #' that best replicates the sample L-skewness is determined using [stats::optim()].
 #'
-#' @seealso [lmom_sample()], [select_ldistance()], [select_zstatistic()], 
+#' @seealso [utils_sample_lmoments()], [select_ldistance()], [select_zstatistic()], 
 #'   [plot_lmom_diagram()]
 #'
 #' @examples
@@ -50,8 +50,8 @@ select_lkurtosis <- function(data, ns_years = NULL, ns_structure = NULL) {
 	}
 
 	# Get the sample L-moments for data and log(data)
-	reg_t3_t4 <- lmom_sample(data)[3:4]
-	log_t3_t4 <- lmom_sample(log(data))[3:4]
+	reg_t3_t4 <- utils_sample_lmoments(data)[3:4]
+	log_t3_t4 <- utils_sample_lmoments(log(data))[3:4]
 
 	# Initialize list of metrics
 	metrics <- list()
@@ -67,7 +67,7 @@ select_lkurtosis <- function(data, ns_years = NULL, ns_structure = NULL) {
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {
-			tau3_tau4 <- lmom_fast(distribution, c(0, 1, i))[3:4]
+			tau3_tau4 <- theoretical_lmoments_fast(distribution, c(0, 1, i))[3:4]
 			abs(tau3_tau4[1] - t3_t4[1])
 		}
 
@@ -81,7 +81,7 @@ select_lkurtosis <- function(data, ns_years = NULL, ns_structure = NULL) {
 		)
 
 		# Get the parameters of the fitted distribution
-		tau3_tau4 <- lmom_fast(distribution, c(0, 1, result$par))[3:4]
+		tau3_tau4 <- theoretical_lmoments_fast(distribution, c(0, 1, result$par))[3:4]
 		metrics[[distribution]] <- abs(tau3_tau4[2] - t3_t4[2])
 
 	}

@@ -71,11 +71,11 @@ model_assessment <- function(
   ci = NULL
 ) {
 
-	data <- validate_numeric("data", data, optional = FALSE)
+	data <- validate_numeric("data", data)
 	distribution <- validate_enum("distribution", distribution)
 	params <- validate_params(distribution, params, ns_structure)
 
-	years <- validate_numeric("ns_years", ns_years, size = length(data))
+	years <- validate_numeric("ns_years", ns_years, optional = TRUE, size = length(data))
 	structure <- validate_structure(ns_structure)
 	pp_formula <- validate_enum("pp_formula", pp_formula)
 
@@ -118,7 +118,7 @@ model_assessment <- function(
 		)
 
 		returns <- 1 / p_empirical               
-		estimates <- quantile_fast(1 - p_empirical, distribution, params, 0, structure)
+		estimates <- quantiles_fast(1 - p_empirical, distribution, params, 0, structure)
 
 		# Run linear regression against the sorted data
 		metrics$R2 <- summary(lm(estimates ~ data_sorted))$r.squared

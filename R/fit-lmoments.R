@@ -6,7 +6,7 @@
 #' @inheritParams param-distribution
 #'
 #' @details 
-#' First, the sample L-moments of the data are computed using [lmom_sample()].
+#' First, the sample L-moments of the data are computed using [utils_sample_lmoments()].
 #' Then, formulas from Hosking (1997) are used to match the parameters to 
 #' the sample L-moments. The distributions `"GNO"`, `"PE3"`, and `"LP3"` use a 
 #' rational approximation of the parameters since no closed-form expression is known.

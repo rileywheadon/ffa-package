@@ -35,16 +35,16 @@
 #'
 #' @references
 #' Bayazit, M., 2015. Nonstationarity of hydrological records and recent trends in trend 
-#' analysis: a state-of-the-art review. Environ. Processes 2 (3), 527–542. 
+#' analysis: a state-of-the-art review. Environmental Processes 2 (3), 527–542. 
 #' \doi{10.1007/s40710-015-0081-7}
 #'
 #' Khaliq, M.N., Ouarda, T.B.M.J., Gachon, P., Sushama, L., St-Hilaire, A., 2009. 
 #' Identification of hydrological trends in the presence of serial and cross correlations: 
 #' a review of selected methods and their application to annual flow regimes of Canadian 
-#' rivers. J. Hydrol. 368 (1–4), 117–130. \doi{10.1016/j.jhydrol.2009.01.035}
+#' rivers. Journal Hydrolology 368 (1–4), 117–130. \doi{10.1016/j.jhydrol.2009.01.035}
 #'
 #' Sonali, P., Nagesh Kumar, D., 2013. Review of trend detection methods and their 
-#' application to detect temperature changes in India. J. Hydrol. 476, 212–227. 
+#' application to detect temperature changes in India. Journal Hydrology 476, 212–227. 
 #' \doi{10.1016/j.jhydrol.2012.10.034}
 #'
 #' @importFrom stats quantile

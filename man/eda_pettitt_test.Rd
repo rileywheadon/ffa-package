@@ -27,7 +27,7 @@ A list containing the test results, including:
 \item \code{u_series}: Numeric vector of absolute U-statistics for all years.
 \item \code{statistic}: The test statistic and maximum absolute U-statistic.
 \item \code{bound}: The critical value of the test statistic based on \code{alpha}.
-\item \code{change_points}: A list containing the potential change point.
+\item \code{change_points}: A dataframe containing the potential change point.
 \item \code{p_value}: An asymptotic approximation of the  p-value for the test.
 \item \code{reject}: Logical scalar. If \code{TRUE}, the null hypothesis was rejected.
 }
@@ -48,7 +48,7 @@ eda_pettitt_test(data, years)
 }
 \references{
 Pettitt, A.N., 1979. A Non-parametric Approach to the Change-point Problem. J.
-Royal Statist. Soc. 28 (2), 126–135. \url{http://www.jstor.org/stable/2346729}
+Royal Statistics Society 28 (2), 126–135. \url{http://www.jstor.org/stable/2346729}
 }
 \seealso{
 \code{\link[=plot_pettitt_test]{plot_pettitt_test()}}, \code{\link[=eda_mks_test]{eda_mks_test()}}

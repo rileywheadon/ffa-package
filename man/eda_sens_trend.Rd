@@ -44,5 +44,5 @@ Sen, P.K. (1968). Estimates of the regression coefficient based on Kendall's tau
 \emph{Journal of the American Statistical Association}, 63(324), 1379–1389.
 }
 \seealso{
-\code{\link[=eda_runs_test]{eda_runs_test()}}, \code{\link[=plot_sens_trend]{plot_sens_trend()}}
+\code{\link[=eda_runs_test]{eda_runs_test()}}, \code{\link[=plot_ams_data]{plot_ams_data()}}
 }

@@ -1,5 +1,5 @@
 # Validate a numeric vector with optional bounds/size restrictions
-validate_numeric <- function(name, x, optional = TRUE, bounds = NULL, size = NULL) {
+validate_numeric <- function(name, x, optional = FALSE, bounds = NULL, size = NULL) {
 
 	# Helper function to concisely generate error messages
 	err <- function(msg, ...) stop(do.call(sprintf, list(msg, name, ...)))

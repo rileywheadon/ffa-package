@@ -29,27 +29,24 @@
 
 plot_pettitt_test <- function(results, show_line = TRUE, ...) {
 
-	# Add u_t to df and create change point df (if change point is significant)
+	change_df <- results$change_points
+
+	# Add u_series to df and create change point df (if change point is significant)
 	df <- data.frame(
-		max = results$data,
+		value = results$data,
 		year = results$years,
-		u_t = results$u_t
+		u_series = results$u_series
 	)
 
-	change_df <- df[results$change_index, ]
-
-	# Get the segment endpoints depending on whether there is a change point
-	n <- length(results$u_t)
-	ends <- if (results$change_index == 0) c(1, n) else c(1, results$change_index, n) 
-
-	n_ends <- length(ends)
-	get_segment_mean <- function(i) mean(df$max[ends[i]:ends[i + 1]])
-
 	# Compute the segment means for the plot
+	n <- length(results$u_series)
+	ends <- if (nrow(change_df) == 0) c(1, n) else c(1, change_df$index, n) 
+	get_segment_mean <- function(i) mean(df$value[ends[i]:ends[i + 1]])
+
 	segment_df <- data.frame(
-		x = df$year[ends[-n_ends]],            
+		x = df$year[ends[-length(ends)]],            
 		xend = df$year[ends[-1]],
-		y = sapply(1:(n_ends - 1), get_segment_mean)
+		y = sapply(1:(length(ends) - 1), get_segment_mean)
 	)
 
 	# Capture optional arguments
@@ -63,14 +60,18 @@ plot_pettitt_test <- function(results, show_line = TRUE, ...) {
 	bottom_ylabel <- args$bottom_ylabel %||% expression(Streamflow ~ m^3/s)
 
 	# First subplot: Mann-Whitney-Pettitt Test
-	p1 <- ggplot(df, aes(x = .data$year, y = .data$u_t)) +
+	p1 <- ggplot(df, aes(x = .data$year, y = .data$u_series)) +
 		geom_line(aes(color = "black"), linewidth = 1) +
 		geom_hline(
-			aes(yintercept = results$k_critical, color = "red"),
+			aes(yintercept = results$bound, color = "red"),
 			linewidth = 1.2,
 			linetype = "dashed",
 		) +
-		geom_point(data = change_df, aes(color = "blue"), size = 4) +
+		geom_point(
+			data = change_df,
+			aes(y = .data$statistic, color = "blue"), 
+			size = 4
+		) +
 		labs(title = title, x = top_xlabel, y = top_ylabel, color = "Legend") + 
 		scale_color_manual(
 			values = c("black" = "black", "red" = "red", "blue" = "blue"),
@@ -79,23 +80,23 @@ plot_pettitt_test <- function(results, show_line = TRUE, ...) {
 		)
 		
 	# Also plot the original flow data and segment means
-	p2 <- ggplot(df, aes(x = .data$year, y = max)) +
+	p2 <- ggplot(df, aes(x = .data$year, y = .data$value)) + 
 		geom_point(aes(color = "dimgray"), size = 2.25) +
 		(if (show_line) geom_line(color = "dimgray", linewidth = 1.1) else NULL) + 
 		geom_segment(
 			data = segment_df, 
-			aes(x = .data$x, xend = .data$xend, y = .data$y, color = "green4"),
+			aes(x = .data$x, xend = .data$xend, y = .data$y, color = "black"),
 			linewidth = 1.2 
-		) + 
+		) +
 		geom_point(data = change_df, aes(color = "blue"), size = 4) +
 		labs(x = bottom_xlabel, y = bottom_ylabel, color = "Legend") +
 		scale_color_manual(
-			values = c("dimgray" = "dimgray", "green4" = "green4", "blue" = "blue"),
-			breaks = c("dimgray", "green4", "blue"),
+			values = c("dimgray" = "dimgray", "black" = "black", "blue" = "blue"),
+			breaks = c("dimgray", "black", "blue"),
 			labels = c(bottom_ylabel, "Segment Mean(s)", "Potential Change Point")
 		)	
 
 	# Stack plots on top of each other and return
-	add_theme(add_scales(p1)) / add_theme(add_scales(p2))
+	(add_theme(add_scales(p1)) / add_theme(add_scales(p2))) + plot_annotation(title = "")
 
 }

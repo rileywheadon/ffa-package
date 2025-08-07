@@ -22,6 +22,7 @@ A list containing the test results, including:
 \item \code{alternative_hypothesis}: A string describing the alternative hypothesis.
 \item \code{rho}: Numeric vector of serial correlation estimates for lags \eqn{1} to \eqn{n-3}.
 \item \code{least_lag}: The smallest lag at which the serial correlation is insignificant.
+\item \code{significant}: Indicates whether the serial correlation is significant at each lag.
 \item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
 }

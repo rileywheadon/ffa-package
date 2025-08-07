@@ -1,13 +1,22 @@
 # NOTE: Skip plotting tests works on CRAN to avoid unpredictable errors with vdiffr.
-test_that("plot-ams-data.R works on KOOTENAI RIVER (08NH021)", {
+test_that("plot-ams-data.R works on OKANAGAN RIVER (08NM050)", {
 	skip_on_cran()
-
-	df <- data_local("CAN-08NH021.csv")
+	df <- data_local("CAN-08NM050.csv")
 
 	# Test the plotting function
 	p <- plot_ams_data(df$max, df$year)
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("ams-default", p) 
+
+	# Test with constant mean/variability
+	p <- plot_ams_data(df$max, df$year, "Constant", "Constant")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("ams-constant", p) 
+
+	# Test with trend in mean/variability
+	p <- plot_ams_data(df$max, df$year, "Trend", "Trend")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("ams-trend", p) 
 
 	# Test with custom arguments
 	p <- plot_ams_data(df$max, df$year, title = "Title", xlabel = "X", ylabel = "Y")
@@ -96,7 +105,7 @@ test_that("plot-runs-test.R works on BOW RIVER (05BB001)", {
 	# Run the runs test
 	df <- data_local("CAN-05BB001.csv")
 	sens <- eda_sens_trend(df$max, df$year)
-	results <- eda_runs_test(sens)
+	results <- eda_runs_test(sens$residuals, df$year)
 
 	# Test the plotting function
 	p <- plot_runs_test(results, "mean")
@@ -107,52 +116,6 @@ test_that("plot-runs-test.R works on BOW RIVER (05BB001)", {
 	p <- plot_runs_test(results, "mean", title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
 	vdiffr::expect_doppelganger("runs-custom", p) 
-
-})
-
-test_that("plot-sens-trend.R works on BOW RIVER (05BB001)", {
-	skip_on_cran()
-
-	df <- data_local("CAN-05BB001.csv")
-	results <- eda_sens_trend(df$max, df$year)
-
-	# Test the plotting function
-	p <- plot_sens_trend(df$max, df$year, mean_trend = results)
-	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sens-mean", p) 
-
-	# Test with custom labels
-	p <- plot_sens_trend(
-		df$max,
-		df$year,
-		mean_trend = results,
-		title = "Title",
-		xlabel = "X",
-		ylabel = "Y"
-	)
-
-	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sens-custom", p) 
-
-})
-
-test_that("plot-sens-trend.R works on OKANAGAN RIVER (08NM050) with variability", {
-	skip_on_cran()
-
-	df <- data_local("CAN-08NM050.csv")
-	mean_trend <- eda_sens_trend(df$max, df$year)
-	mw <- data_mw_variability(df$max, df$year)
-	variability_trend <- eda_sens_trend(mw$std, mw$year)
-
-	# Trend in variability
-	p <- plot_sens_trend(df$max, df$year, variability_trend = variability_trend)
-	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sens-variability", p) 
-
-	# Trend in mean and variability
-	p <- plot_sens_trend(df$max, df$year, mean_trend, variability_trend)
-	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sens-mean-variability", p) 
 
 })
 
@@ -176,6 +139,7 @@ test_that("plot-spearman-test.R works on ATHABASCA RIVER (07BE001)", {
 
 test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-distance", {
 	skip_on_cran()
+	pdf(nullfile())
 
 	df <- data_local("CAN-07BE001.csv")
 	results <- select_ldistance(df$max)
@@ -194,6 +158,7 @@ test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-distanc
 
 test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-kurtosis", {
 	skip_on_cran()
+	pdf(nullfile())
 
 	df <- data_local("CAN-07BE001.csv")
 	results <- select_lkurtosis(df$max)
@@ -207,6 +172,8 @@ test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with L-kurtosi
 
 test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with Z-statistic", {
 	skip_on_cran()
+	pdf(nullfile())
+	set.seed(1)
 
 	df <- data_local("CAN-07BE001.csv")
 	results <- select_zstatistic(df$max)
@@ -218,69 +185,121 @@ test_that("plot-lmom-diagram.R works on ATHABASCA RIVER (07BE001) with Z-statist
 	
 })
 
-test_that("plot-sffa.R works on OKANAGAN RIVER (08NM050)", {
+test_that("plot-sffa-fit.R works on ATHABASCA RIVER (07BE001)", {
 	skip_on_cran()
 	set.seed(1)
 
-	df <- data_local("CAN-08NM050.csv")
-	results <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
+	df <- data_local("CAN-07BE001.csv")
+	results <- fit_lmoments(df$max, "GEV")
 
 	# Test plotting function
-	p <- plot_sffa(results)
+	p <- plot_sffa_fit(results)
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sffa-default", p) 
+  	vdiffr::expect_doppelganger("sffa-fit-default", p) 
 
 	# Test with custom arguments
-	p <- plot_sffa(results, title = "Title", xlabel = "X", ylabel = "Y")
+	p <- plot_sffa_fit(results, title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sffa-custom", p) 
+  	vdiffr::expect_doppelganger("sffa-fit-custom", p) 
 
 })
 
-test_that("plot-nsffa.R works on OKANAGAN RIVER (08NM050)", {
+test_that("plot-sffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
 	skip_on_cran()
 	set.seed(1)
 
 	df <- data_local("CAN-08NM050.csv")
+	results <- fit_lmoments(df$max, "GEV")
+	ci <- uncertainty_bootstrap(df$max, "GEV", "L-moments")$ci
 
-	results <- uncertainty_bootstrap(
+	# Test plotting function
+	p <- plot_sffa_estimates(results)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sffa-estimates-default", p) 
+
+	# Test with confidence interval
+	p <- plot_sffa_estimates(results, ci = ci)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sffa-estimates-ci", p) 
+
+	# Test with custom arguments
+	p <- plot_sffa_estimates(results, title = "Title", xlabel = "X", ylabel = "Y")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sffa-estimates-custom", p) 
+
+})
+
+
+test_that("plot-nsffa-fit.R works on OKANAGAN RIVER (08NM050)", {
+	skip_on_cran()
+	set.seed(1)
+
+	df <- data_local("CAN-08NM050.csv")
+	results <- fit_mle(df$max, "GEV", df$year, S11)
+
+	# Test plotting function
+	p <- plot_nsffa_fit(results)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("nsffa-fit-default", p) 
+
+	# Test with custom arguments
+	p <- plot_nsffa_fit(results, title = "Title", xlabel = "X", ylabel = "Y")
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("nsffa-fit-custom", p) 
+
+})
+
+
+test_that("plot-nsffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
+	skip_on_cran()
+	set.seed(1)
+
+	df <- data_local("CAN-08NM050.csv")
+	results <- fit_mle(df$max, "GEV", df$year, S10)
+
+	ci_list <- uncertainty_bootstrap(
 		df$max,
 		"GEV",
 		"MLE",
-		years = df$year,
-		structure = S10,
-		slices = c(1920, 1960, 2000),
+		ns_years = df$year,
+		ns_structure = S10,
+		ns_slices = c(1920, 1960, 2000),
 		samples = 1000L
-	)
+	)$ci_list
 
 	# Test plotting function
-	p <- plot_nsffa(results)
+	p <- plot_nsffa_estimates(results)
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("nsffa-default", p) 
+  	vdiffr::expect_doppelganger("nsffa-estimates-default", p) 
+
+	# Test with confidence intervals
+	p <- plot_nsffa_estimates(results, ci_list = ci_list)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("nsffa-estimates-ci", p) 
 
 	# Test custom arguments
-	p <- plot_nsffa(results, title = "Title", xlable = "X", ylabel = "Y")
+	p <- plot_nsffa_estimates(results, title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("nsffa-custom", p) 
+  	vdiffr::expect_doppelganger("nsffa-estimates-custom", p) 
 
 })
 
-test_that("plot-model-diagnostics.R works on OKANAGAN RIVER (08NM050)", {
+test_that("plot-model-assessment.R works on OKANAGAN RIVER (08NM050)", {
 	skip_on_cran()
 
 	df <- data_local("CAN-08NM050.csv")
-	params <- fit_maximum_likelihood(df$max, "GEV")$params
+	params <- fit_mle(df$max, "GEV")$params
 	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "MLE", samples = 1000L)
-	assessment <- model_diagnostics(df$max, "GEV", params, uncertainty)
+	assessment <- model_assessment(df$max, "GEV", params, ci = uncertainty$ci)
 
 	# Test plotting function
-	p <- plot_model_diagnostics(assessment)
+	p <- plot_model_assessment(assessment)
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("diagnostics-default", p) 
+  	vdiffr::expect_doppelganger("assessment-default", p) 
 
 	# Test with custom arguments
-	p <- plot_model_diagnostics(assessment, title = "Title", xlabel = "X", ylabel = "Y")
+	p <- plot_model_assessment(assessment, title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("diagnostics-custom", p) 
+  	vdiffr::expect_doppelganger("assessment-custom", p) 
 	
 })

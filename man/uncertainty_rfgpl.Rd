@@ -51,14 +51,15 @@ A list containing the following four items:
 \item \code{method}: "RFGPL"
 \item \code{ns_structure}: The \code{ns_structure} argument, if given.
 \item \code{ns_slices}: The \code{ns_slices} argument, if given.
-\item \code{results}: A dataframe (S-FFA) or list of dataframes (NS-FFA).
+\item \code{ci}: A dataframe containing confidence intervals (S-FFA only)
+\item \code{ci_list}: A list of dataframes containing confidence intervals (NS-FFA only).
 }
 
-Each dataframe within \code{results} has four columns:
+The dataframe(s) in \code{ci} and \code{ci_list} have four columns:
 \itemize{
 \item \code{estimates}: Estimated quantiles for each return period.
-\item \code{ci_lower}: Lower bound of the confidence interval for each return period.
-\item \code{ci_upper}: Upper bound of the confidence interval for each return period.
+\item \code{lower}: Lower bound of the confidence interval for each return period.
+\item \code{upper}: Upper bound of the confidence interval for each return period.
 \item \code{periods}: The \code{periods} argument.
 }
 }
@@ -91,7 +92,7 @@ If this function encounters an issue, it will return an error and recommend
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
-uncertainty_rfpl(data, "GLO")
+uncertainty_rfgpl(data, c(6, 9))
 
 }
 \references{
@@ -100,9 +101,10 @@ hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022).
 \doi{10.1016/j.advwatres.2022.104151}
 
 Vidrio-Sahagún, C.T., He, J. & Pietroniro, A. Multi-distribution regula-falsi profile
-likelihood method for nonstationary hydrological frequency analysis. Stoch Environ Res
-Risk Assess 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
+likelihood method for nonstationary hydrological frequency analysis. Stochastic Environmental
+Research and Risk Assessment 38, 843–867 (2024). \doi{10.1007/s00477-023-02603-0}
 }
 \seealso{
-\code{\link[=quantile_fast]{quantile_fast()}}, \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=plot_sffa]{plot_sffa()}}, \code{\link[=plot_nsffa]{plot_nsffa()}}
+\code{\link[=utils_quantiles]{utils_quantiles()}}, \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=uncertainty_rfpl]{uncertainty_rfpl()}},
+\code{\link[=plot_sffa_estimates]{plot_sffa_estimates()}}, \code{\link[=plot_nsffa_estimates]{plot_nsffa_estimates()}}
 }

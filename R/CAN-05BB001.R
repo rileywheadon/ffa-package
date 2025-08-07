@@ -10,7 +10,7 @@
 #' means there is little justification for change points. EDA finds evidence of a decreasing 
 #' trend in the mean.
 #'
-#' @format A dateframe with 110 rows and 2 columns spanning the period 1909-2018.
+#' @format A dataframe with 110 rows and 2 columns spanning the period 1909-2018.
 #'
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'
@@ -21,6 +21,6 @@
 #' @references
 #' Whitfield P. H., and Pomeroy J. W. (2016) Changes to flood peaks of a mountain river: 
 #' implications for analysis of the 2013 flood in the Upper Bow River, Canada, 
-#' Hydrol. Process., 30: 4657–4673. \doi{10.1002/hyp.10957}.
+#' Hydrological Processes, 30: 4657–4673. \doi{10.1002/hyp.10957}.
 
 "CAN_05BB001"

@@ -26,10 +26,10 @@
 #' @details
 #' 1. Calls [fit_lmoments()] on the data to obtain initial parameter estimates.
 #' 2. Initializes trend parameters to zero if necessary. 
-#' 3. Defines an objective function using [general_loglik_fast()]. 
+#' 3. Defines an objective function using [utils_generalized_likelihood()]. 
 #' 4. Runs [stats::nlminb()] with box constraints. Attempts minimization up to 100 times.
 #'
-#' @seealso [general_loglik_fast()], [fit_lmoments()], [stats::nlminb()]
+#' @seealso [utils_generalized_likelihood()], [fit_lmoments()], [stats::nlminb()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -39,9 +39,9 @@
 #' fit_gmle(data, prior, ns_years, ns_structure)
 #' 
 #' @references
-#' El Adlouni, S., Ouarda, T.B.M.J., Zhang, X., Roy, R., Bob´ee, B., 2007. Generalized 
+#' El Adlouni, S., Ouarda, T.B.M.J., Zhang, X., Roy, R., Bobee, B., 2007. Generalized 
 #' maximum likelihood estimators for the nonstationary generalized extreme value 
-#' model. Water Resour. Res. 43 (3), 1–13. \doi{10.1029/2005WR004545}
+#' model. Water Resources Research 43 (3), 1–13. \doi{10.1029/2005WR004545}
 #'
 #' Martins, E. S., and Stedinger, J. R. (2000). Generalized maximum-likelihood generalized 
 #' extreme-value quantile estimators for hydrologic data. Water Resources Research, 36(3), 
@@ -58,7 +58,7 @@ fit_gmle <- function(
 ) {
 	data <- validate_numeric("data", data)
 	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
-	ns_years <- validate_numeric("ns_years", ns_years, size = length(data))
+	ns_years <- validate_numeric("ns_years", ns_years, TRUE, size = length(data))
 	ns_structure <- validate_structure(ns_structure)
 	fit_maximum_likelihood(data, "GEV", prior, ns_years, ns_structure)
 }

@@ -8,11 +8,11 @@
 #' @inheritParams param-data
 #'
 #' @details 
-#' First, the sample L-moments of the data are computed using [lmom_sample()].
+#' First, the sample L-moments of the data are computed using [utils_sample_lmoments()].
 #' Then, the [stats::optim()] function is used to determine the parameters 
 #' by minimizing the euclidian distance between the sample and theoretical L-moment
 #' ratios. The implementation of this routine is based on the deprecated `homtest` 
-#' package, formerly avilable at \url{https://CRAN.R-project.org/package=homtest}.
+#' package, formerly available at \url{https://CRAN.R-project.org/package=homtest}.
 #'
 #' @return A list containing the results of parameter estimation:
 #' - `data`: The `data` argument.
@@ -20,11 +20,11 @@
 #' - `method`: `"L-moments"`.
 #' - `params`: numeric vector of 4 parameters in the order location, scale, shape (2).
 #'
-#' @seealso [lmom_sample()], [fit_lmom_fast()], [fit_lmom_xxx()]
+#' @seealso [utils_sample_lmoments()], [fit_lmoments()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' fit_lmom_kappa(data)
+#' fit_lmoments_kappa(data)
 #'
 #' @references
 #' Hosking, J.R.M. & Wallis, J.R., 1997. Regional frequency analysis: an approach based 
@@ -36,7 +36,7 @@ fit_lmoments_kappa <- function(data) {
 	data <- validate_numeric("data", data, bounds = c(0, Inf))
 
 	# Get the sample L-moments
-	moments <- lmom_sample(data)
+	moments <- utils_sample_lmoments(data)
 	l1 <- moments[1]
 	l2 <- moments[2]
 	t3 <- moments[3]

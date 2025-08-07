@@ -4,7 +4,14 @@
 \alias{plot_ams_data}
 \title{Plot Annual Maximum Series Data}
 \usage{
-plot_ams_data(data, years, show_line = TRUE, ...)
+plot_ams_data(
+  data,
+  years,
+  plot_mean = "None",
+  plot_variability = "None",
+  show_line = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{Numeric vector of annual maximum series values.
@@ -13,24 +20,40 @@ Must be strictly positive, finite, and not missing.}
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{show_line}{If \code{TRUE} (default), draw a line through the data.}
+\item{plot_mean}{If "None" (default), the mean will not be plotted. If \code{"Constant"},
+a black line is plotted at the sample mean. If \code{"Trend"}, the trend in the mean is
+estimated using \code{\link[=eda_sens_trend]{eda_sens_trend()}} and plotted as a blue line.}
+
+\item{plot_variability}{If "None" (default), the variability will not be plotted.
+If \code{"Constant"}, dashed black lines are plotted at one standard deviation above/below
+the sample mean. If \code{"Trend"}, the trend in variability is estimated with
+\code{\link[=data_mw_variability]{data_mw_variability()}} and \code{\link[=eda_sens_trend]{eda_sens_trend()}} and plotted as a dashed blue line.}
+
+\item{show_line}{If \code{TRUE} (default), a fitted line is drawn through the data.}
 
 \item{...}{Optional named arguments: 'title', 'xlabel', and 'ylabel'.}
 }
 \value{
-\code{ggplot}; A plot containing:
+\code{ggplot}; a plot containing:
 \itemize{
-\item Black dots at each (data, year) pair.
-\item An optional line thorugh the data points (if \code{show_line == TRUE})
+\item Gray points for each year’s annual maximum series value.
+\item A gray line connecting the data if \code{show_line = TRUE}.
+\item A solid black line representing a constant mean, if \code{plot_mean == "Constant"}.
+\item A solid blue line representing a trend in the mean, if \code{plot_mean == "Trend"}.
+\item A dashed black line representing constant variability, if \code{plot_variability == "Constant"}.
+\item A dashed blue line representing a trend in variability, if \code{plot_variability == "Trend"}.
 }
 }
 \description{
-Generates a plot of annual maximum series data with an optional line connecting
-the data points.
+Produces a scatterplot of annual maximum series data against time, optionally overlaid
+with the sample mean/variability or Sen's trend estimator of the mean/variability.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)
 years <- seq(from = 1901, to = 2000)
-plot_ams_data(data, years)
+plot_ams_data(data, years, plot_mean = "Trend", plot_variability = "Constant")
 
+}
+\seealso{
+\code{\link[=eda_sens_trend]{eda_sens_trend()}}, \code{\link[=data_mw_variability]{data_mw_variability()}}
 }

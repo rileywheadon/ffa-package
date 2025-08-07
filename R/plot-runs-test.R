@@ -1,6 +1,6 @@
 #' Plot Runs Test Results
 #'
-#' Generates a residual plot of Sen’s estimator applied to annual maximum series
+#' Generates a residual plot of Sen's estimator applied to annual maximum series
 #' data (or the variability of the data) with a horizontal dashed line at 
 #' zero and an annotation indicating the p-value of the Runs test.
 #'
@@ -20,10 +20,10 @@
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
 #' years <- seq(from = 1901, to = 2000)
 #'
-#' # Generate runs test plot 
-#' sens <- eda_sens_trend(data, years)
-#' results <- eda_runs_test(sens)
-#' plot_runs_test(results, "mean")
+#' # Generate the runs test plot 
+#' sens_trend <- eda_sens_trend(data, years)
+#' results <- eda_runs_test(sens_trend$residuals, years)
+#' plot_runs_test(results)
 #'
 #' @import ggplot2
 #' @importFrom grid textGrob grobTree rectGrob gpar
@@ -32,7 +32,7 @@
 plot_runs_test <- function(results, ...) {
 
 	# Generate dataframes for the trend estimate, data, and residuals
-	df_residuals <- data.frame(x = results$years, y = results$residuals)
+	df_residuals <- data.frame(x = results$years, y = results$values)
 
 	# Capture optional arguments
 	args <- list(...)

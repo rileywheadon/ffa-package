@@ -21,16 +21,17 @@
 #' @inheritParams param-samples
 #' @inheritParams param-periods
 #'
-#' @return A list containing the following three items:
+#' @return A list containing the following four items:
 #' - `method`: "Bootstrap"
 #' - `ns_structure`: The `ns_structure` argument, if given.
 #' - `ns_slices`: The `ns_slices` argument, if given.
-#' - `results`: A dataframe (S-FFA) or list of dataframes (NS-FFA).
+#' - `ci`: A dataframe containing confidence intervals (S-FFA only)
+#' - `ci_list`: A list of dataframes containing confidence intervals (NS-FFA only).
 #'
-#' Each dataframe within `results` has four columns:
+#' The dataframe(s) in `ci` and `ci_list` have four columns:
 #' - `estimates`: Estimated quantiles for each return period.
-#' - `ci_lower`: Lower bound of the confidence interval for each return period.
-#' - `ci_upper`: Upper bound of the confidence interval for each return period.
+#' - `lower`: Lower bound of the confidence interval for each return period.
+#' - `upper`: Upper bound of the confidence interval for each return period.
 #' - `periods`: The `periods` argument. 
 #'
 #' @details
@@ -51,12 +52,11 @@
 #' hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022). 
 #' \doi{10.1016/j.advwatres.2022.104151}
 #' 
-#' @seealso [fit_lmom_fast()], [fit_maximum_likelihood()], [lmom_sample()],
-#'   [quantile_fast()], [plot_sffa()], [plot_nsffa()]
+#' @seealso [fit_lmoments()], [fit_mle()], [fit_gmle()], [utils_sample_lmoments()]
+#' [utils_quantiles()], [plot_sffa_estimates()], [plot_nsffa_estimates()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' years <- seq(from = 1901, to = 2000)
 #' uncertainty_bootstrap(data, "WEI", "L-moments")
 #'
 #' @importFrom stats runif
@@ -78,10 +78,10 @@ uncertainty_bootstrap <- function(
 	data <- validate_numeric("data", data)
 	distribution <- validate_enum("distribution", distribution)
 	method <- validate_enum("method", method)
-	prior <- validate_numeric("prior", prior, size = 2, bounds = c(0, Inf))
-	years <- validate_numeric("ns_years", ns_years, size = length(data))
+	prior <- validate_numeric("prior", prior, TRUE, c(0, Inf), 2)
+	years <- validate_numeric("ns_years", ns_years, TRUE, size = length(data))
 	structure <- validate_structure(ns_structure)
-	slices <- validate_numeric("ns_slices", ns_slices)
+	slices <- validate_numeric("ns_slices", ns_slices, TRUE)
 	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
 	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
 	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
@@ -104,18 +104,18 @@ uncertainty_bootstrap <- function(
 
 		# Get the estimated quantiles
 		params <- fit(data, years)
-		estimates <- quantile_fast(p, distribution, params, slice, structure)
+		estimates <- quantiles_fast(p, distribution, params, slice, structure)
 
 		# Generate the bootstrapped quantiles 
 		quantiles <- sapply(1:n, function(i) {
 			u <- runif(samples)
-			quantile_fast(u, distribution, params, slice, structure)
+			quantiles_fast(u, distribution, params, slice, structure)
 		})
 
 		# Vectorized bootstrap function 
 		bootstrap <- sapply(1:samples, function(i) {
 			bootstrap_params <- fit(quantiles[i, ], years)
-			quantile_fast(p, distribution, bootstrap_params, slice, structure)
+			quantiles_fast(p, distribution, bootstrap_params, slice, structure)
 		})
 
 		# Compute confidence intervals
@@ -131,24 +131,28 @@ uncertainty_bootstrap <- function(
 		data.frame(
 			periods = periods,
 			estimates = estimates,
-			ci_lower = ci[1, ],
-			ci_upper = ci[2, ]
+			lower = ci[1, ],
+			upper = ci[2, ]
 		)
 
 	}
 
-	# Return a list of dataframes (NS-FFA) or a single dataframe (S-FFA)
-	if (structure$location || structure$scale) {
-		results <- lapply(slices, bootstrap_helper)		
-		names(results) <- slices
-	} else {
-		results <- bootstrap_helper(0)
-	}
-
-	list(
+	# Initialize results list
+	results <- list(
 		method = "Bootstrap",
 		ns_structure = ns_structure,
-		ns_slices = ns_slices,
-		results = results
+		ns_slices = ns_slices
 	)
+
+	# Add a list of dataframes (NS-FFA) or a single dataframe (S-FFA)
+	if (structure$location || structure$scale) {
+		ci_list <- lapply(slices, bootstrap_helper)		
+		names(ci_list) <- slices
+		results$ci_list <- ci_list
+	} else {
+		results$ci <- bootstrap_helper(0)
+	}
+
+	# Return results list
+	results
 }

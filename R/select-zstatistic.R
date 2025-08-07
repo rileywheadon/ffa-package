@@ -34,8 +34,8 @@
 #' variance of the L-kurtosis. These values, along with the difference between the sample 
 #' and theoretical L-kurtosis, are used to compute the Z-statistic for each distribution.
 #'
-#' @seealso [select_ldistance()], [select_lkurtosis()], [fit_lmom_kappa()],
-#'   [quantile_fast()], [plot_lmom_diagram()]
+#' @seealso [select_ldistance()], [select_lkurtosis()], [fit_lmoments_kappa()],
+#' [utils_quantiles()], [plot_lmom_diagram()]
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
@@ -63,7 +63,7 @@ select_zstatistic <- function(data, ns_years = NULL, ns_structure = NULL, sample
 	get_bootstrap <- function(data) {
 
 		# Get the sample L-moments for the data
-		moments <- lmom_sample(data)
+		moments <- utils_sample_lmoments(data)
 		sample_l1 <- moments[1]
 		sample_l2 <- moments[2]
 		sample_t3 <- moments[3]
@@ -75,12 +75,14 @@ select_zstatistic <- function(data, ns_years = NULL, ns_structure = NULL, sample
 		}
 
 		# Attempt to fit the Kappa distribution
-		params <- fit_lmom_kappa(data)$params
+		params <- fit_lmoments_kappa(data)$params
 
 		# Generate a bootstrap from this Kappa distribution
 		t4_list <- lapply(1:samples, function(i) {
 			u <- runif(length(data))	
-			lmom_sample(quantile_kap(u, params))[4]
+			structure <- list(location = FALSE, scale = FALSE)
+			quantiles <- quantiles_fast(u, "KAP", params, 0, structure)
+			utils_sample_lmoments(quantiles)[4]
 		})
 
 		t4 <- as.numeric(t4_list)
@@ -127,7 +129,7 @@ select_zstatistic <- function(data, ns_years = NULL, ns_structure = NULL, sample
 
 		# Find the shape parameter with the same L-skewness as the data
 		objective <- function(i) {
-			distribution_t3 <- lmom_fast(distribution, c(0, 1, i))[3]
+			distribution_t3 <- theoretical_lmoments_fast(distribution, c(0, 1, i))[3]
 			abs(distribution_t3 - b$sample_t3)
 		}
 
@@ -141,7 +143,7 @@ select_zstatistic <- function(data, ns_years = NULL, ns_structure = NULL, sample
 		)
 
 		# Get the parameters of the fitted distribution and compute the z-score
-		distribution_t4 <- lmom_fast(distribution, c(0, 1, result$par))[4]
+		distribution_t4 <- theoretical_lmoments_fast(distribution, c(0, 1, result$par))[4]
 		z <- (distribution_t4 - b$sample_t4 + b$bias_t4) / b$std_t4
 		metrics[[distribution]] <- z
 

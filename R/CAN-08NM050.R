@@ -14,7 +14,7 @@
 #' Since the station is heavily influenced by reservoir operations, this dataset is intended 
 #' for teaching purposes—not for practical flood estimation.
 #'
-#' @format A dateframe with 97 rows and 2 columns spanning the period 1921-2017.
+#' @format A dataframe with 97 rows and 2 columns spanning the period 1921-2017.
 #'
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'

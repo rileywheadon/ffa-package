@@ -3,7 +3,7 @@
 This module selects a statistical model for S-FFA or NS-FFA based on the annual maximum series.
 
 - **S-FFA**: A time-invariant probability distribution is selected from the candidate distributions.
-- **NS-FFA**: A distribution is chosen along with a nonstationary structure to capture its evolution over time. In piecewise NS-FFA, the series is segmented into subperiods, each modelled with either time-invariant or time-varying distributions.
+- **NS-FFA**: A distribution is chosen along with a nonstationary structure to capture its evolution over time. In piecewise NS-FFA, the series is segmented into subperiods, each modeled with either time-invariant or time-varying distributions.
 
 The framework uses the **L-moment ratio method** to identify the best-fit distribution family by comparing sample L-moments with the L-moments of various distribution families.
 

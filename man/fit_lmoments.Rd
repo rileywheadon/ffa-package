@@ -27,7 +27,7 @@ A list containing the results of parameter estimation:
 Estimates the parameters of a \emph{stationary} probability model using the L-moments.
 }
 \details{
-First, the sample L-moments of the data are computed using \code{\link[=lmom_sample]{lmom_sample()}}.
+First, the sample L-moments of the data are computed using \code{\link[=utils_sample_lmoments]{utils_sample_lmoments()}}.
 Then, formulas from Hosking (1997) are used to match the parameters to
 the sample L-moments. The distributions \code{"GNO"}, \code{"PE3"}, and \code{"LP3"} use a
 rational approximation of the parameters since no closed-form expression is known.

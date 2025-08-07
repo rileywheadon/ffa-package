@@ -37,7 +37,7 @@ use cases (other datasets in \verb{/inst/extdata} are for testing purposes only)
 \itemize{
 \item Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
 statistical evidence of trends or change points (S-FFA recommended).
-\item Kootenai Kiver at Porthill (CAN-08NH21): A regulated station outside with
+\item Kootenai River at Porthill (CAN-08NH21): A regulated station outside with
 evidence of an abrupt change in mean in 1972 (piecewise NS-FFA recommended).
 \item Bow River at Banff (CAN-05BB001). An unregulated station with statistical
 evidence of a trend in the mean (NS-FFA recommended).

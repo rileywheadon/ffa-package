@@ -5,7 +5,7 @@
 \alias{CAN_08NH021}
 \title{CAN-08NH021}
 \format{
-A dateframe with 91 rows and 2 columns spanning the period 1928-2018.
+A dataframe with 91 rows and 2 columns spanning the period 1928-2018.
 }
 \source{
 Meteorological Service of Canada (MSC) GeoMet Platform

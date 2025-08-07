@@ -27,7 +27,7 @@ A list containing the test results, including:
 \item \code{progressive_series}: Normalized progressive Mann–Kendall-Sneyers statistics.
 \item \code{regressive_series}: Normalized regressive Mann–Kendall-Sneyers statistics.
 \item \code{bound}: Critical confidence bound for significance based on \code{alpha}.
-\item \code{change_points}: A list of potential change points.
+\item \code{change_points}: A dataframe of potential change points.
 \item \code{p_value}: Two-sided p-value of the most significant crossing point.
 \item \code{reject}: If \code{TRUE}, the null hypothesis was rejected at significance \code{alpha}.
 }
@@ -47,7 +47,7 @@ changes.
 This function computes progressive and regressive Mann–Kendall-Sneyers statistics,
 normalized by their expected values and variances under the null hypothesis. The
 crossing points occur when the difference between the progressive and regressive
-statistics swiches sign. The significance of detected crossing points is assessed
+statistics switches sign. The significance of detected crossing points is assessed
 using the quantiles of the normal distribution.
 }
 \examples{
