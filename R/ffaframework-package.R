@@ -21,7 +21,7 @@
 #' 
 #' - `data_*` methods load, transform, and decompose annual maximum series data.
 #' - `plot_*` methods produce diagnostic and summary plots.
-#' - `quantile_*`, `loglik_*`, and `lmom_*` implement distribution-specific computations.
+#' - `utils_*` methods implement distribution-specific computations.
 #'
 #' Datasets from five hydrometric stations in Canada are provided as representative 
 #' use cases (other datasets in `/inst/extdata` are for testing purposes only):
@@ -40,7 +40,7 @@
 #' This package assumes familiarity with statistical techniques used in FFA, including 
 #' L-moments, maximum likelihood estimation, and parametric bootstrap. 
 #' For an explanation of these methods, see the 
-#' [FFA Framework wiki](https://rileywheadon.github.io/ffa-docs/).
+#' [FFA Framework wiki](https://rileywheadon.github.io/ffa-framework/).
 #' For examples, see the vignettes on exploratory data analysis and flood frequency 
 #' analysis.
 #'

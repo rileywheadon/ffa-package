@@ -54,12 +54,9 @@ plot_lmom_diagram(selection)
 
 **Note**: For information about the other distributions, see the `selection$metrics` item.
 
-You can find more information about the probability distributions supported by the framework [here](https://rileywheadon.github.io/ffa-docs/probability-distributions/).
-
 ## Parameter Estimation
 
-The `ffaframework` package provides three methods for parameter estimation.
-See [here](https://rileywheadon.github.io/ffa-docs/parameter-estimation/) for more information.
+The `ffaframework` package provides three methods for parameter estimation:
 
 - `fit_lmoments`: L-moments parameter estimation.
 - `fit_mle`: Maximum likelihood parameter estimation. 

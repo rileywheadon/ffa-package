@@ -29,7 +29,7 @@ Additional utility functions for visualization and computation are also availabl
 \itemize{
 \item \verb{data_*} methods load, transform, and decompose annual maximum series data.
 \item \verb{plot_*} methods produce diagnostic and summary plots.
-\item \verb{quantile_*}, \verb{loglik_*}, and \verb{lmom_*} implement distribution-specific computations.
+\item \verb{utils_*} methods implement distribution-specific computations.
 }
 
 Datasets from five hydrometric stations in Canada are provided as representative
@@ -50,7 +50,7 @@ evidence of a linear trend in both the mean and variability (NS-FFA recommended)
 This package assumes familiarity with statistical techniques used in FFA, including
 L-moments, maximum likelihood estimation, and parametric bootstrap.
 For an explanation of these methods, see the
-\href{https://rileywheadon.github.io/ffa-docs/}{FFA Framework wiki}.
+\href{https://rileywheadon.github.io/ffa-framework/}{FFA Framework wiki}.
 For examples, see the vignettes on exploratory data analysis and flood frequency
 analysis.
 }

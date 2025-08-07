@@ -27,7 +27,7 @@
 #'
 #' @examples
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' params <- c(0, 1, 1, 0)
+#' params <- c(1, 1, 1, 1)
 #' prior <- c(5, 10)
 #' ns_years <- seq(from = 1901, to = 2000)
 #' ns_structure <- list(location = TRUE, scale = FALSE)

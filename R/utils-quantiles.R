@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' p <- runif(n = 100)
-#' params <- c(0, 1, 0)
+#' params <- c(1, 1, 1)
 #' utils_quantiles(p, "GEV", params)
 #'
 #' @importFrom stats qgamma qlnorm
