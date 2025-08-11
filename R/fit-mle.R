@@ -5,8 +5,9 @@
 #' Initial parameter estimates are obtained using the method of L‐moments and optimization 
 #' is performed via [stats::nlminb()] with repeated perturbations if needed.
 #'
-#' **NS-FFA**: To estimate parameters for a nonstationary model, include the observation
-#' years (`ns_years`) and the nonstationary model structure (`ns_structure`).
+#' **For NS-FFA**: To estimate parameters for a nonstationary model, include the 
+#' observation years (`ns_years`) and the nonstationary model structure 
+#' (`ns_structure`).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-distribution

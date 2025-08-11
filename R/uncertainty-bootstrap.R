@@ -3,9 +3,9 @@
 #' @description
 #' Computes return level estimates and confidence intervals at the specified return 
 #' periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the parametric bootstrap.
-#' This function supports a variety of probability models and parameter estimation methods.
+#' This function supports many probability models and parameter estimation methods.
 #'
-#' **NS-FFA**: To perform uncertainty quantification for a nonstationary model, 
+#' **For NS-FFA**: To perform uncertainty quantification for a nonstationary model, 
 #' include the observation years (`ns_years`), the nonstationary model structure 
 #' (`ns_structure`), and a list of years at which to compute the return level estimates
 #' and confidence intervals (`ns_slices`).

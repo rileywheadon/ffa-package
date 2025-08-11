@@ -4,64 +4,50 @@
 \alias{framework_full}
 \title{Orchestrate the Full FFA Framework}
 \usage{
-framework_full(
-  data,
-  years,
-  ns_splits = NULL,
-  ns_structures = NULL,
-  automatic = FALSE
-)
+framework_full(data, years, ns_splits = NULL, ns_structures = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_splits}{An integer vector of years at which to split the data (default is \code{NULL}).
-A split point is the \emph{first} year in a subperiod.}
+\item{ns_splits}{An integer vector of years used to split the data into homogeneous
+subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an integer vector
+of years (e.g., \code{1950L}) with physical justification for change points, or \code{NULL}
+if no such years exist.}
 
-\item{ns_structures}{An list of structure objects of size \code{length(ns_splits) + 1} (default
-is \code{NULL}). Each structure object is a list with boolean items \code{location} and \code{scale}
-indicating a trend in the mean/variability respectively.}
-
-\item{automatic}{If \code{TRUE}, the split points and nonstationary ns_structures are chosen
-automatically using the results of EDA (default is \code{FALSE}). This argument is ignored
-if both \code{ns_splits} and \code{ns_structures} are not \code{NULL}.}
+\item{ns_structures}{For S-FFA, set to \code{NULL} (default) to use a stationary model
+for all homogeneous subperiods. For NS-FFA, provide a list of \code{length(ns_splits) + 1}
+sublists specifying the nonstationary model structure for each homogeneous subperiod.
+Each sublist must contain logical elements \code{location} and \code{scale}, indicating
+monotonic trends in the mean and variability, respectively.}
 
 \item{...}{Additional arguments to be passed to the statistical tests and frequency
-analysis functions. See the details of \code{\link[=module_eda]{module_eda()}} and \code{\link[=module_ffa]{module_ffa()}} for a complete
-list.}
+analysis functions. See the details of \code{\link[=framework_eda]{framework_eda()}} and \code{\link[=framework_ffa]{framework_ffa()}} for a
+complete list.}
 }
 \value{
-\code{summary}: A list containing the nonstationary splits and structures used for the analysis.
-If the \code{ns_splits} and/or \code{ns_structures} arguments were provided, they will be included
-here. Otherwise, this list will contain the split points and model structures selected
-manually by the user.
+\code{recommendations}: See \code{\link[=framework_eda]{framework_eda()}}.
 
-\code{submodules}: A list of results for each submodule. Each submodules has a \code{name}, one of
-\code{"Change Points"}, \code{"Trend Detection"}, \code{"Distribution Selection"}, \code{"Parameter Estimation"},
-\code{"Uncertainty Quantification"}, or \code{"Model Assessment"}. For more information, see
-\code{\link[=framework_eda]{framework_eda()}} and \code{\link[=framework_ffa]{framework_ffa()}}.
+\code{summary}: See \code{\link[=framework-ffa]{framework-ffa()}}.
+
+\code{submodules}: A list of lists of results. Each list contains:
+\itemize{
+\item \code{name}: Either "Change Point Detection", "Trend Detection", "Distribution
+Selection", "Parameter Estimation", "Uncertainty Quantification", or "Model
+Assessment".
+\item \code{start}: The first year of the homogeneous subperiod.
+\item \code{end}: The last year of the homogeneous subperiod.
+\item Additional items specific to the the submodule.
+}
 }
 \description{
-Runs the entire flood frequency analysis framework using the exploratory data analysis
-(\code{\link[=framework_eda]{framework_eda()}}) and flood frequency analysis (\code{\link[=framework_ffa]{framework_ffa()}}) modules. Returns
-a comprehensive and reproducible summary of the results.
-}
-\details{
-The behaviour of the function when \code{automatic = FALSE} can be confusing. If either
-of \code{ns_splits} or \code{ns_structures} is \code{NULL}, the user will be prompted to select them. However,
-if R is running in non-interactive mode, this is not possible, so the function will return
-all the results up to the current block along with an error message.
-
-To avoid this issue, the user has three options:
-\enumerate{
-\item Set \code{ns_splits} and \code{ns_structures} manually.
-\item Run R in interactive mode (using RStudio, for example).
-\item Set \code{automatic = TRUE}.
-}
+Runs the entire flood frequency analysis framework using the results of exploratory
+data analysis (EDA) to guide approach selection (stationary or nonstationary) and
+perform flood frequency analysis. Returns a comprehensive and reproducible summary
+of the results.
 }
 \seealso{
 \code{\link[=framework_eda]{framework_eda()}}, \code{\link[=framework_ffa]{framework_ffa()}}

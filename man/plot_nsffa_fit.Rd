@@ -29,11 +29,11 @@ plot_nsffa_fit(
 }
 }
 \description{
-Generates a plot with slices of a nonstationary probability model plotted vertically
-on the left panel and data on the right panel.
+Generates a plot showing probability densities of a nonstationary model for selected
+time slices (left panel) and the data (right panel).
 }
 \examples{
-data <- rnorm(n = 100, mean = 100, sd = 10)
+data <- rnorm(n = 100, mean = 100, sd = 10) + seq(1, 100)
 years <- seq(from = 1901, to = 2000)
 ns_structure <- list(location = TRUE, scale = FALSE)
 

@@ -4,7 +4,7 @@
 \alias{param-ns-structure}
 \title{Parameter 'ns_structure'}
 \arguments{
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.

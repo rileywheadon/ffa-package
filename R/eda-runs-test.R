@@ -1,9 +1,11 @@
 #' Wald–Wolfowitz Runs Test for Randomness
 #'
 #' Applies the Wald–Wolfowitz runs test to a numeric vector in order to assess 
-#' whether they behave as a random sequence. The test statistic and p-value 
+#' whether it behaves as a random sequence. The test statistic and p-value 
 #' is computed using the number of runs (sequences of values above or below the
-#' median). Under the null hypothesis, the data is random.
+#' median). Under the null hypothesis, the data is random. The runs test can be 
+#' used to assess whether the residuals of a nonstationary model are random, 
+#' indicating the suitability of the assumed nonstationary structure (e.g., linear).
 #' 
 #' @param values A numeric vector of values to check for randomness. 
 #' @inheritParams param-years

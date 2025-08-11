@@ -20,8 +20,8 @@ station 08MH016, CHILLIWACK RIVER AT CHILLIWACK LAKE in British Columbia, Canada
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
-\item \code{year}: Integer; the corresponding year.
+\item \code{max}: Numeric; the observed annual maximum series, in m\eqn{^3}{^3}/s.
+\item \code{year}: Integer; the corresponding years.
 }
 }
 \section{Additional Information}{

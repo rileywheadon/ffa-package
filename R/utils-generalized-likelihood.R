@@ -5,9 +5,9 @@
 #' variants of the Generalized Extreme Value (GEV) distribution with a geophysical 
 #' (Beta) prior distribution for the shape parameter (Martins and Stedinger, 2000).
 #'
-#' **NS-FFA**: To compute the generalized log-likelihood for a nonstationary probability
-#' model, include the observation years (`ns_years`) and the nonstationary model structure
-#' (`ns_structure`).
+#' **For NS-FFA**: To compute the generalized log-likelihood for a nonstationary 
+#' probability model, include the observation years (`ns_years`) and the nonstationary 
+#' model structure (`ns_structure`).
 #' 
 #' @details 
 #' The generalized log-likelihood is defined as sum of (1) the log-likelihood and (2) 

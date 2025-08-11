@@ -14,7 +14,7 @@ plot_ams_data(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.

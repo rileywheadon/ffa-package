@@ -7,7 +7,7 @@
 eda_pp_test(data, alpha = 0.05)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance

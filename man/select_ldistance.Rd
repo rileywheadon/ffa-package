@@ -7,13 +7,13 @@
 select_ldistance(data, ns_years = NULL, ns_structure = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -24,7 +24,8 @@ parameters are modeled as nonstationary. Must contain two logical scalars:
 A list with the results of distribution selection:
 \itemize{
 \item \code{method}: \code{"L-distance"}.
-\item \code{data}: The \code{data} argument (S-FFA) or the detrended dataset (NS-FFA).
+\item \code{decomposed_data}: The detrended dataset used to compute the L-moments. For S-FFA,
+this is the \code{data} argument. For NS-FFA, it is output of \code{\link[=data_decomposition]{data_decomposition()}}.
 \item \code{metrics}: A list of L-distance metrics for each candidate distribution.
 \item \code{recommendation}: The name of the distribution with the smallest L-distance.
 }
@@ -34,10 +35,10 @@ Selects a distribution from a set of candidate distributions by minimizing the
 Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)}
 and the sample L-moment ratios \eqn{(t_3, t_4)}.
 
-\strong{NS-FFA}: To select a distribution for a nonstationary model, include the observation
-years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}). Then, this
-method will detrend the data internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior
-to distribution selection.
+\strong{For NS-FFA}: To select a distribution for a nonstationary model, include the
+observation years (\code{ns_years}) and the nonstationary model structure
+(\code{ns_structure}). Then, this method will detrend the original, nonstationary data
+internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior to distribution selection.
 }
 \details{
 For each candidate distribution, this method computes the Euclidean distance between

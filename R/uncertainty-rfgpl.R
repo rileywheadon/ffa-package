@@ -5,7 +5,7 @@
 #' periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the regula-falsi 
 #' generalized profile likelihood root‐finding method for the GEV distribution.
 #'
-#' **NS-FFA**: To perform uncertainty quantification for a nonstationary model, 
+#' **For NS-FFA**: To perform uncertainty quantification for a nonstationary model, 
 #' include the observation years (`ns_years`), the nonstationary model structure 
 #' (`ns_structure`), and a list of years at which to compute the return level estimates
 #' and confidence intervals (`ns_slices`).

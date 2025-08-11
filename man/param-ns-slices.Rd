@@ -4,9 +4,9 @@
 \alias{param-ns-slices}
 \title{Parameter 'ns_slices'}
 \arguments{
-\item{ns_slices}{NS-FFA only. Numeric vector specifying the years at which to evaluate
-the return levels confidence intervals of a nonstationary probability distribution.
-\code{ns_slices} do not have to be elements of the \code{ns_years} argument.}
+\item{ns_slices}{For NS-FFA only: Numeric vector specifying the years at which to
+evaluate the return levels confidence intervals of a nonstationary probability
+distribution. \code{ns_slices} do not have to be elements of the \code{ns_years} argument.}
 }
 \description{
 Parameter 'ns_slices'

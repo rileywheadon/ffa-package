@@ -17,11 +17,11 @@ or \code{"WEI"}.}
 scale, shape). The length must be between 2 and 5, depending on the specified
 \code{distribution} and \code{structure}.}
 
-\item{ns_slice}{NS-FFA only. Numeric scalar specifying the year at which to evaluate
-the quantiles of a nonstationary probability distribution. \code{ns_slice} does not have
-to be an element of the \code{ns_years} argument.}
+\item{ns_slice}{For NS-FFA only: Numeric scalar specifying the year at which to
+evaluate  the quantiles of a nonstationary probability distribution. \code{ns_slice}
+does not have to be an element of the \code{ns_years} argument.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -34,8 +34,9 @@ A numeric vector of quantiles with the same length as \code{p}.
 \description{
 Compute the quantiles for stationary and nonstationary probability models.
 
-\strong{NS-FFA}: To compute the quantiles for a nonstationary probability model, specify
-a time slice (\code{ns_slice}) and the nonstationary model structure (\code{ns_structure}).
+\strong{For NS-FFA}: To compute the quantiles for a nonstationary probability model,
+specify a time slice (\code{ns_slice}) and the nonstationary model structure
+(\code{ns_structure}).
 }
 \examples{
 p <- runif(n = 100)

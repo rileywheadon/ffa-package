@@ -1,6 +1,6 @@
 #' Parameter 'data'
 #'
-#' @param data Numeric vector of annual maximum series values.
+#' @param data Numeric vector of observed annual maximum series values.
 #' Must be strictly positive, finite, and not missing.
 #'
 #' @name param-data
@@ -71,7 +71,7 @@ NULL
 
 #' Parameter 'ns_years'
 #'
-#' @param ns_years NS-FFA only. Numeric vector of observation years corresponding 
+#' @param ns_years For NS-FFA only: Numeric vector of observation years corresponding 
 #' to `data`. Must be the same length as `data` and strictly increasing. 
 #'
 #' @name param-ns-years
@@ -82,7 +82,7 @@ NULL
 
 #' Parameter 'ns_structure'
 #'
-#' @param ns_structure NS-FFA only. Named list indicating which distribution 
+#' @param ns_structure For NS-FFA only: Named list indicating which distribution 
 #' parameters are modeled as nonstationary. Must contain two logical scalars:
 #' - `location`: If `TRUE`, the location parameter has a linear temporal trend.
 #' - `scale`: If `TRUE`, the scale parameter has a linear temporal trend.
@@ -94,9 +94,9 @@ NULL
 
 #' Parameter 'ns_slice'
 #'
-#' @param ns_slice NS-FFA only. Numeric scalar specifying the year at which to evaluate 
-#' the quantiles of a nonstationary probability distribution. `ns_slice` does not have 
-#' to be an element of the `ns_years` argument. 
+#' @param ns_slice For NS-FFA only: Numeric scalar specifying the year at which to 
+#' evaluate  the quantiles of a nonstationary probability distribution. `ns_slice` 
+#' does not have to be an element of the `ns_years` argument. 
 #'
 #' @name param-ns-slice
 #'
@@ -105,9 +105,9 @@ NULL
 
 #' Parameter 'ns_slices'
 #'
-#' @param ns_slices NS-FFA only. Numeric vector specifying the years at which to evaluate 
-#' the return levels confidence intervals of a nonstationary probability distribution. 
-#' `ns_slices` do not have to be elements of the `ns_years` argument. 
+#' @param ns_slices For NS-FFA only: Numeric vector specifying the years at which to 
+#' evaluate the return levels confidence intervals of a nonstationary probability 
+#' distribution. `ns_slices` do not have to be elements of the `ns_years` argument. 
 #'
 #' @name param-ns-slices
 #'

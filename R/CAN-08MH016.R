@@ -13,7 +13,7 @@
 #' @source Meteorological Service of Canada (MSC) GeoMet Platform
 #'
 #' @details Variables:
-#' - `max`: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
-#' - `year`: Integer; the corresponding year.
+#' - `max`: Numeric; the observed annual maximum series, in m\eqn{^3}{^3}/s.
+#' - `year`: Integer; the corresponding years.
 
 "CAN_08MH016"

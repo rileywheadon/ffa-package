@@ -1,6 +1,7 @@
 #' L-Moments Parameter Estimation
 #'
-#' Estimates the parameters of a *stationary* probability model using the L-moments. 
+#' **For S-FFA only**: Estimates the parameters of a *stationary* probability model 
+#' using the L-moments. 
 #'
 #' @inheritParams param-data
 #' @inheritParams param-distribution

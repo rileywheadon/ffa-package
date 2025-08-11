@@ -32,12 +32,12 @@ plot_lmom_diagram <- function(results, ...) {
 	method <- results$method
 
 	# Create dataframes for the sample L-moments
-	reg_moments = utils_sample_lmoments(results$data)
+	reg_moments = utils_sample_lmoments(results$decomposed_data)
 	reg_sample_t3 = reg_moments[3]
 	reg_sample_t4 = reg_moments[4]
 	reg_lm <- data.frame(x = reg_sample_t3, y = reg_sample_t4)
 
-	log_moments = utils_sample_lmoments(log(results$data))
+	log_moments = utils_sample_lmoments(log(results$decomposed_data))
 	log_sample_t3 = log_moments[3]
 	log_sample_t4 = log_moments[4]
 	log_lm <- data.frame(x = log_sample_t4, y = log_sample_t4)

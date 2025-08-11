@@ -16,7 +16,7 @@ model_assessment(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{distribution}{A three-character code indicating the distribution family.
@@ -27,10 +27,10 @@ or \code{"WEI"}.}
 scale, shape). The length must be between 2 and 5, depending on the specified
 \code{distribution} and \code{structure}.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.

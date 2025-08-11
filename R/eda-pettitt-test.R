@@ -1,7 +1,7 @@
 #' Pettitt Test for Abrupt Changes in the Mean of a Time Series
 #'
 #' Performs the nonparametric Pettitt test to detect a single abrupt change in the
-#' mean of a time series. Under the null hypothesis, there is no change point.
+#' central tendency of a time series. Under the null hypothesis, there is no change.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years

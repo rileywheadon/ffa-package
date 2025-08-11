@@ -3,9 +3,9 @@
 #' @description
 #' Decomposes a nonstationary annual maxima series to derive its stationary stochastic 
 #' component, which can be used to identify a best-fit distribution using conventional 
-#' stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún 
-#' and He (2022), which relies on the statistical representation of nonstationary stochastic 
-#' processes.
+#' stationary methods, like those based on L-moments. The decomposition procedure 
+#' follows that proposed by Vidrio-Sahagún and He (2022), which relies on the statistical 
+#' representation of nonstationary stochastic processes.
 #' 
 #' @inheritParams param-data
 #' @inheritParams param-ns-years

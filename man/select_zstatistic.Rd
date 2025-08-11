@@ -7,13 +7,13 @@
 select_zstatistic(data, ns_years = NULL, ns_structure = NULL, samples = 10000L)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -26,7 +26,8 @@ parameters are modeled as nonstationary. Must contain two logical scalars:
 A list with the results of distribution selection:
 \itemize{
 \item \code{method}: \code{"Z-selection"}.
-\item \code{data}: The \code{data} argument (S-FFA) or the detrended dataset (NS-FFA).
+\item \code{decomposed_data}: The detrended dataset used to compute the L-moments. For S-FFA,
+this is the \code{data} argument. For NS-FFA, it is output of \code{\link[=data_decomposition]{data_decomposition()}}.
 \item \code{metrics}: List of computed Z-statistics for each candidate distribution.
 \item \code{recommendation}: Name of the distribution with the smallest Z-statistic.
 \item \code{reg_params}: Kappa distribution parameters for the data.
@@ -43,10 +44,10 @@ the sample L-kurtosis (\eqn{\tau_4}) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.
 
-\strong{NS-FFA}: To select a distribution for a nonstationary model, include the observation
-years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}). Then, this
-method will detrend the data internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior
-to distribution selection.
+\strong{For NS-FFA}: To select a distribution for a nonstationary model, include the
+observation years (\code{ns_years}) and the nonstationary model structure
+(\code{ns_structure}). Then, this method will detrend the original, nonstationary data
+internally using the \code{\link[=data_decomposition]{data_decomposition()}} function prior to distribution selection.
 }
 \details{
 First, this method fits a four-parameter Kappa distribution to both the original and

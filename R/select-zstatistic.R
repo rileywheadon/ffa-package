@@ -6,10 +6,10 @@
 #' of candidate distributions. The distribution with the smallest absolute Z-statistic 
 #' is selected.
 #'
-#' **NS-FFA**: To select a distribution for a nonstationary model, include the observation
-#' years (`ns_years`) and the nonstationary model structure (`ns_structure`). Then, this 
-#' method will detrend the data internally using the [data_decomposition()] function prior 
-#' to distribution selection.
+#' **For NS-FFA**: To select a distribution for a nonstationary model, include the 
+#' observation years (`ns_years`) and the nonstationary model structure 
+#' (`ns_structure`). Then, this method will detrend the original, nonstationary data 
+#' internally using the [data_decomposition()] function prior to distribution selection.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-ns-years
@@ -18,7 +18,8 @@
 #'
 #' @return A list with the results of distribution selection:
 #' - `method`: `"Z-selection"`.
-#' - `data`: The `data` argument (S-FFA) or the detrended dataset (NS-FFA).
+#' - `decomposed_data`: The detrended dataset used to compute the L-moments. For S-FFA, 
+#'    this is the `data` argument. For NS-FFA, it is output of [data_decomposition()].
 #' - `metrics`: List of computed Z-statistics for each candidate distribution.
 #' - `recommendation`: Name of the distribution with the smallest Z-statistic.
 #' - `reg_params`: Kappa distribution parameters for the data.
@@ -156,7 +157,7 @@ select_zstatistic <- function(data, ns_years = NULL, ns_structure = NULL, sample
 	# Return the results as a list
 	list(
 		method = "Z-statistic",
-		data = data,
+		decomposed_data = data,
 		metrics = metrics,
 		recommendation = recommendation,
 		reg_params = reg_bootstrap$params,

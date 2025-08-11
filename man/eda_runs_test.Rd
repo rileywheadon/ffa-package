@@ -32,9 +32,11 @@ A list containing the test results, including:
 }
 \description{
 Applies the Wald–Wolfowitz runs test to a numeric vector in order to assess
-whether they behave as a random sequence. The test statistic and p-value
+whether it behaves as a random sequence. The test statistic and p-value
 is computed using the number of runs (sequences of values above or below the
-median). Under the null hypothesis, the data is random.
+median). Under the null hypothesis, the data is random. The runs test can be
+used to assess whether the residuals of a nonstationary model are random,
+indicating the suitability of the assumed nonstationary structure (e.g., linear).
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

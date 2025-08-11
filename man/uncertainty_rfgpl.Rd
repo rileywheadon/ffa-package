@@ -16,25 +16,25 @@ uncertainty_rfgpl(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{prior}{Numeric vector of length 2. Specifies the parameters of the
 Beta prior for the shape parameter \eqn{\kappa}.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
 \item \code{scale}: If \code{TRUE}, the scale parameter has a linear temporal trend.
 }}
 
-\item{ns_slices}{NS-FFA only. Numeric vector specifying the years at which to evaluate
-the return levels confidence intervals of a nonstationary probability distribution.
-\code{ns_slices} do not have to be elements of the \code{ns_years} argument.}
+\item{ns_slices}{For NS-FFA only: Numeric vector specifying the years at which to
+evaluate the return levels confidence intervals of a nonstationary probability
+distribution. \code{ns_slices} do not have to be elements of the \code{ns_years} argument.}
 
 \item{alpha}{Numeric scalar in \eqn{[0.01, 0.1]}. The significance
 level for confidence intervals or hypothesis tests. Default is 0.05.}
@@ -68,7 +68,7 @@ Calculates return level estimates and confidence intervals at specified return
 periods (defaults to 2, 5, 10, 20, 50, and 100 years) using the regula-falsi
 generalized profile likelihood root‐finding method for the GEV distribution.
 
-\strong{NS-FFA}: To perform uncertainty quantification for a nonstationary model,
+\strong{For NS-FFA}: To perform uncertainty quantification for a nonstationary model,
 include the observation years (\code{ns_years}), the nonstationary model structure
 (\code{ns_structure}), and a list of years at which to compute the return level estimates
 and confidence intervals (\code{ns_slices}).

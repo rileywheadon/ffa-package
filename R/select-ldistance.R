@@ -5,10 +5,10 @@
 #' Euclidean distance between the theoretical L-moment ratios \eqn{(\tau_3, \tau_4)} 
 #' and the sample L-moment ratios \eqn{(t_3, t_4)}.
 #'
-#' **NS-FFA**: To select a distribution for a nonstationary model, include the observation
-#' years (`ns_years`) and the nonstationary model structure (`ns_structure`). Then, this 
-#' method will detrend the data internally using the [data_decomposition()] function prior 
-#' to distribution selection.
+#' **For NS-FFA**: To select a distribution for a nonstationary model, include the 
+#' observation years (`ns_years`) and the nonstationary model structure 
+#' (`ns_structure`). Then, this method will detrend the original, nonstationary data 
+#' internally using the [data_decomposition()] function prior to distribution selection.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-ns-years
@@ -16,7 +16,8 @@
 #'
 #' @return A list with the results of distribution selection:
 #' - `method`: `"L-distance"`.
-#' - `data`: The `data` argument (S-FFA) or the detrended dataset (NS-FFA).
+#' - `decomposed_data`: The detrended dataset used to compute the L-moments. For S-FFA, 
+#'    this is the `data` argument. For NS-FFA, it is output of [data_decomposition()].
 #' - `metrics`: A list of L-distance metrics for each candidate distribution.
 #' - `recommendation`: The name of the distribution with the smallest L-distance.
 #'
@@ -104,7 +105,7 @@ select_ldistance <- function(data, ns_years = NULL, ns_structure = NULL) {
 	# Return the results as a list
 	list(
 		method = "L-distance",
-		data = data,
+		decomposed_data = data,
 		metrics = metrics,
 		recommendation = recommendation
 	)	

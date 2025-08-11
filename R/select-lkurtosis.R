@@ -5,10 +5,10 @@
 #' between the theoretical L-kurtosis (\eqn{\tau_4}) and the sample L-kurtosis 
 #' (\eqn{t_4}). Only supports 3-parameter distributions. 
 #'
-#' **NS-FFA**: To select a distribution for a nonstationary model, include the observation
-#' years (`ns_years`) and the nonstationary model structure (`ns_structure`). Then, this 
-#' method will detrend the data internally using the [data_decomposition()] function prior 
-#' to distribution selection.
+#' **For NS-FFA**: To select a distribution for a nonstationary model, include the 
+#' observation years (`ns_years`) and the nonstationary model structure 
+#' (`ns_structure`). Then, this method will detrend the original, nonstationary data 
+#' internally using the [data_decomposition()] function prior to distribution selection.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-ns-years
@@ -16,7 +16,8 @@
 #'
 #' @return A list with the results of distribution selection:
 #' - `method`: `"L-kurtosis"`.
-#' - `data`: The `data` argument (S-FFA) or the detrended dataset (NS-FFA).
+#' - `decomposed_data`: The detrended dataset used to compute the L-moments. For S-FFA, 
+#'    this is the `data` argument. For NS-FFA, it is output of [data_decomposition()].
 #' - `metrics`: A list of L-kurtosis metrics for each distribution.
 #' - `recommendation`: Name of the distribution with the smallest L-kurtosis metric.
 #'
@@ -92,7 +93,7 @@ select_lkurtosis <- function(data, ns_years = NULL, ns_structure = NULL) {
 	# Return the results as a list
 	list(
 		method = "L-kurtosis",
-		data = data,
+		decomposed_data = data,
 		metrics = metrics, 
 		recommendation = recommendation
 	)	

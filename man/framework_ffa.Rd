@@ -7,38 +7,55 @@
 framework_ffa(data, years, ns_splits = NULL, ns_structures = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
 Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_splits}{An integer list of years at which to split the data. Use \code{splits = integer(0)}
-to avoid splitting the data. Note that \code{integer(0)} is NOT the same as \code{NULL}.}
+\item{ns_splits}{An integer vector of years used to split the data into homogeneous
+subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an integer vector
+of years (e.g., \code{1950L}) with physical justification for change points, or \code{NULL}
+if no such years exist.}
 
-\item{ns_structures}{An list of structure objects of size \code{length(splits) + 1}. Each
-structure object is a list with boolean items \code{location} and \code{scale} indicating a trend
-in the mean/variability respectively.}
+\item{ns_structures}{For S-FFA, set to \code{NULL} (default) to use a stationary model
+for all homogeneous subperiods. For NS-FFA, provide a list of \code{length(ns_splits) + 1}
+sublists specifying the nonstationary model structure for each homogeneous subperiod.
+Each sublist must contain logical elements \code{location} and \code{scale}, indicating
+monotonic trends in the mean and variability, respectively.}
 
-\item{...}{Additional arguments. See the "Optional Arguments" section for a complete list.}
+\item{...}{Additional arguments. See the "Optional Arguments" section for a complete
+list.}
 }
 \value{
-A list of submodules containing the results of frequency analysis. Each list contains
-a \code{name}, which is either \code{"Distribution Selection"}, \code{"Parameter Estimation"},  \code{"Uncertainty  Quantification"}, or \code{"Model Assessment"}. Then, the submodule will contain a sublist of
-the results for each subperiod.
+\code{summary}: A list describing the model(s) used for the analysis.
+\itemize{
+\item \code{approach}: Either "S-FFA", "NS-FFA", or "Piecewise NS-FFA".
+\item \code{ns_splits}: The \code{ns_splits} argument, if given.
+\item \code{ns_structures}: The \code{ns_structures} argument, if given.
+}
+
+\code{submodules}: A list of lists of containing the results of frequency analysis.
+Each list contains:
+\itemize{
+\item \code{name}: Either "Distribution Selection", "Parameter Estimation", "Uncertainty
+Quantification", or "Model Assessment".
+\item \code{start}: The first year of the homogeneous subperiod.
+\item \code{end}: The last year of the homogeneous subperiod.
+\item Additional items specific to the the submodule.
+}
 }
 \description{
-Performs frequency analysis of annual maximum series (AMS) data including
-distribution selection, parameter estimation, uncertainty quantification,
-and model assessment. Supports both stationary frequency analysis (S-FFA)
-and nonstationary frequency analysis (NS-FFA).
+Performs frequency analysis of annual maximum series data including distribution
+selection, parameter estimation, uncertainty quantification, and model assessment.
+Supports both stationary (S-FFA) or nonstationary (NS-FFA) flood frequency analysis.
 }
 \section{Optional Arguments}{
 
 \itemize{
 \item \code{selection}: Distribution selection method (default is \code{"L-distance"}). Must be one of
 \code{"L-distance"}, \code{"L-kurtosis"} or \code{"Z-statistic"}. Alternatively, set \code{selection}
-to a three-letter distribution code (eg. \code{"GUM"}) to use a specific distribution.
+to a three-letter distribution code (e.g., \code{"GUM"}) to use a specific distribution.
 \item \code{s_estimation}: Parameter estimation method for S-FFA (default is \code{"L-moments"}). Must be
 \code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}. Method \code{"GMLE"} requires \code{selection = "GEV"}.
 \item \code{ns_estimation}: Parameter estimation method for NS-FFA (default is \code{"MLE"}). Must be

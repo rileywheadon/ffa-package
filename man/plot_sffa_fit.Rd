@@ -22,8 +22,8 @@ plot_sffa_fit(results, show_line = TRUE, ...)
 }
 }
 \description{
-Generates a plot with a stationary probability distribution plotted vertically
-on the left panel and the data on the right panel.
+Generates a plot showing the probability density of a stationary model (left panel)
+and the data (right panel).
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

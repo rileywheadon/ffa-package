@@ -3,7 +3,7 @@
 #' @description
 #' Compute the log-likelihood for stationary and nonstationary probability models.
 #' 
-#' **NS-FFA**: To compute the log-likelihood for a nonstationary probability model, 
+#' **For NS-FFA**: To compute the log-likelihood for a nonstationary probability model, 
 #' include the observation years (`ns_years`) and the nonstationary model structure
 #' (`ns_structure`).
 #'

@@ -4,7 +4,7 @@
 \alias{param-ns-years}
 \title{Parameter 'ns_years'}
 \arguments{
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 }
 \description{

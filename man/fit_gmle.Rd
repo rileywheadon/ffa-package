@@ -7,16 +7,16 @@
 fit_gmle(data, prior, ns_years = NULL, ns_structure = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{prior}{Numeric vector of length 2. Specifies the parameters of the
 Beta prior for the shape parameter \eqn{\kappa}.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -39,10 +39,11 @@ A list containing the results of parameter estimation:
 Estimates the parameters of the generalized extreme value (GEV) distribution by
 maximizing the generalized log‐likelihood, which incorporates a Beta prior on the
 shape parameter. Initial parameter estimates are obtained using the method of L‐moments
-and optimization is performed via \code{\link[stats:nlminb]{stats::nlminb()}} with repeated perturbations if needed.
+and optimization is performed via \code{\link[stats:nlminb]{stats::nlminb()}} with repeated perturbations if
+needed.
 
-\strong{NS-FFA}: To estimate parameters for a nonstationary model, include the observation
-years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}).
+\strong{For NS-FFA}: To estimate parameters for a nonstationary model, include the
+observation years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}).
 }
 \details{
 \enumerate{

@@ -4,9 +4,9 @@
 \alias{param-ns-slice}
 \title{Parameter 'ns_slice'}
 \arguments{
-\item{ns_slice}{NS-FFA only. Numeric scalar specifying the year at which to evaluate
-the quantiles of a nonstationary probability distribution. \code{ns_slice} does not have
-to be an element of the \code{ns_years} argument.}
+\item{ns_slice}{For NS-FFA only: Numeric scalar specifying the year at which to
+evaluate  the quantiles of a nonstationary probability distribution. \code{ns_slice}
+does not have to be an element of the \code{ns_years} argument.}
 }
 \description{
 Parameter 'ns_slice'

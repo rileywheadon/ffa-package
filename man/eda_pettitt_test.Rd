@@ -7,7 +7,7 @@
 eda_pettitt_test(data, years, alpha = 0.05)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
@@ -38,7 +38,7 @@ is empty.
 }
 \description{
 Performs the nonparametric Pettitt test to detect a single abrupt change in the
-mean of a time series. Under the null hypothesis, there is no change point.
+central tendency of a time series. Under the null hypothesis, there is no change.
 }
 \examples{
 data <- rnorm(n = 100, mean = 100, sd = 10)

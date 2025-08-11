@@ -7,17 +7,17 @@
 fit_mle(data, distribution, ns_years = NULL, ns_structure = NULL)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{distribution}{A three-character code indicating the distribution family.
 Must be \code{"GUM"}, \code{"NOR"}, \code{"LNO"}, \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"},
 or \code{"WEI"}.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -41,8 +41,9 @@ Estimates the parameters of a probability distribution by maximizing the log‐l
 Initial parameter estimates are obtained using the method of L‐moments and optimization
 is performed via \code{\link[stats:nlminb]{stats::nlminb()}} with repeated perturbations if needed.
 
-\strong{NS-FFA}: To estimate parameters for a nonstationary model, include the observation
-years (\code{ns_years}) and the nonstationary model structure (\code{ns_structure}).
+\strong{For NS-FFA}: To estimate parameters for a nonstationary model, include the
+observation years (\code{ns_years}) and the nonstationary model structure
+(\code{ns_structure}).
 }
 \details{
 \enumerate{

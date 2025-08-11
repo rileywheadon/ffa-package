@@ -4,10 +4,11 @@
 #' Estimates the parameters of the generalized extreme value (GEV) distribution by 
 #' maximizing the generalized log‐likelihood, which incorporates a Beta prior on the 
 #' shape parameter. Initial parameter estimates are obtained using the method of L‐moments
-#' and optimization is performed via [stats::nlminb()] with repeated perturbations if needed.
+#' and optimization is performed via [stats::nlminb()] with repeated perturbations if 
+#' needed.
 #'
-#' **NS-FFA**: To estimate parameters for a nonstationary model, include the observation
-#' years (`ns_years`) and the nonstationary model structure (`ns_structure`).
+#' **For NS-FFA**: To estimate parameters for a nonstationary model, include the 
+#' observation years (`ns_years`) and the nonstationary model structure (`ns_structure`).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-prior

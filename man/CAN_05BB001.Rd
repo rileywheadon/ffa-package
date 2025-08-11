@@ -20,8 +20,8 @@ station 05BB001, BOW RIVER AT BANFF in Alberta, Canada.
 \details{
 Variables:
 \itemize{
-\item \code{max}: Numeric; the annual maximum series observation, in m\eqn{^3}{^3}/s.
-\item \code{year}: Integer; the corresponding year.
+\item \code{max}: Numeric; the observed annual maximum series, in m\eqn{^3}{^3}/s.
+\item \code{year}: Integer; the corresponding years.
 }
 }
 \section{Additional Information}{

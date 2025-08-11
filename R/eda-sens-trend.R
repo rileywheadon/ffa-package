@@ -1,8 +1,8 @@
 #' Sen's Trend Estimator
 #'
 #' Computes Sen's linear trend estimator for a univariate time series. The estimated 
-#' slope and y-intercept are given in terms of the data and the *covariate*, which 
-#' is derived from the years using the formula \eqn{(\text{Years} - 1900) / 100}.
+#' slope and y-intercept are given in terms of the data and the *covariate* (time), 
+#' which is derived from the years using the formula \eqn{(\text{Years} - 1900) / 100}.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years

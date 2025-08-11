@@ -3,8 +3,9 @@
 #' @description
 #' Compute the quantiles for stationary and nonstationary probability models.
 #' 
-#' **NS-FFA**: To compute the quantiles for a nonstationary probability model, specify 
-#' a time slice (`ns_slice`) and the nonstationary model structure (`ns_structure`).
+#' **For NS-FFA**: To compute the quantiles for a nonstationary probability model, 
+#' specify a time slice (`ns_slice`) and the nonstationary model structure 
+#' (`ns_structure`).
 #'
 #' @inheritParams param-p
 #' @inheritParams param-distribution

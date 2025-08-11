@@ -7,13 +7,13 @@
 data_decomposition(data, ns_years, ns_structure)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -26,9 +26,9 @@ Numeric vector of decomposed data.
 \description{
 Decomposes a nonstationary annual maxima series to derive its stationary stochastic
 component, which can be used to identify a best-fit distribution using conventional
-stationary methods. The decomposition procedure follows that proposed by Vidrio-Sahagún
-and He (2022), which relies on the statistical representation of nonstationary stochastic
-processes.
+stationary methods, like those based on L-moments. The decomposition procedure
+follows that proposed by Vidrio-Sahagún and He (2022), which relies on the statistical
+representation of nonstationary stochastic processes.
 }
 \details{
 Internally, the function does the following:

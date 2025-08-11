@@ -7,7 +7,7 @@
 eda_sens_trend(data, years)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{years}{Numeric vector of observation years corresponding to \code{data}.
@@ -25,8 +25,8 @@ A list containing the estimated trend:
 }
 \description{
 Computes Sen's linear trend estimator for a univariate time series. The estimated
-slope and y-intercept are given in terms of the data and the \emph{covariate}, which
-is derived from the years using the formula \eqn{(\text{Years} - 1900) / 100}.
+slope and y-intercept are given in terms of the data and the \emph{covariate} (time),
+which is derived from the years using the formula \eqn{(\text{Years} - 1900) / 100}.
 }
 \details{
 Sen's slope estimator is a robust, nonparametric trend estimator based on the

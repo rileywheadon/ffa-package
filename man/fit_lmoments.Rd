@@ -7,7 +7,7 @@
 fit_lmoments(data, distribution)
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{distribution}{A three-character code indicating the distribution family.
@@ -24,7 +24,8 @@ A list containing the results of parameter estimation:
 }
 }
 \description{
-Estimates the parameters of a \emph{stationary} probability model using the L-moments.
+\strong{For S-FFA only}: Estimates the parameters of a \emph{stationary} probability model
+using the L-moments.
 }
 \details{
 First, the sample L-moments of the data are computed using \code{\link[=utils_sample_lmoments]{utils_sample_lmoments()}}.

@@ -7,8 +7,8 @@
 \title{Flood Frequency Analysis Framework}
 \description{
 This package provides tools for stationary (S-FFA) and nonstationary (NS-FFA)
-flood flood frequency analysis of annual maximum series data. Methods with the
-\verb{framework_*} prefix orchestrate the EDA and/or FFA modules from
+flood flood frequency analysis of annual maximum series data. High-level wrapper
+functions with the \verb{framework_*} prefix orchestrate the EDA and/or FFA modules from
 \href{doi:10.1016/j.envsoft.2024.105940}{Vidrio-Sahagún et al. (2024)} and generate
 reports. Users who wish to develop customized workflows may use methods with
 the following prefixes:
@@ -21,7 +21,7 @@ inform approach selection (S-FFA or NS-FFA):
 }
 \item \verb{select_*}: Select a suitable probability distribution using the L-moments.
 \item \verb{fit_*}: Fit parameters given a distribution and approach (S-FFA or NS-FFA).
-\item \verb{uncertainty_*}: Compute return level estimates and confidence intervals.
+\item \verb{uncertainty_*}: Quantify uncertainty by computing confidence intervals.
 \item \code{\link[=model_assessment]{model_assessment()}} evaluates model performance for using a variety of metrics.
 }
 
@@ -37,7 +37,7 @@ use cases (other datasets in \verb{/inst/extdata} are for testing purposes only)
 \itemize{
 \item Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
 statistical evidence of trends or change points (S-FFA recommended).
-\item Kootenai River at Porthill (CAN-08NH21): A regulated station outside with
+\item Kootenai River at Porthill (CAN-08NH21): A regulated station with
 evidence of an abrupt change in mean in 1972 (piecewise NS-FFA recommended).
 \item Bow River at Banff (CAN-05BB001). An unregulated station with statistical
 evidence of a trend in the mean (NS-FFA recommended).
@@ -48,8 +48,9 @@ evidence of a linear trend in both the mean and variability (NS-FFA recommended)
 }
 
 This package assumes familiarity with statistical techniques used in FFA, including
-L-moments, maximum likelihood estimation, and parametric bootstrap.
-For an explanation of these methods, see the
+parameter estimation (e.g., L-moments and maximum likelihood), dataset decomposition,
+and uncertainty quantification (parametric bootstrap and profile likelihood). For
+an explanation of these methods, see the
 \href{https://rileywheadon.github.io/ffa-framework/}{FFA Framework wiki}.
 For examples, see the vignettes on exploratory data analysis and flood frequency
 analysis.
@@ -68,8 +69,13 @@ Useful links:
 Authors:
 \itemize{
   \item Cuauhtémoc Vidrio-Sahagún \email{ct.vidrio-sahagun@usask.ca}
-  \item Alain Pietroniro \email{alain.pietroniro@ucalgary.ca}
+  \item Alain Pietroniro \email{alain.pietroniro@ucalgary.ca} [funder]
   \item Jianxun He \email{jianhe@ucalgary.ca}
+}
+
+Other contributors:
+\itemize{
+  \item Environment and Climate Change Canada (ECCC) [funder]
 }
 
 }

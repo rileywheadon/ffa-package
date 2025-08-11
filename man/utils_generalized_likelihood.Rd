@@ -13,7 +13,7 @@ utils_generalized_likelihood(
 )
 }
 \arguments{
-\item{data}{Numeric vector of annual maximum series values.
+\item{data}{Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.}
 
 \item{params}{Numeric vector of distribution parameters, in the order (location,
@@ -23,10 +23,10 @@ scale, shape). The length must be between 2 and 5, depending on the specified
 \item{prior}{Numeric vector of length 2. Specifies the parameters of the
 Beta prior for the shape parameter \eqn{\kappa}.}
 
-\item{ns_years}{NS-FFA only. Numeric vector of observation years corresponding
+\item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
 
-\item{ns_structure}{NS-FFA only. Named list indicating which distribution
+\item{ns_structure}{For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:
 \itemize{
 \item \code{location}: If \code{TRUE}, the location parameter has a linear temporal trend.
@@ -41,9 +41,9 @@ Computes the generalized log-likelihood for stationary and nonstationary
 variants of the Generalized Extreme Value (GEV) distribution with a geophysical
 (Beta) prior distribution for the shape parameter (Martins and Stedinger, 2000).
 
-\strong{NS-FFA}: To compute the generalized log-likelihood for a nonstationary probability
-model, include the observation years (\code{ns_years}) and the nonstationary model structure
-(\code{ns_structure}).
+\strong{For NS-FFA}: To compute the generalized log-likelihood for a nonstationary
+probability model, include the observation years (\code{ns_years}) and the nonstationary
+model structure (\code{ns_structure}).
 }
 \details{
 The generalized log-likelihood is defined as sum of (1) the log-likelihood and (2)
