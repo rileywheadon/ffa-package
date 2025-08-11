@@ -6,10 +6,10 @@
     }
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Log-Likelihood Functions for Probability Models — utils_log_likelihood"><meta name="description" content="Compute the log-likelihood for stationary and nonstationary probability models.
-NS-FFA: To compute the log-likelihood for a nonstationary probability model,
+For NS-FFA: To compute the log-likelihood for a nonstationary probability model,
 include the observation years (ns_years) and the nonstationary model structure
 (ns_structure)."><meta property="og:description" content="Compute the log-likelihood for stationary and nonstationary probability models.
-NS-FFA: To compute the log-likelihood for a nonstationary probability model,
+For NS-FFA: To compute the log-likelihood for a nonstationary probability model,
 include the observation years (ns_years) and the nonstationary model structure
 (ns_structure)."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -74,7 +74,7 @@ include the observation years (ns_years) and the nonstationary model structure
 
     <div class="ref-description section level2">
     <p>Compute the log-likelihood for stationary and nonstationary probability models.</p>
-<p><strong>NS-FFA</strong>: To compute the log-likelihood for a nonstationary probability model,
+<p><strong>For NS-FFA</strong>: To compute the log-likelihood for a nonstationary probability model,
 include the observation years (<code>ns_years</code>) and the nonstationary model structure
 (<code>ns_structure</code>).</p>
     </div>
@@ -95,7 +95,7 @@ include the observation years (<code>ns_years</code>) and the nonstationary mode
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Numeric vector of annual maximum series values.
+<dd><p>Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
@@ -112,12 +112,12 @@ scale, shape). The length must be between 2 and 5, depending on the specified
 
 
 <dt id="arg-ns-years">ns_years<a class="anchor" aria-label="anchor" href="#arg-ns-years"></a></dt>
-<dd><p>NS-FFA only. Numeric vector of observation years corresponding
+<dd><p>For NS-FFA only: Numeric vector of observation years corresponding
 to <code>data</code>. Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
 <dt id="arg-ns-structure">ns_structure<a class="anchor" aria-label="anchor" href="#arg-ns-structure"></a></dt>
-<dd><p>NS-FFA only. Named list indicating which distribution
+<dd><p>For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
 <li><p><code>scale</code>: If <code>TRUE</code>, the scale parameter has a linear temporal trend.</p></li>
 </ul></dd>
@@ -150,7 +150,7 @@ parameters are modeled as nonstationary. Must contain two logical scalars:</p><u
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -9,17 +9,17 @@
 the sample L-kurtosis (\(\tau_4\)) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.
-NS-FFA: To select a distribution for a nonstationary model, include the observation
-years (ns_years) and the nonstationary model structure (ns_structure). Then, this
-method will detrend the data internally using the data_decomposition() function prior
-to distribution selection."><meta property="og:description" content="Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
+For NS-FFA: To select a distribution for a nonstationary model, include the
+observation years (ns_years) and the nonstationary model structure
+(ns_structure). Then, this method will detrend the original, nonstationary data
+internally using the data_decomposition() function prior to distribution selection."><meta property="og:description" content="Selects the best-fit distribution by comparing a bias-corrected Z-statistic for
 the sample L-kurtosis (\(\tau_4\)) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.
-NS-FFA: To select a distribution for a nonstationary model, include the observation
-years (ns_years) and the nonstationary model structure (ns_structure). Then, this
-method will detrend the data internally using the data_decomposition() function prior
-to distribution selection."></head><body>
+For NS-FFA: To select a distribution for a nonstationary model, include the
+observation years (ns_years) and the nonstationary model structure
+(ns_structure). Then, this method will detrend the original, nonstationary data
+internally using the data_decomposition() function prior to distribution selection."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -85,10 +85,10 @@ to distribution selection."></head><body>
 the sample L-kurtosis (\(\tau_4\)) against the theoretical L-moments for a set
 of candidate distributions. The distribution with the smallest absolute Z-statistic
 is selected.</p>
-<p><strong>NS-FFA</strong>: To select a distribution for a nonstationary model, include the observation
-years (<code>ns_years</code>) and the nonstationary model structure (<code>ns_structure</code>). Then, this
-method will detrend the data internally using the <code><a href="data_decomposition.html">data_decomposition()</a></code> function prior
-to distribution selection.</p>
+<p><strong>For NS-FFA</strong>: To select a distribution for a nonstationary model, include the
+observation years (<code>ns_years</code>) and the nonstationary model structure
+(<code>ns_structure</code>). Then, this method will detrend the original, nonstationary data
+internally using the <code><a href="data_decomposition.html">data_decomposition()</a></code> function prior to distribution selection.</p>
     </div>
 
     <div class="section level2">
@@ -101,17 +101,17 @@ to distribution selection.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Numeric vector of annual maximum series values.
+<dd><p>Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
 <dt id="arg-ns-years">ns_years<a class="anchor" aria-label="anchor" href="#arg-ns-years"></a></dt>
-<dd><p>NS-FFA only. Numeric vector of observation years corresponding
+<dd><p>For NS-FFA only: Numeric vector of observation years corresponding
 to <code>data</code>. Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
 <dt id="arg-ns-structure">ns_structure<a class="anchor" aria-label="anchor" href="#arg-ns-structure"></a></dt>
-<dd><p>NS-FFA only. Named list indicating which distribution
+<dd><p>For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
 <li><p><code>scale</code>: If <code>TRUE</code>, the scale parameter has a linear temporal trend.</p></li>
 </ul></dd>
@@ -124,7 +124,8 @@ parameters are modeled as nonstationary. Must contain two logical scalars:</p><u
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with the results of distribution selection:</p><ul><li><p><code>method</code>: <code>"Z-selection"</code>.</p></li>
-<li><p><code>data</code>: The <code>data</code> argument (S-FFA) or the detrended dataset (NS-FFA).</p></li>
+<li><p><code>decomposed_data</code>: The detrended dataset used to compute the L-moments. For S-FFA,
+this is the <code>data</code> argument. For NS-FFA, it is output of <code><a href="data_decomposition.html">data_decomposition()</a></code>.</p></li>
 <li><p><code>metrics</code>: List of computed Z-statistics for each candidate distribution.</p></li>
 <li><p><code>recommendation</code>: Name of the distribution with the smallest Z-statistic.</p></li>
 <li><p><code>reg_params</code>: Kappa distribution parameters for the data.</p></li>
@@ -159,7 +160,7 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Z-statistic"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $decomposed_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  93.66981  90.95956  99.19026  98.71915 101.79338 101.32694 102.04820</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 110.98209  99.65298  89.94651  96.69792 108.31218  85.88962 100.37866</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  92.39855 102.35374  87.37552  98.86392 107.48181 105.12639 104.11626</span>
@@ -225,7 +226,7 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">

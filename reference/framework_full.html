@@ -5,11 +5,13 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orchestrate the Full FFA Framework — framework_full"><meta name="description" content="Runs the entire flood frequency analysis framework using the exploratory data analysis
-(framework_eda()) and flood frequency analysis (framework_ffa()) modules. Returns
-a comprehensive and reproducible summary of the results."><meta property="og:description" content="Runs the entire flood frequency analysis framework using the exploratory data analysis
-(framework_eda()) and flood frequency analysis (framework_ffa()) modules. Returns
-a comprehensive and reproducible summary of the results."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orchestrate the Full FFA Framework — framework_full"><meta name="description" content="Runs the entire flood frequency analysis framework using the results of exploratory
+data analysis (EDA) to guide approach selection (stationary or nonstationary) and
+perform flood frequency analysis. Returns a comprehensive and reproducible summary
+of the results."><meta property="og:description" content="Runs the entire flood frequency analysis framework using the results of exploratory
+data analysis (EDA) to guide approach selection (stationary or nonstationary) and
+perform flood frequency analysis. Returns a comprehensive and reproducible summary
+of the results."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -71,20 +73,15 @@ a comprehensive and reproducible summary of the results."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p>Runs the entire flood frequency analysis framework using the exploratory data analysis
-(<code><a href="framework_eda.html">framework_eda()</a></code>) and flood frequency analysis (<code><a href="framework_ffa.html">framework_ffa()</a></code>) modules. Returns
-a comprehensive and reproducible summary of the results.</p>
+    <p>Runs the entire flood frequency analysis framework using the results of exploratory
+data analysis (EDA) to guide approach selection (stationary or nonstationary) and
+perform flood frequency analysis. Returns a comprehensive and reproducible summary
+of the results.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">framework_full</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">years</span>,</span>
-<span>  ns_splits <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ns_structures <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  automatic <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">framework_full</span><span class="op">(</span><span class="va">data</span>, <span class="va">years</span>, ns_splits <span class="op">=</span> <span class="cn">NULL</span>, ns_structures <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -92,7 +89,7 @@ a comprehensive and reproducible summary of the results.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Numeric vector of annual maximum series values.
+<dd><p>Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
@@ -102,49 +99,37 @@ Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
 <dt id="arg-ns-splits">ns_splits<a class="anchor" aria-label="anchor" href="#arg-ns-splits"></a></dt>
-<dd><p>An integer vector of years at which to split the data (default is <code>NULL</code>).
-A split point is the <em>first</em> year in a subperiod.</p></dd>
+<dd><p>An integer vector of years used to split the data into homogeneous
+subperiods. For S-FFA, set to <code>NULL</code> (default). For NS-FFA, specify an integer vector
+of years (e.g., <code>1950L</code>) with physical justification for change points, or <code>NULL</code>
+if no such years exist.</p></dd>
 
 
 <dt id="arg-ns-structures">ns_structures<a class="anchor" aria-label="anchor" href="#arg-ns-structures"></a></dt>
-<dd><p>An list of structure objects of size <code>length(ns_splits) + 1</code> (default
-is <code>NULL</code>). Each structure object is a list with boolean items <code>location</code> and <code>scale</code>
-indicating a trend in the mean/variability respectively.</p></dd>
-
-
-<dt id="arg-automatic">automatic<a class="anchor" aria-label="anchor" href="#arg-automatic"></a></dt>
-<dd><p>If <code>TRUE</code>, the split points and nonstationary ns_structures are chosen
-automatically using the results of EDA (default is <code>FALSE</code>). This argument is ignored
-if both <code>ns_splits</code> and <code>ns_structures</code> are not <code>NULL</code>.</p></dd>
+<dd><p>For S-FFA, set to <code>NULL</code> (default) to use a stationary model
+for all homogeneous subperiods. For NS-FFA, provide a list of <code>length(ns_splits) + 1</code>
+sublists specifying the nonstationary model structure for each homogeneous subperiod.
+Each sublist must contain logical elements <code>location</code> and <code>scale</code>, indicating
+monotonic trends in the mean and variability, respectively.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments to be passed to the statistical tests and frequency
-analysis functions. See the details of <code>module_eda()</code> and <code>module_ffa()</code> for a complete
-list.</p></dd>
+analysis functions. See the details of <code><a href="framework_eda.html">framework_eda()</a></code> and <code><a href="framework_ffa.html">framework_ffa()</a></code> for a
+complete list.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>summary</code>: A list containing the nonstationary splits and structures used for the analysis.
-If the <code>ns_splits</code> and/or <code>ns_structures</code> arguments were provided, they will be included
-here. Otherwise, this list will contain the split points and model structures selected
-manually by the user.</p>
-<p><code>submodules</code>: A list of results for each submodule. Each submodules has a <code>name</code>, one of
-<code>"Change Points"</code>, <code>"Trend Detection"</code>, <code>"Distribution Selection"</code>, <code>"Parameter Estimation"</code>,
-<code>"Uncertainty Quantification"</code>, or <code>"Model Assessment"</code>. For more information, see
-<code><a href="framework_eda.html">framework_eda()</a></code> and <code><a href="framework_ffa.html">framework_ffa()</a></code>.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The behaviour of the function when <code>automatic = FALSE</code> can be confusing. If either
-of <code>ns_splits</code> or <code>ns_structures</code> is <code>NULL</code>, the user will be prompted to select them. However,
-if R is running in non-interactive mode, this is not possible, so the function will return
-all the results up to the current block along with an error message.</p>
-<p>To avoid this issue, the user has three options:</p><ol><li><p>Set <code>ns_splits</code> and <code>ns_structures</code> manually.</p></li>
-<li><p>Run R in interactive mode (using RStudio, for example).</p></li>
-<li><p>Set <code>automatic = TRUE</code>.</p></li>
-</ol></div>
+    <p><code>recommendations</code>: See <code><a href="framework_eda.html">framework_eda()</a></code>.</p>
+<p><code>summary</code>: See <code>framework-ffa()</code>.</p>
+<p><code>submodules</code>: A list of lists of results. Each list contains:</p><ul><li><p><code>name</code>: Either "Change Point Detection", "Trend Detection", "Distribution
+Selection", "Parameter Estimation", "Uncertainty Quantification", or "Model
+Assessment".</p></li>
+<li><p><code>start</code>: The first year of the homogeneous subperiod.</p></li>
+<li><p><code>end</code>: The last year of the homogeneous subperiod.</p></li>
+<li><p>Additional items specific to the the submodule.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="framework_eda.html">framework_eda()</a></code>, <code><a href="framework_ffa.html">framework_ffa()</a></code></p></div>
@@ -155,7 +140,7 @@ all the results up to the current block along with an error message.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -5,13 +5,17 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orchestrate Exploratory Data Analysis — framework_eda"><meta name="description" content="First, this method identifies change points in annual maximum series data. Then, the
-user is given the option to split the dataset into two or more subperiods. Finally,
-this method performs a collection of statistical tests for identifying nonstationarity
-in the mean and variability of each subperiod."><meta property="og:description" content="First, this method identifies change points in annual maximum series data. Then, the
-user is given the option to split the dataset into two or more subperiods. Finally,
-this method performs a collection of statistical tests for identifying nonstationarity
-in the mean and variability of each subperiod."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orchestrate Exploratory Data Analysis — framework_eda"><meta name="description" content="First, this method identifies change points in the original annual maximum series
+data. Then, the user is given the option to split the dataset into two or more
+homogenous subperiods (trend-free or with monotonic trends). Finally, this method
+performs a collection of statistical tests for identifying monotonic nonstationarity
+in the mean and variability of each subperiod. The results of EDA can help guide
+FFA approach selection (stationary or nonstationary) and FFA model determination."><meta property="og:description" content="First, this method identifies change points in the original annual maximum series
+data. Then, the user is given the option to split the dataset into two or more
+homogenous subperiods (trend-free or with monotonic trends). Finally, this method
+performs a collection of statistical tests for identifying monotonic nonstationarity
+in the mean and variability of each subperiod. The results of EDA can help guide
+FFA approach selection (stationary or nonstationary) and FFA model determination."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -73,15 +77,17 @@ in the mean and variability of each subperiod."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p>First, this method identifies change points in annual maximum series data. Then, the
-user is given the option to split the dataset into two or more subperiods. Finally,
-this method performs a collection of statistical tests for identifying nonstationarity
-in the mean and variability of each subperiod.</p>
+    <p>First, this method identifies change points in the original annual maximum series
+data. Then, the user is given the option to split the dataset into two or more
+homogenous subperiods (trend-free or with monotonic trends). Finally, this method
+performs a collection of statistical tests for identifying monotonic nonstationarity
+in the mean and variability of each subperiod. The results of EDA can help guide
+FFA approach selection (stationary or nonstationary) and FFA model determination.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">framework_eda</span><span class="op">(</span><span class="va">data</span>, <span class="va">years</span>, ns_splits <span class="op">=</span> <span class="cn">NULL</span>, automatic <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">framework_eda</span><span class="op">(</span><span class="va">data</span>, <span class="va">years</span>, ns_splits <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -89,7 +95,7 @@ in the mean and variability of each subperiod.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Numeric vector of annual maximum series values.
+<dd><p>Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
@@ -99,57 +105,46 @@ Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
 <dt id="arg-ns-splits">ns_splits<a class="anchor" aria-label="anchor" href="#arg-ns-splits"></a></dt>
-<dd><p>An integer vector of years at which to split the data (default is <code>NULL</code>).
-A split point is the <em>first</em> year in a subperiod.</p></dd>
-
-
-<dt id="arg-automatic">automatic<a class="anchor" aria-label="anchor" href="#arg-automatic"></a></dt>
-<dd><p>If <code>TRUE</code>, the data is split automatically using the results of the Pettitt
-and MKS tests (default is <code>FALSE</code>). This argument is ignored if <code>ns_splits</code> is not <code>NULL</code>.</p></dd>
+<dd><p>An integer vector of years used to split the data into homogeneous
+subperiods. For S-FFA, set to <code>NULL</code> (default). For NS-FFA, specify an integer vector
+of years (e.g., <code>1950L</code>) with physical justification for change points, or <code>NULL</code>
+if no such years exist.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments. See the "Optional Arguments" section for a complete list.</p></dd>
+<dd><p>Additional arguments. See the "Optional Arguments" section for a
+complete list.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>recommendations</code>: A list of recommended split points and nonstationary structures:</p><ul><li><p><code>approach</code>: Either <code>"S-FFA"</code>, <code>"NS-FFA"</code>, or <code>"Piecewise NS-FFA"</code>.</p></li>
-<li><p><code>splits</code>: The change point(s) identified by the change point detection test with the
-the lowest statistically significant p-value, or an empty vector if no such test exists.</p></li>
-<li><p><code>structures</code>: A list of nonstationary structure objects for each subperiod. Each structure
-is a list with boolean items <code>location</code> and <code>scale</code> which represent a linear trend in the
-in the mean or variability of the data respectively.</p></li>
-</ul><p><code>submodules</code>: A list of lists of statistical tests. Each sublist contains:</p><ul><li><p><code>name</code>: Either <code>"Change Points"</code> or <code>"Trend Detection"</code>.</p></li>
-<li><p><code>start</code>: The first year of the subperiod.</p></li>
-<li><p><code>end</code>: The last year of the subperiod.</p></li>
+    <p><code>recommendations</code>: A list containing the recommended FFA approach, split point(s)
+and nonstationary structure(s) from EDA:</p><ul><li><p><code>approach</code>: Either "S-FFA", "NS-FFA" (for a single homogeneous period), or
+"Piecewise NS-FFA" (for multiple homogeneous subperiods).</p></li>
+<li><p><code>ns_splits</code>: The split point(s) identified by the change point detection test with
+the the lowest statistically significant p-value, or <code>NULL</code> if no such point exists.</p></li>
+<li><p><code>ns_structures</code>: A list of structure objects for each homogeneous subperiod. Each
+structure is a list with boolean items <code>location</code> and <code>scale</code>, which represent a
+linear trend in the in the mean or variability of the data, respectively. If no
+trends were found in any homogeneous subperiod, <code>ns_structures</code> will be <code>NULL</code>.</p></li>
+</ul><p><code>submodules</code>: A list of lists of statistical tests. Each list contains:</p><ul><li><p><code>name</code>: Either "Change Point Detection" or "Trend Detection".</p></li>
+<li><p><code>start</code>: The first year of the homogeneous subperiod.</p></li>
+<li><p><code>end</code>: The last year of the homogeneous subperiod.</p></li>
 <li><p>Additional items from the statistical tests within the submodule.</p></li>
 </ul></div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If the <code>ns_splits</code> argument is not <code>NULL</code>, it will be used to split the data.
-To avoid splitting the data, use <code>splits = integer(0)</code>. Note that <code>integer(0)</code> is not
-the same as <code>NULL</code>.</p>
-<p>If <code>ns_splits</code> is <code>NULL</code> and <code>automatic</code> is <code>TRUE</code>, the data will be split automatically
-based on the change point detection test with the lowest statistically significant p-value.
-If neither test yielded a statistically significant p-value, the data will not be split.</p>
-<p>If <code>ns_splits</code> is <code>NULL</code> and <code>automatic</code> is <code>FALSE</code>, the user will be prompted to select the
-split points manually. This feature requires R to be running in interactive mode. Check if
-R is in interactive mode using the built-in <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> function.</p>
-    </div>
     <div class="section level2">
     <h2 id="optional-arguments">Optional Arguments<a class="anchor" aria-label="anchor" href="#optional-arguments"></a></h2>
 
 
 <ul><li><p><code>alpha</code>: The numeric significance level for all statistical tests (default is 0.05).</p></li>
-<li><p><code>bbmk_samples</code>: The number of samples used in the Block-Bootstrap Mann-Kendall (BBMK)
-test (default is 10000). Must be an integer.</p></li>
+<li><p><code>bbmk_samples</code>: The number of samples used in the Block-Bootstrap Mann-Kendall
+(BBMK) test (default is 10000). Must be an integer.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="eda_pettitt_test.html">eda_pettitt_test()</a></code>, <code><a href="eda_mks_test.html">eda_mks_test()</a></code>, <code><a href="eda_mk_test.html">eda_mk_test()</a></code>, <code><a href="eda_spearman_test.html">eda_spearman_test()</a></code>
-<code><a href="eda_bbmk_test.html">eda_bbmk_test()</a></code>, <code><a href="eda_pp_test.html">eda_pp_test()</a></code>, <code><a href="eda_kpss_test.html">eda_kpss_test()</a></code>, <code><a href="eda_sens_trend.html">eda_sens_trend()</a></code>,
-<code><a href="eda_runs_test.html">eda_runs_test()</a></code>, <code><a href="eda_white_test.html">eda_white_test()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="eda_pettitt_test.html">eda_pettitt_test()</a></code>, <code><a href="eda_mks_test.html">eda_mks_test()</a></code>, <code><a href="eda_mk_test.html">eda_mk_test()</a></code>,
+<code><a href="eda_spearman_test.html">eda_spearman_test()</a></code>, <code><a href="eda_bbmk_test.html">eda_bbmk_test()</a></code>, <code><a href="eda_pp_test.html">eda_pp_test()</a></code>, <code><a href="eda_kpss_test.html">eda_kpss_test()</a></code>,
+<code><a href="eda_sens_trend.html">eda_sens_trend()</a></code>, <code><a href="eda_runs_test.html">eda_runs_test()</a></code>, <code><a href="eda_white_test.html">eda_white_test()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -157,7 +152,7 @@ test (default is 10000). Must be an integer.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">

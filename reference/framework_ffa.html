@@ -5,13 +5,11 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orchestrate Flood Frequency Analysis — framework_ffa"><meta name="description" content="Performs frequency analysis of annual maximum series (AMS) data including
-distribution selection, parameter estimation, uncertainty quantification,
-and model assessment. Supports both stationary frequency analysis (S-FFA)
-and nonstationary frequency analysis (NS-FFA)."><meta property="og:description" content="Performs frequency analysis of annual maximum series (AMS) data including
-distribution selection, parameter estimation, uncertainty quantification,
-and model assessment. Supports both stationary frequency analysis (S-FFA)
-and nonstationary frequency analysis (NS-FFA)."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orchestrate Flood Frequency Analysis — framework_ffa"><meta name="description" content="Performs frequency analysis of annual maximum series data including distribution
+selection, parameter estimation, uncertainty quantification, and model assessment.
+Supports both stationary (S-FFA) or nonstationary (NS-FFA) flood frequency analysis."><meta property="og:description" content="Performs frequency analysis of annual maximum series data including distribution
+selection, parameter estimation, uncertainty quantification, and model assessment.
+Supports both stationary (S-FFA) or nonstationary (NS-FFA) flood frequency analysis."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -73,10 +71,9 @@ and nonstationary frequency analysis (NS-FFA)."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p>Performs frequency analysis of annual maximum series (AMS) data including
-distribution selection, parameter estimation, uncertainty quantification,
-and model assessment. Supports both stationary frequency analysis (S-FFA)
-and nonstationary frequency analysis (NS-FFA).</p>
+    <p>Performs frequency analysis of annual maximum series data including distribution
+selection, parameter estimation, uncertainty quantification, and model assessment.
+Supports both stationary (S-FFA) or nonstationary (NS-FFA) flood frequency analysis.</p>
     </div>
 
     <div class="section level2">
@@ -89,7 +86,7 @@ and nonstationary frequency analysis (NS-FFA).</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Numeric vector of annual maximum series values.
+<dd><p>Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
@@ -99,33 +96,44 @@ Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
 <dt id="arg-ns-splits">ns_splits<a class="anchor" aria-label="anchor" href="#arg-ns-splits"></a></dt>
-<dd><p>An integer list of years at which to split the data. Use <code>splits = integer(0)</code>
-to avoid splitting the data. Note that <code>integer(0)</code> is NOT the same as <code>NULL</code>.</p></dd>
+<dd><p>An integer vector of years used to split the data into homogeneous
+subperiods. For S-FFA, set to <code>NULL</code> (default). For NS-FFA, specify an integer vector
+of years (e.g., <code>1950L</code>) with physical justification for change points, or <code>NULL</code>
+if no such years exist.</p></dd>
 
 
 <dt id="arg-ns-structures">ns_structures<a class="anchor" aria-label="anchor" href="#arg-ns-structures"></a></dt>
-<dd><p>An list of structure objects of size <code>length(splits) + 1</code>. Each
-structure object is a list with boolean items <code>location</code> and <code>scale</code> indicating a trend
-in the mean/variability respectively.</p></dd>
+<dd><p>For S-FFA, set to <code>NULL</code> (default) to use a stationary model
+for all homogeneous subperiods. For NS-FFA, provide a list of <code>length(ns_splits) + 1</code>
+sublists specifying the nonstationary model structure for each homogeneous subperiod.
+Each sublist must contain logical elements <code>location</code> and <code>scale</code>, indicating
+monotonic trends in the mean and variability, respectively.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments. See the "Optional Arguments" section for a complete list.</p></dd>
+<dd><p>Additional arguments. See the "Optional Arguments" section for a complete
+list.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of submodules containing the results of frequency analysis. Each list contains
-a <code>name</code>, which is either <code>"Distribution Selection"</code>, <code>"Parameter Estimation"</code>,  <code>"Uncertainty  Quantification"</code>, or <code>"Model Assessment"</code>. Then, the submodule will contain a sublist of
-the results for each subperiod.</p>
-    </div>
+    <p><code>summary</code>: A list describing the model(s) used for the analysis.</p><ul><li><p><code>approach</code>: Either "S-FFA", "NS-FFA", or "Piecewise NS-FFA".</p></li>
+<li><p><code>ns_splits</code>: The <code>ns_splits</code> argument, if given.</p></li>
+<li><p><code>ns_structures</code>: The <code>ns_structures</code> argument, if given.</p></li>
+</ul><p><code>submodules</code>: A list of lists of containing the results of frequency analysis.
+Each list contains:</p><ul><li><p><code>name</code>: Either "Distribution Selection", "Parameter Estimation", "Uncertainty
+Quantification", or "Model Assessment".</p></li>
+<li><p><code>start</code>: The first year of the homogeneous subperiod.</p></li>
+<li><p><code>end</code>: The last year of the homogeneous subperiod.</p></li>
+<li><p>Additional items specific to the the submodule.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="optional-arguments">Optional Arguments<a class="anchor" aria-label="anchor" href="#optional-arguments"></a></h2>
 
 
 <ul><li><p><code>selection</code>: Distribution selection method (default is <code>"L-distance"</code>). Must be one of
 <code>"L-distance"</code>, <code>"L-kurtosis"</code> or <code>"Z-statistic"</code>. Alternatively, set <code>selection</code>
-to a three-letter distribution code (eg. <code>"GUM"</code>) to use a specific distribution.</p></li>
+to a three-letter distribution code (e.g., <code>"GUM"</code>) to use a specific distribution.</p></li>
 <li><p><code>s_estimation</code>: Parameter estimation method for S-FFA (default is <code>"L-moments"</code>). Must be
 <code>"L-moments"</code>, <code>"MLE"</code>, or <code>"GMLE"</code>. Method <code>"GMLE"</code> requires <code>selection = "GEV"</code>.</p></li>
 <li><p><code>ns_estimation</code>: Parameter estimation method for NS-FFA (default is <code>"MLE"</code>). Must be
@@ -167,7 +175,7 @@ models. Slices outside of the period will be ignored (default is 1900, 1950, 200
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">

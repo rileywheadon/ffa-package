@@ -6,8 +6,8 @@
     }
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Flood Frequency Analysis Framework — ffaframework-package"><meta name="description" content="This package provides tools for stationary (S-FFA) and nonstationary (NS-FFA)
-flood flood frequency analysis of annual maximum series data. Methods with the
-framework_* prefix orchestrate the EDA and/or FFA modules from
+flood flood frequency analysis of annual maximum series data. High-level wrapper
+functions with the framework_* prefix orchestrate the EDA and/or FFA modules from
 Vidrio-Sahagún et al. (2024) and generate
 reports. Users who wish to develop customized workflows may use methods with
 the following prefixes:
@@ -18,7 +18,7 @@ Detect statistically significant temporal trends in the mean and variability.
 
 select_*: Select a suitable probability distribution using the L-moments.
 fit_*: Fit parameters given a distribution and approach (S-FFA or NS-FFA).
-uncertainty_*: Compute return level estimates and confidence intervals.
+uncertainty_*: Quantify uncertainty by computing confidence intervals.
 model_assessment() evaluates model performance for using a variety of metrics.
 
 
@@ -32,7 +32,7 @@ Datasets from five hydrometric stations in Canada are provided as representative
 use cases (other datasets in /inst/extdata are for testing purposes only):
 Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
 statistical evidence of trends or change points (S-FFA recommended).
-Kootenai River at Porthill (CAN-08NH21): A regulated station outside with
+Kootenai River at Porthill (CAN-08NH21): A regulated station with
 evidence of an abrupt change in mean in 1972 (piecewise NS-FFA recommended).
 Bow River at Banff (CAN-05BB001). An unregulated station with statistical
 evidence of a trend in the mean (NS-FFA recommended).
@@ -43,13 +43,14 @@ evidence of a linear trend in both the mean and variability (NS-FFA recommended)
 
 
 This package assumes familiarity with statistical techniques used in FFA, including
-L-moments, maximum likelihood estimation, and parametric bootstrap.
-For an explanation of these methods, see the
+parameter estimation (e.g., L-moments and maximum likelihood), dataset decomposition,
+and uncertainty quantification (parametric bootstrap and profile likelihood). For
+an explanation of these methods, see the
 FFA Framework wiki.
 For examples, see the vignettes on exploratory data analysis and flood frequency
 analysis."><meta property="og:description" content="This package provides tools for stationary (S-FFA) and nonstationary (NS-FFA)
-flood flood frequency analysis of annual maximum series data. Methods with the
-framework_* prefix orchestrate the EDA and/or FFA modules from
+flood flood frequency analysis of annual maximum series data. High-level wrapper
+functions with the framework_* prefix orchestrate the EDA and/or FFA modules from
 Vidrio-Sahagún et al. (2024) and generate
 reports. Users who wish to develop customized workflows may use methods with
 the following prefixes:
@@ -60,7 +61,7 @@ Detect statistically significant temporal trends in the mean and variability.
 
 select_*: Select a suitable probability distribution using the L-moments.
 fit_*: Fit parameters given a distribution and approach (S-FFA or NS-FFA).
-uncertainty_*: Compute return level estimates and confidence intervals.
+uncertainty_*: Quantify uncertainty by computing confidence intervals.
 model_assessment() evaluates model performance for using a variety of metrics.
 
 
@@ -74,7 +75,7 @@ Datasets from five hydrometric stations in Canada are provided as representative
 use cases (other datasets in /inst/extdata are for testing purposes only):
 Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
 statistical evidence of trends or change points (S-FFA recommended).
-Kootenai River at Porthill (CAN-08NH21): A regulated station outside with
+Kootenai River at Porthill (CAN-08NH21): A regulated station with
 evidence of an abrupt change in mean in 1972 (piecewise NS-FFA recommended).
 Bow River at Banff (CAN-05BB001). An unregulated station with statistical
 evidence of a trend in the mean (NS-FFA recommended).
@@ -85,8 +86,9 @@ evidence of a linear trend in both the mean and variability (NS-FFA recommended)
 
 
 This package assumes familiarity with statistical techniques used in FFA, including
-L-moments, maximum likelihood estimation, and parametric bootstrap.
-For an explanation of these methods, see the
+parameter estimation (e.g., L-moments and maximum likelihood), dataset decomposition,
+and uncertainty quantification (parametric bootstrap and profile likelihood). For
+an explanation of these methods, see the
 FFA Framework wiki.
 For examples, see the vignettes on exploratory data analysis and flood frequency
 analysis."></head><body>
@@ -152,8 +154,8 @@ analysis."></head><body>
 
     <div class="ref-description section level2">
     <p>This package provides tools for stationary (S-FFA) and nonstationary (NS-FFA)
-flood flood frequency analysis of annual maximum series data. Methods with the
-<code>framework_*</code> prefix orchestrate the EDA and/or FFA modules from
+flood flood frequency analysis of annual maximum series data. High-level wrapper
+functions with the <code>framework_*</code> prefix orchestrate the EDA and/or FFA modules from
 <a href="doi:10.1016/j.envsoft.2024.105940">Vidrio-Sahagún et al. (2024)</a> and generate
 reports. Users who wish to develop customized workflows may use methods with
 the following prefixes:</p><ol><li><p><code>eda_*</code>: Explore annual maximum series data for evidence of nonstationarity to
@@ -162,7 +164,7 @@ inform approach selection (S-FFA or NS-FFA):</p><ul><li><p>Detect statistically 
 </ul></li>
 <li><p><code>select_*</code>: Select a suitable probability distribution using the L-moments.</p></li>
 <li><p><code>fit_*</code>: Fit parameters given a distribution and approach (S-FFA or NS-FFA).</p></li>
-<li><p><code>uncertainty_*</code>: Compute return level estimates and confidence intervals.</p></li>
+<li><p><code>uncertainty_*</code>: Quantify uncertainty by computing confidence intervals.</p></li>
 <li><p><code><a href="model_assessment.html">model_assessment()</a></code> evaluates model performance for using a variety of metrics.</p></li>
 </ol><p>Additional utility functions for visualization and computation are also available:</p><ul><li><p><code>data_*</code> methods load, transform, and decompose annual maximum series data.</p></li>
 <li><p><code>plot_*</code> methods produce diagnostic and summary plots.</p></li>
@@ -170,7 +172,7 @@ inform approach selection (S-FFA or NS-FFA):</p><ul><li><p>Detect statistically 
 </ul><p>Datasets from five hydrometric stations in Canada are provided as representative
 use cases (other datasets in <code>/inst/extdata</code> are for testing purposes only):</p><ul><li><p>Athabasca River at Athabasca (CAN-07BE001): An unregulated station with no
 statistical evidence of trends or change points (S-FFA recommended).</p></li>
-<li><p>Kootenai River at Porthill (CAN-08NH21): A regulated station outside with
+<li><p>Kootenai River at Porthill (CAN-08NH21): A regulated station with
 evidence of an abrupt change in mean in 1972 (piecewise NS-FFA recommended).</p></li>
 <li><p>Bow River at Banff (CAN-05BB001). An unregulated station with statistical
 evidence of a trend in the mean (NS-FFA recommended).</p></li>
@@ -179,8 +181,9 @@ with statistical evidence of a linear trend in variability (NS-FFA recommended).
 <li><p>Okanagan River at Penticton (CAN-08NM050): A regulated station with statistical
 evidence of a linear trend in both the mean and variability (NS-FFA recommended).</p></li>
 </ul><p>This package assumes familiarity with statistical techniques used in FFA, including
-L-moments, maximum likelihood estimation, and parametric bootstrap.
-For an explanation of these methods, see the
+parameter estimation (e.g., L-moments and maximum likelihood), dataset decomposition,
+and uncertainty quantification (parametric bootstrap and profile likelihood). For
+an explanation of these methods, see the
 <a href="https://rileywheadon.github.io/ffa-framework/" class="external-link">FFA Framework wiki</a>.
 For examples, see the vignettes on exploratory data analysis and flood frequency
 analysis.</p>
@@ -197,8 +200,9 @@ analysis.</p>
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p><strong>Maintainer</strong>: Riley Wheadon <a href="mailto:rileywheadon@gmail.com">rileywheadon@gmail.com</a></p>
 <p>Authors:</p><ul><li><p>Cuauhtémoc Vidrio-Sahagún <a href="mailto:ct.vidrio-sahagun@usask.ca">ct.vidrio-sahagun@usask.ca</a></p></li>
-<li><p>Alain Pietroniro <a href="mailto:alain.pietroniro@ucalgary.ca">alain.pietroniro@ucalgary.ca</a></p></li>
+<li><p>Alain Pietroniro <a href="mailto:alain.pietroniro@ucalgary.ca">alain.pietroniro@ucalgary.ca</a> [funder]</p></li>
 <li><p>Jianxun He <a href="mailto:jianhe@ucalgary.ca">jianhe@ucalgary.ca</a></p></li>
+</ul><p>Other contributors:</p><ul><li><p>Environment and Climate Change Canada (ECCC) [funder]</p></li>
 </ul></div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -206,7 +210,7 @@ analysis.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">

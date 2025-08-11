@@ -95,7 +95,7 @@ and uncertainty (coverage based metrics using confidence intervals).</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Numeric vector of annual maximum series values.
+<dd><p>Numeric vector of observed annual maximum series values.
 Must be strictly positive, finite, and not missing.</p></dd>
 
 
@@ -112,12 +112,12 @@ scale, shape). The length must be between 2 and 5, depending on the specified
 
 
 <dt id="arg-ns-years">ns_years<a class="anchor" aria-label="anchor" href="#arg-ns-years"></a></dt>
-<dd><p>NS-FFA only. Numeric vector of observation years corresponding
+<dd><p>For NS-FFA only: Numeric vector of observation years corresponding
 to <code>data</code>. Must be the same length as <code>data</code> and strictly increasing.</p></dd>
 
 
 <dt id="arg-ns-structure">ns_structure<a class="anchor" aria-label="anchor" href="#arg-ns-structure"></a></dt>
-<dd><p>NS-FFA only. Named list indicating which distribution
+<dd><p>For NS-FFA only: Named list indicating which distribution
 parameters are modeled as nonstationary. Must contain two logical scalars:</p><ul><li><p><code>location</code>: If <code>TRUE</code>, the location parameter has a linear temporal trend.</p></li>
 <li><p><code>scale</code>: If <code>TRUE</code>, the scale parameter has a linear temporal trend.</p></li>
 </ul></dd>
@@ -239,7 +239,7 @@ generated with <code><a href="uncertainty_bootstrap.html">uncertainty_bootstrap(
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He.</p>
+  <p>Developed by Riley Wheadon, Cuauhtémoc Vidrio-Sahagún, Alain Pietroniro, Jianxun He, Environment and Climate Change Canada (ECCC).</p>
 </div>
 
 <div class="pkgdown-footer-right">
