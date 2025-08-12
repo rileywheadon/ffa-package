@@ -1,0 +1,34 @@
+### Runs Test (Means)
+
+For more information, see [here](https://rileywheadon.github.io/ffa-framework/articles/eda-trend-ams-mean.html#runs-test). 
+
+- *Null Hypothesis*: `r params$null_hypothesis`
+- *Alternative Hypothesis*: `r params$alternative_hypothesis`
+
+Results:
+
+```{r, include = FALSE}
+p_value <- if (params$p_value < 0.001) "<0.001" else round(params$p_value, 3)
+
+if (params$reject) {
+	outcome <- "reject"
+	conclusion <- "evidence that the residuals are *not* random"
+	warning <- "**Warning**: A linear model may not be suitable for the data."
+} else {
+	outcome <- "fail to reject"	
+	conclusion <- "evidence that the residuals are distributed randomly"
+}
+```
+
+- The Runs test yielded a p-value of `r p_value`.
+- At a significance level of `r params$alpha`, we `r outcome` the null hypothesis.
+- Therefore, there is `r conclusion`.
+
+`r if (params$reject) warning`
+
+```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
+img_name <- glue("runs_mean_{params$start}_{params$end}.png")
+knitr::include_graphics(file.path(params$img_dir, img_name))
+```
+
+

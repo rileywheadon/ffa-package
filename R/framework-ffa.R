@@ -73,7 +73,119 @@ framework_ffa <- function(
 	ns_splits = NULL,
 	ns_structures = NULL,
 	generate_report = TRUE,
-	report_path = NULL
+	report_path = NULL,
+	...
 ) {
-	NULL
+
+	# Get the configuration options
+	args <- list(...)
+	config <- generate_config(args)
+	options <- validate_config(config)
+
+	# Set path to NULL if generate_report is FALSE
+	if (!generate_report) { 
+		img_dir <- NULL
+	} 
+
+	# Otherwise create an image directory and print a diagnostic message
+	else {
+		report_dir <- if (is.null(report_path)) tempdir() else report_path 
+		img_dir <- paste0(report_dir, "/img")
+ 		if (!dir.exists(img_dir)) dir.create(img_dir)
+		message(paste0("Saving report to '", report_dir, "'"))
+	}
+
+	# Run distribution selection, get distributions list
+	results_03 <- submodule_03(
+		data,
+		years,
+		options,
+		ns_splits,
+		ns_structures, 
+		img_dir
+	)
+
+	distributions <- vapply(
+		results_03,
+		function(x) x$selection$recommendation,
+		character(1)
+	)
+
+	# Run parameter estimation and uncertainty quantification, get confidence intervals
+	results_04 <- submodule_04(
+		data,
+		years,
+		distributions,
+		options,
+		ns_splits,
+		ns_structures,
+		img_dir
+	)
+
+	results_05 <- submodule_05(
+		data,
+		years,
+		distributions,
+		options,
+		ns_splits,
+		ns_structures,
+		img_dir
+	)
+
+	intervals <- lapply(
+		results_05,
+		function(x) if("ci" %in% names(x$uncertainty)) x$uncertainty$ci else NULL
+	)
+
+	# Run model assessment
+	results_06 <- submodule_06(
+		data,
+		years,
+		distributions,
+		intervals,
+		options,
+		ns_splits,
+		ns_structures,
+		img_dir
+	)
+
+	# Determine the approach used
+	if (length(ns_splits) == 0) {
+
+		if (is.null(ns_structures)) {
+			approach <- "S-FFA"
+		} else {
+			approach <- "NS-FFA"
+		}
+
+	} else {
+		approach <- "Piecewise NS-FFA"
+	}
+
+	# Generate the summary
+	summary <- list(
+		approach = approach,
+		ns_splits = if (is.null(ns_splits)) integer(0) else ns_splits,
+		ns_structures = structures_helper(ns_structures, rep(1, length(ns_splits) + 1))
+	)
+
+	# Combine the results of EDA into a single list
+	results <- list(
+		summary = summary,
+		submodules = c(results_03, results_04, results_05, results_06)
+	)
+
+	if (generate_report) {
+		rmarkdown::render(
+			system.file("templates", "_master.Rmd", package = "ffaframework"),
+			params = c(results, list(title = "FFA Report", img_dir = img_dir)),
+			output_format = "html_document",
+			output_dir = report_dir,
+			output_file = "report",
+			quiet = TRUE
+		)
+	}
+
+	# Return the results
+	return (results)
 }

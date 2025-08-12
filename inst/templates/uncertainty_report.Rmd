@@ -1,0 +1,47 @@
+## '`r params$method`' Uncertainty Quantification (`r params$start`-`r params$end`)
+
+<!-- Uncertainty Quantification Plot -->
+```{r, echo = FALSE}
+img_name <- glue("uncertainty_{params$start}_{params$end}.png")
+knitr::include_graphics(file.path(params$img_dir, img_name))
+```
+
+<!-- Confidence Interval Table -->
+```{r, echo = FALSE, results = 'asis'}
+outputs <- character()
+
+if ("ci" %in% names(params)) {
+
+	df <- data.frame(
+		`Return Period` = params$ci$periods,
+		`CI (Lower)` = round(params$ci$lower, 2),
+		`Return Level Estimate` = round(params$ci$estimates, 2),
+		`CI (Upper)` = round(params$ci$upper, 2),
+		check.names = FALSE
+	)
+
+	print(knitr::kable(df, format = "markdown", align = "cccc"))
+
+} else {
+
+	for (i in seq_along(params$ci_list)) {
+
+		ci <- params$ci_list[[i]]
+		slice <- names(params$ci_list)[[i]]
+		cat(glue("\n\n**Slice**: {slice}"))
+
+		df <- data.frame(
+			`Effective Return Period` = ci$periods,
+			`CI (Lower)` = round(ci$lower, 2),
+			`Return Level Estimate` = round(ci$estimates, 2),
+			`CI (Upper)` = round(ci$upper, 2),
+			check.names = FALSE
+		)
+
+		print(knitr::kable(df, format = "markdown", align = "cccc"))
+
+	}
+
+}
+```
+

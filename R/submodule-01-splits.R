@@ -13,8 +13,8 @@ submodule_01 <- function(
 	period <- c(min(years), max(years))
 
 	# Run the Pettitt and MKS tests
-	pettitt <- eda_pettitt_test(data, years, options$significance_level)
-	mks <- eda_mks_test(data, years, options$significance_level)
+	pettitt <- eda_pettitt_test(data, years, options$alpha)
+	mks <- eda_mks_test(data, years, options$alpha)
 
 	# Save the plots (if a path is provided)
 	if (!is.null(path)) {
@@ -36,7 +36,7 @@ submodule_01 <- function(
 			name = "Change Point Detection",
 			start = period[1],
 			end = period[2],
-			items = list(pettitt = pettitt, mks = mks)
+			tests = list(pettitt = pettitt, mks = mks)
 		)
 	)
 

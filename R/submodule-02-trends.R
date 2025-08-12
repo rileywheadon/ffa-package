@@ -25,11 +25,8 @@ submodule_02_helper <- function(data, years, options, period, path, serialize) {
 	data <- data[idx]
 	years <- years[idx]
 
-	# Save the significance level as 'alpha' for brevity
-	alpha <- options$significance_level
-
-	# Initialize a list of items
-	items <- list()
+	# Initialize a list of tests
+	tests <- list()
 
 	# Define helper function for writing and serializing plots
 	plot_helper <- function(plot, name) {
@@ -38,88 +35,105 @@ submodule_02_helper <- function(data, years, options, period, path, serialize) {
 		}
 
 		if (serialize) {
-			items[[name]]$plot <<- serialize_plot(plot) 
+			tests[[name]]$plot <<- serialize_plot(plot) 
 		}
 	}
 
 	# White (1): go to MW-MK (2) regardless of the result
 	trend01 <- function() {
-		items$white <<- eda_white_test(data, years, alpha)
+		tests$white <<- eda_white_test(data, years, options$alpha)
 		return (2)
 	}
 
 	# MW-MK (2): go to Sen's variance (3) if there is non-stationarity, else MK test (5)
 	trend02 <- function() {
 		mw <- data_mw_variability(data, years)
-		items$mwmk <<- eda_mk_test(mw$std, alpha)
-		if (items$white$reject || items$mwmk$reject) 3 else 5
+		tests$mwmk <<- eda_mk_test(mw$std, options$alpha)
+		if (tests$white$reject || tests$mwmk$reject) 3 else 5
 	}
 
 	# Sen's variance (3): go to Runs variance (4) regardless of the result
 	trend03 <- function() {
 		mw <- data_mw_variability(data, years)
-		items$sens_variance <<- eda_sens_trend(mw$std, mw$year)
-		plot_helper(plot_ams_data(mw$std, mw$year, "Trend"), "sens_variance")
+		tests$sens_variance <<- eda_sens_trend(mw$std, mw$year)
+
+		plot <- plot_ams_data(
+			mw$std,
+			mw$year,
+			"Trend",
+			title = "Sen's Trend Estimator (Variability)"
+		)
+
+		plot_helper(plot, "sens_variance")
 		return (4)	
 	}
 
 	# Runs variance (4): go to MK test (5) regardless of the results.
 	trend04 <- function() {
-		residuals <- items$sens_variance$residuals
-		items$runs_variance <<- eda_runs_test(residuals, alpha)
-		plot_helper(plot_runs_test(items$runs_variance), "runs_variance")
+		mw <- data_mw_variability(data, years)
+		residuals <- tests$sens_variance$residuals
+		tests$runs_variance <<- eda_runs_test(residuals, mw$year, options$alpha)
+		plot_helper(plot_runs_test(tests$runs_variance), "runs_variance")
 		return (5)	
 	}
 
 	# MK (5): go to Spearman (6) if there is a trend, end (NULL) if not.
 	trend05 <- function() {
-		items$mk <<- eda_mk_test(data, alpha)
-		if (items$mk$reject) 6 else NULL
+		tests$mk <<- eda_mk_test(data, options$alpha)
+		if (tests$mk$reject) 6 else NULL
 	} 
 
 	# Spearman (6): go to BB-MK (7) if there is serial correlation, else Sen's means (10)
 	trend06 <- function() {
-		items$spearman <<- eda_spearman_test(data, alpha)
-		plot_helper(plot_spearman_test(items$spearman), "spearman")
-		if (items$spearman$reject) 7 else 10
+		tests$spearman <<- eda_spearman_test(data, options$alpha)
+		plot_helper(plot_spearman_test(tests$spearman), "spearman")
+		if (tests$spearman$reject) 7 else 10
 	} 
 
 	# BB-MK (7): go to PP (8) if there is a trend, end (NULL) if not.
 	trend07 <- function() {
-		items$bbmk <<- eda_bbmk_test(data, alpha, options$bbmk_samples)
-		plot_helper(plot_bbmk_test(items$bbmk), "bbmk")
-		if (items$bbmk$reject) 8 else NULL
+		tests$bbmk <<- eda_bbmk_test(data, options$alpha, options$bbmk_samples)
+		plot_helper(plot_bbmk_test(tests$bbmk), "bbmk")
+		if (tests$bbmk$reject) 8 else NULL
 	} 
 
 	# PP (8): go to KPSS (9) regardless of the result
 	trend08 <- function() {
-		items$pp <<- eda_pp_test(data, alpha)
+		tests$pp <<- eda_pp_test(data, options$alpha)
 		return (9)
 	}
 
 	# KPSS (9): go to Sen's (10) regardless of the result
 	trend09 <- function() {
-		items$kpss <<- eda_kpss_test(data, alpha)
+		tests$kpss <<- eda_kpss_test(data, options$alpha)
 		return (10)
 	}
 
 	# Sen's means (10): go to Runs means (11) regardless of the result
 	trend10 <- function() {
-		items$sens_mean <<- eda_sens_trend(data, years)
-		plot_variability <- if ("sens_variance" %in% names(items)) "Trend" else "None"
-		plot_helper(plot_ams_data(data, years, "Trend", plot_variability), "sens_mean")
+		tests$sens_mean <<- eda_sens_trend(data, years)
+
+		plot <- plot_ams_data(
+			data,
+			years,
+			"Trend",
+			if ("sens_variance" %in% names(tests)) "Trend" else "Constant",
+			title = "Sen's Trend Estimator (Mean)"
+		)
+
+		plot_helper(plot, "sens_mean")
 		return (11)
 	}
 
 	# Runs means (11): go to end (NULL) regardless of the result
 	trend11 <- function() {
-		residuals <- items$sens_mean$residuals
-		items$runs_mean <<- eda_runs_test(residuals, alpha)
-		plot_helper(plot_runs_test(items$runs_mean), "runs_mean")
+		residuals <- tests$sens_mean$residuals
+		tests$runs_mean <<- eda_runs_test(residuals, years, options$alpha)
+		plot_helper(plot_runs_test(tests$runs_mean), "runs_mean")
 		return (NULL)
 	}
 
-	# Iterate through the flowchart to get the test items
+	# Iterate through the flowchart to get the test tests
 	location <- 1
 	while (!is.null(location)) {
 		fname <- sprintf("trend%02d", location)
@@ -131,7 +145,7 @@ submodule_02_helper <- function(data, years, options, period, path, serialize) {
 		name = "Trend Detection",
 		start = period[1], 
 		end = period[2], 
-		items = items
+		tests = tests
 	)
 
 }

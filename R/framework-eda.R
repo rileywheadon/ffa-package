@@ -49,8 +49,96 @@ framework_eda <- function(
 	years,
 	ns_splits = NULL,
 	generate_report = TRUE,
-	report_path = NULL
+	report_path = NULL,
+	...
 ) {
-	NULL
+
+	# Get the configuration options
+	args <- list(...)
+	config <- generate_config(args)
+	options <- validate_config(config)
+
+	# Set path to NULL if generate_report is FALSE
+	if (!generate_report) { 
+		img_dir <- NULL
+	} 
+
+	# Otherwise create an image directory and print a diagnostic message
+	else {
+		report_dir <- if (is.null(report_path)) tempdir() else report_path 
+		img_dir <- paste0(report_dir, "/img")
+ 		if (!dir.exists(img_dir)) dir.create(img_dir)
+		message(paste0("Saving report to '", report_dir, "'"))
+	}
+
+	# Get the results of EDA
+	results_01 <- submodule_01(data, years, options, img_dir)
+	results_02 <- submodule_02(data, years, options, ns_splits, img_dir)
+
+	# Determine the recommended split points
+	pettitt <- results_01[[1]]$tests$pettitt
+	mks <- results_01[[1]]$tests$mks
+
+	if (!pettitt$reject && !mks$reject) {
+		recommended_splits <- numeric(0)
+	} 
+
+	if (pettitt$p_value < mks$p_value) {
+		recommended_splits <- pettitt$change_points$year
+	} else {
+		recommended_splits <- mks$change_points$year
+	}
+
+	# Determine the recommended nonstationary structures
+	recommended_structures <- vector("list", length(results_02))
+
+	for (i in seq_along(results_02)) {
+		test_names <- names(results_02[[i]]$tests)
+		recommended_structures[[i]] <- list(
+			location = ("sens_mean" %in% test_names),
+			scale = ("sens_variance" %in% test_names)
+		)
+	}
+
+	# Determine the recommended approach
+	if (length(recommended_splits) == 0) {
+
+		structure <- recommended_structures[[1]]
+		if (!structure$location && !structure$scale) {
+			approach <- "S-FFA"
+		} else {
+			approach <- "NS-FFA"
+		}
+
+	} else {
+		approach <- "Piecewise NS-FFA"
+	}
+
+	# Define the recommendations
+	recommendations <- list(
+		approach = approach,
+		ns_splits = recommended_splits,
+		ns_structures = recommended_structures
+	)
+
+	# Combine the results of EDA into a single list
+	results <- list(
+		recommendations = recommendations,
+		submodules = c(results_01, results_02)
+	)
+
+	if (generate_report) {
+		rmarkdown::render(
+			system.file("templates", "_master.Rmd", package = "ffaframework"),
+			params = c(results, list(title = "EDA Report", img_dir = img_dir)),
+			output_format = "html_document",
+			output_dir = report_dir,
+			output_file = "report",
+			quiet = TRUE
+		)
+	}
+
+	# Return the results
+	return (results)
 }
 

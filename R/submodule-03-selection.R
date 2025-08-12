@@ -1,4 +1,4 @@
-# Helper function for trend detection
+# Helper function for distribution selection
 submodule_03 <- function(
 	data,
 	years,

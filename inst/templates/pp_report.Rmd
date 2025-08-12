@@ -1,0 +1,26 @@
+### Phillips-Perron Test
+
+For more information, see [here](https://rileywheadon.github.io/ffa-framework/articles/eda-trend-ams-mean.html#phillips-perron-pp-test). 
+
+- *Null Hypothesis*: `r params$null_hypothesis`
+- *Alternative Hypothesis*: `r params$alternative_hypothesis`
+
+Results:
+
+```{r, include = FALSE}
+p_value <- if (params$p_value < 0.001) "<0.001" else round(params$p_value, 3)
+
+if (params$reject) {
+	outcome <- "reject"
+	conclusion <- "evidence that the time series has a deterministic linear trend"
+} else {
+	outcome <- "fail to reject"	
+	conclusion <- "evidence that the time series has a unit root (stochastic trend)"
+}
+```
+
+- The Phillips-Perron test yielded a p-value of `r p_value`.
+- At a significance level of `r params$alpha`, we `r outcome` the null hypothesis.
+- Therefore, there is `r conclusion`.
+
+

@@ -1,0 +1,50 @@
+# Exploratory Data Analysis
+
+Recommended Approach: `r params$recommendations$approach`
+
+```{r, include = FALSE}
+recommendations <- params$recommendations
+
+if (length(recommendations$ns_splits) > 0) {
+	splits <- paste0(recommendations$ns_splits, collapse = ", ")
+} else {
+	splits <- "None"
+}
+```
+
+Recommended Split Point(s): `r splits`
+
+Recommended Model Structures:
+
+```{r, echo = FALSE}
+period_labels <- vapply(
+	Filter(function(x) x$name == "Trend Detection", params$submodules), 
+	function(submodule) sprintf("%d-%d", submodule$start, submodule$end), 
+	character(1)
+)
+
+trend_location <- vapply(
+	recommendations$ns_structures,
+	function(structure) structure$location, 
+	logical(1)
+)
+
+trend_scale <- vapply(
+	recommendations$ns_structures,
+	function(structure) structure$scale,
+	logical(1)
+)
+
+# Combine into a data frame
+period_df <- data.frame(
+  Subperiod = period_labels,
+  `Trend in Location` = trend_location,
+  `Trend in Scale` = trend_scale,
+  check.names = FALSE
+)
+
+# Render the table
+knitr::kable(period_df, format = "markdown", align = "lcc")
+```
+
+

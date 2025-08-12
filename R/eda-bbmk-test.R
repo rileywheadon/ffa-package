@@ -92,8 +92,8 @@ eda_bbmk_test <- function(data, alpha = 0.05, samples = 10000L) {
 	list(
 		data = data,
 		alpha = alpha,
-		null_hypothesis = "There is no monotonic trend in the data.",
-		alternative_hypothesis = "There is a monotonic trend in the data.",
+		null_hypothesis = "There is no monotonic trend in the mean of the data.",
+		alternative_hypothesis = "There is a monotonic trend in the mean of the data.",
 		statistic = statistic,
 		bootstrap = bootstrap,
 		p_value = p_value,

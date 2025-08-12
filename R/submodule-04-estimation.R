@@ -1,4 +1,4 @@
-# Helper function for trend detection
+# Helper function for parameter estimation
 submodule_04 <- function(
 	data,
 	years,
@@ -48,7 +48,7 @@ submodule_04 <- function(
 		if (!structure$location && !structure$scale) {
 			plot <- plot_sffa_fit(results)
 		} else {
-			plot <- plot_nsffa_fit(results)
+			plot <- plot_nsffa_fit(results, slices = options$ns_slices)
 		}
 
 		if (!is.null(path)) {

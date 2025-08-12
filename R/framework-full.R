@@ -38,7 +38,48 @@ framework_full <- function(
 	ns_splits = NULL,
 	ns_structures = NULL,
 	generate_report = TRUE,
-	report_path = NULL
+	report_path = NULL,
+	...
 ) {
-	NULL
+
+	# Get the configuration options
+	args <- list(...)
+	config <- generate_config(args)
+	options <- validate_config(config)
+
+	# Set path to NULL if generate_report is FALSE
+	if (!generate_report) { 
+		path <- NULL
+	} 
+
+	# Otherwise create an image directory and print a diagnostic message
+	else {
+		report_dir <- if (is.null(report_path)) tempdir() else report_path 
+		img_dir <- paste0(report_dir, "/img")
+ 		if (!dir.exists(img_dir)) dir.create(img_dir)
+		message(paste0("Saving report to '", report_dir, "'"))
+	}
+
+	# Get the results of EDA and FFA
+	results_eda <- framework_eda(data, years, ns_splits, FALSE)
+	results_ffa <- framework_ffa(data, years, ns_splits, ns_structures, FALSE)
+
+	# Combine the results of EDA and FFA into a single list
+	results <- list(
+		recommendations = results_eda$recommendations,
+		summary = results_ffa$summary,
+		submodules = c(results_eda$submodules, results_ffa$submodules)
+	)
+
+	# Generate the report
+	rmarkdown::render(
+		system.file("templates", "_master.Rmd", package = "ffaframework"),
+		params = c(results, list(title = "Full Framework Report", img_dir = img_dir)),
+		output_format = "html_document",
+		output_dir = report_dir,
+		output_file = "report",
+		quiet = TRUE
+	)
+
+	return (results)
 }

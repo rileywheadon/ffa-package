@@ -1,0 +1,120 @@
+---
+title: "`r params$title`"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+  html_document:
+    toc: true
+    toc_depth: 3
+    css: styles.css
+params: 
+  title: null
+  recommendations: null 
+  summary: null
+  submodules: null
+  img_dir: null
+---
+
+<!-- Render the EDA Summary -->
+
+```{r, echo = FALSE}
+if (!is.null(params$recommendations)) {
+	output <- knitr::knit_child("eda_summary.Rmd", envir = environment())
+} else {
+	output <- character()
+}
+
+knitr::asis_output(output)
+```
+
+<!-- Render the EDA Submodules -->
+
+```{r, echo = FALSE}
+outputs <- character()
+
+for (entry in params$submodules) {
+
+	# Ignore FFA submodules
+	if (entry$name != "Change Point Detection" && entry$name != "Trend Detection") {
+		next
+	}
+
+	# Add the header for the submodule
+	outputs <- c(outputs, glue("\n\n## {entry$name} ({entry$start}-{entry$end})\n\n"))
+
+	# Create a list with the start year, end year, and image directory
+	additional_params <- list(
+		start = entry$start,
+		end = entry$end,
+		img_dir = img_dir
+	)
+
+	# Add the sub-report for each item in the entry
+	for (item in names(entry$tests)) {
+		env <- new.env()
+		env$params <- c(entry$tests[[item]], additional_params)
+
+		child <- knitr::knit_child(glue("{item}_report.Rmd"), envir = env)
+		outputs <- c(outputs, child)
+	}
+
+} 
+
+knitr::asis_output(outputs)
+```
+
+<!-- Render the FFA Summary -->
+
+```{r, echo = FALSE}
+if (!is.null(params$summary)) {
+	output <- knitr::knit_child("ffa_summary.Rmd", envir = environment())
+} else {
+	output <- character()
+}
+
+knitr::asis_output(output)
+```
+
+<!-- Render the FFA Submodules -->
+
+```{r, echo = FALSE}
+outputs <- character()
+
+for (entry in params$submodules) {
+
+	# Ignore EDA submodules
+	if (entry$name == "Change Point Detection" || entry$name == "Trend Detection") {
+		next
+	}
+
+	# Create a list with the start year, end year, and image directory
+	additional_params <- list(
+		start = entry$start,
+		end = entry$end,
+		img_dir = img_dir
+	)
+
+	# Add the sub-report for the entry
+	env <- new.env()
+
+	if (entry$name == "Distribution Selection") {
+		item <- "selection"
+	} else if (entry$name == "Parameter Estimation") {
+		item <- "estimation"
+	} else if (entry$name == "Uncertainty Quantification") {
+		item <- "uncertainty"
+	} else if (entry$name == "Model Assessment") {
+		item <- "assessment"
+	}
+
+	env$params <- c(entry[[item]], additional_params)
+	child <- knitr::knit_child(glue("{item}_report.Rmd"), envir = env)
+	outputs <- c(outputs, child)
+} 
+
+knitr::asis_output(outputs)
+```
+
+

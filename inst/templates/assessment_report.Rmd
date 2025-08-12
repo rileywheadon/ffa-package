@@ -1,0 +1,71 @@
+## Model Assessment (`r params$start`-`r params$end`)
+
+<!-- Model Assessment Table -->
+```{r, echo = FALSE}
+
+stationary <- "R2" %in% names(params$metrics)
+
+
+if (stationary) {
+
+	# Case 1: S-FFA
+	values <- c(
+		round(params$metrics$R2, 4),
+		round(params$metrics$RMSE, 4),
+		round(params$metrics$bias, 4),
+		round(params$metrics$AIC_RMSE, 4), 
+		round(params$metrics$BIC_RMSE, 4), 
+		round(params$metrics$AIC_MLL, 4),
+		round(params$metrics$BIC_MLL, 4), 
+		round(params$metrics$AW, 4), 
+		round(params$metrics$POC, 4),
+		round(params$metrics$CWI, 4)
+	)
+
+	statistics <- c(
+		"Model Validation: Coefficient of Determination",
+		"Model Validation: RMSE",
+		"Model Validation: Bias",
+		"Akaike Information Criterion (RMSE)",
+		"Bayesian Information Criterion (RMSE)",
+		"Akaike Information Criterion (MLL)",
+		"Bayesian Information Criterion (MLL)",
+		"Confidence Intervals: Average Width",
+		"Confidence Intervals: Percentage of Coverage",
+		"Confidence Intervals: Confidence Width Indicator"
+	)
+
+} else {
+
+	# Case 2: NS-FFA
+	values <- c(
+		round(params$metrics$AIC_MLL, 4),
+		round(params$metrics$BIC_MLL, 4)
+	)
+
+	statistics <- c(
+		"Akaike Information Criterion (MLL)",
+		"Bayesian Information Criterion (MLL)"
+	)
+
+}
+
+assessment_df <- data.frame(
+	Statistic = statistics,
+	Value = values
+)
+
+knitr::kable(
+	assessment_df, 
+	format = "markdown",
+	align = "lr"
+)
+```
+
+```{r, echo = FALSE}
+if (stationary) {
+	img_name <- glue("assessment_{params$start}_{params$end}.png")
+	knitr::include_graphics(file.path(params$img_dir, img_name))
+}
+```
+

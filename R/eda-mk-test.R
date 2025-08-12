@@ -81,8 +81,8 @@ eda_mk_test <- function(data, alpha = 0.05) {
 	list(
 		data = data,
 		alpha = alpha,
-		null_hypothesis = "There is no monotonic trend in the data.",
-		alternative_hypothesis = "There is a monotonic trend in the data.",
+		null_hypothesis = "There is no monotonic trend in the mean of the data.",
+		alternative_hypothesis = "There is a monotonic trend in the mean of the data.",
 		statistic = s,
 		variance = s_variance,
 		p_value = p_value,

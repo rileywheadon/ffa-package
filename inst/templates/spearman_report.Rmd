@@ -1,0 +1,29 @@
+### Spearman Test
+
+For more information, see [here](https://rileywheadon.github.io/ffa-framework/articles/eda-trend-ams-mean.html#spearman-test). 
+
+- *Null Hypothesis*: `r params$null_hypothesis`
+- *Alternative Hypothesis*: `r params$alternative_hypothesis`
+
+Results:
+
+```{r, include = FALSE}
+
+if (params$reject) {
+	outcome <- "reject"
+	conclusion <- "evidence of autocorrelation in the data"
+} else {
+	outcome <- "fail to reject"	
+	conclusion <- "no evidence of autocorrelation in the data"
+}
+```
+- The Spearman test yielded a least lag of `r params$least_lag`.
+- Therefore, there is `r conclusion`.
+
+<!-- Render the figure. -->
+```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
+img_name <- glue("spearman_{params$start}_{params$end}.png")
+knitr::include_graphics(file.path(params$img_dir, img_name))
+```
+
+

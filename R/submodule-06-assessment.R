@@ -46,7 +46,7 @@ submodule_06 <- function(
 			prior = if (estimation_method == "GMLE") options$gev_prior else NULL,
 			ns_years = years_subset,
 			ns_structure = structure,
-			alpha = options$significance_level,
+			alpha = options$alpha,
 			pp_formula = options$pp_formula,
 			ci = interval
 		)
@@ -54,15 +54,15 @@ submodule_06 <- function(
 		# Generate model assessment plot
 		if (!structure$location && !structure$scale) {
 			plot <- plot_model_assessment(results)
+
+			if (!is.null(path)) {
+				write_plot(plot, path, "assessment", period)
+			}
+
+			if (serialize) {
+				results$plot <- serialize_plot(plot) 
+			}
 		} 
-
-		if (!is.null(path)) {
-			write_plot(plot, path, "assessment", period)
-		}
-
-		if (serialize) {
-			results$plot <- serialize_plot(plot) 
-		}
 
 		# Return results as a list
 		list(

@@ -13,8 +13,8 @@ test_that("submodule-01-splits.R works on KOOTENAI RIVER (08NH021)", {
 
 	# Unpack the results
 	expect_true(is.list(results))
-	pettitt <- results[[1]]$items$pettitt
-	mks <- results[[1]]$items$mks
+	pettitt <- results[[1]]$tests$pettitt
+	mks <- results[[1]]$tests$mks
 	
 	# Test the Pettitt test (copied from test-eda-pettitt-test.R)
 	expect_equal(length(pettitt$u_series), 91)

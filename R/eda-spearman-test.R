@@ -62,8 +62,8 @@ eda_spearman_test <- function(data, alpha = 0.05) {
 	list(
 		data = data,
 		alpha = alpha,
-		null_hypothesis = "The least insignificant lag is 1." ,
-		alternative_hypothesis = "The least insignificant lag is greater than 1." ,
+		null_hypothesis = "There is no autocorrelation in the data." ,
+		alternative_hypothesis = "There is autocorrelation in the data." ,
 		rho = rho,
 		least_lag = least_lag,
 		significant = significant,

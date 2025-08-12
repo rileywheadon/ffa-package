@@ -1,0 +1,26 @@
+### MW-MK Test
+
+For more information, see [here](https://rileywheadon.github.io/ffa-framework/articles/eda-trend-ams-variability.html#moving-window-mann-kendall-mw-mk-test). 
+
+- *Null Hypothesis*: There is no monotonic trend in the standard deviation of the data.
+- *Alternative Hypothesis*: There is a monotonic trend in the standard deviation of the data.
+
+Results:
+
+```{r, include = FALSE}
+p_value <- if (params$p_value < 0.001) "<0.001" else round(params$p_value, 3)
+
+if (params$reject) {
+	outcome <- "reject"
+	conclusion <- "evidence of a monotonic trend in the standard deviation"
+} else {
+	outcome <- "fail to reject"	
+	conclusion <- "no evidence of a monotonic trend in the standard deviation"
+}
+```
+
+- The MW-MK test yielded a p-value of `r p_value`.
+- At a significance level of `r params$alpha`, we `r outcome` the null hypothesis.
+- Therefore, there is `r conclusion`.
+
+

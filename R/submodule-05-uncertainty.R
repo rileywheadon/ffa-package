@@ -1,4 +1,4 @@
-# Helper function for trend detection
+# Helper function for uncertainty quantification
 submodule_05 <- function(
 	data,
 	years,
@@ -35,8 +35,7 @@ submodule_05 <- function(
 			uncertainty_method <- options$s_uncertainty
 			estimation_method <- options$s_estimation
 		} else {
-			slices <- as.integer(options$ns_slices)
-			slices <- slices[slices >= period[1] & slices <= period[2]]
+			slices <- options$ns_slices
 			uncertainty_method <- options$ns_uncertainty
 			estimation_method <- options$ns_estimation
 		}
@@ -51,7 +50,7 @@ submodule_05 <- function(
 				ns_years = years_subset,
 				ns_structure = structure,
 				ns_slices = slices,
-				alpha = options$significance_level,
+				alpha = options$alpha,
 				samples = options$bootstrap_samples,
 				periods = options$return_periods
 			)
@@ -62,7 +61,7 @@ submodule_05 <- function(
 				ns_years = years_subset,
 				ns_structure = structure,
 				ns_slices = slices,
-				alpha = options$significance_level,
+				alpha = options$alpha,
 				tolerance = options$rfpl_tolerance,
 				periods = options$return_periods
 			)
@@ -73,7 +72,7 @@ submodule_05 <- function(
 				ns_years = years_subset,
 				ns_structure = structure,
 				ns_slices = slices,
-				alpha = options$significance_level,
+				alpha = options$alpha,
 				tolerance = options$rfpl_tolerance,
 				periods = options$return_periods
 			)		
