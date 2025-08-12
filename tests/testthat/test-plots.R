@@ -209,21 +209,21 @@ test_that("plot-sffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
 	set.seed(1)
 
 	df <- data_local("CAN-08NM050.csv")
-	results <- fit_lmoments(df$max, "GEV")
-	ci <- uncertainty_bootstrap(df$max, "GEV", "L-moments")$ci
+	fit <- fit_lmoments(df$max, "GEV")
+	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "L-moments")
 
 	# Test plotting function
-	p <- plot_sffa_estimates(results)
+	p <- plot_sffa_estimates(fit)
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("sffa-estimates-default", p) 
 
 	# Test with confidence interval
-	p <- plot_sffa_estimates(results, ci = ci)
+	p <- plot_sffa_estimates(uncertainty)
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("sffa-estimates-ci", p) 
+  	vdiffr::expect_doppelganger("sffa-estimates-uncertainty", p) 
 
 	# Test with custom arguments
-	p <- plot_sffa_estimates(results, title = "Title", xlabel = "X", ylabel = "Y")
+	p <- plot_sffa_estimates(fit, title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("sffa-estimates-custom", p) 
 
@@ -251,13 +251,19 @@ test_that("plot-nsffa-fit.R works on OKANAGAN RIVER (08NM050)", {
 
 
 test_that("plot-nsffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
+
 	skip_on_cran()
 	set.seed(1)
-
 	df <- data_local("CAN-08NM050.csv")
-	results <- fit_mle(df$max, "GEV", df$year, S10)
 
-	ci_list <- uncertainty_bootstrap(
+	fit <- fit_mle(
+		df$max,
+		"GEV",
+		ns_years = df$year,
+		ns_structure = S10
+	)
+
+	uncertainty <- uncertainty_bootstrap(
 		df$max,
 		"GEV",
 		"MLE",
@@ -265,20 +271,20 @@ test_that("plot-nsffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
 		ns_structure = S10,
 		ns_slices = c(1920, 1960, 2000),
 		samples = 1000L
-	)$ci_list
+	)
 
 	# Test plotting function
-	p <- plot_nsffa_estimates(results)
+	p <- plot_nsffa_estimates(fit)
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("nsffa-estimates-default", p) 
 
 	# Test with confidence intervals
-	p <- plot_nsffa_estimates(results, ci_list = ci_list)
+	p <- plot_nsffa_estimates(uncertainty)
 	expect_s3_class(p, "ggplot")
-  	vdiffr::expect_doppelganger("nsffa-estimates-ci", p) 
+  	vdiffr::expect_doppelganger("nsffa-estimates-uncertainty", p) 
 
 	# Test custom arguments
-	p <- plot_nsffa_estimates(results, title = "Title", xlabel = "X", ylabel = "Y")
+	p <- plot_nsffa_estimates(fit, title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("nsffa-estimates-custom", p) 
 

@@ -21,8 +21,10 @@
 #' @inheritParams param-samples
 #' @inheritParams param-periods
 #'
-#' @return A list containing the following four items:
+#' @return A list containing the following six items:
 #' - `method`: "Bootstrap"
+#' - `distribution`: The `distribution` argument.
+#' - `params`: The fitted parameters.
 #' - `ns_structure`: The `ns_structure` argument, if given.
 #' - `ns_slices`: The `ns_slices` argument, if given.
 #' - `ci`: A dataframe containing confidence intervals (S-FFA only)
@@ -86,24 +88,25 @@ uncertainty_bootstrap <- function(
 	samples <- validate_integer("samples", samples, bounds = c(1, Inf))
 	periods <- validate_numeric("periods", periods, FALSE, bounds = c(1, Inf))
 
+	# Set return periods and their quantiles
+	p <- 1 - (1 / periods)
+	n <- length(data)
+
+	# Estimate the parameters
+	fit <- function(data, years) {
+		if (method == "L-moments") {
+			fit_lmoments_fast(data, distribution)$params
+		} else {
+			fit_maximum_likelihood(data, distribution, prior, years, structure)$params
+		}
+	}
+
+	params <- fit(data, years)
+
 	# Helper function for running the bootstrap
 	bootstrap_helper <- function(slice) {
 
-		# Set return periods and their quantiles
-		p <- 1 - (1 / periods)
-		n <- length(data)
-
-		# Define the parameter estimation function
-		fit <- function(data, years) {
-			if (method == "L-moments") {
-				fit_lmoments_fast(data, distribution)$params
-			} else {
-				fit_maximum_likelihood(data, distribution, prior, years, structure)$params
-			}
-		}
-
-		# Get the estimated quantiles
-		params <- fit(data, years)
+		# Compute return level estimates for the slice
 		estimates <- quantiles_fast(p, distribution, params, slice, structure)
 
 		# Generate the bootstrapped quantiles 
@@ -140,6 +143,8 @@ uncertainty_bootstrap <- function(
 	# Initialize results list
 	results <- list(
 		method = "Bootstrap",
+		distribution = distribution,
+		params = params,
 		ns_structure = ns_structure,
 		ns_slices = ns_slices
 	)

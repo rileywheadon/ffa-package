@@ -6,17 +6,10 @@
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years
-#'
-#' @param ns_splits An integer vector of years used to split the data into homogeneous
-#' subperiods. For S-FFA, set to `NULL` (default). For NS-FFA, specify an integer vector 
-#' of years (e.g., `1950L`) with physical justification for change points, or `NULL` 
-#' if no such years exist.
-#'
-#' @param ns_structures For S-FFA, set to `NULL` (default) to use a stationary model 
-#' for all homogeneous subperiods. For NS-FFA, provide a list of `length(ns_splits) + 1` 
-#' sublists specifying the nonstationary model structure for each homogeneous subperiod. 
-#' Each sublist must contain logical elements `location` and `scale`, indicating 
-#' monotonic trends in the mean and variability, respectively. 
+#' @inheritParams param-ns-splits
+#' @inheritParams param-ns-structures
+#' @inheritParams param-generate-report
+#' @inheritParams param-report-path
 #'
 #' @param ... Additional arguments. See the "Optional Arguments" section for a complete 
 #' list.
@@ -74,6 +67,13 @@
 #'   [uncertainty_rfpl()], [uncertainty_rfgpl()], [model_assessment()]
 #'
 #' @export
-framework_ffa <- function(data, years, ns_splits = NULL, ns_structures = NULL) {
+framework_ffa <- function(
+	data,
+	years,
+	ns_splits = NULL,
+	ns_structures = NULL,
+	generate_report = TRUE,
+	report_path = NULL
+) {
 	NULL
 }

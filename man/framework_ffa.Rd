@@ -4,7 +4,14 @@
 \alias{framework_ffa}
 \title{Orchestrate Flood Frequency Analysis}
 \usage{
-framework_ffa(data, years, ns_splits = NULL, ns_structures = NULL)
+framework_ffa(
+  data,
+  years,
+  ns_splits = NULL,
+  ns_structures = NULL,
+  generate_report = TRUE,
+  report_path = NULL
+)
 }
 \arguments{
 \item{data}{Numeric vector of observed annual maximum series values.
@@ -23,6 +30,11 @@ for all homogeneous subperiods. For NS-FFA, provide a list of \code{length(ns_sp
 sublists specifying the nonstationary model structure for each homogeneous subperiod.
 Each sublist must contain logical elements \code{location} and \code{scale}, indicating
 monotonic trends in the mean and variability, respectively.}
+
+\item{generate_report}{If \code{TRUE} (default), generate a report.}
+
+\item{report_path}{A character scalar, the file path for the generated report.
+If \code{NULL} (default), the report will be saved to a new temporary directory.}
 
 \item{...}{Additional arguments. See the "Optional Arguments" section for a complete
 list.}

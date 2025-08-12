@@ -19,8 +19,10 @@
 #' @inheritParams param-periods
 #' @inheritParams param-tolerance
 #'
-#' @return A list containing the following four items:
+#' @return A list containing the following six items:
 #' - `method`: "RFGPL"
+#' - `distribution`: "GEV"
+#' - `params`: The fitted parameters.
 #' - `ns_structure`: The `ns_structure` argument, if given.
 #' - `ns_slices`: The `ns_slices` argument, if given.
 #' - `ci`: A dataframe containing confidence intervals (S-FFA only)
@@ -101,6 +103,8 @@ uncertainty_rfgpl <- function(
 	# Initialize the output
 	output <- list(
 		method = "RFGPL",
+		distribution = "GEV",
+		params = fit_gmle(data, prior, years, structure)$params,
 		ns_structure = ns_structure,
 		ns_slices = ns_slices
 	)

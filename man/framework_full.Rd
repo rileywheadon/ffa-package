@@ -4,7 +4,14 @@
 \alias{framework_full}
 \title{Orchestrate the Full FFA Framework}
 \usage{
-framework_full(data, years, ns_splits = NULL, ns_structures = NULL)
+framework_full(
+  data,
+  years,
+  ns_splits = NULL,
+  ns_structures = NULL,
+  generate_report = TRUE,
+  report_path = NULL
+)
 }
 \arguments{
 \item{data}{Numeric vector of observed annual maximum series values.
@@ -24,6 +31,11 @@ sublists specifying the nonstationary model structure for each homogeneous subpe
 Each sublist must contain logical elements \code{location} and \code{scale}, indicating
 monotonic trends in the mean and variability, respectively.}
 
+\item{generate_report}{If \code{TRUE} (default), generate a report.}
+
+\item{report_path}{A character scalar, the file path for the generated report.
+If \code{NULL} (default), the report will be saved to a new temporary directory.}
+
 \item{...}{Additional arguments to be passed to the statistical tests and frequency
 analysis functions. See the details of \code{\link[=framework_eda]{framework_eda()}} and \code{\link[=framework_ffa]{framework_ffa()}} for a
 complete list.}
@@ -31,7 +43,7 @@ complete list.}
 \value{
 \code{recommendations}: See \code{\link[=framework_eda]{framework_eda()}}.
 
-\code{summary}: See \code{\link[=framework-ffa]{framework-ffa()}}.
+\code{summary}: See \code{\link[=framework_ffa]{framework_ffa()}}.
 
 \code{submodules}: A list of lists of results. Each list contains:
 \itemize{

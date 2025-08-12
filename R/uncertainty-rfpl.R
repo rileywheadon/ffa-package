@@ -21,6 +21,8 @@
 #'
 #' @return A list containing the following four items:
 #' - `method`: "RFPL"
+#' - `distribution`: The `distribution` argument.
+#' - `params`: The fitted parameters.
 #' - `ns_structure`: The `ns_structure` argument, if given.
 #' - `ns_slices`: The `ns_slices` argument, if given.
 #' - `ci`: A dataframe containing confidence intervals (S-FFA only)
@@ -101,6 +103,8 @@ uncertainty_rfpl <- function(
 	# Initialize the output
 	output <- list(
 		method = "RFPL",
+		distribution = distribution,
+		params = fit_mle(data, distribution, years, structure)$params,
 		ns_structure = ns_structure,
 		ns_slices = ns_slices
 	)

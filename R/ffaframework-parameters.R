@@ -153,3 +153,49 @@ NULL
 #'
 #' @keywords internal
 NULL
+
+# Parameters for the high-level wrapper functions
+
+#' Parameter 'ns_splits'
+#'
+#' @param ns_splits An integer vector of years used to split the data into homogeneous
+#' subperiods. For S-FFA, set to `NULL` (default). For NS-FFA, specify an integer vector 
+#' of years (e.g., `1950L`) with physical justification for change points, or `NULL` 
+#' if no such years exist.
+#'
+#' @name param-ns-splits
+#'
+#' @keywords internal
+NULL
+
+#' Parameter 'ns_structures'
+#'
+#' @param ns_structures For S-FFA, set to `NULL` (default) to use a stationary model 
+#' for all homogeneous subperiods. For NS-FFA, provide a list of `length(ns_splits) + 1` 
+#' sublists specifying the nonstationary model structure for each homogeneous subperiod. 
+#' Each sublist must contain logical elements `location` and `scale`, indicating 
+#' monotonic trends in the mean and variability, respectively. 
+#'
+#' @name param-ns-structures
+#'
+#' @keywords internal
+NULL
+
+#' Parameter 'generate_report'
+#'
+#' @param generate_report If `TRUE` (default), generate a report.
+#'
+#' @name param-generate-report
+#'
+#' @keywords internal
+NULL
+
+#' Parameter 'report_path'
+#'
+#' @param report_path A character scalar, the file path for the generated report. 
+#' If `NULL` (default), the report will be saved to a new temporary directory.
+#'
+#' @name param-report-path
+#'
+#' @keywords internal
+NULL

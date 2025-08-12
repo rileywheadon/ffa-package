@@ -9,11 +9,9 @@
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years
-#'
-#' @param ns_splits An integer vector of years used to split the data into homogeneous
-#' subperiods. For S-FFA, set to `NULL` (default). For NS-FFA, specify an integer vector 
-#' of years (e.g., `1950L`) with physical justification for change points, or `NULL` 
-#' if no such years exist.
+#' @inheritParams param-ns-splits
+#' @inheritParams param-generate-report
+#' @inheritParams param-report-path
 #'
 #' @param ... Additional arguments. See the "Optional Arguments" section for a 
 #' complete list.
@@ -46,7 +44,13 @@
 #' [eda_sens_trend()], [eda_runs_test()], [eda_white_test()]
 #'
 #' @export
-framework_eda <- function(data, years, ns_splits = NULL) {
+framework_eda <- function(
+	data,
+	years,
+	ns_splits = NULL,
+	generate_report = TRUE,
+	report_path = NULL
+) {
 	NULL
 }
 

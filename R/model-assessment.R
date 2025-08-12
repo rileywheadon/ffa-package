@@ -2,12 +2,13 @@
 #'
 #' @description
 #' Computes various metrics for assessing the quality of a fitted flood frequency model. 
-#' Metrics include accuracy (residual statistics), fitting efficiency (information criteria), 
-#' and uncertainty (coverage based metrics using confidence intervals).
+#' Metrics include accuracy (residual statistics), fitting efficiency (information 
+#' criteria), and uncertainty (coverage based metrics using confidence intervals).
 #'
 #' @inheritParams param-data
 #' @inheritParams param-distribution
-#' @inheritParams param-params
+#' @inheritParams param-method
+#' @inheritParams param-prior
 #' @inheritParams param-ns-years
 #' @inheritParams param-ns-structure
 #' @inheritParams param-alpha
@@ -15,9 +16,10 @@
 #' @param pp_formula Character string specifying the plotting position formula. 
 #' Must `"Weibull"` (default), `"Blom"`, `"Cunnane"`, `"Gringorten"`, or `"Hazen"`.
 #'
-#' @param ci Dataframe containing return periods (in the column `periods`) and confidence 
-#' intervals (in the columns `ci_lower` and `ci_upper`). Dataframes in this format can be
-#' generated with [uncertainty_bootstrap()], [uncertainty_rfpl()], or [uncertainty_rfgpl()].
+#' @param ci **For S-FFA only**: Dataframe containing return periods (in the column 
+#' `periods`) and confidence intervals (in the columns `lower` and `upper`). Dataframes 
+#' in this format can be generated with [uncertainty_bootstrap()], [uncertainty_rfpl()], 
+#' or [uncertainty_rfgpl()].  
 #'
 #' @return List containing the results of model assessment:
 #' - `data`: The `data` argument.
@@ -52,7 +54,7 @@
 #' params <- c(100, 10)
 #'
 #' # Perform uncertainty analysis
-#' ci <- uncertainty_bootstrap(data, "NOR", "L-moments")$results
+#' ci <- uncertainty_bootstrap(data, "NOR", "L-moments")$ci
 #'
 #' # Evaluate model diagnostics
 #' model_assessment(data, "NOR", params, ci = ci)
@@ -63,7 +65,8 @@
 model_assessment <- function(
   data,
   distribution,
-  params,
+  method,
+  prior = NULL,
   ns_years = NULL,
   ns_structure = NULL,
   alpha = 0.05,
@@ -73,14 +76,23 @@ model_assessment <- function(
 
 	data <- validate_numeric("data", data)
 	distribution <- validate_enum("distribution", distribution)
-	params <- validate_params(distribution, params, ns_structure)
-
+	method <- validate_enum("method", method )
+	prior <- validate_numeric("prior", prior, TRUE, c(0, Inf), 2)
 	years <- validate_numeric("ns_years", ns_years, optional = TRUE, size = length(data))
 	structure <- validate_structure(ns_structure)
+	alpha <- validate_float("alpha", alpha, bounds = c(0.01, 0.1))
 	pp_formula <- validate_enum("pp_formula", pp_formula)
 
-	# Get the number of data points 
-	n <- length(data)                          
+	# Estimate the parameters
+	fit <- function(data, years) {
+		if (method == "L-moments") {
+			fit_lmoments_fast(data, distribution)$params
+		} else {
+			fit_maximum_likelihood(data, distribution, prior, years, structure)$params
+		}
+	}
+
+	params <- fit(data, years)
 
 	# Get information about the distribution
 	info <- model_info(distribution, structure)
@@ -97,6 +109,7 @@ model_assessment <- function(
 		ns_structure = ns_structure
 	)$mll
 
+	n <- length(data)                          
 	metrics$AIC_MLL = (2 * info$n_params) - (2 * MLL)
 	metrics$BIC_MLL = (info$n_params * log(n)) - (2 * MLL)
 
@@ -138,8 +151,8 @@ model_assessment <- function(
 			data_sorted <- data_sorted[idx]
 
 			# Use log-linear interpolation to get confidence intervals for each return period
-			ci_lower <- approx(log(ci$periods), ci$ci_lower, log(returns))
-			ci_upper <- approx(log(ci$periods), ci$ci_upper, log(returns))
+			ci_lower <- approx(log(ci$periods), ci$lower, log(returns))
+			ci_upper <- approx(log(ci$periods), ci$upper, log(returns))
 
 			# Compute the width and coverage of the confidence intervals
 			widths <- ci_upper$y - ci_lower$y
@@ -155,6 +168,10 @@ model_assessment <- function(
 	} 
 
 	# Return assessment results in a list
-	list(data = data, estimates = estimates, metrics = metrics)
+	list(
+		data = data,
+		estimates = estimates,
+		metrics = metrics
+	)
 
 }

@@ -4,7 +4,13 @@
 \alias{framework_eda}
 \title{Orchestrate Exploratory Data Analysis}
 \usage{
-framework_eda(data, years, ns_splits = NULL)
+framework_eda(
+  data,
+  years,
+  ns_splits = NULL,
+  generate_report = TRUE,
+  report_path = NULL
+)
 }
 \arguments{
 \item{data}{Numeric vector of observed annual maximum series values.
@@ -17,6 +23,11 @@ Must be the same length as \code{data} and strictly increasing.}
 subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an integer vector
 of years (e.g., \code{1950L}) with physical justification for change points, or \code{NULL}
 if no such years exist.}
+
+\item{generate_report}{If \code{TRUE} (default), generate a report.}
+
+\item{report_path}{A character scalar, the file path for the generated report.
+If \code{NULL} (default), the report will be saved to a new temporary directory.}
 
 \item{...}{Additional arguments. See the "Optional Arguments" section for a
 complete list.}
