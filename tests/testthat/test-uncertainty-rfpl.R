@@ -111,6 +111,7 @@ test_that("convergence errors are caught.", {
 
 test_that("RFPL uncertainty works on ATHABASCA RIVER (07BE001)", {
 	skip_on_cran()
+	set.seed(1)
 
 	# Load dataset and run RFPL uncertainty quantification
 	df <- data_local("CAN-07BE001.csv")

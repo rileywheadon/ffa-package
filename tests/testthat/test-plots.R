@@ -290,21 +290,21 @@ test_that("plot-nsffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
 
 })
 
-test_that("plot-model-assessment.R works on OKANAGAN RIVER (08NM050)", {
+test_that("plot-sffa-assessment.R works on OKANAGAN RIVER (08NM050)", {
 	skip_on_cran()
 
 	df <- data_local("CAN-08NM050.csv")
 	params <- fit_mle(df$max, "GEV")$params
 	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "MLE", samples = 1000L)
-	assessment <- model_assessment(df$max, "GEV", params, ci = uncertainty$ci)
+	assessment <- model_assessment(df$max, "GEV", "MLE", ci = uncertainty$ci)
 
 	# Test plotting function
-	p <- plot_model_assessment(assessment)
+	p <- plot_sffa_assessment(assessment)
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("assessment-default", p) 
 
 	# Test with custom arguments
-	p <- plot_model_assessment(assessment, title = "Title", xlabel = "X", ylabel = "Y")
+	p <- plot_sffa_assessment(assessment, title = "Title", xlabel = "X", ylabel = "Y")
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("assessment-custom", p) 
 	

@@ -1,4 +1,4 @@
-#' Plot Model Assessment Results
+#' Plot Model Assessment for S-FFA
 #'
 #' Creates a quantile–quantile plot comparing observed annual maximum series
 #' data to quantile estimates from a fitted parametric model. The 1:1 line is drawn in 
@@ -29,7 +29,7 @@
 #' @import ggplot2
 #' @export
 
-plot_model_assessment <- function(results, ...) {
+plot_sffa_assessment <- function(results, ...) {
 
 	# Create a dataframe for the plot
 	x <- results$data[order(results$data, decreasing = TRUE)]   
@@ -39,9 +39,9 @@ plot_model_assessment <- function(results, ...) {
 	args <- list(...)
 
     # Set default values, overriding if necessary
-    title <- args$title %||% "Model Diagnostics"
-    xlabel <- args$xlabel %||% expression(Model ~ Quantiles ~ m^3/s)
-	ylabel <- args$ylabel %||% expression(Observed ~ Quantiles ~ m^3/s)
+    title <- args$title %||% "Model Assessment"
+    xlabel <- args$xlabel %||% expression(Theoretical ~ Quantiles ~ m^3/s)
+	ylabel <- args$ylabel %||% expression(Empirical ~ Quantiles ~ m^3/s)
 
 	# Generate the plot
 	p1 <- ggplot(data = df) +

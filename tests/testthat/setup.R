@@ -6,7 +6,7 @@ S11 <- list(location = T, scale = T)
 
 # Default options for testing submodules
 default_options <- list(
-	significance_level = 0.05,
+	alpha = 0.05,
 	bbmk_samples = 10000L,
 	window_size = 10L,
 	window_step = 5L,

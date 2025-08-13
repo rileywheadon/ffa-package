@@ -84,21 +84,13 @@ model_assessment <- function(
 	pp_formula <- validate_enum("pp_formula", pp_formula)
 
 	# Estimate the parameters
-	fit <- function(data, years) {
-		if (method == "L-moments") {
-			fit_lmoments_fast(data, distribution)$params
-		} else {
-			fit_maximum_likelihood(data, distribution, prior, years, structure)$params
-		}
+	params <- if (method == "L-moments") {
+		fit_lmoments_fast(data, distribution)$params
+	} else {
+		fit_maximum_likelihood(data, distribution, prior, years, structure)$params
 	}
 
-	params <- fit(data, years)
-
-	# Get information about the distribution
-	info <- model_info(distribution, structure)
-
 	# Initialize a list to store the metrics 
-	estimates <- NULL
 	metrics <- list()
 
 	# Compute the AIC and BIC using the MLL (S-FFA and NS-FFA)
@@ -110,67 +102,83 @@ model_assessment <- function(
 	)$mll
 
 	n <- length(data)                          
+	info <- model_info(distribution, structure)
 	metrics$AIC_MLL = (2 * info$n_params) - (2 * MLL)
 	metrics$BIC_MLL = (info$n_params * log(n)) - (2 * MLL)
 
-	# Compare with the method of plotting positions (S-FFA only)
+	# Determine exceedance probabilities using the plotting position formula
+	p_exceedance <- switch(
+		pp_formula, 
+		Weibull = (1:n) / (n + 1),
+		Blom =  ((1:n) - 0.375) / (n + 0.25),
+		Cunnane = ((1:n) - 0.4) / (n + 0.2),
+		Gringorten = ((1:n) - 0.44) / (n + 0.12),
+		Hazen = ((1:n) - 0.5) / n,
+		stop("Unknown plotting position formula.")
+	)
+
+	# Compare the empirical and theoretical quantiles (S-FFA)
 	if (!structure$location && !structure$scale) {
 
-		# Sort the data vector
-		data_sorted <- data[order(data, decreasing = TRUE)]
-
-		# Determine empirical exceedance probabilities using the plotting position 
-		p_empirical <- switch(
-			pp_formula, 
-			Weibull = (1:n) / (n + 1),
-			Blom =  ((1:n) - 0.375) / (n + 0.25),
-			Cunnane = ((1:n) - 0.4) / (n + 0.2),
-			Gringorten = ((1:n) - 0.44) / (n + 0.12),
-			Hazen = ((1:n) - 0.5) / n,
-			stop("Unknown plotting position formula.")
+		# The theoretical are computed at the plotting positions
+		q_theoretical <- quantiles_fast(
+			1 - p_exceedance,
+			distribution,
+			params,
+			0,
+			structure
 		)
 
-		returns <- 1 / p_empirical               
-		estimates <- quantiles_fast(1 - p_empirical, distribution, params, 0, structure)
-
-		# Run linear regression against the sorted data
-		metrics$R2 <- summary(lm(estimates ~ data_sorted))$r.squared
-		metrics$RMSE <- sqrt(mean((estimates - data_sorted)^2))
-		metrics$bias <- mean(estimates - data_sorted)
+		# Run linear regression against the sorted data (empirical quantiles)
+		q_empirical <- data[order(data, decreasing = TRUE)]
+		metrics$R2 <- summary(lm(q_theoretical ~ q_empirical))$r.squared
+		metrics$RMSE <- sqrt(mean((q_theoretical - q_empirical)^2))
+		metrics$bias <- mean(q_theoretical - q_empirical)
 
 		# Compute the AIC and BIC
 		metrics$AIC_RMSE <- n * log(metrics$RMSE) + (2 * info$n_params)
 		metrics$BIC_RMSE <- n * log(metrics$RMSE) + (log(n) * info$n_params)
 
-		# Compute uncertainty metrics if 'ci' argument is provided
-		if (!is.null(ci)) {
-
-			# Filter returns and x to indices where returns is between 2 and 100
-			idx <- which(returns > 2 & returns < 100)
-			returns <- returns[idx]
-			data_sorted <- data_sorted[idx]
-
-			# Use log-linear interpolation to get confidence intervals for each return period
-			ci_lower <- approx(log(ci$periods), ci$lower, log(returns))
-			ci_upper <- approx(log(ci$periods), ci$upper, log(returns))
-
-			# Compute the width and coverage of the confidence intervals
-			widths <- ci_upper$y - ci_lower$y
-			covers <- sum(data_sorted < ci_upper$y & data_sorted > ci_lower$y)
-
-			# Compute the AW, POC, and CWI
-			metrics$AW <- mean(widths)
-			metrics$POC <- 100 * covers / length(widths)
-			metrics$CWI <- metrics$AW * exp((1 - alpha) - (metrics$POC / 100))^2
-
-		}
-
 	} 
+
+	# Compare the normalized empirical and theoretical quantiles (NS-FFA)
+	else {
+
+		# Get the normalized theoretical quantiles from the plotting positions (TODO)
+		q_theoretical <- NULL
+
+		# Get the normalized empirical quantiles (TODO)
+		
+	}
+
+	# Compute uncertainty metrics if 'ci' argument is provided
+	if (!is.null(ci)) {
+
+		# Filter returns and x to indices where returns is between 2 and 100
+		returns <- 1 / p_exceedance
+		idx <- which(returns > 2 & returns < 100)
+		returns <- returns[idx]
+		q_empirical <- q_empirical[idx]
+
+		# Use log-linear interpolation to get CIs for each return period
+		ci_lower <- approx(log(ci$periods), ci$lower, log(returns))
+		ci_upper <- approx(log(ci$periods), ci$upper, log(returns))
+
+		# Compute the width and coverage of the confidence intervals
+		widths <- ci_upper$y - ci_lower$y
+		covers <- sum(q_empirical < ci_upper$y & q_empirical > ci_lower$y)
+
+		# Compute the AW, POC, and CWI
+		metrics$AW <- mean(widths)
+		metrics$POC <- 100 * covers / length(widths)
+		metrics$CWI <- metrics$AW * exp((1 - alpha) - (metrics$POC / 100))^2
+
+	}
 
 	# Return assessment results in a list
 	list(
 		data = data,
-		estimates = estimates,
+		estimates = q_theoretical,
 		metrics = metrics
 	)
 

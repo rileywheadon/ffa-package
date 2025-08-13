@@ -2,10 +2,10 @@
 
 ## Nonparametric Models
 
-A **Plotting Position** is a non-parametric estimator used to derive empirical exceedance probabilities.
-By using the plotting position, we can evaluate the quality of our parametric model (assuming the model is stationary). 
-To compute the plotting position, arrange the sample observations in descending order of magnitude: $x_{n:n} \geq  \dots  \geq  x_{1:n}$.
-Then, the empirical exceedance probabilities are given by the following formula:
+A **Plotting Position** is a non-parametric estimator of exceedance probabilities.
+By using the plotting position, we can evaluate the quality of a stationary parametric model. 
+To compute the plotting position, arrange the sample observations in descending order of magnitude: $x_{n:n} \geq \dots \geq x_{1:n}$.
+Then, the exceedance probabilities are given by the following formula:
 
 $$
 p_{i:n} = \frac{i-a}{n+1 - 2a}, \quad i \in \{1, \dots , n\}
@@ -29,9 +29,7 @@ By default, the FFA framework uses the Weibull formula, which is unbiased.
 
 To compute the $R^2$ statistic, we perform a linear regression of the annual maximum series data against the predictions of the parametric model at the plotting positions.
 The $R^2$ statistic describes how well the parametric model captures variance in the data. 
-Higher is better.
-
-The plot below shows the deviation of the estimated quantiles (red dots), from the data (black line).
+Higher is better. The plot below shows the deviation of the model (red dots), from the data (black line).
 
 ![](../man/figures/plot-assessment.svg)
 
@@ -50,7 +48,7 @@ A positive bias indicates that the model tends to *overestimate* the data while 
 The **Akaike Information Criterion** (`AIC`) and **Bayesian Information Criterion** (`BIC`) describe the quality of a model based on the error (`RMSE`) and the number of parameters (`n_theta`).
 Better models have a lower `AIC`/`BIC`, which indicates that they have *less* parameters and *lower* error.
 
-```R
+```{r}
 AIC <- (n * log(RMSE)) + (2 * n_theta)
 BIC <- (n * log(RMSE)) + (log(n) * n_theta)
 ```
@@ -58,7 +56,7 @@ BIC <- (n * log(RMSE)) + (log(n) * n_theta)
 The Akaike/Bayesian information criterion can also be computed using the maximum log-likelihood from [maximum likelihood estimation](parameter-estimation.md#maximum-likelihood-mle). 
 These statistics are reported as `AIC_MLL` and `BIC_MLL`.
 
-```R
+```{r}
 AIC_MLL <- (n * log(MLL)) + (2 * n_theta)
 BIC_MLL <- (n * log(MLL)) + (log(n) * n_theta)
 ```
@@ -77,11 +75,11 @@ We use these metrics together to evaluate the robustness of the flood frequency 
 
 `AW` is the average width of the interpolated confidence intervals across return periods of interest.
 A smaller `AW` indicates more *precise* quantile estimates.
-To compute `AW`, we use log-linear interpolation to estimate the confidence intervals of the empirical exceedance probabilities from the confidence intervals computed during [uncertainty quantification](uncertainty-quantification.md).
+To compute `AW`, we use log-linear interpolation to estimate the confidence intervals of the exceedance probabilities from the confidence intervals computed during [uncertainty quantification](uncertainty-quantification.md).
 
 ### POC – Percent of Coverage
 
- `POC` is the percentage of observed quantiles that fall within their corresponding confidence intervals.
+`POC` is the percentage of data points that fall within their corresponding confidence intervals.
 A higher `POC` indicates greater *reliability* of the confidence intervals.
 
 ### CWI – Confidence Width Indicator
@@ -94,6 +92,42 @@ A higher `POC` indicates greater *reliability* of the confidence intervals.
 
 The `CWI` is computed using the following formula, where `alpha` is the significance level.
 
-```r
-CWI <- AW * exp((1 - alpha) - POC / 100)^2;
+```{r}
+CWI <- AW * exp((1 - alpha) - POC / 100)^2
 ```
+
+## Handling Nonstationarity
+
+When working with nonstationary models, adjustments must be made to both the empirical quantiles (derived from the plotting positions) and the theoretical quantiles.
+In the FFA framework, we perform nonstationary model assessment by standardizing the quantiles based on the selected distribution family. 
+
+Standardizing the theoretical quantiles:
+
+1. Get nonexceedance probabilities $p_{(1)} \leq \dots \leq p_{(n)}$ using any plotting position formula.
+2. Compute the normalized theoretical quantiles $z^{T}_{i} = \Phi^{-1}(p_{(i)})$.
+
+Standardizing the empirical quantiles: 
+
+1. Transform each observation $x_{i}$ into a model-based probability $u_{i}$:
+
+    $$
+    u_i = F(x_i \,;\, \mu(t_i), \sigma(t_i), \kappa)
+    $$ 
+
+2. Normalize the model-based probabilities: 
+
+    $$
+    z_{i} = \Phi^{-1}(u_{i}) 
+    $$
+
+3. Sort the normalized empirical quantiles: $z^{E}_{(1)} \leq \dots \leq z^{E}_{(n)}$.
+
+Then, we can plot the $(z_{i}^{T}, z_{i}^{E})$ pairs in a *normalized Q-Q plot*.
+Alternatively, we can use a *detrended Q-Q plot* (also known as a *worm plot*), which plots the theoretical quantiles $z_{i}^{T}$ against the differences $\Delta_{i} = z_{i}^{E} - z_{i}^{T}$.
+If the model accurately captures the true distribution of the data, then:
+
+$$
+\text{SE}(\Delta_{i})= \frac{1}{f(z_{i}^{T})} \sqrt{\frac{p_{(i)}(1 - p_{(i)})}{n}}
+$$ 
+
+We can use this formula to plot the 95% confidence interval at $\pm 1.96 \cdot \text{SE}(\Delta _{i})$.

@@ -4,8 +4,9 @@
 #' data. Then, the user is given the option to split the dataset into two or more 
 #' homogenous subperiods (trend-free or with monotonic trends). Finally, this method 
 #' performs a collection of statistical tests for identifying monotonic nonstationarity 
-#' in the mean and variability of each subperiod. The results of EDA can help guide 
-#' FFA approach selection (stationary or nonstationary) and FFA model determination.
+#' in the mean and variability of each subperiod (if the dataset was split) or of the 
+#' entire dataset (if it was not split). The results of EDA can help guide FFA approach 
+#' selection (stationary or nonstationary) and FFA model determination.
 #'
 #' @inheritParams param-data
 #' @inheritParams param-years

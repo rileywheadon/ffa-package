@@ -53,7 +53,7 @@ submodule_06 <- function(
 
 		# Generate model assessment plot
 		if (!structure$location && !structure$scale) {
-			plot <- plot_model_assessment(results)
+			plot <- plot_sffa_assessment(results)
 
 			if (!is.null(path)) {
 				write_plot(plot, path, "assessment", period)
