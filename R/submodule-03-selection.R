@@ -33,10 +33,19 @@ submodule_03 <- function(
 		} else if (options$selection == "L-kurtosis") {
 			select_lkurtosis(data_subset, years_subset, structure)
 		} else if (options$selection == "Z-statistic") {
-			select_zstatistic(data_subset, years_subset, structure, options$z_samples)
+			select_zstatistic(data_subset, years_subset, structure, z_samples)
 		} 
 
+		# Preset distribution case
+		else {
+			results <- select_ldistance(data_subset, years_subset, structure)
+			results$method <- "Preset"
+			results$recommendation <- options$selection
+			results
+		}
+
 		# Generate the plot and optionally write and/or serialize it
+		pdf(nullfile())
 		plot <- plot_lmom_diagram(results)
 
 		if (!is.null(path)) {

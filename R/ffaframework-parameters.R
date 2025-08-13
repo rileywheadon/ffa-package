@@ -200,3 +200,15 @@ NULL
 #'
 #' @keywords internal
 NULL
+
+#' Parameter 'report_formats'
+#'
+#' @param report_formats A character vector specifying the output format for the 
+#' report. Supported values are `"md"`, `"pdf"`, `"html"`, and `"json"`.
+#'
+#' @name param-report-formats
+#'
+#' @keywords internal
+NULL
+
+

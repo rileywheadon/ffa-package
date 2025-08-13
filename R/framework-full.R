@@ -11,6 +11,7 @@
 #' @inheritParams param-ns-structures
 #' @inheritParams param-generate-report
 #' @inheritParams param-report-path
+#' @inheritParams param-report-formats
 #'
 #' @param ... Additional arguments to be passed to the statistical tests and frequency
 #' analysis functions. See the details of [framework_eda()] and [framework_ffa()] for a 
@@ -39,26 +40,19 @@ framework_full <- function(
 	ns_structures = NULL,
 	generate_report = TRUE,
 	report_path = NULL,
+	report_formats = "html",
 	...
 ) {
 
-	# Get the configuration options
-	args <- list(...)
-	config <- generate_config(args)
-	options <- validate_config(config)
+	# Parmaeter validation
+	data <- validate_numeric("data", data)
+	years <- validate_numeric("years", years, size = length(data))
 
-	# Set path to NULL if generate_report is FALSE
-	if (!generate_report) { 
-		path <- NULL
-	} 
-
-	# Otherwise create an image directory and print a diagnostic message
-	else {
-		report_dir <- if (is.null(report_path)) tempdir() else report_path 
-		img_dir <- paste0(report_dir, "/img")
- 		if (!dir.exists(img_dir)) dir.create(img_dir)
-		message(paste0("Saving report to '", report_dir, "'"))
-	}
+	# Framework setup
+	setup <- framework_setup(generate_report, report_path, ...)
+	options <- setup$options
+	report_dir <- setup$report_dir
+	img_dir <- setup$img_dir
 
 	# Get the results of EDA and FFA
 	results_eda <- framework_eda(data, years, ns_splits, FALSE)
@@ -71,15 +65,12 @@ framework_full <- function(
 		submodules = c(results_eda$submodules, results_ffa$submodules)
 	)
 
-	# Generate the report
-	rmarkdown::render(
-		system.file("templates", "_master.Rmd", package = "ffaframework"),
-		params = c(results, list(title = "Full Framework Report", img_dir = img_dir)),
-		output_format = "html_document",
-		output_dir = report_dir,
-		output_file = "report",
-		quiet = TRUE
-	)
+	# Generate the report(s)
+	if (generate_report) {
+		title <- "Full Framework Report"
+		framework_report(report_formats, results, title, report_dir, img_dir)
+	}
 
+	# Return the results
 	return (results)
 }

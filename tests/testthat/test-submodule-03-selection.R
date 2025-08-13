@@ -110,3 +110,29 @@ test_that("submodule-03-selection.R works with Z-statistic selection", {
 	expect_equal(selection$recommendation, "GEV") 
 
 })
+
+
+test_that("submodule-03-selection.R works with a preset distribution", {
+
+	# Update settings
+	options <- default_options 
+	options$selection <- "LP3"
+
+	# Run submodule
+	set.seed(1)
+	df <- data_local("CAN-07BE001.csv")
+	path <- tempdir()
+
+	results <- submodule_03(
+		df$max,
+		df$year,
+		options,
+		NULL,
+		NULL
+	)
+
+	selection <- results[[1]]$selection
+	expect_equal(selection$method, "Preset")
+	expect_equal(selection$recommendation, "LP3")
+
+})

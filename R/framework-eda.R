@@ -13,6 +13,7 @@
 #' @inheritParams param-ns-splits
 #' @inheritParams param-generate-report
 #' @inheritParams param-report-path
+#' @inheritParams param-report-formats
 #'
 #' @param ... Additional arguments. See the "Optional Arguments" section for a 
 #' complete list.
@@ -21,6 +22,9 @@
 #' - `alpha`: The numeric significance level for all statistical tests (default is 0.05).
 #' - `bbmk_samples`: The number of samples used in the Block-Bootstrap Mann-Kendall 
 #'   (BBMK) test (default is 10000). Must be an integer.
+#' - `window_size`: The size of the window used to compute the variability series.
+#' - `window_step`: The number of years between successive moving windows. Used to 
+#'   compute the variability series.
 #'
 #' @return 
 #' `recommendations`: A list containing the recommended FFA approach, split point(s) 
@@ -51,26 +55,19 @@ framework_eda <- function(
 	ns_splits = NULL,
 	generate_report = TRUE,
 	report_path = NULL,
+	report_formats = "html",
 	...
 ) {
 
-	# Get the configuration options
-	args <- list(...)
-	config <- generate_config(args)
-	options <- validate_config(config)
+	# Parmaeter validation
+	data <- validate_numeric("data", data)
+	years <- validate_numeric("years", years, size = length(data))
 
-	# Set path to NULL if generate_report is FALSE
-	if (!generate_report) { 
-		img_dir <- NULL
-	} 
-
-	# Otherwise create an image directory and print a diagnostic message
-	else {
-		report_dir <- if (is.null(report_path)) tempdir() else report_path 
-		img_dir <- paste0(report_dir, "/img")
- 		if (!dir.exists(img_dir)) dir.create(img_dir)
-		message(paste0("Saving report to '", report_dir, "'"))
-	}
+	# Framework setup
+	setup <- framework_setup(generate_report, report_path, ...)
+	options <- setup$options
+	report_dir <- setup$report_dir
+	img_dir <- setup$img_dir
 
 	# Get the results of EDA
 	results_01 <- submodule_01(data, years, options, img_dir)
@@ -128,18 +125,13 @@ framework_eda <- function(
 		submodules = c(results_01, results_02)
 	)
 
+	# Generate a report
 	if (generate_report) {
-		rmarkdown::render(
-			system.file("templates", "_master.Rmd", package = "ffaframework"),
-			params = c(results, list(title = "EDA Report", img_dir = img_dir)),
-			output_format = "html_document",
-			output_dir = report_dir,
-			output_file = "report",
-			quiet = TRUE
-		)
+		title <- "EDA Report"
+		framework_report(report_formats, results, title, report_dir, img_dir)
 	}
 
 	# Return the results
 	return (results)
-}
 
+}

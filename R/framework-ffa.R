@@ -10,37 +10,43 @@
 #' @inheritParams param-ns-structures
 #' @inheritParams param-generate-report
 #' @inheritParams param-report-path
+#' @inheritParams param-report-formats
 #'
 #' @param ... Additional arguments. See the "Optional Arguments" section for a complete 
 #' list.
 #'
 #' @section Optional Arguments:
 #'
-#' - `selection`: Distribution selection method (default is `"L-distance"`). Must be one of 
-#'   `"L-distance"`, `"L-kurtosis"` or `"Z-statistic"`. Alternatively, set `selection` 
-#'   to a three-letter distribution code (e.g., `"GUM"`) to use a specific distribution.
-#' - `s_estimation`: Parameter estimation method for S-FFA (default is `"L-moments"`). Must be 
-#'   `"L-moments"`, `"MLE"`, or `"GMLE"`. Method `"GMLE"` requires `selection = "GEV"`.
-#' - `ns_estimation`: Parameter estimation method for NS-FFA (default is `"MLE"`). Must be 
-#'    `"MLE"` or `"GMLE"`. Method `"GMLE"` requires `selection = "GEV"`.
-#' - `s_uncertainty`: Uncertainty quantification method for S-FFA (default is `"Bootstrap"`).
-#'   Must be one of `"Bootstrap"`, `"RFPL"`, or `RFGPL"`. Using method `"RFPL"` requires 
-#'   `s_estimation = "MLE"` and method `"RFGPL"` requires `s_estimation = "GMLE"`.
-#' - `ns_uncertainty`: Uncertainty quantification method for NS-FFA (default is `"RFPL"`).
-#'   Must be one of `"Bootstrap"`, `"RFPL"`, or `RFGPL"`. Using method `"RFPL"` requires 
-#'   `ns_estimation = "MLE"` and method `"RFGPL"` requires `ns_estimation = "GMLE"`.
-#' - `z_samples`: Integer number of bootstrap samples for selection method `"Z-statistic"` 
-#'   (default is 10000).
-#' - `gev_prior`: Parameters for the prior distribution of the shape parameter of the GEV 
-#'   distribution (default is 6, 9). Used with estimation method `"GMLE"`.
-#' - `return_periods`: Integer list of return periods (in years) for estimating return levels.
-#'   Uses the 2, 5, 10, 20, 50, and 100 year return periods by default.
-#' - `slices`: Integer vector of years at which to estimate the return levels for nonstationary
-#'   models. Slices outside of the period will be ignored (default is 1900, 1950, 2000).
-#' - `sb_samples`: Integer number of samples for uncertainty quantification method `"Bootstrap"`
-#'   (default is 10000).
-#' - `rfpl_tolerance`: Log-likelihood tolerance for uncertainty quantification method `"RFPL"`
-#'   (default is 0.01).
+#' - `selection`: Distribution selection method (default is `"L-distance"`). Must be 
+#'   one of `"L-distance"`, `"L-kurtosis"` or `"Z-statistic"`. Alternatively, set 
+#'   `selection` to a three-letter distribution code (e.g., `"GUM"`) to use a specific 
+#'   distribution.
+#' - `s_estimation`: Parameter estimation method for S-FFA (default is `"L-moments"`). 
+#'   Must be `"L-moments"`, `"MLE"`, or `"GMLE"`. Method `"GMLE"` requires 
+#'   `selection = "GEV"`.
+#' - `ns_estimation`: Parameter estimation method for NS-FFA (default is `"MLE"`). 
+#'   Must be `"MLE"` or `"GMLE"`. Method `"GMLE"` requires `selection = "GEV"`.
+#' - `s_uncertainty`: Uncertainty quantification method for S-FFA (default is 
+#'   `"Bootstrap"`). Must be one of `"Bootstrap"`, `"RFPL"`, or `RFGPL"`. Using 
+#'   method `"RFPL"` requires `s_estimation = "MLE"` and method `"RFGPL"` requires 
+#'   `s_estimation = "GMLE"`.
+#' - `ns_uncertainty`: Uncertainty quantification method for NS-FFA (default is 
+#'   `"RFPL"`). Must be one of `"Bootstrap"`, `"RFPL"`, or `RFGPL"`. Using method 
+#'   `"RFPL"` requires `ns_estimation = "MLE"` and method `"RFGPL"` requires 
+#'    `ns_estimation = "GMLE"`.
+#' - `z_samples`: Integer number of bootstrap samples for selection method 
+#'   `"Z-statistic"` (default is 10000).
+#' - `gev_prior`: Parameters for the prior distribution of the shape parameter of the 
+#'   GEV distribution (default is 6, 9). Used with estimation method `"GMLE"`.
+#' - `return_periods`: Integer list of return periods (in years) for estimating return 
+#'   levels. Uses the 2, 5, 10, 20, 50, and 100 year return periods by default.
+#' - `ns_slices`: Integer vector of years at which to estimate the return levels for 
+#'   nonstationary models. Slices outside of the period will be ignored (default is 
+#'   1925, 1975, 2025).
+#' - `bootstrap_samples`: Integer number of samples for uncertainty quantification 
+#'   method `"Bootstrap" (default is 10000).
+#' - `rfpl_tolerance`: Log-likelihood tolerance for uncertainty quantification method 
+#'   `"RFPL"`(default is 0.01).
 #' - `pp_formula`: Plotting position formula for model assessment. Must be one of:
 #'   - "Weibull" (default): \eqn{i / (n + 1)}
 #'   - "Blom": \eqn{(i - 0.375) / (n + 0.25)}
@@ -74,26 +80,19 @@ framework_ffa <- function(
 	ns_structures = NULL,
 	generate_report = TRUE,
 	report_path = NULL,
+	report_formats = "html",
 	...
 ) {
 
-	# Get the configuration options
-	args <- list(...)
-	config <- generate_config(args)
-	options <- validate_config(config)
+	# Parmaeter validation
+	data <- validate_numeric("data", data)
+	years <- validate_numeric("years", years, size = length(data))
 
-	# Set path to NULL if generate_report is FALSE
-	if (!generate_report) { 
-		img_dir <- NULL
-	} 
-
-	# Otherwise create an image directory and print a diagnostic message
-	else {
-		report_dir <- if (is.null(report_path)) tempdir() else report_path 
-		img_dir <- paste0(report_dir, "/img")
- 		if (!dir.exists(img_dir)) dir.create(img_dir)
-		message(paste0("Saving report to '", report_dir, "'"))
-	}
+	# Framework setup
+	setup <- framework_setup(generate_report, report_path, ...)
+	options <- setup$options
+	report_dir <- setup$report_dir
+	img_dir <- setup$img_dir
 
 	# Run distribution selection, get distributions list
 	results_03 <- submodule_03(
@@ -175,15 +174,10 @@ framework_ffa <- function(
 		submodules = c(results_03, results_04, results_05, results_06)
 	)
 
+	# Generate a report
 	if (generate_report) {
-		rmarkdown::render(
-			system.file("templates", "_master.Rmd", package = "ffaframework"),
-			params = c(results, list(title = "FFA Report", img_dir = img_dir)),
-			output_format = "html_document",
-			output_dir = report_dir,
-			output_file = "report",
-			quiet = TRUE
-		)
+		title <- "FFA Report"
+		framework_report(report_formats, results, title, report_dir, img_dir)
 	}
 
 	# Return the results

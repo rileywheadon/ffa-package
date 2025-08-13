@@ -16,7 +16,7 @@ structures_helper <- function(structures, periods) {
 	structures
 }
 
-# Write write to file (for CLI-like behaviour)
+# Write plot to file (for CLI-like behaviour)
 write_plot <- function(plot, path, name, period) {
 	buffer <- paste0(path, "/", name, "_", period[1], "_", period[2], ".png")
 	ggsave(buffer, plot = plot, height = 8, width = 10, dpi = 300)
