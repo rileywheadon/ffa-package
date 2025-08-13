@@ -48,7 +48,7 @@ A positive bias indicates that the model tends to *overestimate* the data while 
 The **Akaike Information Criterion** (`AIC`) and **Bayesian Information Criterion** (`BIC`) describe the quality of a model based on the error (`RMSE`) and the number of parameters (`n_theta`).
 Better models have a lower `AIC`/`BIC`, which indicates that they have *less* parameters and *lower* error.
 
-```{r}
+```{r, eval = FALSE}
 AIC <- (n * log(RMSE)) + (2 * n_theta)
 BIC <- (n * log(RMSE)) + (log(n) * n_theta)
 ```
@@ -56,7 +56,7 @@ BIC <- (n * log(RMSE)) + (log(n) * n_theta)
 The Akaike/Bayesian information criterion can also be computed using the maximum log-likelihood from [maximum likelihood estimation](parameter-estimation.md#maximum-likelihood-mle). 
 These statistics are reported as `AIC_MLL` and `BIC_MLL`.
 
-```{r}
+```{r, eval = FALSE}
 AIC_MLL <- (n * log(MLL)) + (2 * n_theta)
 BIC_MLL <- (n * log(MLL)) + (log(n) * n_theta)
 ```
@@ -92,7 +92,7 @@ A higher `POC` indicates greater *reliability* of the confidence intervals.
 
 The `CWI` is computed using the following formula, where `alpha` is the significance level.
 
-```{r}
+```{r, eval = FALSE}
 CWI <- AW * exp((1 - alpha) - POC / 100)^2
 ```
 
