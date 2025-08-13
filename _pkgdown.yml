@@ -40,6 +40,9 @@ navbar:
         href: "articles/stationary-ffa.html"
       - text: "Nonstationary FFA"
         href: "articles/non-stationary-ffa.html"
+      - text: "---"
+      - text: "Using Wrapper Functions"
+        href: "articles/wrapper-functions.html"
     wiki:
       text: "Wiki"
       menu: 
