@@ -7,7 +7,8 @@
 model_assessment(
   data,
   distribution,
-  params,
+  method,
+  prior = NULL,
   ns_years = NULL,
   ns_structure = NULL,
   alpha = 0.05,
@@ -23,9 +24,11 @@ Must be strictly positive, finite, and not missing.}
 Must be \code{"GUM"}, \code{"NOR"}, \code{"LNO"}, \code{"GEV"}, \code{"GLO"}, \code{"GNO"}, \code{"PE3"}, \code{"LP3"},
 or \code{"WEI"}.}
 
-\item{params}{Numeric vector of distribution parameters, in the order (location,
-scale, shape). The length must be between 2 and 5, depending on the specified
-\code{distribution} and \code{structure}.}
+\item{method}{Character scalar specifying the estimation method.
+Must be \code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}.}
+
+\item{prior}{Numeric vector of length 2. Specifies the parameters of the
+Beta prior for the shape parameter \eqn{\kappa}.}
 
 \item{ns_years}{For NS-FFA only: Numeric vector of observation years corresponding
 to \code{data}. Must be the same length as \code{data} and strictly increasing.}
@@ -43,32 +46,35 @@ level for confidence intervals or hypothesis tests. Default is 0.05.}
 \item{pp_formula}{Character string specifying the plotting position formula.
 Must \code{"Weibull"} (default), \code{"Blom"}, \code{"Cunnane"}, \code{"Gringorten"}, or \code{"Hazen"}.}
 
-\item{ci}{Dataframe containing return periods (in the column \code{periods}) and confidence
-intervals (in the columns \code{ci_lower} and \code{ci_upper}). Dataframes in this format can be
-generated with \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=uncertainty_rfpl]{uncertainty_rfpl()}}, or \code{\link[=uncertainty_rfgpl]{uncertainty_rfgpl()}}.}
+\item{ci}{\strong{For S-FFA only}. Dataframe containing return periods (in the column
+\code{periods}) and confidence intervals (in the columns \code{lower} and \code{upper}). Dataframes
+in this format can be generated with \code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=uncertainty_rfpl]{uncertainty_rfpl()}},
+or \code{\link[=uncertainty_rfgpl]{uncertainty_rfgpl()}}.}
 }
 \value{
 List containing the results of model assessment:
 \itemize{
 \item \code{data}: The \code{data} argument.
-\item \code{estimates}: Return level estimates based on plotting positions (S-FFA only).
+\item \code{q_theoretical}: The theoretical return level estimates based on the plotting
+positions. Normalized for nonstationary models.
+\item \code{q_empirical}: The empirical return levels. Normalized for nonstationary models.
 \item \code{metrics}: A list of model assessment metrics (see details).
 }
 }
 \description{
 Computes various metrics for assessing the quality of a fitted flood frequency model.
-Metrics include accuracy (residual statistics), fitting efficiency (information criteria),
-and uncertainty (coverage based metrics using confidence intervals).
+Metrics include accuracy (residual statistics), fitting efficiency (information
+criteria), and uncertainty (coverage based metrics using confidence intervals).
+
+\strong{For NS-FFA}: The metrics are computed from the normalized empirical/theoretical
+quantiles, which are determined based on the selected distribution family. Therefore,
+metrics from stationary and nonstationary models should not be compared.
 }
 \details{
-These metrics are are computed for both \emph{stationary} and \emph{nonstationary} models:
+These metrics are are computed for all models:
 \itemize{
 \item \code{AIC_MLL}: Akaike Information Criterion, computed using the maximum log-likelihood.
 \item \code{BIC_MLL}: Bayesian Information Criterion, computed using the maximum log-likelihood.
-}
-
-These metrics are \emph{always} computed for \emph{stationary models}:
-\itemize{
 \item \code{R2}: Coefficient of determination from linear regression of estimates vs. data.
 \item \code{RMSE}: Root mean squared error of quantile estimates.
 \item \code{bias}: Mean bias of quantile estimates.
@@ -76,7 +82,7 @@ These metrics are \emph{always} computed for \emph{stationary models}:
 \item \code{BIC_RMSE}: Bayesian Information Criterion, computed using the RMSE.
 }
 
-These metrics are computed for stationary models \emph{if the \code{ci} argument is provided}:
+These metrics are only computed  \emph{if the \code{ci} argument is provided}:
 \itemize{
 \item \code{AW}: Average width of the confidence interval(s).
 \item \code{POC}: Percent of observations covered by the confidence interval(s).
@@ -89,12 +95,13 @@ data <- rnorm(n = 100, mean = 100, sd = 10)
 params <- c(100, 10)
 
 # Perform uncertainty analysis
-ci <- uncertainty_bootstrap(data, "NOR", "L-moments")$results
+ci <- uncertainty_bootstrap(data, "NOR", "L-moments")$ci
 
-# Evaluate model diagnostics
-model_assessment(data, "NOR", params, ci = ci)
+# Run model assessment
+model_assessment(data, "NOR", "L-moments", ci = ci)
 
 }
 \seealso{
-\code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=uncertainty_rfpl]{uncertainty_rfpl()}}, \code{\link[=uncertainty_rfgpl]{uncertainty_rfgpl()}}
+\code{\link[=uncertainty_bootstrap]{uncertainty_bootstrap()}}, \code{\link[=uncertainty_rfpl]{uncertainty_rfpl()}}, \code{\link[=uncertainty_rfgpl]{uncertainty_rfgpl()}},
+\code{\link[=plot_sffa_assessment]{plot_sffa_assessment()}}, \code{\link[=plot_nsffa_assessment]{plot_nsffa_assessment()}}
 }

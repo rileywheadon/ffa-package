@@ -10,7 +10,9 @@ framework_ffa(
   ns_splits = NULL,
   ns_structures = NULL,
   generate_report = TRUE,
-  report_path = NULL
+  report_path = NULL,
+  report_formats = "html",
+  ...
 )
 }
 \arguments{
@@ -21,9 +23,10 @@ Must be strictly positive, finite, and not missing.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{ns_splits}{An integer vector of years used to split the data into homogeneous
-subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an integer vector
-of years (e.g., \code{1950L}) with physical justification for change points, or \code{NULL}
-if no such years exist.}
+subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an \emph{integer} vector
+of years with physical justification for change points, or \code{NULL} if no such years exist.
+In R, integers have the suffix \code{L}, so \code{1950L} is a valid input to \code{ns_splits}, but \code{1950}
+is not (since R may interpret it as a floating point number).}
 
 \item{ns_structures}{For S-FFA, set to \code{NULL} (default) to use a stationary model
 for all homogeneous subperiods. For NS-FFA, provide a list of \code{length(ns_splits) + 1}
@@ -35,6 +38,9 @@ monotonic trends in the mean and variability, respectively.}
 
 \item{report_path}{A character scalar, the file path for the generated report.
 If \code{NULL} (default), the report will be saved to a new temporary directory.}
+
+\item{report_formats}{A character vector specifying the output format for the
+report. Supported values are \code{"md"}, \code{"pdf"}, \code{"html"}, and \code{"json"}.}
 
 \item{...}{Additional arguments. See the "Optional Arguments" section for a complete
 list.}
@@ -65,31 +71,36 @@ Supports both stationary (S-FFA) or nonstationary (NS-FFA) flood frequency analy
 \section{Optional Arguments}{
 
 \itemize{
-\item \code{selection}: Distribution selection method (default is \code{"L-distance"}). Must be one of
-\code{"L-distance"}, \code{"L-kurtosis"} or \code{"Z-statistic"}. Alternatively, set \code{selection}
-to a three-letter distribution code (e.g., \code{"GUM"}) to use a specific distribution.
-\item \code{s_estimation}: Parameter estimation method for S-FFA (default is \code{"L-moments"}). Must be
-\code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}. Method \code{"GMLE"} requires \code{selection = "GEV"}.
-\item \code{ns_estimation}: Parameter estimation method for NS-FFA (default is \code{"MLE"}). Must be
-\code{"MLE"} or \code{"GMLE"}. Method \code{"GMLE"} requires \code{selection = "GEV"}.
-\item \code{s_uncertainty}: Uncertainty quantification method for S-FFA (default is \code{"Bootstrap"}).
-Must be one of \code{"Bootstrap"}, \code{"RFPL"}, or \verb{RFGPL"}. Using method \code{"RFPL"} requires
-\code{s_estimation = "MLE"} and method \code{"RFGPL"} requires \code{s_estimation = "GMLE"}.
-\item \code{ns_uncertainty}: Uncertainty quantification method for NS-FFA (default is \code{"RFPL"}).
-Must be one of \code{"Bootstrap"}, \code{"RFPL"}, or \verb{RFGPL"}. Using method \code{"RFPL"} requires
-\code{ns_estimation = "MLE"} and method \code{"RFGPL"} requires \code{ns_estimation = "GMLE"}.
-\item \code{z_samples}: Integer number of bootstrap samples for selection method \code{"Z-statistic"}
-(default is 10000).
-\item \code{gev_prior}: Parameters for the prior distribution of the shape parameter of the GEV
-distribution (default is 6, 9). Used with estimation method \code{"GMLE"}.
-\item \code{return_periods}: Integer list of return periods (in years) for estimating return levels.
-Uses the 2, 5, 10, 20, 50, and 100 year return periods by default.
-\item \code{slices}: Integer vector of years at which to estimate the return levels for nonstationary
-models. Slices outside of the period will be ignored (default is 1900, 1950, 2000).
-\item \code{sb_samples}: Integer number of samples for uncertainty quantification method \code{"Bootstrap"}
-(default is 10000).
-\item \code{rfpl_tolerance}: Log-likelihood tolerance for uncertainty quantification method \code{"RFPL"}
-(default is 0.01).
+\item \code{selection}: Distribution selection method (default is \code{"L-distance"}). Must be
+one of \code{"L-distance"}, \code{"L-kurtosis"} or \code{"Z-statistic"}. Alternatively, set
+\code{selection} to a three-letter distribution code (e.g., \code{"GUM"}) to use a specific
+distribution.
+\item \code{s_estimation}: Parameter estimation method for S-FFA (default is \code{"L-moments"}).
+Must be \code{"L-moments"}, \code{"MLE"}, or \code{"GMLE"}. Method \code{"GMLE"} requires
+\code{selection = "GEV"}.
+\item \code{ns_estimation}: Parameter estimation method for NS-FFA (default is \code{"MLE"}).
+Must be \code{"MLE"} or \code{"GMLE"}. Method \code{"GMLE"} requires \code{selection = "GEV"}.
+\item \code{s_uncertainty}: Uncertainty quantification method for S-FFA (default is
+\code{"Bootstrap"}). Must be one of \code{"Bootstrap"}, \code{"RFPL"}, or \verb{RFGPL"}. Using
+method \code{"RFPL"} requires \code{s_estimation = "MLE"} and method \code{"RFGPL"} requires
+\code{s_estimation = "GMLE"}.
+\item \code{ns_uncertainty}: Uncertainty quantification method for NS-FFA (default is
+\code{"RFPL"}). Must be one of \code{"Bootstrap"}, \code{"RFPL"}, or \verb{RFGPL"}. Using method
+\code{"RFPL"} requires \code{ns_estimation = "MLE"} and method \code{"RFGPL"} requires
+\code{ns_estimation = "GMLE"}.
+\item \code{z_samples}: Integer number of bootstrap samples for selection method
+\code{"Z-statistic"} (default is 10000).
+\item \code{gev_prior}: Parameters for the prior distribution of the shape parameter of the
+GEV distribution (default is 6, 9). Used with estimation method \code{"GMLE"}.
+\item \code{return_periods}: Integer list of return periods (in years) for estimating return
+levels. Uses the 2, 5, 10, 20, 50, and 100 year return periods by default.
+\item \code{ns_slices}: Integer vector of years at which to estimate the return levels for
+nonstationary models. Slices outside of the period will be ignored (default is
+1925, 1975, 2025).
+\item \code{bootstrap_samples}: Integer number of samples for uncertainty quantification
+method `"Bootstrap" (default is 10000).
+\item \code{rfpl_tolerance}: Log-likelihood tolerance for uncertainty quantification method
+\code{"RFPL"}(default is 0.01).
 \item \code{pp_formula}: Plotting position formula for model assessment. Must be one of:
 \itemize{
 \item "Weibull" (default): \eqn{i / (n + 1)}

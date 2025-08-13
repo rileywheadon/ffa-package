@@ -9,7 +9,9 @@ framework_eda(
   years,
   ns_splits = NULL,
   generate_report = TRUE,
-  report_path = NULL
+  report_path = NULL,
+  report_formats = "html",
+  ...
 )
 }
 \arguments{
@@ -20,14 +22,18 @@ Must be strictly positive, finite, and not missing.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{ns_splits}{An integer vector of years used to split the data into homogeneous
-subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an integer vector
-of years (e.g., \code{1950L}) with physical justification for change points, or \code{NULL}
-if no such years exist.}
+subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an \emph{integer} vector
+of years with physical justification for change points, or \code{NULL} if no such years exist.
+In R, integers have the suffix \code{L}, so \code{1950L} is a valid input to \code{ns_splits}, but \code{1950}
+is not (since R may interpret it as a floating point number).}
 
 \item{generate_report}{If \code{TRUE} (default), generate a report.}
 
 \item{report_path}{A character scalar, the file path for the generated report.
 If \code{NULL} (default), the report will be saved to a new temporary directory.}
+
+\item{report_formats}{A character vector specifying the output format for the
+report. Supported values are \code{"md"}, \code{"pdf"}, \code{"html"}, and \code{"json"}.}
 
 \item{...}{Additional arguments. See the "Optional Arguments" section for a
 complete list.}
@@ -59,8 +65,9 @@ First, this method identifies change points in the original annual maximum serie
 data. Then, the user is given the option to split the dataset into two or more
 homogenous subperiods (trend-free or with monotonic trends). Finally, this method
 performs a collection of statistical tests for identifying monotonic nonstationarity
-in the mean and variability of each subperiod. The results of EDA can help guide
-FFA approach selection (stationary or nonstationary) and FFA model determination.
+in the mean and variability of each subperiod (if the dataset was split) or of the
+entire dataset (if it was not split). The results of EDA can help guide FFA approach
+selection (stationary or nonstationary) and FFA model determination.
 }
 \section{Optional Arguments}{
 
@@ -68,6 +75,9 @@ FFA approach selection (stationary or nonstationary) and FFA model determination
 \item \code{alpha}: The numeric significance level for all statistical tests (default is 0.05).
 \item \code{bbmk_samples}: The number of samples used in the Block-Bootstrap Mann-Kendall
 (BBMK) test (default is 10000). Must be an integer.
+\item \code{window_size}: The size of the window used to compute the variability series.
+\item \code{window_step}: The number of years between successive moving windows. Used to
+compute the variability series.
 }
 }
 

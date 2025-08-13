@@ -54,9 +54,12 @@ plot_lmom_diagram(selection)
 
 **Note**: For information about the other distributions, see the `selection$metrics` item.
 
+You can find more information about the probability distributions supported by the framework [here](https://rileywheadon.github.io/ffa-docs/probability-distributions/).
+
 ## Parameter Estimation
 
-The `ffaframework` package provides three methods for parameter estimation:
+The `ffaframework` package provides three methods for parameter estimation.
+See [here](https://rileywheadon.github.io/ffa-docs/parameter-estimation/) for more information.
 
 - `fit_lmoments`: L-moments parameter estimation.
 - `fit_mle`: Maximum likelihood parameter estimation. 
@@ -95,14 +98,14 @@ plot_sffa_estimates(fit, ci = uncertainty$ci)
 ## Model Assessment
 
 Model performance is assessed using `model_assessment`, which reports a collection of assessment statistics about the flood frequency analysis.
-`plot_model_assessment` compares the empirical plotting positions ("Observed Quantiles") and the predictions of the parametric model ("Model Quantiles"). 
+`plot_sffa_assessment` compares the data (the "empirical quantiles") and the predictions of the parametric model at the plotting positions (the "theoretical quantiles"). 
 The black line represents a perfect 1:1 correspondence between the model and the data.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-assessment <- model_assessment(df$max, "GEV", fit$params, ci = uncertainty$ci)
+assessment <- model_assessment(df$max, "GEV", "L-moments")
 
-plot_model_assessment(assessment)
+plot_sffa_assessment(assessment)
 ```
 
 **Conclusion**: The parametric model generally matches the plotting positions.
-There is a small positive bias from $3{\small,}500\text{m}^3/\text{s}$ to $5{\small,}000\text{m}^3/\text{s}$.
+The model slightly underestimates the data from $3{\small,}500\text{m}^3/\text{s}$ to $5{\small,}000\text{m}^3/\text{s}$.

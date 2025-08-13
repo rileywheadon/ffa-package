@@ -72,6 +72,8 @@
 #'   [fit_lmoments()], [fit_mle()], [fit_gmle()], [uncertainty_bootstrap()], 
 #'   [uncertainty_rfpl()], [uncertainty_rfgpl()], [model_assessment()]
 #'
+#' @importFrom jsonlite write_json
+#' @importFrom glue glue
 #' @export
 framework_ffa <- function(
 	data,

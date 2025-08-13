@@ -54,15 +54,17 @@ submodule_06 <- function(
 		# Generate model assessment plot
 		if (!structure$location && !structure$scale) {
 			plot <- plot_sffa_assessment(results)
+		} else {
+			plot <- plot_nsffa_assessment(results)
+		}
 
-			if (!is.null(path)) {
-				write_plot(plot, path, "assessment", period)
-			}
+		if (!is.null(path)) {
+			write_plot(plot, path, "assessment", period)
+		}
 
-			if (serialize) {
-				results$plot <- serialize_plot(plot) 
-			}
-		} 
+		if (serialize) {
+			results$plot <- serialize_plot(plot) 
+		}
 
 		# Return results as a list
 		list(

@@ -129,7 +129,7 @@ uncertainty <- uncertainty_rfpl(
 	ns_slices = c(1915, 2015)
 )
 
-plot_nsffa_estimates(fit, ci_list = uncertainty$ci_list)
+plot_nsffa_estimates(uncertainty)
 ```
 
 **Example Conclusion**: In 2025, there is a $1/20$ exceedance probability of a flood of approximately $300\text{m}^3/\text{s}$ or greater.
@@ -137,3 +137,26 @@ The estimated return levels have decreased by approximately $50\text{m}^3/\text{
 
 **Note**: Under nonstationarity, the return period reflects the probability distribution for a fixed year rather than a long-run average.
 To clarify this difference from stationary FFA, the phrase "effective return period" is used.
+
+## Model Assessment
+
+During S-FFA model assessment, we compare the data (or "empirical quantiles") with the predictions of the parametric model at the plotting positions (the "theoretical quantiles"). 
+Unfortunately, the same method does not work for NS-FFA, since the method of plotting positions assumes stationarity.
+However, if we normalize the data using our selected distribution, we can remove the time-dependence and use the method of plotting positions as in S-FFA.
+The `model_assessment` function will make the necessary adjustments for NS-FFA automatically provided that the `ns_years` and `ns_structure` arguments are provided.
+
+```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+assessment <- model_assessment(
+	df$max,
+	"GNO",
+	"MLE",
+	ns_years = df$year,
+	ns_structure = ns_structure
+)
+
+plot_nsffa_assessment(assessment)
+```
+
+The model assessment plot shown above depicts the normalized theoretical quantiles on the x-axis and the *difference* between the theoretical and empirical quantiles on the y-axis.
+The dashed black lines are the 95% confidence bounds.
+From this plot, we can see that the model is a suitable fit for almost all data points.

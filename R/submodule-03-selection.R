@@ -33,7 +33,7 @@ submodule_03 <- function(
 		} else if (options$selection == "L-kurtosis") {
 			select_lkurtosis(data_subset, years_subset, structure)
 		} else if (options$selection == "Z-statistic") {
-			select_zstatistic(data_subset, years_subset, structure, z_samples)
+			select_zstatistic(data_subset, years_subset, structure, options$z_samples)
 		} 
 
 		# Preset distribution case

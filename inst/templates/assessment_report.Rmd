@@ -3,51 +3,42 @@
 <!-- Model Assessment Table -->
 ```{r, echo = FALSE}
 
-stationary <- "R2" %in% names(params$metrics)
+values <- c(
+	params$metrics$R2,
+	params$metrics$RMSE,
+	params$metrics$bias,
+	params$metrics$AIC_RMSE,
+	params$metrics$BIC_RMSE,
+	params$metrics$AIC_MLL,
+	params$metrics$BIC_MLL
+)
 
+statistics <- c(
+	"Model Validation: Coefficient of Determination",
+	"Model Validation: RMSE",
+	"Model Validation: Bias",
+	"Akaike Information Criterion (RMSE)",
+	"Bayesian Information Criterion (RMSE)",
+	"Akaike Information Criterion (MLL)",
+	"Bayesian Information Criterion (MLL)"
+)
 
-if (stationary) {
+# S-FFA Only
+if ("AW" %in% params$metrics) {
 
-	# Case 1: S-FFA
 	values <- c(
-		round(params$metrics$R2, 4),
-		round(params$metrics$RMSE, 4),
-		round(params$metrics$bias, 4),
-		round(params$metrics$AIC_RMSE, 4), 
-		round(params$metrics$BIC_RMSE, 4), 
-		round(params$metrics$AIC_MLL, 4),
-		round(params$metrics$BIC_MLL, 4), 
-		round(params$metrics$AW, 4), 
-		round(params$metrics$POC, 4),
-		round(params$metrics$CWI, 4)
+		values,
+		params$metrics$AW,
+		params$metrics$POC,
+		params$metrics$CWI
 	)
 
 	statistics <- c(
-		"Model Validation: Coefficient of Determination",
-		"Model Validation: RMSE",
-		"Model Validation: Bias",
-		"Akaike Information Criterion (RMSE)",
-		"Bayesian Information Criterion (RMSE)",
-		"Akaike Information Criterion (MLL)",
-		"Bayesian Information Criterion (MLL)",
+		statistics,
 		"Confidence Intervals: Average Width",
 		"Confidence Intervals: Percentage of Coverage",
 		"Confidence Intervals: Confidence Width Indicator"
 	)
-
-} else {
-
-	# Case 2: NS-FFA
-	values <- c(
-		round(params$metrics$AIC_MLL, 4),
-		round(params$metrics$BIC_MLL, 4)
-	)
-
-	statistics <- c(
-		"Akaike Information Criterion (MLL)",
-		"Bayesian Information Criterion (MLL)"
-	)
-
 }
 
 assessment_df <- data.frame(
@@ -63,9 +54,7 @@ knitr::kable(
 ```
 
 ```{r, echo = FALSE}
-if (stationary) {
-	img_name <- glue("assessment_{params$start}_{params$end}.png")
-	knitr::include_graphics(file.path(params$img_dir, img_name))
-}
+img_name <- glue("assessment_{params$start}_{params$end}.png")
+knitr::include_graphics(file.path(params$img_dir, img_name))
 ```
 

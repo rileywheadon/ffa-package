@@ -6,16 +6,12 @@ framework_setup <- function(generate_report, report_path, ...) {
 	config <- generate_config(args)
 	options <- validate_config(config)
 
-	# Set path to NULL if generate_report is FALSE
-	if (!generate_report) { 
-		img_dir <- NULL
-	} 
+	# Create an image directory
+	report_dir <- if (is.null(report_path)) tempdir() else report_path 
+	img_dir <- paste0(report_dir, "/img")
+	if (!dir.exists(img_dir)) dir.create(img_dir)
 
-	# Otherwise create an image directory and print a diagnostic message
-	else {
-		report_dir <- if (is.null(report_path)) tempdir() else report_path 
-		img_dir <- paste0(report_dir, "/img")
- 		if (!dir.exists(img_dir)) dir.create(img_dir)
+	if (generate_report) {
 		message(paste0("Saving report to '", report_dir, "'"))
 	}
 

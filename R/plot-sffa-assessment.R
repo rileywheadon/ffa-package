@@ -13,18 +13,14 @@
 #' - Red points denoting the estimated quantiles against the empirical quantiles.
 #'
 #' @examples
-#' # Initialize example data and params
+#' # Initialize example data
 #' data <- rnorm(n = 100, mean = 100, sd = 10)
-#' params <- c(100, 10)
-#'
-#' # Perform uncertainty analysis
-#' uncertainty <- uncertainty_bootstrap(data, "NOR", "L-moments")
 #'
 #' # Evaluate model diagnostics
-#' results <- model_assessment(data, "NOR", params, ci = uncertainty$ci)
+#' results <- model_assessment(data, "NOR", "L-moments")
 #'
 #' # Generate a model assessment plot
-#' plot_model_assessment(results)
+#' plot_sffa_assessment(results)
 #'
 #' @import ggplot2
 #' @export
@@ -32,25 +28,24 @@
 plot_sffa_assessment <- function(results, ...) {
 
 	# Create a dataframe for the plot
-	x <- results$data[order(results$data, decreasing = TRUE)]   
-	df <- data.frame(x = x, y = x, estimates = results$estimates) 
+	df <- data.frame(x = results$q_theoretical, y = results$q_empirical)
 
 	# Capture optional arguments
 	args <- list(...)
 
     # Set default values, overriding if necessary
-    title <- args$title %||% "Model Assessment"
+    title <- args$title %||% "S-FFA Model Assessment"
     xlabel <- args$xlabel %||% expression(Theoretical ~ Quantiles ~ m^3/s)
 	ylabel <- args$ylabel %||% expression(Empirical ~ Quantiles ~ m^3/s)
 
 	# Generate the plot
 	p1 <- ggplot(data = df) +
 		geom_line(
-			aes(x = x, y = .data$y),
+			aes(x = .data$x, y = .data$x),
 			linewidth = 1.1
 		) + 
 		geom_point(
-			aes(x = x, y = .data$estimates), 
+			aes(x = .data$x, y = .data$y), 
 			color = "red",
 			size = 3,
 			alpha = 0.5

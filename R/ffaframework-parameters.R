@@ -17,6 +17,15 @@ NULL
 #' @keywords internal
 NULL
 
+#' Parameter 'q'
+#'
+#' @param q Numeric vector of quantiles with no missing values.
+#'
+#' @name param-q
+#'
+#' @keywords internal
+NULL
+
 #' Parameter 'distribution'
 #'
 #' @param distribution A three-character code indicating the distribution family. 

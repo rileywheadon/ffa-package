@@ -10,7 +10,9 @@ framework_full(
   ns_splits = NULL,
   ns_structures = NULL,
   generate_report = TRUE,
-  report_path = NULL
+  report_path = NULL,
+  report_formats = "html",
+  ...
 )
 }
 \arguments{
@@ -21,9 +23,10 @@ Must be strictly positive, finite, and not missing.}
 Must be the same length as \code{data} and strictly increasing.}
 
 \item{ns_splits}{An integer vector of years used to split the data into homogeneous
-subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an integer vector
-of years (e.g., \code{1950L}) with physical justification for change points, or \code{NULL}
-if no such years exist.}
+subperiods. For S-FFA, set to \code{NULL} (default). For NS-FFA, specify an \emph{integer} vector
+of years with physical justification for change points, or \code{NULL} if no such years exist.
+In R, integers have the suffix \code{L}, so \code{1950L} is a valid input to \code{ns_splits}, but \code{1950}
+is not (since R may interpret it as a floating point number).}
 
 \item{ns_structures}{For S-FFA, set to \code{NULL} (default) to use a stationary model
 for all homogeneous subperiods. For NS-FFA, provide a list of \code{length(ns_splits) + 1}
@@ -35,6 +38,9 @@ monotonic trends in the mean and variability, respectively.}
 
 \item{report_path}{A character scalar, the file path for the generated report.
 If \code{NULL} (default), the report will be saved to a new temporary directory.}
+
+\item{report_formats}{A character vector specifying the output format for the
+report. Supported values are \code{"md"}, \code{"pdf"}, \code{"html"}, and \code{"json"}.}
 
 \item{...}{Additional arguments to be passed to the statistical tests and frequency
 analysis functions. See the details of \code{\link[=framework_eda]{framework_eda()}} and \code{\link[=framework_ffa]{framework_ffa()}} for a

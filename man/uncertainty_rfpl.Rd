@@ -50,6 +50,8 @@ All entries must be greater than or equal to 1.}
 A list containing the following four items:
 \itemize{
 \item \code{method}: "RFPL"
+\item \code{distribution}: The \code{distribution} argument.
+\item \code{params}: The fitted parameters.
 \item \code{ns_structure}: The \code{ns_structure} argument, if given.
 \item \code{ns_slices}: The \code{ns_slices} argument, if given.
 \item \code{ci}: A dataframe containing confidence intervals (S-FFA only)

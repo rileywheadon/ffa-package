@@ -110,15 +110,14 @@ test_that("model-assessment.R works with nonstationary GEV/MLE/S-bootstrap.", {
 
 	set.seed(1)
 	df <- data_local("CAN-07BE001.csv")
-
 	metrics <- model_assessment(df$max, "GEV", "MLE", NULL, df$year, S10)$metrics
 
 	# Test results against MATLAB 
-	expect_equal(metrics$R2      , NULL)
-	expect_equal(metrics$RMSE    , NULL)
-	expect_equal(metrics$bias    , NULL)
-	expect_equal(metrics$AIC_RMSE, NULL)
-	expect_equal(metrics$BIC_RMSE, NULL)
+	expect_equal(metrics$R2      , 0.9865   , tol = 1e-4)
+	expect_equal(metrics$RMSE    , 0.1210   , tol = 1e-4)
+	expect_equal(metrics$bias    , 0.0008   , tol = 1e-4)
+	expect_equal(metrics$AIC_RMSE, -207.384 , tol = 1e-4)
+	expect_equal(metrics$BIC_RMSE, -196.884 , tol = 1e-4)
 	expect_equal(metrics$AIC_MLL , 1657.8901, tol = 1e-4)
 	expect_equal(metrics$BIC_MLL , 1668.3900, tol = 1e-4)
 	expect_equal(metrics$AW      , NULL)

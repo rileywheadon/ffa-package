@@ -32,6 +32,8 @@
 #'
 #' @seealso [framework_eda()], [framework_ffa()]
 #'
+#' @importFrom jsonlite write_json
+#' @importFrom glue glue
 #' @export
 framework_full <- function(
 	data,

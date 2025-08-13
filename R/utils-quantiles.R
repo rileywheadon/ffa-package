@@ -29,7 +29,7 @@ utils_quantiles <- function(
 	ns_slice = 0,
 	ns_structure = NULL
 ) {
-	p <- validate_numeric("p", p, FALSE, bounds = c(0, 1))
+	p <- validate_numeric("p", p, bounds = c(0, 1))
 	distribution <- validate_enum("distribution", distribution)
 	params <- validate_params(distribution, params, ns_structure)
 	slice <- validate_float("slice", ns_slice)

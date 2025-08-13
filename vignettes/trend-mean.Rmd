@@ -116,8 +116,6 @@ Then, `plot_ams_data()` can be used to generate a plot of the results. It requir
 It also takes an optional arguments `plot_mean` and `plot_variability` for plotting a trend in the mean and variability respectively.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-sens_trend <- eda_sens_trend(df$max, df$year)
-
 plot_ams_data(
 	df$max,
 	df$year,
@@ -132,10 +130,12 @@ plot_ams_data(
 
 The previous statistical tests have assumed the nonstationarity is linear.
 The runs test assess the feasibility of the linearity assumption by checking the residuals for randomness.
-If the residuals are random (the null hypothesis), there is evidence that the underlying trend is linear.
-The `eda_runs_test()` function takes the residuals from `eda_sens_trend()` as the first argument and the observation years as the second argument.
+Alternatively, `plot_ams_data()` can be used to run Sen's trend estimator on the data and/or variability series and then plot the results. 
+It takes the optional arguments `plot_mean` and `plot_variability` in addition to the `data` and `years`. 
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+sens_trend <- eda_sens_trend(df$max, df$year)
+
 runs_test <- eda_runs_test(sens_trend$residuals, df$year)
 
 print(runs_test$p_value)

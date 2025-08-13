@@ -46,9 +46,11 @@ All entries must be greater than or equal to 1.}
 (default is 0.01).}
 }
 \value{
-A list containing the following four items:
+A list containing the following six items:
 \itemize{
 \item \code{method}: "RFGPL"
+\item \code{distribution}: "GEV"
+\item \code{params}: The fitted parameters.
 \item \code{ns_structure}: The \code{ns_structure} argument, if given.
 \item \code{ns_slices}: The \code{ns_slices} argument, if given.
 \item \code{ci}: A dataframe containing confidence intervals (S-FFA only)

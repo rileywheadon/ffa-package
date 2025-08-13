@@ -5,6 +5,10 @@
 #' Metrics include accuracy (residual statistics), fitting efficiency (information 
 #' criteria), and uncertainty (coverage based metrics using confidence intervals).
 #'
+#' **For NS-FFA**: The metrics are computed from the normalized empirical/theoretical
+#' quantiles, which are determined based on the selected distribution family. Therefore, 
+#' metrics from stationary and nonstationary models should not be compared.
+#'
 #' @inheritParams param-data
 #' @inheritParams param-distribution
 #' @inheritParams param-method
@@ -16,37 +20,37 @@
 #' @param pp_formula Character string specifying the plotting position formula. 
 #' Must `"Weibull"` (default), `"Blom"`, `"Cunnane"`, `"Gringorten"`, or `"Hazen"`.
 #'
-#' @param ci **For S-FFA only**: Dataframe containing return periods (in the column 
+#' @param ci **For S-FFA only**. Dataframe containing return periods (in the column  
 #' `periods`) and confidence intervals (in the columns `lower` and `upper`). Dataframes 
 #' in this format can be generated with [uncertainty_bootstrap()], [uncertainty_rfpl()], 
 #' or [uncertainty_rfgpl()].  
 #'
 #' @return List containing the results of model assessment:
 #' - `data`: The `data` argument.
-#' - `estimates`: Return level estimates based on plotting positions (S-FFA only).
+#' - `q_theoretical`: The theoretical return level estimates based on the plotting 
+#'   positions. Normalized for nonstationary models.
+#' - `q_empirical`: The empirical return levels. Normalized for nonstationary models. 
 #' - `metrics`: A list of model assessment metrics (see details).
 #' 
 #' @details
-#' These metrics are are computed for both *stationary* and *nonstationary* models:
+#' These metrics are are computed for all models:
 #'
 #' - `AIC_MLL`: Akaike Information Criterion, computed using the maximum log-likelihood.
 #' - `BIC_MLL`: Bayesian Information Criterion, computed using the maximum log-likelihood.
-#'
-#' These metrics are *always* computed for *stationary models*:
-#'
 #' - `R2`: Coefficient of determination from linear regression of estimates vs. data.
 #' - `RMSE`: Root mean squared error of quantile estimates.
 #' - `bias`: Mean bias of quantile estimates.
 #' - `AIC_RMSE`: Akaike Information Criterion, computed using the RMSE.
 #' - `BIC_RMSE`: Bayesian Information Criterion, computed using the RMSE.
 #'
-#' These metrics are computed for stationary models *if the `ci` argument is provided*:
+#' These metrics are only computed  *if the `ci` argument is provided*:
 #'
 #' - `AW`: Average width of the confidence interval(s).
 #' - `POC`: Percent of observations covered by the confidence interval(s).
 #' - `CWI`: Confidence width index, a metric that combines `AW` and `POC`.
 #'
-#' @seealso [uncertainty_bootstrap()], [uncertainty_rfpl()], [uncertainty_rfgpl()] 
+#' @seealso [uncertainty_bootstrap()], [uncertainty_rfpl()], [uncertainty_rfgpl()],
+#' [plot_sffa_assessment()], [plot_nsffa_assessment()]
 #'
 #' @examples 
 #' # Initialize example data and params
@@ -56,8 +60,8 @@
 #' # Perform uncertainty analysis
 #' ci <- uncertainty_bootstrap(data, "NOR", "L-moments")$ci
 #'
-#' # Evaluate model diagnostics
-#' model_assessment(data, "NOR", params, ci = ci)
+#' # Run model assessment
+#' model_assessment(data, "NOR", "L-moments", ci = ci)
 #'
 #' @importFrom stats approx
 #' @export
@@ -97,8 +101,8 @@ model_assessment <- function(
 	MLL = fit_mle(
 		data,
 		distribution,
-		ns_years = ns_years,
-		ns_structure = ns_structure
+		ns_years = years,
+		ns_structure = structure
 	)$mll
 
 	n <- length(data)                          
@@ -117,7 +121,7 @@ model_assessment <- function(
 		stop("Unknown plotting position formula.")
 	)
 
-	# Compare the empirical and theoretical quantiles (S-FFA)
+	# Get the empirical and theoretical quantiles
 	if (!structure$location && !structure$scale) {
 
 		# The theoretical are computed at the plotting positions
@@ -129,36 +133,40 @@ model_assessment <- function(
 			structure
 		)
 
-		# Run linear regression against the sorted data (empirical quantiles)
+		# The empirical quantiles for S-FFA are just the sorted data
 		q_empirical <- data[order(data, decreasing = TRUE)]
-		metrics$R2 <- summary(lm(q_theoretical ~ q_empirical))$r.squared
-		metrics$RMSE <- sqrt(mean((q_theoretical - q_empirical)^2))
-		metrics$bias <- mean(q_theoretical - q_empirical)
 
-		# Compute the AIC and BIC
-		metrics$AIC_RMSE <- n * log(metrics$RMSE) + (2 * info$n_params)
-		metrics$BIC_RMSE <- n * log(metrics$RMSE) + (log(n) * info$n_params)
+	} else {
 
-	} 
+		# Get the normalized theoretical quantiles from the plotting positions
+		q_theoretical <- qnorm(1 - p_exceedance)
 
-	# Compare the normalized empirical and theoretical quantiles (NS-FFA)
-	else {
+		# Get the normalized empirical quantiles
+		p_empirical <- sapply(seq_along(data), function(i) {
+			utils_cdf(data[[i]], distribution, params, years[[i]], structure)
+		})
 
-		# Get the normalized theoretical quantiles from the plotting positions (TODO)
-		q_theoretical <- NULL
-
-		# Get the normalized empirical quantiles (TODO)
+		q_empirical <- sort(qnorm(p_empirical), decreasing = TRUE)
 		
 	}
 
-	# Compute uncertainty metrics if 'ci' argument is provided
+	# Run linear regression against the empirical quantiles
+	metrics$R2 <- summary(lm(q_theoretical ~ q_empirical))$r.squared
+	metrics$RMSE <- sqrt(mean((q_theoretical - q_empirical)^2))
+	metrics$bias <- mean(q_theoretical - q_empirical)
+
+	# Compute the AIC and BIC
+	metrics$AIC_RMSE <- n * log(metrics$RMSE) + (2 * info$n_params)
+	metrics$BIC_RMSE <- n * log(metrics$RMSE) + (log(n) * info$n_params)
+
+	# Compute uncertainty metrics if 'ci' argument is provided (S-FFA only)
 	if (!is.null(ci)) {
 
 		# Filter returns and x to indices where returns is between 2 and 100
 		returns <- 1 / p_exceedance
 		idx <- which(returns > 2 & returns < 100)
 		returns <- returns[idx]
-		q_empirical <- q_empirical[idx]
+		q_filtered <- q_empirical[idx]
 
 		# Use log-linear interpolation to get CIs for each return period
 		ci_lower <- approx(log(ci$periods), ci$lower, log(returns))
@@ -166,7 +174,7 @@ model_assessment <- function(
 
 		# Compute the width and coverage of the confidence intervals
 		widths <- ci_upper$y - ci_lower$y
-		covers <- sum(q_empirical < ci_upper$y & q_empirical > ci_lower$y)
+		covers <- sum(q_filtered < ci_upper$y & q_filtered > ci_lower$y)
 
 		# Compute the AW, POC, and CWI
 		metrics$AW <- mean(widths)
@@ -178,7 +186,8 @@ model_assessment <- function(
 	# Return assessment results in a list
 	list(
 		data = data,
-		estimates = q_theoretical,
+		q_theoretical = q_theoretical,
+		q_empirical = q_empirical,
 		metrics = metrics
 	)
 

@@ -48,6 +48,8 @@
 #' [eda_spearman_test()], [eda_bbmk_test()], [eda_pp_test()], [eda_kpss_test()], 
 #' [eda_sens_trend()], [eda_runs_test()], [eda_white_test()]
 #'
+#' @importFrom jsonlite write_json
+#' @importFrom glue glue
 #' @export
 framework_eda <- function(
 	data,

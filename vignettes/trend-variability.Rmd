@@ -101,12 +101,10 @@ While the previous tests provide evidence for a monotonic trend in the variabili
 We can estimate the monotonic trend using Sen's trend estimator, which uses a nonparametric approach that is robust to outliers.
 
 `eda_sens_trend()` takes two arguments: the data (either an annual maximum series or vector of standard deviations) and the corresponding vector of years.
-Then, `plot_ams_data()` can be used to generate a plot of the results. It requires the AMS data and corresponding vector of years. 
-It also takes an optional arguments `plot_mean` and `plot_variability` for plotting a trend in the mean or variability respectively. 
+Alternatively, `plot_ams_data()` can be used to run Sen's trend estimator on the data and/or variability series and then plot the results. 
+It takes the optional arguments `plot_mean` and `plot_variability` in addition to the `data` and `years`. 
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-sens_trend <- eda_sens_trend(mw$std, mw$year)
-
 plot_ams_data(
 	df$max,
 	df$year,
@@ -126,6 +124,8 @@ If the residuals are random (the null hypothesis), there is evidence that the un
 The `eda_runs_test()` function takes the residuals from `eda_sens_trend()` as the first argument and the observation years as the second argument.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
+sens_trend <- eda_sens_trend(mw$std, mw$year)
+
 runs_test <- eda_runs_test(sens_trend$residuals, mw$year)
 
 print(runs_test$p_value)
