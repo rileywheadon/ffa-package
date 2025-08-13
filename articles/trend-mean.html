@@ -293,9 +293,7 @@ also takes an optional arguments <code>plot_mean</code> and
 <code>plot_variability</code> for plotting a trend in the mean and
 variability respectively.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sens_trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_sens_trend.html">eda_sens_trend</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/plot_ams_data.html">plot_ams_data</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_ams_data.html">plot_ams_data</a></span><span class="op">(</span></span>
 <span>    <span class="va">df</span><span class="op">$</span><span class="va">max</span>,</span>
 <span>    <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
 <span>    plot_mean <span class="op">=</span> <span class="st">"Trend"</span>,</span>
@@ -310,13 +308,16 @@ variability respectively.</p>
 </h3>
 <p>The previous statistical tests have assumed the nonstationarity is
 linear. The runs test assess the feasibility of the linearity assumption
-by checking the residuals for randomness. If the residuals are random
-(the null hypothesis), there is evidence that the underlying trend is
-linear. The <code><a href="../reference/eda_runs_test.html">eda_runs_test()</a></code> function takes the residuals
-from <code><a href="../reference/eda_sens_trend.html">eda_sens_trend()</a></code> as the first argument and the
-observation years as the second argument.</p>
+by checking the residuals for randomness. Alternatively,
+<code><a href="../reference/plot_ams_data.html">plot_ams_data()</a></code> can be used to run Sen’s trend estimator on
+the data and/or variability series and then plot the results. It takes
+the optional arguments <code>plot_mean</code> and
+<code>plot_variability</code> in addition to the <code>data</code> and
+<code>years</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">runs_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_runs_test.html">eda_runs_test</a></span><span class="op">(</span><span class="va">sens_trend</span><span class="op">$</span><span class="va">residuals</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sens_trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_sens_trend.html">eda_sens_trend</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">max</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">runs_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eda_runs_test.html">eda_runs_test</a></span><span class="op">(</span><span class="va">sens_trend</span><span class="op">$</span><span class="va">residuals</span>, <span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">runs_test</span><span class="op">$</span><span class="va">p_value</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.4392721</span></span>

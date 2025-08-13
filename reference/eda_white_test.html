@@ -136,21 +136,21 @@ a direct test for heteroskedasticity. <em>Econometrica</em>, 48(4), 817–838.</
 <span class="r-in"><span><span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1901</span>, to <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">eda_white_test</span><span class="op">(</span><span class="va">data</span>, <span class="va">years</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 106.48141 101.00782  82.42012 109.38275  84.40313  97.26097 107.97217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  96.08833 109.67785  93.54223 100.93528 107.62956  94.67642  97.07130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 102.06642  79.20201 108.58147 107.13222  84.83731 109.16774  89.74668</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  91.85919 108.46643  94.93178 107.50644 106.77331 101.41293  85.65508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  86.16541  92.84438 122.92140  90.07804 104.59519  97.62281 108.35991</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  93.65053  80.76932  98.64659 108.60061 113.31049  83.67603  97.24631</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  97.62521 107.06400  99.04726 127.25076 106.30267  88.88680  96.44126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 110.38200  87.75264  93.26501 118.97439  96.53224  78.59880 124.76428</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  95.97234 103.79369  92.51198 105.05991  94.64354 103.41252  92.41732</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  95.76410  88.48226 115.30293 101.12761  98.74202  85.32868 109.61289</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 109.64497 112.58596  84.62194 107.85550 103.97192 106.98846 104.50714</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 106.40800 112.20660 110.78431  96.80989  87.26127  93.49333  92.57200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  87.74771  96.87723 110.71671  98.46020  91.09966  84.26416 105.62013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  94.57179 111.64665 103.88534 108.28514 100.32738  93.51255  98.24003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  91.33492 102.79443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 107.85550 103.97192 106.98846 104.50714 106.40800 112.20660 110.78431</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  96.80989  87.26127  93.49333  92.57200  87.74771  96.87723 110.71671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  98.46020  91.09966  84.26416 105.62013  94.57179 111.64665 103.88534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 108.28514 100.32738  93.51255  98.24003  91.33492 102.79443  74.37330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 105.36249 117.23348  98.92870 105.61287  89.23935 100.82991 101.78167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  91.55114 117.67981  82.68244 112.11189 107.36570 111.29951  90.78180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 101.56818  80.14524 110.30039 112.91148 105.00442 110.39921  87.44111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  98.86676 101.12835 111.51733  85.58585 103.89748 107.29353  86.04344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  96.94657 110.95199  88.58207  91.29411 109.85239  91.61905  91.71838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 110.01256 111.97043  95.29367  84.88836 103.47476  95.94925  96.50217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  84.59143  95.90070  89.02645 100.54988  90.44008 109.84374 109.39418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  87.61338  86.89788  92.04935  93.35320 108.44849  94.79207 103.34544</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  93.20054  96.88521 113.29437 103.96915  98.51686  92.26959 118.54612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 111.78232 105.47654 106.94876 108.49706 103.51722 104.15862  84.53482</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  87.53159 104.64329</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $years</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 1901 1902 1903 1904 1905 1906 1907 1908 1909 1910 1911 1912 1913 1914 1915</span>
@@ -171,10 +171,10 @@ a direct test for heteroskedasticity. <em>Econometrica</em>, 48(4), 817–838.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The data is heteroskedastic."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.015465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.428001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1342928</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4896812</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reject</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>

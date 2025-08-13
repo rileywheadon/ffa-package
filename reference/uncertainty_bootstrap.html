@@ -163,7 +163,9 @@ All entries must be greater than or equal to 1.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list containing the following four items:</p><ul><li><p><code>method</code>: "Bootstrap"</p></li>
+    <p>A list containing the following six items:</p><ul><li><p><code>method</code>: "Bootstrap"</p></li>
+<li><p><code>distribution</code>: The <code>distribution</code> argument.</p></li>
+<li><p><code>params</code>: The fitted parameters.</p></li>
 <li><p><code>ns_structure</code>: The <code>ns_structure</code> argument, if given.</p></li>
 <li><p><code>ns_slices</code>: The <code>ns_slices</code> argument, if given.</p></li>
 <li><p><code>ci</code>: A dataframe containing confidence intervals (S-FFA only)</p></li>
@@ -207,6 +209,12 @@ hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022).
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Bootstrap"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WEI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79.289610 24.235689  2.072522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ns_structure</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -215,12 +223,12 @@ hydrological frequency analysis, Advances in Water Resources 161, 10451 (2022).
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   periods estimates     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       2  99.38382  97.19376 101.4899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5 107.32605 105.24336 109.3161</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10 111.04519 108.75148 113.3067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      20 113.91876 111.28210 116.6264</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      50 116.96068 113.81608 120.3403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     100 118.88590 115.36404 122.8719</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       2  99.59695  97.19585 102.0640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5 109.78095 106.85013 112.7648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10 115.53275 111.92003 119.3044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      20 120.43962 115.92648 125.2442</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      50 126.09451 120.30734 132.4924</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     100 129.92731 123.15385 137.6791</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

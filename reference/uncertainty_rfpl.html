@@ -153,6 +153,8 @@ All entries must be greater than or equal to 1.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list containing the following four items:</p><ul><li><p><code>method</code>: "RFPL"</p></li>
+<li><p><code>distribution</code>: The <code>distribution</code> argument.</p></li>
+<li><p><code>params</code>: The fitted parameters.</p></li>
 <li><p><code>ns_structure</code>: The <code>ns_structure</code> argument, if given.</p></li>
 <li><p><code>ns_slices</code>: The <code>ns_slices</code> argument, if given.</p></li>
 <li><p><code>ci</code>: A dataframe containing confidence intervals (S-FFA only)</p></li>
@@ -202,6 +204,12 @@ Research and Risk Assessment 38, 843–867 (2024). <a href="https://doi.org/10.1
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "RFPL"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GLO"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 101.9869489   5.9714069   0.1510906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ns_structure</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -210,12 +218,12 @@ Research and Risk Assessment 38, 843–867 (2024). <a href="https://doi.org/10.1
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   periods estimates     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       2  101.2751  99.19611 103.4211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5  109.7932 107.32076 112.7611</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10  115.1027 111.97286 119.5162</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      20  120.2208 116.04191 126.7392</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      50  127.0368 120.79309 137.3857</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     100  132.3444 124.04251 146.5332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       2  101.9869  99.73336 104.1409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5  109.4556 107.47229 111.5811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10  113.1519 111.08046 116.1748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      20  116.1792 113.76140 120.7106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      50  119.5574 116.40696 126.6877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     100  121.7703 117.93577 131.2453</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

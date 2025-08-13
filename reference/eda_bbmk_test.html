@@ -147,114 +147,126 @@ application to detect temperature changes in India. Journal Hydrology 476, 212â€
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">eda_bbmk_test</span><span class="op">(</span><span class="va">data</span>, samples <span class="op">=</span> <span class="fl">1000L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 100.65487  89.01491  93.66822  79.36346 126.48932  88.46602  96.59362</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 107.86363  87.29487 105.42142 100.75106 105.58514 104.15406  85.47700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 109.41206  96.61064  99.24426 100.40204 101.24301  90.01567 112.33390</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 103.40424  95.27298 107.08753  84.71041 102.37425  86.87186 107.47029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  84.37482 100.71053  93.60465  91.54804 106.75245 111.53376  83.13495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  90.97185 113.17634 111.00190 112.03768  85.68729 113.82911 100.03126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  99.22113 104.41428 101.28923  91.69786  94.96407  88.06359  92.48277</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 114.55841  91.71396 102.89774  95.19947  93.95171 114.60110 101.49679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  85.66679  99.89697  97.87764  90.93660  78.97848 118.93360  90.31874</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  98.97397 102.39960 100.60899  78.22424  98.82140 101.12295 100.07886</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 118.77744 121.58757 107.09715 107.66983  96.91789 110.12002  90.80948</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 105.63380 103.22483 103.66674 111.29835  90.58502 102.17838 114.15412</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  96.16267  98.25914  97.78255  89.90471 104.80725 116.04407  84.84975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  85.83976 108.76777 106.24132 121.12277  96.43876  89.35536 110.77117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 111.81576 101.98392</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 105.58514 104.15406  85.47700 109.41206  96.61064  99.24426 100.40204</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 101.24301  90.01567 112.33390 103.40424  95.27298 107.08753  84.71041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 102.37425  86.87186 107.47029  84.37482 100.71053  93.60465  91.54804</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 106.75245 111.53376  83.13495  90.97185 113.17634 111.00190 112.03768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  85.68729 113.82911 100.03126  99.22113 104.41428 101.28923  91.69786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  94.96407  88.06359  92.48277 114.55841  91.71396 102.89774  95.19947</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  93.95171 114.60110 101.49679  85.66679  99.89697  97.87764  90.93660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  78.97848 118.93360  90.31874  98.97397 102.39960 100.60899  78.22424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  98.82140 101.12295 100.07886 118.77744 121.58757 107.09715 107.66983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  96.91789 110.12002  90.80948 105.63380 103.22483 103.66674 111.29835</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  90.58502 102.17838 114.15412  96.16267  98.25914  97.78255  89.90471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 104.80725 116.04407  84.84975  85.83976 108.76777 106.24132 121.12277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  96.43876  89.35536 110.77117 111.81576 101.98392  95.99595 106.16154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 119.74157 118.84662  84.11379  94.60077  88.30539 105.59106  81.80653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 103.93344 100.42134</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $alpha</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $null_hypothesis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "There is no monotonic trend in the data."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "There is no monotonic trend in the mean of the data."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $alternative_hypothesis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "There is a monotonic trend in the data."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "There is a monotonic trend in the mean of the data."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 244</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bootstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1] -410 -276 -322 -136  538 1006  116  200  -44   80  148  234  -86   32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [15]  360  146 -152  -28 -142   86 -134  550 -104 -148  166 -118  494 -124</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [29] -186  206  294 -338  262  270  148 -280 -174  522  342  106    2   78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [43]    6  232 -146 -208  256  -58 -242  512   42  264  522 -218   88 -542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [57] -244 -240   34  -42 -226  258  406 -300   80   76 -248  798 -642  434</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [71]  414 -138   34  616  500 -552  380 -568  286  110   44  334  390 -570</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [85]  266 -372  -42  434  516 -304  450  128  554   18 -356  738 -188 -374</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [99]  -96 -254  152  336  298 -532 -880   26 -128 -504 -442 -276  -28   36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [113]  -76  -48  120  146  -94 -256  406   86 -180 -268  396  312  162  372</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [127] -372  336  -82  138   92 -146  576  -80  296   22  -76 -646  658 -532</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [141]  194 -214 -238  136  134  658 -156 -276  -54 -266 -508 -226  162  236</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [155]  148  236  112  106  488 -146  316 -562  190  428  694 -388  -10 -436</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [169]  256  710  610  106 -106   26   44  626  224 -264  112   14 -304   16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [183]    2  -76  458  286 -256 -170 -526  448 -508  240  298  282  -36  728</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [197]  286   38 -344 -436 -430  348 -534 -270 -524   -2 -166  216 -406 -342</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [211]   80 -196  476  110  360  536  570 -204 -550 -348  154  288  158 -182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [225] -136   20  370  288   74  164  404  -40 -224  708  230   44   48  204</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [239]  494 -324 -330 -138  -56 -132  116  528   20  240    4  -90 -350  -26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [253] -952  274 -202  -98 -952  138 -442  490 -612   34  408  284 -248  122</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [267] -144  330 -104  690 -494 -444  -36 -936  196  230   82  390   92  -60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [281]  152   66  104 -118 -150  -84   14 -420  252 -356  -26 -338   48 -276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [295] -276  392  144  368 -176   20 -256  486  260  396 -382  562   16 -568</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [309] -418  -70  324  -66  310 -530  574  164  402 -340   46 -116   52 -192</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [323] -526  -12  386  -10  130  -50 -204  358  230  106 -544   54  320  276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [337]  652 -528  -50  436 -192  134  -74 -130  -22 -482  330  230  408  324</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [351]  430  242  610  584 -132 -390  112 -518 -292  454  252   22  276 -230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [365]  -70  422 -198  412  358  204 -386 -366 -540  360  152  178  594  170</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [379]  274 -420  194  -88 -692 -378 -358 -366 -480  118  -74   -6 -168   54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [393]  132  398   80 -230  -84 -710 -358 -242  310  164  414   90  244 -478</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [407]  -64 -150  176 -360   72  280  -48 -176 -102  -64   68 -138   64 -224</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [421]  154   92  410  510 -114 -696 -206  310  302  172  100   98   84 -186</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [435]   36  180 -560    0  488 -104 -122 -238  624  308  184   28   54 -670</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [449]  626   14  -50  318   44 -160   34 -174  178 -848  600  -46  244  414</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [463] -296 -206  592 -298   86   56   88  530   42 -358 -500  214 -222  -20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [477] -544  312  426  234 -254  316 -440 -366  360  -76 -156 -250   46 -452</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [491]   24   80  108  196  382 -470 -400  372 -360   90  576 -278  186 -368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [505] -486 -224   -6  206 -406 -434 -312 -506 -872    8  218  -58 -132  132</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [519]  586 -102 -212  444   58    8 -622  344  298 -236  214 -232 -206   94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [533] -148  256  606 -244 -144 -204  260 -174  158   32  538   54 -584 -406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [547]  232   46  -10 -498   84  196 -446 -474  152   44 -290 -304  116 -286</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [561] -262 -190  110  340 -616  -50 -838 -416   96  130    8  192  292  312</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [575] -380  192   24  216 -490 -120  114  220  362   40  -78 -252    8  180</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [589]  194 -308   32  334 -208   52  -62  -12  420  468 -170 -180  144 -516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [603]   14 -156   -6  700  388 -320 -316  552  -24   26  676 -116  -32 -596</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [617] -214 -652  644 -196 -276 -358  372 -428   72  -10   82  130    6  -96</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [631] -330  -68 -612  614 -310  712  -16 -114 -286 -316 -256 -138   76  506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [645]  412 -328   10    6  100  600 -164  -40  546 -132 -152 -790   24 -254</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [659] -306  172  330    8  218   60  234  618  -68 -678  506 -276   18  266</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [673] -142  416 -120 -598 -336 -242   66 -292 -578  142 -498 -336 -236 -238</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [687]  216 -154 -270  428 -200 -112   82  -82 -384   92  210  194 -216  420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [701]  382  482  -82  -20  100   28  -36 -300   58 -294 -740  282   94  -70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [715]   22  242  -72  530  476  428  222  -54  592   10  242  354 -764  400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [729] -218 -276  198 -142 -702 -204  154  162  364  -28 -334  414 -132 -194</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [743] -144   50  534  568  102 -190   10 -140   36 -548 -660  -24  702  148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [757]  328  308  264 -120  -30   36 -324  388 -464  -56  340  236  148 -486</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [771]  562  176 -268 -436  622   72 -234 -366 -574   38  196 -558 -304  -66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [785] -312 -948 -232  508 -118 -440 -496 -324 -244 -300  264  348 -180  -78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [799]  -54  214 -242  504 -266  840   56   14  134  126 -170   52  192 -352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [813]  -88 -282 -162  492  166 -258   64  -56 -282 -178  108   66  392  666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [827]  206  204 -160  224 -304  350 -178 -230 -164  286 -366 -698  526 -836</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [841]  186  226 -116  306   42 -478  -70  224   44  -10 -428  346   34 -140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [855] -474 -208 -824 -318  -20 -408 -314 -326  -42   74  560 -554   40  782</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [869]  120  160 -500  112  358 -100  -56   26 -108  168 -296  416  336 -438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [883] -132 -488  -94  372  128   64 -332  -34   94 -104 -596 -486  442  160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [897]  122  258   72 -660 -294 -366 -206 -492 -324 -648 -228 -468  700  706</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [911]  -20  -30  118  274 -140  296  296  680   44  162  -12 -660  434   86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [925] -156 -106  214  320  294  392  410  192   -2   38 -160    0  -62   54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [939]  186  224   50  -78 -346  400  210  322  472 -194 -110 -154  112  212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [953]  254   36  470  482 -200  628 -478  458 -248  -50 -234  124  406  304</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [967]  -92   74 -178 -106  402  -30  318  178  552  -70  146 -388 -150 -106</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [981]   82  158  484 -404 -584  406  -48 -268   12 -194 -364  626 -430 -416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [995]  478  340 -180 -428  172  -98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]   756  -346  -912   498   760  -222  -116   430  -164  -476  -162  -224</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [13]   120  -324   -20   508  -824  -188  -374   220  -444   406    12   162</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [25]   260  -400   382    38  -368   110  -278   168   418   -52   -28   164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [37]  -408   800   336   -28   412   318  -664   136   -52   834   138   614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [49]   134  -220   290   376  -390  -214  -664   102   274   -26  -230  -378</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [61]   236  -238    48   132   450   -28     8    34  -352  -522   140   526</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [73]  -220  -166  -322    76   418  -704  -198  -230   592   408  -262  -330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [85]   108   -32  -304   908  -130    58  -516    80   132   554  -248   194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [97]  -172   -10   184  -178   -62  -156   300   -94  -176   -22   -90  -134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [109]  -316  -174  -350   -16   170  -372    22  -386  -422   186   252    40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [121]   -34   294  -372  -178  -180  -242  -334   172   160  -428   434   738</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [133]   288   -52   158   -76   -50   -86  -544  -954   126  -130  -496   254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [145]    98  -364   192   482   -90   100  -178  -486  -512    52  -120  -212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [157]   -38   372    14  -448  -406  -470   -40   166   380  -102   592  -120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [169]    38   198   322   434   266   -72  -154    92   152  -740   -46  -800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [181]   104  -326  -456    62   -86   220  -106   602  -456    16  -228  -594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [193]  -482  -604   -52  -914   246   176  -192  -554  -140   -30  -226  -192</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [205]   -38   130     0  -122   486    52   196   712   354   612  -372   214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [217]  -632   290   140   226   212    -6    -6   -12  -128   370    28   174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [229]    12   184   232   408  -272  -250  -248    36  -332   186  -260  -130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [241]   102   -56  -984   332   -96    16   328   224  -214  -190  -678   312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [253]  -234   -30  -658  -408   138   586  -454   -16   258   -92   124  -280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [265]  -130  -256   206  -572   170   102  -332   464   316   -12   -18    38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [277]  -642  -164   -72   280     2  -156   202   278  -180  1074  -176    -4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [289]  -468   106   158  -208    16  -528   232   136  -180     4  -180   428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [301]  -262  -428  -552    26   410  -556  -104    50   -90  -204  -158  -286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [313]  -206  -222   -16   262   312  -326   120  -208   424    66  -492   370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [325]   610   238  -826   128  -158   526   158   200  -626  -132   -28  -516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [337]  -216   730  -108   308  -106   158   -18  -202  -330  -226   234  -260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [349]   120  -310  -206  -778    72    72   174   -80   226  -156  -510  -468</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [361]   518  -116  -618   134    10   -94   288    46  -248   -74   270   -76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [373]  -536   800  -242   -30  -178   426   -68  -166   240   500   366  -266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [385]   594  -108    62  -302  -454   156   382   -64   186   -16  -214  -116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [397]  -254  -118  -282   -42  -296   534   -34  -796  -422    36   270   -88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [409]   -72   116    60  -512   120  -126   240  -348   114   -40  -168    26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [421]    92  -158  -122   498   312  -294   770   198   500  -352    90   192</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [433]    86  -168  -372    96   180   240  -584  -806  -214   244  -364  -576</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [445]   264  -422   266  -450    18   -98  -338   368  -184  -550   574  -290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [457]   516  -108  -354  -108  -102  -396   350  -136   122   618    68  -300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [469]  -166  -178   206  -360  -338   142    44     8    84   -62  -426  -590</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [481]  -340   496  -158     4   192    40   162   234   -68  -428   280   108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [493]   308  -426  -314   -84  -172   180  -370    88  -110   350   368   430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [505]  -720   454   922  -182   198  -144    14   -48  -212   578   198   308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [517]  -584   470   510  -136  -448  -130  -284   118   424  -226   332   774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [529]  -204  -178    86  -216   -92    10  -152  -132    68   -40  -706  -234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [541]   144   198   642   104   490  -160   710  -358   494  -460  -108   238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [553]    22  -104  -472  -778   220  -832  -542  -122  -286  -234   308   -68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [565]    82   130     4  -236    14  -220   180   116  -132   436   192  -280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [577]  -176    18   -52  -318   244   438   224   -58   -92    44  -392   122</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [589]   152   768   254   -92  -112  -446   252   284   276   406   120  -352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [601]   220  -186   348  -482  -192   148    88   408  -140   304  -102   316</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [613]  -212   536  -720  -482  -108  -236  -220  -304  -242   180   -64  -176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [625]  -510    66   -30   262  -416   490   252    84   334   286  -144   152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [637]  -134   610  -368  -356    18   276  -166   -96  -384  -738    94  -240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [649]   456   -20  -240  -562  -308  -720  -438  -272  -510  -486    72  -182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [661]    12  -110  -108   166    90  -196   -22  -294   -20  -602   126    50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [673]  -280    40   458   -92   166    26   -24   106  -330   370  -384  -140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [685]   -34  -184   246  -358   216  -424    40   -74  -366  -676   240  -278</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [697]    78   376  -124    42   562    86  -100   -20    52   -56  -160   -18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [709]   222    92   414   -62   -38   182  -274  -124  -526   104   412   390</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [721]   314    20  -386  -306  -470  -396    36  -482  -216    22   302  -430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [733]   812     2  -290   636   152  -118   302   824   -46   384  -410  -350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [745]  -344   630   -74  -378   448   624   392   240  -460  -246    20  -136</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [757]   244  -800  -228  -234   152   168   756  -252   596  -276  -892  -428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [769]   150  -198    28   548   836  -378   496  -194   346    74    22  -296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [781]   602  -240  -426  -556     0  -144  -292  -134  -252  -100   368  -204</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [793]  -552  -244   -76   128  -314  -706  -274    82   -16  -474   252   120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [805]  -214  -154  -298  -526   224  -292   224   128  -454  -270   328  -126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [817]   178  -364    68   926    50   120    98   452   478    58  -108   344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [829]    80  -468  -258  -114  -274   404    70  -330  -170  -410   364  -738</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [841]   286    -8  -134   -74   -26   294  -312   152   -10   372  -374   722</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [853]   420  -134   -20   108   546   288  -284    46   -34  -122   102   -20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [865]   -74  -480   214   488   316   -76 -1088   338  -416   480   -66  -284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [877]  -376   -68   568   224  -434   -60    28  -226   584     0     0   348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [889]   166   -34   -76   168   618  -362  -164    62   -38  -272   320  -246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [901]   278  -594  -400   148  -280  -456  -268   352  -142  -312   398   -94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [913]  -498   -68  -128  -384   456  -152   190  -504    44  -302   426  -324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [925]    14  -158  -288   390   -60    42   624   138    34  -176   112   458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [937]   -90    70    16   102  -162   530  -252   294  -318   240   722  -326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [949]   206  -280   204   382   764   326  -558  -144  -316  -166   410   656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [961]   114  -438  -148   482  -144   444  -190   326  -398   290  -222   414</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [973]  -534  -212   366   -98  -216  -654   250   842  -138    36  -168   304</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [985]   322  -276   320  -196   218  -184   302   170   560    38   -12   148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [997]  -384  -160   642   402</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.432</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bounds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    2.5%   97.5% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -646.05  626.00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -676.05  642.35 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reject</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>

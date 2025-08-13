@@ -133,21 +133,21 @@ Econometrics, 54 (1-3): 159-178.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">eda_kpss_test</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  87.50984 102.95252  90.26103  73.53136 100.23273 111.47362 115.61049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  87.35983  88.33181  91.75555  94.76172  98.89976 121.99260  95.34879</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 120.36984 100.39004  87.96905 119.83484  90.29670  85.67438 104.83300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 101.28824  84.71710 104.98693  86.50927  97.41662  83.55172  98.98267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  97.63843 106.02731 109.66670 107.35570 109.18831 102.81522 109.64195</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  94.23139  97.94809 107.97812 108.19274 121.59665 104.90342 111.42943</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 100.70440  93.71694  99.09350 105.10520  98.99026  81.75223 112.77722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  88.81335 110.26617 106.83853  90.09093  93.36497  98.52802  99.89112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 118.42932 103.24793 102.18773 106.94797  95.30401 100.08250  80.78876</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 100.51796  94.84747  95.93285  92.80528  94.86763 105.97930 109.77976</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  99.80091 114.75578 101.09780 100.12387  98.95186 107.50888  97.77118</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  93.79625 113.14000 116.23621  88.10228 101.15881 116.18140  99.90063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  92.66700 106.42069 108.95565  91.35165 100.35780 107.02140 110.87775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 110.32847 112.30771  90.03516  90.82555  94.35715 103.97653  99.42904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  94.74145 104.28256</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 100.12387  98.95186 107.50888  97.77118  93.79625 113.14000 116.23621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  88.10228 101.15881 116.18140  99.90063  92.66700 106.42069 108.95565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  91.35165 100.35780 107.02140 110.87775 110.32847 112.30771  90.03516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  90.82555  94.35715 103.97653  99.42904  94.74145 104.28256  89.53636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 116.11412  90.69241 103.37862 105.22782  82.64148 109.39183 105.45024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  84.75166  94.25823 111.23967  86.69933  97.37938  96.58283 111.08042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 114.25324  99.55259  98.79250 106.57130 110.35033  88.61991  93.08293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 100.83571 104.75665 102.37172  92.25124 103.24165 108.40478 116.61977</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 111.01600 108.00191 104.89789 108.15966  75.26442  89.19149 105.21227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  86.71029 118.16608 102.27068  87.32682 106.03875  88.81822 103.22338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 102.98355 114.61274 119.20752  89.24305  93.12479 106.15612  99.96043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 100.60333  97.72133  91.09217  99.29099  87.82165  96.03174 116.78254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 119.72330  98.41525  96.38403  92.93475 108.29597  92.21121  96.49941</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  94.03990  95.46888  87.32682  93.65167 106.19333 105.58708  99.05894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  99.19472 100.19550</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $alpha</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05</span>
@@ -159,7 +159,7 @@ Econometrics, 54 (1-3): 159-178.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The time series has a unit root (stochastic trend)."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.04758024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.03306532</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1</span>

@@ -259,7 +259,7 @@ computed.</li>
 <span>    ns_slices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1915</span>, <span class="fl">2015</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plot_nsffa_estimates.html">plot_nsffa_estimates</a></span><span class="op">(</span><span class="va">fit</span>, ci_list <span class="op">=</span> <span class="va">uncertainty</span><span class="op">$</span><span class="va">ci_list</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_nsffa_estimates.html">plot_nsffa_estimates</a></span><span class="op">(</span><span class="va">uncertainty</span><span class="op">)</span></span></code></pre></div>
 <p><img src="non-stationary-ffa_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><strong>Example Conclusion</strong>: In 2025, there is a <span class="math inline">\(1/20\)</span> exceedance probability of a flood of
 approximately <span class="math inline">\(300\text{m}^3/\text{s}\)</span> or greater. The
@@ -269,6 +269,36 @@ estimated return levels have decreased by approximately <span class="math inline
 reflects the probability distribution for a fixed year rather than a
 long-run average. To clarify this difference from stationary FFA, the
 phrase “effective return period” is used.</p>
+</div>
+<div class="section level2">
+<h2 id="model-assessment">Model Assessment<a class="anchor" aria-label="anchor" href="#model-assessment"></a>
+</h2>
+<p>During S-FFA model assessment, we compare the data (or “empirical
+quantiles”) with the predictions of the parametric model at the plotting
+positions (the “theoretical quantiles”). Unfortunately, the same method
+does not work for NS-FFA, since the method of plotting positions assumes
+stationarity. However, if we normalize the data using our selected
+distribution, we can remove the time-dependence and use the method of
+plotting positions as in S-FFA. The <code>model_assessment</code>
+function will make the necessary adjustments for NS-FFA automatically
+provided that the <code>ns_years</code> and <code>ns_structure</code>
+arguments are provided.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">assessment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_assessment.html">model_assessment</a></span><span class="op">(</span></span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">max</span>,</span>
+<span>    <span class="st">"GNO"</span>,</span>
+<span>    <span class="st">"MLE"</span>,</span>
+<span>    ns_years <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">year</span>,</span>
+<span>    ns_structure <span class="op">=</span> <span class="va">ns_structure</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_nsffa_assessment.html">plot_nsffa_assessment</a></span><span class="op">(</span><span class="va">assessment</span><span class="op">)</span></span></code></pre></div>
+<p><img src="non-stationary-ffa_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>The model assessment plot shown above depicts the normalized
+theoretical quantiles on the x-axis and the <em>difference</em> between
+the theoretical and empirical quantiles on the y-axis. The dashed black
+lines are the 95% confidence bounds. From this plot, we can see that the
+model is a suitable fit for almost all data points.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

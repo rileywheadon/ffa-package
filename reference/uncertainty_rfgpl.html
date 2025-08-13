@@ -151,7 +151,9 @@ All entries must be greater than or equal to 1.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list containing the following four items:</p><ul><li><p><code>method</code>: "RFGPL"</p></li>
+    <p>A list containing the following six items:</p><ul><li><p><code>method</code>: "RFGPL"</p></li>
+<li><p><code>distribution</code>: "GEV"</p></li>
+<li><p><code>params</code>: The fitted parameters.</p></li>
 <li><p><code>ns_structure</code>: The <code>ns_structure</code> argument, if given.</p></li>
 <li><p><code>ns_slices</code>: The <code>ns_slices</code> argument, if given.</p></li>
 <li><p><code>ci</code>: A dataframe containing confidence intervals (S-FFA only)</p></li>
@@ -201,6 +203,12 @@ Research and Risk Assessment 38, 843–867 (2024). <a href="https://doi.org/10.1
 <span class="r-out co"><span class="r-pr">#&gt;</span> $method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "RFGPL"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GEV"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 94.8057579 12.7161970  0.1017774</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ns_structure</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -208,13 +216,13 @@ Research and Risk Assessment 38, 843–867 (2024). <a href="https://doi.org/10.1
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   periods estimates     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       2  97.38167  95.29788  99.66764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5 108.70545 105.46690 112.50746</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10 116.98965 112.71372 122.12315</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      20 125.58186 120.13719 132.20006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      50 137.72617 130.47343 146.64420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     100 147.64854 138.80465 158.58547</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   periods estimates     lower    upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       2  99.55443  96.63859 102.7040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5 115.41217 111.00705 120.5315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10 126.96414 121.19155 133.8164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      20 138.90570 131.57452 147.7554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      50 155.72063 145.92495 167.6549</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     100 169.40853 157.41913 184.1089</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

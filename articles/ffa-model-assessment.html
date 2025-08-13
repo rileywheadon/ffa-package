@@ -105,13 +105,13 @@
 <div class="section level3">
 <h3 id="nonparametric-models">Nonparametric Models<a class="anchor" aria-label="anchor" href="#nonparametric-models"></a>
 </h3>
-<p>A <strong>Plotting Position</strong> is a non-parametric estimator
-used to derive empirical exceedance probabilities. By using the plotting
-position, we can evaluate the quality of our parametric model (assuming
-the model is stationary). To compute the plotting position, arrange the
-sample observations in descending order of magnitude: <span class="math inline">\(x_{n:n} \geq  \dots  \geq  x_{1:n}\)</span>. Then,
-the empirical exceedance probabilities are given by the following
-formula:</p>
+<p>A <strong>Plotting Position</strong> is a non-parametric estimator of
+exceedance probabilities. By using the plotting position, we can
+evaluate the quality of a stationary parametric model. To compute the
+plotting position, arrange the sample observations in descending order
+of magnitude: <span class="math inline">\(x_{n:n} \geq \dots \geq
+x_{1:n}\)</span>. Then, the exceedance probabilities are given by the
+following formula:</p>
 <p><span class="math display">\[
 p_{i:n} = \frac{i-a}{n+1 - 2a}, \quad i \in \{1, \dots , n\}
 \]</span></p>
@@ -169,10 +169,9 @@ Determination<a class="anchor" aria-label="anchor" href="#r2---coefficient-of-de
 perform a linear regression of the annual maximum series data against
 the predictions of the parametric model at the plotting positions. The
 <span class="math inline">\(R^2\)</span> statistic describes how well
-the parametric model captures variance in the data. Higher is
-better.</p>
-<p>The plot below shows the deviation of the estimated quantiles (red
-dots), from the data (black line).</p>
+the parametric model captures variance in the data. Higher is better.
+The plot below shows the deviation of the model (red dots), from the
+data (black line).</p>
 <p><img src="../reference/figures/plot-assessment.svg"></p>
 </div>
 <div class="section level4">
@@ -237,16 +236,15 @@ frequency analysis.</p>
 intervals across return periods of interest. A smaller <code>AW</code>
 indicates more <em>precise</em> quantile estimates. To compute
 <code>AW</code>, we use log-linear interpolation to estimate the
-confidence intervals of the empirical exceedance probabilities from the
-confidence intervals computed during <a href="uncertainty-quantification.html">uncertainty quantification</a>.</p>
+confidence intervals of the exceedance probabilities from the confidence
+intervals computed during <a href="uncertainty-quantification.html">uncertainty quantification</a>.</p>
 </div>
 <div class="section level4">
 <h4 id="poc-percent-of-coverage">POC – Percent of Coverage<a class="anchor" aria-label="anchor" href="#poc-percent-of-coverage"></a>
 </h4>
-<p><code>POC</code> is the percentage of observed quantiles that fall
-within their corresponding confidence intervals. A higher
-<code>POC</code> indicates greater <em>reliability</em> of the
-confidence intervals.</p>
+<p><code>POC</code> is the percentage of data points that fall within
+their corresponding confidence intervals. A higher <code>POC</code>
+indicates greater <em>reliability</em> of the confidence intervals.</p>
 </div>
 <div class="section level4">
 <h4 id="cwi-confidence-width-indicator">CWI – Confidence Width Indicator<a class="anchor" aria-label="anchor" href="#cwi-confidence-width-indicator"></a>
@@ -262,8 +260,54 @@ resulting in a low <code>CWI</code>.</li>
 <p>The <code>CWI</code> is computed using the following formula, where
 <code>alpha</code> is the significance level.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">CWI</span> <span class="op">&lt;-</span> <span class="va">AW</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span><span class="op">)</span> <span class="op">-</span> <span class="va">POC</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>;</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">CWI</span> <span class="op">&lt;-</span> <span class="va">AW</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span><span class="op">)</span> <span class="op">-</span> <span class="va">POC</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level3">
+<h3 id="handling-nonstationarity">Handling Nonstationarity<a class="anchor" aria-label="anchor" href="#handling-nonstationarity"></a>
+</h3>
+<p>When working with nonstationary models, adjustments must be made to
+both the empirical quantiles (derived from the plotting positions) and
+the theoretical quantiles. In the FFA framework, we perform
+nonstationary model assessment by standardizing the quantiles based on
+the selected distribution family.</p>
+<p>Standardizing the theoretical quantiles:</p>
+<ol style="list-style-type: decimal">
+<li>Get nonexceedance probabilities <span class="math inline">\(p_{(1)}
+\leq \dots \leq p_{(n)}\)</span> using any plotting position
+formula.</li>
+<li>Compute the normalized theoretical quantiles <span class="math inline">\(z^{T}_{i} = \Phi^{-1}(p_{(i)})\)</span>.</li>
+</ol>
+<p>Standardizing the empirical quantiles:</p>
+<ol style="list-style-type: decimal">
+<li>
+<p>Transform each observation <span class="math inline">\(x_{i}\)</span> into a model-based probability
+<span class="math inline">\(u_{i}\)</span>:</p>
+<p><span class="math display">\[
+u_i = F(x_i \,;\, \mu(t_i), \sigma(t_i), \kappa)
+\]</span></p>
+</li>
+<li>
+<p>Normalize the model-based probabilities:</p>
+<p><span class="math display">\[
+z_{i} = \Phi^{-1}(u_{i})
+\]</span></p>
+</li>
+<li><p>Sort the normalized empirical quantiles: <span class="math inline">\(z^{E}_{(1)} \leq \dots \leq
+z^{E}_{(n)}\)</span>.</p></li>
+</ol>
+<p>Then, we can plot the <span class="math inline">\((z_{i}^{T},
+z_{i}^{E})\)</span> pairs in a <em>normalized Q-Q plot</em>.
+Alternatively, we can use a <em>detrended Q-Q plot</em> (also known as a
+<em>worm plot</em>), which plots the theoretical quantiles <span class="math inline">\(z_{i}^{T}\)</span> against the differences <span class="math inline">\(\Delta_{i} = z_{i}^{E} - z_{i}^{T}\)</span>. If
+the model accurately captures the true distribution of the data,
+then:</p>
+<p><span class="math display">\[
+\text{SE}(\Delta_{i})= \frac{1}{f(z_{i}^{T})} \sqrt{\frac{p_{(i)}(1 -
+p_{(i)})}{n}}
+\]</span></p>
+<p>We can use this formula to plot the 95% confidence interval at <span class="math inline">\(\pm 1.96 \cdot \text{SE}(\Delta
+_{i})\)</span>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

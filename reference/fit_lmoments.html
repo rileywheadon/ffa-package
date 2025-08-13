@@ -122,21 +122,21 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">fit_lmoments</span><span class="op">(</span><span class="va">data</span>, <span class="st">"GUM"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 107.26516 109.96803  91.08321 105.39807  99.44333 100.16600 118.61687</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 110.21902 114.73549 100.36435  86.31768 109.19317 116.28756 101.60625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  90.94688 102.68745  97.00890  89.48579 117.41882  98.48603  99.31366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  86.91908 101.22587 118.70062  97.80619 109.65154 107.82251  88.81587</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  75.86941  85.69462  97.30973  99.80566 112.09757  91.36437  95.86744</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  92.77654 104.87393 102.51375 100.99291  95.86417  99.78147 104.83921</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 110.42958 109.35107  97.67290 104.29871 109.35454  92.24086 108.62367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  85.20797  90.62383 102.25252 105.23610  94.18402 101.79172 103.95063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 112.68783  95.59487  92.48007  94.78395  94.88289 106.87342 107.67279</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 115.10075 114.32144 118.17319 100.70136 102.34274  96.87547 115.08114</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 108.78293 105.86041  85.56727 120.00224 103.56648  97.37379  91.94665</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 108.82779  82.40831  94.94096  90.56819 102.17673  92.68039  98.05867</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  99.08948 100.12524 115.71024  96.13517 111.17732  99.43153  90.23783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  79.33490 104.12935 107.77373 107.74647  90.52324 104.05805 117.28742</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  90.72178 100.51341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 120.00224 103.56648  97.37379  91.94665 108.82779  82.40831  94.94096</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  90.56819 102.17673  92.68039  98.05867  99.08948 100.12524 115.71024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  96.13517 111.17732  99.43153  90.23783  79.33490 104.12935 107.77373</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 107.74647  90.52324 104.05805 117.28742  90.72178 100.51341  95.89050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  98.17972 102.58520  96.10162 100.28579 103.75042 102.36861 106.81857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  99.87023  93.63866 103.16125 101.24585 114.56949  98.74122 108.01745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  88.36622  92.08586  94.85833  91.17829  79.81302 106.05510  87.84966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  94.28917 115.41705 104.91905 115.68214  86.67678 102.79631  92.60434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 119.73140 117.24102 108.36749 103.51559  79.13414 101.57273 110.01306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  94.95882  94.36551  98.49159 114.57832  82.77162  88.09108  95.81234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  79.14392  84.59182  98.12339  97.29406  89.23987 112.77777 111.88500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 101.40517 109.86976  97.46669 114.10414  99.06067 119.42181 104.18372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 104.83997  95.58950  98.99218  96.55484 115.53452 106.02357  81.50147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  96.43393  86.41441  94.61247  99.85326 107.39677  97.63858 114.23139</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  97.42237  87.23457</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $distribution</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GUM"</span>
@@ -145,7 +145,7 @@ on L-Moments. Cambridge University Press, New York, USA.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L-moments"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 96.63627  7.83976</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 95.076997  8.214399</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
