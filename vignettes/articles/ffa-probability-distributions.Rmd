@@ -147,10 +147,10 @@ $$
 **Quantiles**
 
 $$
-x(F) = \begin{dcases}
+x(F) = \begin{cases}
 \mu + \sigma (1 - (-\log F)^{\kappa })/\kappa  &\kappa \neq 0\\[5pt]
 \mu - \sigma \log (-\log F) &\kappa = 0
-\end{dcases}
+\end{cases}
 $$
 
 **Likelihood Function**
@@ -383,10 +383,10 @@ Coefficients are given in Appendix A.9 of Hosking, 1997[^1].
 To estimate parameters from the L-moments, we use one of two approximations for $\alpha$ depending on the value of $\tau_{3}$:
 
 $$
-\alpha \approx \begin{dcases}
+\alpha \approx \begin{cases}
 \frac{1 + 0.2906z}{z + 0.1882z^2 + 0.0442z^3}, &z = 3\pi \tau_{3}^2, &0 < |\tau_{3}| < \frac{1}{3} \\[5pt]
 \frac{0.36067z - 0.59567z^2 + 0.25361z^3}{1 - 2.78861z + 2.56096z^2 - 0.77045z^3}, &z = 1 - |\tau_{3}|, &\frac{1}{3} \leq |\tau_{3}| < 1
-\end{dcases}
+\end{cases}
 $$
 
 Then, we can determine the parameters from the approximated $\alpha$:
@@ -529,10 +529,10 @@ The L-moments are defined if $h \geq 0$ and $k > -1$ or if $h < 0$ and $-1 < k <
 In the expression above, $g_{r}$ is defined as follows:
 
 $$
-g_{r} = \begin{dcases}
+g_{r} = \begin{cases}
 \frac{r\Gamma (1 + \kappa )\Gamma (r / h)}{h^{1 + \kappa }\Gamma (1 + \kappa + r/h)} &h > 0 \\[5pt]
 \frac{r\Gamma (1 + \kappa ) \Gamma (-\kappa  - r/h)}{(-h)^{1 + \kappa }\Gamma (1 - r/h)} &h < 0
-\end{dcases}
+\end{cases}
 $$
 
 There is no closed-form solution for the parameters in terms of the L-moments.
