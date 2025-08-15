@@ -39,8 +39,8 @@ Authors@R:
 		"Environment and Climate Change Canada (ECCC)",
 		role = "fnd"
 	)) 
-URL: https://rileywheadon.github.io/ffa-package/
-BugReports: https://github.com/rileywheadon/ffa-package/issues
+URL: https://rileywheadon.github.io/ffa-framework/
+BugReports: https://github.com/rileywheadon/ffa-framework/issues
 License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true

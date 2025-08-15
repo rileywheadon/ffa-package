@@ -58,8 +58,8 @@ analysis.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://rileywheadon.github.io/ffa-package/}
-  \item Report bugs at \url{https://github.com/rileywheadon/ffa-package/issues}
+  \item \url{https://rileywheadon.github.io/ffa-framework/}
+  \item Report bugs at \url{https://github.com/rileywheadon/ffa-framework/issues}
 }
 
 }

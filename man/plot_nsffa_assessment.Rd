@@ -25,6 +25,8 @@ empirical annual maximum series data to quantile estimates from a fitted, parame
 and nonstationary model. Confidence intervals are also provided. The worm plot can
 be interpreted using the following heuristics:
 \itemize{
+\item For a satisfactory fit, the worm (red data points) should be within the 95\%
+confidence interval (dashed black lines).
 \item If the worm (red points) is passes above/below the origin, the model mean
 is too small/large respectively.
 \item If the worm has a clear positive/negative slope, the model variance is too
@@ -47,6 +49,7 @@ plot_nsffa_assessment(results)
 
 }
 \references{
-van Buuren, S., Fredriks, M. Worm plot: a simple diagnostic device for modelling growth
-reference curves. Statistics in Medicine 20 (8), 1259-1277. \doi{10.1002/sim.746}
+van Buuren, S., Fredriks, M. Worm plot: a simple diagnostic device for modelling
+growth reference curves. Statistics in Medicine 20 (8), 1259-1277.
+\doi{10.1002/sim.746}
 }
