@@ -1,5 +1,6 @@
 #' Plot Model Assessment for NS-FFA
 #'
+#' @description
 #' Creates a normalized and detrended quantile–quantile plot (a worm plot) comparing 
 #' empirical annual maximum series data to quantile estimates from a fitted, parametric, 
 #' and nonstationary model. Confidence intervals are also provided. The worm plot can

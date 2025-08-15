@@ -21,7 +21,16 @@ plot_nsffa_assessment(results, ...)
 \description{
 Creates a normalized and detrended quantile–quantile plot (a worm plot) comparing
 empirical annual maximum series data to quantile estimates from a fitted, parametric,
-and nonstationary model. Confidence intervals are also provided.
+and nonstationary model. Confidence intervals are also provided. The worm plot can
+be interpreted using the following heuristics:
+\itemize{
+\item If the worm (red points) is consistently above/below the origin, the model mean
+is too large/small respectively.
+\item If the worm has a clear positive/negative slope, the model variance is too
+large/small respectively.
+\item If the worm has a U-shape or inverted U-shape, the model skewness is too
+small/large respectively.
+}
 }
 \examples{
 # Initialize example data and params

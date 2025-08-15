@@ -39,8 +39,8 @@ report. Supported values are \code{"md"}, \code{"pdf"}, \code{"html"}, and \code
 complete list.}
 }
 \value{
-\code{recommendations}: A list containing the recommended FFA approach, split point(s)
-and nonstationary structure(s) from EDA:
+\code{eda_recommendations}: A list containing the recommended FFA approach, split
+point(s) and nonstationary structure(s) from EDA:
 \itemize{
 \item \code{approach}: Either "S-FFA", "NS-FFA" (for a single homogeneous period), or
 "Piecewise NS-FFA" (for multiple homogeneous subperiods).

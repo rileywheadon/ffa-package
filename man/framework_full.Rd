@@ -47,7 +47,7 @@ analysis functions. See the details of \code{\link[=framework_eda]{framework_eda
 complete list.}
 }
 \value{
-\code{recommendations}: See \code{\link[=framework_eda]{framework_eda()}}.
+\code{eda_recommendations}: See \code{\link[=framework_eda]{framework_eda()}}.
 
 \code{summary}: See \code{\link[=framework_ffa]{framework_ffa()}}.
 
