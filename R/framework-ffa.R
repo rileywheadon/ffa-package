@@ -55,12 +55,12 @@
 #'   - "Hazen": \eqn{(i - 0.5) / n}
 #'
 #' @return 
-#' `summary`: A list describing the model(s) used for the analysis.
+#' `modelling_assumptions`: A list describing the model(s) used for the analysis.
 #' - `approach`: Either "S-FFA", "NS-FFA", or "Piecewise NS-FFA".
 #' - `ns_splits`: The `ns_splits` argument, if given.
 #' - `ns_structures`: The `ns_structures` argument, if given. 
 #'
-#' `submodules`: A list of lists of containing the results of frequency analysis. 
+#' `submodule_results`: A list of lists of containing the results of frequency analysis. 
 #' Each list contains:
 #' - `name`: Either "Distribution Selection", "Parameter Estimation", "Uncertainty 
 #'   Quantification", or "Model Assessment".
@@ -172,8 +172,8 @@ framework_ffa <- function(
 
 	# Combine the results of EDA into a single list
 	results <- list(
-		summary = summary,
-		submodules = c(results_03, results_04, results_05, results_06)
+		modelling_assumptions = summary,
+		submodule_results = c(results_03, results_04, results_05, results_06)
 	)
 
 	# Generate a report

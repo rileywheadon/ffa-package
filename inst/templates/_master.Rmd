@@ -12,8 +12,8 @@ output:
 params: 
   title: null
   eda_recommendations: null 
-  summary: null
-  submodules: null
+  modelling_assumptions: null
+  submodule_results: null
   img_dir: null
 ---
 
@@ -34,7 +34,7 @@ knitr::asis_output(output)
 ```{r, echo = FALSE}
 outputs <- character()
 
-for (entry in params$submodules) {
+for (entry in params$submodule_results) {
 
 	# Ignore FFA submodules
 	if (entry$name != "Change Point Detection" && entry$name != "Trend Detection") {
@@ -68,7 +68,7 @@ knitr::asis_output(outputs)
 <!-- Render the FFA Summary -->
 
 ```{r, echo = FALSE}
-if (!is.null(params$summary)) {
+if (!is.null(params$modelling_assumptions)) {
 	output <- knitr::knit_child("ffa_summary.Rmd", envir = environment())
 } else {
 	output <- character()
@@ -82,7 +82,7 @@ knitr::asis_output(output)
 ```{r, echo = FALSE}
 outputs <- character()
 
-for (entry in params$submodules) {
+for (entry in params$submodule_results) {
 
 	# Ignore EDA submodules
 	if (entry$name == "Change Point Detection" || entry$name == "Trend Detection") {

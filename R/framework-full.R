@@ -20,9 +20,9 @@
 #' @return
 #' `eda_recommendations`: See [framework_eda()]. 
 #'
-#' `summary`: See [framework_ffa()]. 
+#' `modelling_assumptions`: See [framework_ffa()]. 
 #'
-#' `submodules`: A list of lists of results. Each list contains:
+#' `submodule_results`: A list of lists of results. Each list contains:
 #' - `name`: Either "Change Point Detection", "Trend Detection", "Distribution 
 #'   Selection", "Parameter Estimation", "Uncertainty Quantification", or "Model 
 #'   Assessment".
@@ -57,14 +57,14 @@ framework_full <- function(
 	img_dir <- setup$img_dir
 
 	# Get the results of EDA and FFA
-	results_eda <- framework_eda(data, years, ns_splits, FALSE)
-	results_ffa <- framework_ffa(data, years, ns_splits, ns_structures, FALSE)
+	eda <- framework_eda(data, years, ns_splits, FALSE)
+	ffa <- framework_ffa(data, years, ns_splits, ns_structures, FALSE)
 
 	# Combine the results of EDA and FFA into a single list
 	results <- list(
-		eda_recommendations = results_eda$recommendations,
-		summary = results_ffa$summary,
-		submodules = c(results_eda$submodules, results_ffa$submodules)
+		eda_recommendations = eda$eda_recommendations,
+		modelling_assumptions = ffa$modelling_assumptions,
+		submodule_results = c(eda$submodule_results, ffa$submodule_results)
 	)
 
 	# Generate the report(s)

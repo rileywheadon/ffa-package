@@ -1,12 +1,12 @@
 # Flood Frequency Analysis
 
-Approach: `r params$summary$approach`
+Approach: `r params$modelling_assumptions$approach`
 
 ```{r, include = FALSE}
-summary <- params$summary
+assumptions <- params$modelling_assumptions
 
-if (length(summary$ns_splits) > 0) {
-	splits <- paste0(summary$ns_splits, collapse = ", ")
+if (length(assumptions$ns_splits) > 0) {
+	splits <- paste0(assumptions$ns_splits, collapse = ", ")
 } else {
 	splits <- "None"
 }
@@ -18,19 +18,19 @@ Model Structures:
 
 ```{r, echo = FALSE}
 period_labels <- vapply(
-	Filter(function(x) x$name == "Model Assessment", params$submodules), 
+	Filter(function(x) x$name == "Model Assessment", params$submodule_results), 
 	function(submodule) sprintf("%d-%d", submodule$start, submodule$end), 
 	character(1)
 )
 
 trend_location <- vapply(
-	summary$ns_structures,
+	assumptions$ns_structures,
 	function(structure) structure$location, 
 	logical(1)
 )
 
 trend_scale <- vapply(
-	summary$ns_structures,
+	assumptions$ns_structures,
 	function(structure) structure$scale,
 	logical(1)
 )

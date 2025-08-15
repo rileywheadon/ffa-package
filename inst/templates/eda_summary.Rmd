@@ -18,7 +18,7 @@ Recommended Model Structures:
 
 ```{r, echo = FALSE}
 period_labels <- vapply(
-	Filter(function(x) x$name == "Trend Detection", params$submodules), 
+	Filter(function(x) x$name == "Trend Detection", params$submodule_results), 
 	function(submodule) sprintf("%d-%d", submodule$start, submodule$end), 
 	character(1)
 )

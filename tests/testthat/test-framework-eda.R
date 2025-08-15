@@ -4,7 +4,7 @@ test_that("framework-eda.R works on KOOTENAI RIVER (08NH021) with no splits", {
 
 	results <- framework_eda(df$max, df$year)
 	expect_true(is.list(results))
-	expect_equal(length(results$submodules), 2)
+	expect_equal(length(results$submodule_results), 2)
 
 	recommendations <- results$eda_recommendations
 	expect_equal(recommendations$approach, "Piecewise NS-FFA")
@@ -19,7 +19,7 @@ test_that("framework-eda.R works on KOOTENAI RIVER (08NH021) with splits", {
 
 	results <- framework_eda(df$max, df$year, ns_splits = 1972)
 	expect_true(is.list(results))
-	expect_equal(length(results$submodules), 3)
+	expect_equal(length(results$submodule_results), 3)
 
 	recommendations <- results$eda_recommendations
 	expect_equal(recommendations$approach, "Piecewise NS-FFA")

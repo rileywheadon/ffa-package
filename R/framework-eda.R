@@ -38,7 +38,7 @@
 #'   linear trend in the in the mean or variability of the data, respectively. If no
 #'   trends were found in any homogeneous subperiod, `ns_structures` will be `NULL`.
 #'
-#' `submodules`: A list of lists of statistical tests. Each list contains:
+#' `submodule_results`: A list of lists of statistical tests. Each list contains:
 #' - `name`: Either "Change Point Detection" or "Trend Detection".
 #' - `start`: The first year of the homogeneous subperiod.
 #' - `end`: The last year of the homogeneous subperiod.
@@ -124,7 +124,7 @@ framework_eda <- function(
 	# Combine the results of EDA into a single list
 	results <- list(
 		eda_recommendations = recommendations,
-		submodules = c(results_01, results_02)
+		submodule_results = c(results_01, results_02)
 	)
 
 	# Generate a report
