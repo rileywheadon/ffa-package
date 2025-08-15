@@ -63,12 +63,12 @@ The first and most important criteria is that there is a physical justification 
 For this case study, there is no physical justification for a split point since the basin is unregulated.
 
 However, in cases where we have less information, it is often useful to investigate the results of the Pettitt and MKS tests more carefully.
-The `framework_eda` function allows us to do this by (a) reading the report, or (b) using the `submodules` object. 
-The `submodules` object is a list with two elements: the results of change point detection and the results of trend detection.
+The `framework_eda` function allows us to do this by (a) reading the report, or (b) using the `submodule_results` object. 
+The `submodule_results` object is a list with two elements: the results of change point detection and the results of trend detection.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
-pettitt_results <- results$submodules[[1]]$tests$pettitt
-mks_results <- results$submodules[[1]]$tests$mks
+pettitt_results <- results$submodule_results[[1]]$tests$pettitt
+mks_results <- results$submodule_results[[1]]$tests$mks
 
 plot_pettitt_test(pettitt_results)
 plot_mks_test(mks_results)
@@ -87,8 +87,8 @@ This vignette will use the `framework_full` wrapper function to run the complete
 The `framework_full` wrapper function returns a list with the following three items:
 
 - `eda_recommendations`: The recommended approach, split points, and model structures from EDA.
-- `summary`: The approach, split points, and model structures used for FFA.
-- `submodules`: The results of EDA (change point detection and trend detection) and FFA (distribution selection, parameter estimation, uncertainty quantification, and model assessment).
+- `modelling_approach`: The approach, split points, and model structures used for FFA.
+- `submodule_results`: The results of EDA (change point detection and trend detection) and FFA (distribution selection, parameter estimation, uncertainty quantification, and model assessment).
 
 
 ```{r, eval = FALSE}
