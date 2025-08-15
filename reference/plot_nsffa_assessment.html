@@ -9,6 +9,8 @@
 empirical annual maximum series data to quantile estimates from a fitted, parametric,
 and nonstationary model. Confidence intervals are also provided. The worm plot can
 be interpreted using the following heuristics:
+For a satisfactory fit, the worm (red data points) should be within the 95%
+confidence interval (dashed black lines).
 If the worm (red points) is passes above/below the origin, the model mean
 is too small/large respectively.
 If the worm has a clear positive/negative slope, the model variance is too
@@ -20,6 +22,8 @@ left/right respectively.
 empirical annual maximum series data to quantile estimates from a fitted, parametric,
 and nonstationary model. Confidence intervals are also provided. The worm plot can
 be interpreted using the following heuristics:
+For a satisfactory fit, the worm (red data points) should be within the 95%
+confidence interval (dashed black lines).
 If the worm (red points) is passes above/below the origin, the model mean
 is too small/large respectively.
 If the worm has a clear positive/negative slope, the model variance is too
@@ -76,7 +80,7 @@ left/right respectively.
 <li class="nav-item"><a class="nav-link" href="../articles/matlab-version.html">MATLAB Version</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rileywheadon/ffa-package/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rileywheadon/ffa-framework/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -86,7 +90,7 @@ left/right respectively.
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Plot Model Assessment for NS-FFA</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rileywheadon/ffa-package/blob/master/R/plot-nsffa-assessment.R" class="external-link"><code>R/plot-nsffa-assessment.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rileywheadon/ffa-framework/blob/master/R/plot-nsffa-assessment.R" class="external-link"><code>R/plot-nsffa-assessment.R</code></a></small>
       <div class="d-none name"><code>plot_nsffa_assessment.Rd</code></div>
     </div>
 
@@ -94,7 +98,9 @@ left/right respectively.
     <p>Creates a normalized and detrended quantile–quantile plot (a worm plot) comparing
 empirical annual maximum series data to quantile estimates from a fitted, parametric,
 and nonstationary model. Confidence intervals are also provided. The worm plot can
-be interpreted using the following heuristics:</p><ul><li><p>If the worm (red points) is passes above/below the origin, the model mean
+be interpreted using the following heuristics:</p><ul><li><p>For a satisfactory fit, the worm (red data points) should be within the 95%
+confidence interval (dashed black lines).</p></li>
+<li><p>If the worm (red points) is passes above/below the origin, the model mean
 is too small/large respectively.</p></li>
 <li><p>If the worm has a clear positive/negative slope, the model variance is too
 small/large respectively.</p></li>
@@ -127,8 +133,9 @@ left/right respectively.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>van Buuren, S., Fredriks, M. Worm plot: a simple diagnostic device for modelling growth
-reference curves. Statistics in Medicine 20 (8), 1259-1277. <a href="https://doi.org/10.1002/sim.746" class="external-link">doi:10.1002/sim.746</a></p>
+    <p>van Buuren, S., Fredriks, M. Worm plot: a simple diagnostic device for modelling
+growth reference curves. Statistics in Medicine 20 (8), 1259-1277.
+<a href="https://doi.org/10.1002/sim.746" class="external-link">doi:10.1002/sim.746</a></p>
     </div>
 
     <div class="section level2">
