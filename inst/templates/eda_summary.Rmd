@@ -1,9 +1,9 @@
 # Exploratory Data Analysis
 
-Recommended Approach: `r params$recommendations$approach`
+Recommended Approach: `r params$eda_recommendations$approach`
 
 ```{r, include = FALSE}
-recommendations <- params$recommendations
+recommendations <- params$eda_recommendations
 
 if (length(recommendations$ns_splits) > 0) {
 	splits <- paste0(recommendations$ns_splits, collapse = ", ")

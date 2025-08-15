@@ -11,7 +11,7 @@ output:
     css: styles.css
 params: 
   title: null
-  recommendations: null 
+  eda_recommendations: null 
   summary: null
   submodules: null
   img_dir: null
@@ -20,7 +20,7 @@ params:
 <!-- Render the EDA Summary -->
 
 ```{r, echo = FALSE}
-if (!is.null(params$recommendations)) {
+if (!is.null(params$eda_recommendations)) {
 	output <- knitr::knit_child("eda_summary.Rmd", envir = environment())
 } else {
 	output <- character()

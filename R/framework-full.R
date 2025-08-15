@@ -18,7 +18,7 @@
 #' complete list.
 #'
 #' @return
-#' `recommendations`: See [framework_eda()]. 
+#' `eda_recommendations`: See [framework_eda()]. 
 #'
 #' `summary`: See [framework_ffa()]. 
 #'
@@ -62,7 +62,7 @@ framework_full <- function(
 
 	# Combine the results of EDA and FFA into a single list
 	results <- list(
-		recommendations = results_eda$recommendations,
+		eda_recommendations = results_eda$recommendations,
 		summary = results_ffa$summary,
 		submodules = c(results_eda$submodules, results_ffa$submodules)
 	)

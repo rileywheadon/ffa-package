@@ -20,7 +20,7 @@ Readers unfamiliar with the FFA framework should first consult the other vignett
 ## Case Study
 
 This vignette will explore data from the Bow River at Banff (05BB001), a station in the Reference Hydrometric Basin Network.
-The station is unregulated, which suggests that trends in annual maxima are caused by changes in climate as opposed to changes in land use or cover.
+The station is unregulated and undeveloped, which suggests that trends in annual maxima are caused by changes in climate as opposed to changes in land use or cover.
 Data for this station is provided as `CAN-05BB001.csv` in the `ffaframework` package.
 
 ```{r, fig.width = 10, fig.height = 8, fig.align = "center", out.width = "100%"}
@@ -49,10 +49,10 @@ The `framework_eda` function also returns a list of recommendations, including a
 ```{r}
 results <- framework_eda(df$max, df$year, generate_report = FALSE)
 
-print(results$recommendations)
+print(results$eda_recommendations)
 ```
 
-From the `recommendations` item, we can see that the FFA framework recommends a split point in 1974.
+From the `eda_recommendations` item, we can see that the FFA framework recommends a split point in 1974.
 Since we did not use the `ns_splits` argument, trend detection was run on the complete time series.
 A monotonic trend in the location was identified over this period.
 
@@ -86,7 +86,7 @@ In this case, we have decided not to split the data, so `ns_structures` will con
 This vignette will use the `framework_full` wrapper function to run the complete FFA framework and generate a report.
 The `framework_full` wrapper function returns a list with the following three items:
 
-- `recommendations`: The recommended approach, split points, and model structures from EDA.
+- `eda_recommendations`: The recommended approach, split points, and model structures from EDA.
 - `summary`: The approach, split points, and model structures used for FFA.
 - `submodules`: The results of EDA (change point detection and trend detection) and FFA (distribution selection, parameter estimation, uncertainty quantification, and model assessment).
 
@@ -104,4 +104,4 @@ framework_full(
 ```
 
 **Note**: The code snippet shown above was run outside of the vignette environment to reduce compilation time. 
-The resulting report can be found [here](example-report.html).
+The resulting report can be found [here](../example-report.html).

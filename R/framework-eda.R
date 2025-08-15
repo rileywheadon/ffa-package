@@ -27,8 +27,8 @@
 #'   compute the variability series.
 #'
 #' @return 
-#' `recommendations`: A list containing the recommended FFA approach, split point(s) 
-#' and nonstationary structure(s) from EDA:
+#' `eda_recommendations`: A list containing the recommended FFA approach, split 
+#' point(s) and nonstationary structure(s) from EDA:
 #' - `approach`: Either "S-FFA", "NS-FFA" (for a single homogeneous period), or 
 #'   "Piecewise NS-FFA" (for multiple homogeneous subperiods).
 #' - `ns_splits`: The split point(s) identified by the change point detection test with 
@@ -123,7 +123,7 @@ framework_eda <- function(
 
 	# Combine the results of EDA into a single list
 	results <- list(
-		recommendations = recommendations,
+		eda_recommendations = recommendations,
 		submodules = c(results_01, results_02)
 	)
 
