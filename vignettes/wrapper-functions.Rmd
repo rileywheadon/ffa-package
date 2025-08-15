@@ -104,4 +104,4 @@ framework_full(
 ```
 
 **Note**: The code snippet shown above was run outside of the vignette environment to reduce compilation time. 
-The resulting report can be found [here](../example-report.html).
+The resulting report can be found [here](https://rileywheadon.github.io/ffa-framework/example-report.html).

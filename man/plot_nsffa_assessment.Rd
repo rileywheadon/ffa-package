@@ -16,6 +16,7 @@ plot_nsffa_assessment(results, ...)
 \itemize{
 \item A black line representing a model with no deviation from the empirical quantiles.
 \item Red points denoting the estimated quantiles against the empirical quantiles.
+\item A dashed black line showing the 95\% confidence intervals of the residuals.
 }
 }
 \description{
@@ -24,12 +25,12 @@ empirical annual maximum series data to quantile estimates from a fitted, parame
 and nonstationary model. Confidence intervals are also provided. The worm plot can
 be interpreted using the following heuristics:
 \itemize{
-\item If the worm (red points) is consistently above/below the origin, the model mean
-is too large/small respectively.
+\item If the worm (red points) is passes above/below the origin, the model mean
+is too small/large respectively.
 \item If the worm has a clear positive/negative slope, the model variance is too
-large/small respectively.
-\item If the worm has a U-shape or inverted U-shape, the model skewness is too
 small/large respectively.
+\item If the worm has a U-shape or inverted U-shape, the model is too skew to the
+left/right respectively.
 }
 }
 \examples{
@@ -44,4 +45,8 @@ results <- model_assessment(data, "NOR", "MLE", NULL, years, structure)
 # Generate a model assessment plot
 plot_nsffa_assessment(results)
 
+}
+\references{
+van Buuren, S., Fredriks, M. Worm plot: a simple diagnostic device for modelling growth
+reference curves. Statistics in Medicine 20 (8), 1259-1277. \doi{10.1002/sim.746}
 }
