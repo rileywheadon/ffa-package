@@ -197,12 +197,13 @@ basin is unregulated.</p>
 <p>However, in cases where we have less information, it is often useful
 to investigate the results of the Pettitt and MKS tests more carefully.
 The <code>framework_eda</code> function allows us to do this by (a)
-reading the report, or (b) using the <code>submodules</code> object. The
-<code>submodules</code> object is a list with two elements: the results
-of change point detection and the results of trend detection.</p>
+reading the report, or (b) using the <code>submodule_results</code>
+object. The <code>submodule_results</code> object is a list with two
+elements: the results of change point detection and the results of trend
+detection.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pettitt_results</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">submodules</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tests</span><span class="op">$</span><span class="va">pettitt</span></span>
-<span><span class="va">mks_results</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">submodules</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tests</span><span class="op">$</span><span class="va">mks</span></span>
+<code class="sourceCode R"><span><span class="va">pettitt_results</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">submodule_results</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tests</span><span class="op">$</span><span class="va">pettitt</span></span>
+<span><span class="va">mks_results</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">submodule_results</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tests</span><span class="op">$</span><span class="va">mks</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/plot_pettitt_test.html">plot_pettitt_test</a></span><span class="op">(</span><span class="va">pettitt_results</span><span class="op">)</span></span></code></pre></div>
 <p><img src="wrapper-functions_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -238,12 +239,13 @@ following three items:</p>
 <code>eda_recommendations</code>: The recommended approach, split
 points, and model structures from EDA.</li>
 <li>
-<code>summary</code>: The approach, split points, and model
-structures used for FFA.</li>
+<code>modelling_approach</code>: The approach, split points, and
+model structures used for FFA.</li>
 <li>
-<code>submodules</code>: The results of EDA (change point detection
-and trend detection) and FFA (distribution selection, parameter
-estimation, uncertainty quantification, and model assessment).</li>
+<code>submodule_results</code>: The results of EDA (change point
+detection and trend detection) and FFA (distribution selection,
+parameter estimation, uncertainty quantification, and model
+assessment).</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/framework_full.html">framework_full</a></span><span class="op">(</span></span>
