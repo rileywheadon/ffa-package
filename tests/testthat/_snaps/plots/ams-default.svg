@@ -156,18 +156,18 @@
 <text x='52.52' y='173.79' text-anchor='end' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>60</text>
 <text x='52.52' y='107.81' text-anchor='end' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>70</text>
 <text x='52.52' y='41.83' text-anchor='end' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>80</text>
-<text x='80.76' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.2</text>
-<text x='142.08' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.3</text>
-<text x='203.41' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.4</text>
-<text x='264.74' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.5</text>
-<text x='326.06' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.6</text>
-<text x='387.39' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.7</text>
-<text x='448.71' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.8</text>
-<text x='510.04' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>0.9</text>
-<text x='571.37' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>1.0</text>
-<text x='632.69' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>1.1</text>
-<text x='694.02' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>1.2</text>
-<text x='381.25' y='567.70' text-anchor='middle' style='font-size: 16.00px; font-family: sans;' textLength='68.49px' lengthAdjust='spacingAndGlyphs'>Covariate</text>
+<text x='80.76' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1920</text>
+<text x='142.08' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1930</text>
+<text x='203.41' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1940</text>
+<text x='264.74' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1950</text>
+<text x='326.06' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1960</text>
+<text x='387.39' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1970</text>
+<text x='448.71' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1980</text>
+<text x='510.04' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>1990</text>
+<text x='571.37' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>2000</text>
+<text x='632.69' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>2010</text>
+<text x='694.02' y='551.45' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>2020</text>
+<text x='381.25' y='567.70' text-anchor='middle' style='font-size: 16.00px; font-family: sans;' textLength='33.80px' lengthAdjust='spacingAndGlyphs'>Year</text>
 <text transform='translate(30.80,343.35) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='10.68px' lengthAdjust='spacingAndGlyphs'>S</text>
 <text transform='translate(30.80,332.68) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='4.44px' lengthAdjust='spacingAndGlyphs'>t</text>
 <text transform='translate(30.80,328.23) rotate(-90)' style='font-size: 16.00px; font-family: sans;' textLength='5.33px' lengthAdjust='spacingAndGlyphs'>r</text>

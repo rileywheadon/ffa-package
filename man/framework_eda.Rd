@@ -52,7 +52,7 @@ linear trend in the in the mean or variability of the data, respectively. If no
 trends were found in any homogeneous subperiod, \code{ns_structures} will be \code{NULL}.
 }
 
-\code{submodules}: A list of lists of statistical tests. Each list contains:
+\code{submodule_results}: A list of lists of statistical tests. Each list contains:
 \itemize{
 \item \code{name}: Either "Change Point Detection" or "Trend Detection".
 \item \code{start}: The first year of the homogeneous subperiod.

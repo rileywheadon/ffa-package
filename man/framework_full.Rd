@@ -49,9 +49,9 @@ complete list.}
 \value{
 \code{eda_recommendations}: See \code{\link[=framework_eda]{framework_eda()}}.
 
-\code{summary}: See \code{\link[=framework_ffa]{framework_ffa()}}.
+\code{modelling_assumptions}: See \code{\link[=framework_ffa]{framework_ffa()}}.
 
-\code{submodules}: A list of lists of results. Each list contains:
+\code{submodule_results}: A list of lists of results. Each list contains:
 \itemize{
 \item \code{name}: Either "Change Point Detection", "Trend Detection", "Distribution
 Selection", "Parameter Estimation", "Uncertainty Quantification", or "Model

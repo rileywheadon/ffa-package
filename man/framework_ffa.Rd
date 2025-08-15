@@ -46,14 +46,14 @@ report. Supported values are \code{"md"}, \code{"pdf"}, \code{"html"}, and \code
 list.}
 }
 \value{
-\code{summary}: A list describing the model(s) used for the analysis.
+\code{modelling_assumptions}: A list describing the model(s) used for the analysis.
 \itemize{
 \item \code{approach}: Either "S-FFA", "NS-FFA", or "Piecewise NS-FFA".
 \item \code{ns_splits}: The \code{ns_splits} argument, if given.
 \item \code{ns_structures}: The \code{ns_structures} argument, if given.
 }
 
-\code{submodules}: A list of lists of containing the results of frequency analysis.
+\code{submodule_results}: A list of lists of containing the results of frequency analysis.
 Each list contains:
 \itemize{
 \item \code{name}: Either "Distribution Selection", "Parameter Estimation", "Uncertainty

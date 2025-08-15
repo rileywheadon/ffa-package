@@ -73,14 +73,14 @@ plot_ams_data <- function(
 
 	# Set labels and title 
 	title <- args$title %||% "Annual Maximum Series"
-	xlabel <- args$xlabel %||% "Covariate"
+	xlabel <- args$xlabel %||% "Year"
 	ylabel <- args$ylabel %||% expression(Streamflow ~ m^3/s)
 
 	# Generate dataframes for the trend estimate, data
 	x <- get_covariates(years)
 
 	df <- data.frame(
-		x = x,
+		x = years,
 		y_data = data,
 		y_upper = (m1 * x) + m2 + ((v1 * x) + v2),
 		y_trend = (m1 * x) + m2,
