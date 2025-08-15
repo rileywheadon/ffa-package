@@ -155,7 +155,7 @@ the the lowest statistically significant p-value, or <code>NULL</code> if no suc
 structure is a list with boolean items <code>location</code> and <code>scale</code>, which represent a
 linear trend in the in the mean or variability of the data, respectively. If no
 trends were found in any homogeneous subperiod, <code>ns_structures</code> will be <code>NULL</code>.</p></li>
-</ul><p><code>submodules</code>: A list of lists of statistical tests. Each list contains:</p><ul><li><p><code>name</code>: Either "Change Point Detection" or "Trend Detection".</p></li>
+</ul><p><code>submodule_results</code>: A list of lists of statistical tests. Each list contains:</p><ul><li><p><code>name</code>: Either "Change Point Detection" or "Trend Detection".</p></li>
 <li><p><code>start</code>: The first year of the homogeneous subperiod.</p></li>
 <li><p><code>end</code>: The last year of the homogeneous subperiod.</p></li>
 <li><p>Additional items from the statistical tests within the submodule.</p></li>
