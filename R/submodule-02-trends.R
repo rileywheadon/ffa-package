@@ -47,14 +47,14 @@ submodule_02_helper <- function(data, years, options, period, path, serialize) {
 
 	# MW-MK (2): go to Sen's variance (3) if there is non-stationarity, else MK test (5)
 	trend02 <- function() {
-		mw <- data_mw_variability(data, years)
+		mw <- data_mw_variability(data, years, options$window_size, options$window_step)
 		tests$mwmk <<- eda_mk_test(mw$std, options$alpha)
 		if (tests$white$reject || tests$mwmk$reject) 3 else 5
 	}
 
 	# Sen's variance (3): go to Runs variance (4) regardless of the result
 	trend03 <- function() {
-		mw <- data_mw_variability(data, years)
+		mw <- data_mw_variability(data, years, options$window_size, options$window_step)
 		tests$sens_variance <<- eda_sens_trend(mw$std, mw$year)
 
 		plot <- plot_ams_data(
@@ -70,7 +70,7 @@ submodule_02_helper <- function(data, years, options, period, path, serialize) {
 
 	# Runs variance (4): go to MK test (5) regardless of the results.
 	trend04 <- function() {
-		mw <- data_mw_variability(data, years)
+		mw <- data_mw_variability(data, years, options$window_size, options$window_step)
 		residuals <- tests$sens_variance$residuals
 		tests$runs_variance <<- eda_runs_test(residuals, mw$year, options$alpha)
 		plot_helper(plot_runs_test(tests$runs_variance), "runs_variance")
