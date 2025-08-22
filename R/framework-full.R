@@ -57,8 +57,8 @@ framework_full <- function(
 	img_dir <- setup$img_dir
 
 	# Get the results of EDA and FFA
-	eda <- framework_eda(data, years, ns_splits, FALSE)
-	ffa <- framework_ffa(data, years, ns_splits, ns_structures, FALSE)
+	eda <- framework_eda(data, years, ns_splits, FALSE, report_path)
+	ffa <- framework_ffa(data, years, ns_splits, ns_structures, FALSE, report_path)
 
 	# Combine the results of EDA and FFA into a single list
 	results <- list(
