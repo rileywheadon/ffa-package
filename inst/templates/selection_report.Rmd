@@ -18,8 +18,7 @@ if (!is.null(params$metrics)) {
 
 <!-- Model Selection Plot -->
 ```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
-img_name <- glue("selection_{params$start}_{params$end}.png")
-knitr::include_graphics(file.path(params$img_dir, img_name))
+knit_plot(params, glue("selection_{params$start}_{params$end}.png"))
 ```
 
 

@@ -27,8 +27,7 @@ if (params$reject) {
 `r if (params$reject) warning`
 
 ```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
-img_name <- glue("runs_mean_{params$start}_{params$end}.png")
-knitr::include_graphics(file.path(params$img_dir, img_name))
+knit_plot(params, glue("runs_mean_{params$start}_{params$end}.png"))
 ```
 
 

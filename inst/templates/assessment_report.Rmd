@@ -53,8 +53,6 @@ knitr::kable(
 )
 ```
 
-```{r, echo = FALSE}
-img_name <- glue("assessment_{params$start}_{params$end}.png")
-knitr::include_graphics(file.path(params$img_dir, img_name))
+```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
+knit_plot(params, glue("assessment_{params$start}_{params$end}.png"))
 ```
-

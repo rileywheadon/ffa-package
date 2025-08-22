@@ -17,6 +17,38 @@ params:
   img_dir: null
 ---
 
+<!-- Helper function -->
+```{r setup, include=FALSE}
+knit_plot <- function(result, img_name, alt = NULL) {
+
+	# 1) Prefer an on-disk file if one exists
+  	candidate <- file.path(params$img_dir, img_name)
+	if (file.exists(candidate)) {
+		return (knitr::include_graphics(candidate))
+	}
+
+	# 2) Fall back to a base64-encoded PNG in result$plot
+	if (is.null(result$plot)) {
+    	return (invisible(NULL))
+  	}
+
+  	b64 <- result$plot
+
+  	# Strip data URI prefix
+  	if (grepl("^data:image/[^;]+;base64,", b64, perl = TRUE)) {
+    	b64 <- sub("^data:image/[^;]+;base64,", "", b64, perl = TRUE)
+  	}
+
+  	# Decode and write to a temporary file
+  	b64_decoded <- base64enc::base64decode(b64)
+	output_path <- tempfile()
+    writeBin(b64_decoded, output_path, useBytes = TRUE)
+	knitr::include_graphics(output_path)
+
+}
+
+```
+
 <!-- Render the EDA Summary -->
 
 ```{r, echo = FALSE}

@@ -24,8 +24,7 @@ if (params$reject) {
 - Therefore, there is `r conclusion`.
 
 ```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
-img_name <- glue("pettitt_{params$start}_{params$end}.png")
-knitr::include_graphics(file.path(params$img_dir, img_name))
+knit_plot(params, glue("pettitt_{params$start}_{params$end}.png"))
 ```
 
 

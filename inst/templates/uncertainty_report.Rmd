@@ -1,9 +1,8 @@
 ## '`r params$method`' Uncertainty Quantification (`r params$start`-`r params$end`)
 
 <!-- Uncertainty Quantification Plot -->
-```{r, echo = FALSE}
-img_name <- glue("uncertainty_{params$start}_{params$end}.png")
-knitr::include_graphics(file.path(params$img_dir, img_name))
+```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
+knit_plot(params, glue("uncertainty_{params$start}_{params$end}.png"))
 ```
 
 <!-- Confidence Interval Table -->

@@ -5,8 +5,7 @@ For more information, see [here](https://rileywheadon.github.io/ffa-framework/ar
 Identified Trend: *y = `r round(params$slope, 2)`x + `r round(params$intercept, 3)`*
 
 ```{r, echo = FALSE, out.width = "80%", fig.align = "center", dpi = 150}
-img_name <- glue("sens_mean_{params$start}_{params$end}.png")
-knitr::include_graphics(file.path(params$img_dir, img_name))
+knit_plot(params, glue("sens_mean_{params$start}_{params$end}.png"))
 ```
 
 
