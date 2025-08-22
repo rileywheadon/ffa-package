@@ -31,6 +31,11 @@ plot_sffa_estimates <- function(
 	...
 ) {
 
+	# Override the periods argument if contained in 'results'
+	if ("ci" %in% names(results)) {
+		periods <- results$ci$periods
+	}
+
 	# Compute the quantile estimates
 	returns = 1 - (1 / periods)
 	structure = list(location = FALSE, scale = FALSE)

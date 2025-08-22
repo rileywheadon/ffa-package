@@ -45,6 +45,11 @@ plot_nsffa_estimates <- function(
 	...
 ) {
 
+	# Override the periods argument if contained in 'results'
+	if ("ci_list" %in% names(results)) {
+		periods = results$ci_list[[1]]$periods
+	}
+
     # Capture optional arguments
     args <- list(...)
     title  <- args$title  %||% "NS-FFA Results"

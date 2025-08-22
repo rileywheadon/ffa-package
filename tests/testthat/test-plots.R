@@ -228,6 +228,12 @@ test_that("plot-sffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("sffa-estimates-custom", p) 
 
+	# Test with different return periods
+	uncertainty <- uncertainty_bootstrap(df$max, "GEV", "L-moments", periods = c(2, 20, 200))
+	p <- plot_sffa_estimates(uncertainty)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("sffa-estimates-periods", p) 
+
 })
 
 
@@ -289,7 +295,24 @@ test_that("plot-nsffa-estimates.R works on OKANAGAN RIVER (08NM050)", {
 	expect_s3_class(p, "ggplot")
   	vdiffr::expect_doppelganger("nsffa-estimates-custom", p) 
 
+	# Test with different return periods
+	uncertainty <- uncertainty_bootstrap(
+		df$max,
+		"GEV",
+		"MLE",
+		ns_years = df$year,
+		ns_structure = S10,
+		ns_slices = c(1920, 1960, 2000),
+		samples = 1000L,
+		periods = c(2, 20, 200)
+	)
+
+	p <- plot_nsffa_estimates(uncertainty)
+	expect_s3_class(p, "ggplot")
+  	vdiffr::expect_doppelganger("nsffa-estimates-periods", p) 
+
 })
+
 
 test_that("plot-sffa-assessment.R works on OKANAGAN RIVER (08NM050)", {
 	testthat::skip_if(testthat::is_checking(), "Skip on R CMD check")
@@ -308,6 +331,7 @@ test_that("plot-sffa-assessment.R works on OKANAGAN RIVER (08NM050)", {
   	vdiffr::expect_doppelganger("assessment-sffa-custom", p) 
 	
 })
+
 
 test_that("plot-sffa-assessment.R works on BOW RIVER (05BB001)", {
 	testthat::skip_if(testthat::is_checking(), "Skip on R CMD check")
